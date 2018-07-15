@@ -1,0 +1,151 @@
+@extends('layouts.master')
+
+@section('plugin_css')
+
+@endsection
+
+@section('script_css')
+
+@endsection
+
+@section('content')
+<div class="container-fluid">
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">Spaces</h3>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+              <h4 class="card-title"><span class="lstick"></span>Add Space</h4>
+
+              @include('error-template')
+
+              <form action="{{ route('space.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">Warehouse <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="warehouse_id" required>
+                          <option value=""></option>
+                          @if (!empty($warehouse))
+                            @foreach ($warehouse as $key => $value)
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->areaWarehouse->name }})</option>
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
+                      </div>
+
+                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </div>
+              </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card">
+          <div class="card-body">
+
+            <h4 class="card-title"><span class="lstick"></span>List Spaces</h4>
+
+            <div class="table-responsive m-t-10">
+                <table id="table-type" class="table table-striped table-bordered">
+                  <thead>
+                      <tr>
+                        <th width="5%">No</th>
+                        <th width="">Name</th>
+                        <th width="30%">Warehouse</th>
+                        <th width="20%" class="text-center no-sort">Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    @if (count($space) > 0)
+                      @foreach ($space as $key => $value)
+                        <tr>
+                          <td align="center">{{ $key+1 }}</th>
+                          <td>{{ $value->name }}</td>
+                          <td>{{ $value->warehouse->name }}</td>
+                          <td class="text-center">
+                            <form action="{{route('space.destroy', ['id' => $value->id])}}" method="post">
+                              @csrf
+                              <a class="btn btn-info btn-sm" href="{{route('space.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
+                              @method('DELETE')
+                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @endif
+                  </tbody>
+              </table>
+            </div>
+
+            <!-- sample modal content -->
+            <div class="modal fade bs-example-modal-lg" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">Confirmation</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <h4>[Delete]</h4>
+                            <p>Are you sure to delete this space ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary waves-effect text-left" data-dismiss="modal">Close</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->  
+
+          </div>
+      </div>
+    </div>
+
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->
+
+</div>
+@endsection
+
+@section('close_html')
+<!--PLUGIN JS -->
+
+
+<script>
+$(function() {
+  $('#table-type').DataTable({
+    "aaSorting": []
+  });
+});
+</script>
+@endsection

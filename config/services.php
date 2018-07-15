@@ -35,4 +35,10 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+      'client_id' => env('FB_CLIENT_ID', '2153342904911454'),
+      'client_secret' => env('FB_CLIENT_SECRET', '031a367690f12f4ea5766b15aaddd78d'),
+      'redirect' => env('FB_CALLBACK_URL', 'http://needtip.local/auth/facebook/callback'),
+    ],
+
 ];
