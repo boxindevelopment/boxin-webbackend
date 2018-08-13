@@ -2,9 +2,6 @@
 /public/hot
 /public/storage
 /storage/*.key
-/vendor/*
-/vendor/composer/*
-/vendor/phpunit/*
 /.idea
 /.vscode
 /.vagrant
@@ -14,4 +11,3 @@ npm-debug.log
 yarn-error.log
 .env
 .DS_Store
-/vendor/
