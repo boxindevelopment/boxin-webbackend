@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Entities\Boxes;
+use App\Model\Box;
+use App\Model\Space;
+use App\Model\TypeSize;
+use Carbon;
 
 class BoxController extends Controller
 {
@@ -14,8 +17,10 @@ class BoxController extends Controller
      */
     public function index()
     {
-      $box = Boxes::where('status', 1)->orderBy('name', 'asc')->get();
-      return view('boxes.index', compact('box'));
+      $box      = Box::where('deleted_at', NULL)->orderBy('name', 'asc')->get();
+      $space    = Space::where('deleted_at', NULL)->orderBy('name')->get();
+      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
+      return view('boxes.index', compact('box', 'space', 'type_size'));
     }
 
     /**
@@ -25,7 +30,7 @@ class BoxController extends Controller
      */
     public function create()
     {
-      return view('boxes.create');
+      abort('404');
     }
 
     /**
@@ -37,18 +42,24 @@ class BoxController extends Controller
     public function store(Request $request)
     {
       $this->validate($request, [
-        'name' => 'required',
+        'space_id'  => 'required',
+        'type_size_id' => 'required',
       ]);
 
-      $box = Boxes::create([
-        'name'      => $request->name,
-        'location'  => $request->location,
-        'size'      => $request->size,
-        'price'     => $request->price 
+      $type_size = TypeSize::where('id', $request->type_size_id)->get();
+      $name = $request->name;
+      if($name == ''){
+        $name = $type_size[0]->name.' Room';
+      }
+      $box = Box::create([
+        'types_of_size_id'  => $request->type_size_id,
+        'space_id'          => $request->space_id,
+        'name'              => $name,
+        'location'          => $request->location,
       ]);
 
       if($box){
-        return redirect()->route('box.index')->with('success', 'Box : [' . $request->name . '] inserted.');
+        return redirect()->route('box.index')->with('success', 'Add : [' . $name . ' Box] success.');
       } else {
         return redirect()->route('box.index')->with('error', 'Add New Box failed.');
       }
@@ -73,8 +84,10 @@ class BoxController extends Controller
      */
     public function edit($id)
     {
-      $box = Boxes::find($id);
-      return view('boxes.edit', compact('id', 'box'));
+      $box      = Box::find($id);
+      $space    = Space::where('deleted_at', NULL)->orderBy('name')->get();
+      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
+      return view('boxes.edit', compact('id', 'box', 'space', 'type_size'));
     }
 
     /**
@@ -87,19 +100,24 @@ class BoxController extends Controller
     public function update(Request $request, $id)
     {
       $this->validate($request, [
-        'name' => 'required',
+        'space_id'      => 'required',
+        'type_size_id'  => 'required',
       ]);
 
-      $box           = Boxes::find($id);
-      $name          = $box->name;
-      $box->name     = $request->name;
-      $box->location = $request->location;
-      $box->size     = $request->size;
-      $box->price    = $request->price;
+      $type_size              = TypeSize::where('id', $request->type_size_id)->get();
+      $name = $request->name;
+      if($name == ''){
+        $name = $type_size[0]->name.' Room';
+      }
+      $box                = Box::find($id);
+      $box->name          = $name;
+      $box->type_size_id  = $request->type_size_id;
+      $box->space_id      = $request->space_id;
+      $box->location      = $request->location;
       $box->save();
 
       if($box){
-        return redirect()->route('box.index')->with('success', 'Box ['.$name.'] successfully edited.');
+        return redirect()->route('box.index')->with('success', 'Edit ['.$box->name.'] success.');
       } else {
         return redirect()->route('box.index')->with('error', 'Edit Box failed.');
       }
@@ -113,13 +131,13 @@ class BoxController extends Controller
      */
     public function destroy($id)
     {
-      $box  = Boxes::find($id);
+      $box  = Box::find($id);
       $name = $box->name;
-      $box->status = 0;
+      $box->deleted_at = Carbon\Carbon::now();
       $box->save();
 
       if($box){
-        return redirect()->route('box.index')->with('success', 'Box ['.$name.'] deleted.');
+        return redirect()->route('box.index')->with('success', 'Delete ['.$name.'] success.');
       } else {
         return redirect()->route('box.index')->with('error', 'Edit Box failed.');
       }

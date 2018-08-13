@@ -38,28 +38,50 @@
                 @csrf
                 @method('PUT')
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-6">
+                      
+                      <div class="form-group">
+                        <label for="">Space <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="space_id" required>
+                          <option value=""></option>
+                          @if (!empty($space))
+                            @foreach ($space as $key => $value)
+                              @if ($value->id == $box->space_id)
+                                <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
+                              @else
+                                <option value="{{ $value->id }}">{{ $value->name }}</option>
+                              @endif
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>
 
                       <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $box->name }}" required>
+                        <label for="">Types of Size <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="type_size_id" required>
+                          <option value=""></option>
+                          @if (!empty($type_size))
+                            @foreach ($type_size as $key => $value)
+                              @if ($value->id == $box->types_of_size_id)
+                                <option value="{{ $value->id }}" selected>{{ $value->name }} ({{ $value->size }})</option>
+                              @else
+                                <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
+                              @endif
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $box->name }}" required="">
                       </div>
 
                       <div class="form-group">
                         <label>Location </label>
-                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" >
-                      </div>
-
-                      <div class="form-group">
-                        <label>Size <span class="text-danger">*</span></label>
-                        <input type="text" name="size" class="form-control" placeholder="Enter Size" value="{{ $box->size }}" required="">
+                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" required="">
                       </div>
                       
-                      <div class="form-group">
-                        <label>Price <span class="text-danger">*</span></label>
-                        <input type="number" name="price" class="form-control" placeholder="Enter Price" value="{{ $box->price }}" required="" >
-                      </div>
-                        
                       <hr>
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>

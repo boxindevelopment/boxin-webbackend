@@ -1,0 +1,118 @@
+@extends('layouts.master')
+
+@section('plugin_css')
+
+@endsection
+
+@section('script_css')
+
+@endsection
+
+@section('content')
+<div class="container-fluid">
+<!-- ============================================================== -->
+<!-- Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h3 class="text-themecolor">
+          Order Details
+        </h3>
+    </div>
+    <div class="col-md-7 align-self-center">
+        <ol class="breadcrumb">
+          <button onclick="window.location.href='{{route('order.index')}}'" class="btn waves-effect waves-light m-r-10" style="background-color: white;"><i class="mdi mdi-arrow-left-bold-circle"></i> Back</button>
+        </ol>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Bread crumb and right sidebar toggle -->
+<!-- ============================================================== -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content -->
+<!-- ============================================================== -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+              <h4 class="card-title"><span class="lstick"></span>List Order Details</h4>
+
+              @include('error-template')
+
+              <div class="table-responsive m-t-10">
+                  <table id="table-ingrd" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                          <th width="5%">No</th>
+                          <th width="">Name</th>
+                          <th width="12%">Duration</th>
+                          <th width="15%" style="text-align: right;">Amount (Rp)</th>
+                          <th width="20%" class="text-center">StartDate - EndDate</th>
+                          <th width="10%" class="text-center no-sort">Status</th>
+                          <th width="10%" class="text-center no-sort">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @if (count($detail_order) > 0)
+                        @foreach ($detail_order as $key => $value)
+                          <tr>
+                            <td align="center">{{ $key+1 }}</th>
+                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
+                            <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
+                            <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
+                            <td class="text-center">
+                              @php
+                                if($value->status_id == 10){
+                                  $label = 'label-danger';
+                                }else if($value->status_id == 1 || $value->status_id == 2){
+                                  $label = 'label-warning';
+                                }else{
+                                  $label = 'label-success';
+                                }
+                              @endphp
+                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
+                            </td>
+                            <td>
+                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
+                            </td>
+                          </tr>
+                        @endforeach
+                      @else
+                        <tr>
+                          <td colspan="7" class="text-center">Data Not Found</td>
+                        </tr>
+                      @endif
+                    </tbody>
+                </table>
+              </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- End Page Content -->
+<!-- ============================================================== -->
+</div>
+@endsection
+
+@section('close_html')
+<!--PLUGIN JS -->
+
+
+<!--END PLUGIN JS -->
+
+
+<!--SCRIPT JS -->
+<script>
+$(function() {
+  $('#table-ingrd').DataTable({
+    "aaSorting": []
+  });
+
+
+});
+</script>
+@endsection

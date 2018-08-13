@@ -30,16 +30,16 @@
                     </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('warehouses.index')||Route::currentRouteNamed('warehouses.create')||Route::currentRouteNamed('warehouses-city.index')||Route::currentRouteNamed('warehouses-area.index') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('warehouses.index')||Route::currentRouteNamed('warehouses.create')||Route::currentRouteNamed('warehouses-city.index')||Route::currentRouteNamed('warehouses-city.edit')||Route::currentRouteNamed('warehouses-area.index')||Route::currentRouteNamed('warehouses-area.edit') ? 'active' : null }}">
                   <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
                     <i class="mdi mdi-home-map-marker"></i>
                     <span class="hide-menu">Warehouse</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
-                    <li class="{{ Route::currentRouteNamed('warehouses-city.index') ? 'active' : null }}">
+                    <li class="{{ Route::currentRouteNamed('warehouses-city.index')||Route::currentRouteNamed('warehouses-city.edit') ? 'active' : null }}">
                       <a href="{{ route('warehouses-city.index') }}"><i class="fa fa-circle"></i> &nbsp;Warehouse City</a>
                     </li>
-                    <li class="{{ Route::currentRouteNamed('warehouses-area.index') ? 'active' : null }}">
+                    <li class="{{ Route::currentRouteNamed('warehouses-area.index')||Route::currentRouteNamed('warehouses-area.edit') ? 'active' : null }}">
                       <a href="{{ route('warehouses-area.index') }}"><i class="fa fa-circle"></i> &nbsp;Warehouse Areas</a>
                     </li>
 
@@ -53,24 +53,38 @@
                   </ul>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.create') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('space.index')}}" aria-expanded="false">
                     <i class="mdi mdi-grid"></i>
                     <span class="hide-menu">Spaces</span>
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('room.index')||Route::currentRouteNamed('room.create') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('box.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-dropbox"></i>
+                    <span class="hide-menu">Boxes</span>
+                  </a>
+                </li>
+
+                <li class="{{ Route::currentRouteNamed('room.index')||Route::currentRouteNamed('room.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('room.index')}}" aria-expanded="false">
                     <i class="mdi mdi-home-outline"></i>
                     <span class="hide-menu">Rooms</span>
                   </a>
+                </li>               
+
+                <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('order.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-cart-outline"></i>
+                    <span class="hide-menu">Orders</span>
+                  </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.create') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('box.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-dropbox"></i>
-                    <span class="hide-menu">Boxes</span>
+                <li class="{{ Route::currentRouteNamed('pickup.index')||Route::currentRouteNamed('pickup.create') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('pickup.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-truck"></i>
+                    <span class="hide-menu">Pickup Orders</span>
                   </a>
                 </li>
 
@@ -80,49 +94,23 @@
                     <span class="hide-menu">Users</span>
                   </a>
                 </li>
+                
+                <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
+                  <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
+                    <i class="mdi mdi-settings"></i>
+                    <span class="hide-menu">Settings</span>
+                  </a>
+                  <ul aria-expanded="false" class="collapse">
+                    <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
+                      <a href="{{ route('types-of-size.index') }}"><i class="fa fa-circle"></i> &nbsp;Types of Size</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('price.index')||Route::currentRouteNamed('price.edit') ? 'active' : null }}">
+                      <a href="{{ route('price.index') }}"><i class="fa fa-circle"></i> &nbsp;Price</a>
+                    </li>
 
-                @if(auth()->user()->can('member_new') || auth()->user()->can('member_list'))
-                  <li class="{{ Route::currentRouteNamed('member.index')||Route::currentRouteNamed('member.edit')||Route::currentRouteNamed('member.create') ? 'active' : null }}">
-                    <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
-                      <i class="mdi mdi-account-multiple"></i>
-                      <span class="hide-menu">Member</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse">
-                      @can ('member_new')
-                        <li class="{{ Route::currentRouteNamed('member.create') ? 'active' : null }}">
-                          <a href="{{ route('member.create') }}">
-                            <i class="fa fa-plus-square"></i> &nbsp;Create New
-                          </a>
-                        </li>
-                      @endcan
-                      @can ('member_list')
-                        <li class="{{ Route::currentRouteNamed('member.index') ? 'active' : null }}">
-                          <a href="{{ route('member.index') }}">
-                            <i class="fa fa-list"></i> &nbsp;All List
-                          </a>
-                        </li>
-                      @endcan
-                    </ul>
-                  </li>
-                @endif
-
-                @can ('admin_panel')
-                  <li class="{{ Route::currentRouteNamed('new-user.index')||Route::currentRouteNamed('new-user.newrole')||Route::currentRouteNamed('new-user.listrole') ? 'active' : null }}">
-                    <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
-                      <i class="mdi mdi-lock"></i>
-                      <span class="hide-menu">Admin Panel</span>
-                    </a>
-                    <ul aria-expanded="false" class="collapse">
-                      <li class="{{ Route::currentRouteNamed('new-user.listrole') ? 'active' : null }}">
-                        <a href="{{ route('new-user.listrole')}}"><i class="fa fa-list"></i> &nbsp;List Role</a>
-                      </li>
-                      <li class="{{ Route::currentRouteNamed('new-user.index') ? 'active' : null }}">
-                        <a href="{{ route('new-user.index') }}"><i class="fa fa-list"></i> &nbsp;List User</a>
-                      </li>
-
-                    </ul>
-                  </li>
-                @endcan
+                    <li class="{{ Route::currentRouteNamed('setting.create')||Route::currentRouteNamed('setting.index')||Route::currentRouteNamed('setting.edit') ? 'active' : null }}">
+                      <a href="{{ route('setting.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>
+                    </li>
 
                   </ul>
                 </li>

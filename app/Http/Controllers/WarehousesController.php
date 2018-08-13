@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Entities\Warehouse;
-use App\Entities\Area;
-use App\Entities\Space;
+use App\Model\Warehouse;
+use App\Model\Area;
+use App\Model\Space;
+use Carbon;
 
 class WarehousesController extends Controller
 {
@@ -16,7 +17,7 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-      $warehouse = Warehouse::where('status', 1)->orderBy('name')->get();
+      $warehouse = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
       return view('warehouses.index', compact('warehouse'));
     }
 
@@ -27,7 +28,7 @@ class WarehousesController extends Controller
      */
     public function create()
     {
-      $area = Area::where('status', 1)->orderBy('name')->get();
+      $area = Area::where('deleted_at', NULL)->orderBy('name')->get();
       return view('warehouses.create', compact('area'));
     }
 
@@ -133,13 +134,13 @@ class WarehousesController extends Controller
       $count_space  = count($space_);
       for ($i = 0; $i < $count_space ; $i++) {
         $space = Space::find($space_[$i]->id);
-        $space->status = 0;
+        $space->deleted_at = Carbon\Carbon::now();
         $space->save();
       }
 
       $warehouse = Warehouse::find($id);
       $name = $warehouse->name;
-      $warehouse->status = 0;
+      $warehouse->deleted_at = Carbon\Carbon::now();
       $warehouse->save();
 
       if($warehouse){

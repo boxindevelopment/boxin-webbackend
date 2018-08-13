@@ -6,22 +6,32 @@ Route::group(['middleware' => 'auth'], function() {
   // Route::get('/home', function(){ return redirect()->route('home'); });
   Route::get('/', 'DashboardController@index')->name('dashboard');
 
-  //Warehouse
   Route::resource('warehouses', 'WarehousesController');
-  Route::resource('warehouses-city', 'CityWarehouseController');
-  Route::resource('warehouses-area', 'AreaWarehouseController');
+  Route::resource('warehouses-city', 'CityController');
+  Route::resource('warehouses-area', 'AreaController');
 
-  //Spaces
   Route::resource('space', 'SpaceController')->except(['show']);
 
-  //Rooms
   Route::resource('room', 'RoomController')->except(['show']);
 
-  //Boxes
   Route::resource('box', 'BoxController')->except(['show']);
 
-  //User
+  Route::resource('order', 'OrderController')->except(['show']);
+  Route::prefix('order')->group(function () {
+    Route::get('','OrderController@index')->name('order.index');
+    Route::get('/order-detail/{id}','OrderController@orderDetail')->name('order.orderDetail');
+    Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
+  });
+
+  Route::resource('pickup', 'PickupController')->except(['show']);
+
   Route::resource('user', 'UserController')->except(['show']);
+
+  Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
+
+  Route::resource('price', 'PriceController')->except(['show']);
+
+  Route::resource('setting', 'SettingController')->except(['show']);
 
   // Route::prefix('new-user')->group(function () {
   //   Route::get('','NewuserController@index')->name('new-user.index');

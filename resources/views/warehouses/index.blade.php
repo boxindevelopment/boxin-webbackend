@@ -52,7 +52,7 @@
                         @foreach ($warehouse as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
-                            <td>{{ $value->areaWarehouse->name }}</td>
+                            <td>{{ $value->area->name }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->lat }}</td>
                             <td>{{ $value->long }}</td>

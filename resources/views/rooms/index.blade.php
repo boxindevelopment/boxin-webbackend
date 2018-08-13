@@ -37,6 +37,7 @@
               <form action="{{ route('room.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 <div class="row">
+                    
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
@@ -49,14 +50,30 @@
                           @endif
                         </select>
                       </div>
+                    </div>
 
+                    <div class="col-md-6">
                       <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
-                      </div>
+                        <label for="">Types of Size <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="type_size_id" required>
+                          <option value=""></option>
+                          @if (!empty($type_size))
+                            @foreach ($type_size as $key => $value)
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>             
+                    </div>
 
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Name </label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" >
+                      </div>
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
                     </div>
+
                 </div>
               </form>
 
@@ -76,8 +93,10 @@
                       <tr>
                         <th width="5%">No</th>
                         <th width="">Name</th>
+                        <th width="15%">Type</th>
+                        <th width="10%">Size</th>
                         <th width="30%">Space</th>
-                        <th width="20%" class="text-center no-sort">Action</th>
+                        <th width="15%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -86,6 +105,8 @@
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
                           <td>{{ $value->name }}</td>
+                          <td>{{ $value->type_size->name }}</td>
+                          <td>{{ $value->type_size->size }}</td>
                           <td>{{ $value->space->name }}</td>
                           <td class="text-center">
                             <form action="{{route('room.destroy', ['id' => $value->id])}}" method="post">

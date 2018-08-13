@@ -44,7 +44,7 @@
                           <option value=""></option>
                           @if (!empty($warehouse))
                             @foreach ($warehouse as $key => $value)
-                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->areaWarehouse->name }})</option>
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->area->name }})</option>
                             @endforeach
                           @endif
                         </select>

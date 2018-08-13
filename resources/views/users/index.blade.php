@@ -43,7 +43,8 @@
                           <th width="">Name</th>
                           <th width="15%">Phone</th>
                           <th width="20%">Email</th>
-                          <th width="20%" class="text-center no-sort">Action</th>
+                          <th width="10%">Status</th>
+                          <th width="10%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +55,8 @@
                             <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                             <td>{{ $value->phone }}</td>
                             <td>{{ $value->email }}</td>
+                            <td class="text-center"><span class="label {{ $value->status == 1 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status == 1 ? 'Verified' : 'Not Verified'  }}</span></td>
+                                                
                             <td></td>
                             <!-- <td class="text-center">
                               <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">

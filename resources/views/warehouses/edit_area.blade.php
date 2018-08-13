@@ -43,7 +43,7 @@
                           <option value=""></option>
                           @if (!empty($cities))
                             @foreach ($cities as $key => $value)
-                              @if ($value->id == $area->city_warehouse_id)
+                              @if ($value->id == $area->city_id)
                                 <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
                               @else
                                 <option value="{{ $value->id }}">{{ $value->name }}</option>

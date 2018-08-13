@@ -37,6 +37,7 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-6">
+
                       <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="space_id" required>
@@ -44,9 +45,9 @@
                           @if (!empty($space))
                             @foreach ($space as $key => $value)
                               @if ($value->id == $room->space_id)
-                                <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
+                                <option value="{{ $value->id }}" selected>{{ $value->name }} ({{ $value->warehouse->name }})</option>
                               @else
-                                <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->warehouse->name }})</option>
                               @endif
                             @endforeach
                           @endif
@@ -54,8 +55,24 @@
                       </div>
 
                       <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $room->name }}" required>
+                        <label for="">Types of Size <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="type_size_id" required>
+                          <option value=""></option>
+                          @if (!empty($type_size))
+                            @foreach ($type_size as $key => $value)
+                              @if ($value->id == $room->types_of_size_id)
+                                <option value="{{ $value->id }}" selected>{{ $value->name }} ({{ $value->size }})</option>
+                              @else
+                                <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
+                              @endif
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Name </label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $room->name }}" >
                       </div>
 
                       <a href="{{ route('room.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>

@@ -86,7 +86,7 @@
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
                           <td>{{ $value->name }}</td>
-                          <td>{{ $value->cityWarehouse->name }}</td>
+                          <td>{{ $value->city->name }}</td>
                           <td class="text-center">
                             <form action="{{route('warehouses-area.destroy', ['id' => $value->id])}}" method="post">
                               @csrf

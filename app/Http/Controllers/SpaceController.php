@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Entities\Space;
-use App\Entities\Warehouse;
-use App\Entities\Room;
+use App\Model\Space;
+use App\Model\Warehouse;
+use App\Model\Room;
+use Carbon;
 
 class SpaceController extends Controller
 {
@@ -16,8 +17,8 @@ class SpaceController extends Controller
      */
     public function index()
     {
-      $space      = Space::where('status', 1)->orderBy('name')->get();
-      $warehouse  = Warehouse::where('status', 1)->orderBy('name')->get();
+      $space      = Space::where('deleted_at', NULL)->orderBy('name')->get();
+      $warehouse  = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
       return view('spaces.index', compact('space','warehouse'));
     }
 
@@ -78,7 +79,7 @@ class SpaceController extends Controller
     public function edit($id)
     {
       $space      = Space::find($id);
-      $warehouse  = Warehouse::where('status', 1)->orderBy('name')->get();
+      $warehouse  = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
       return view('spaces.edit', compact('space', 'id', 'warehouse'));
     }
 
@@ -117,13 +118,13 @@ class SpaceController extends Controller
       $count_room  = count($room_);
       for ($i = 0; $i < $count_room ; $i++) {
         $room = Room::find($room_[$i]->id);
-        $room->status = 0;
+        $room->deleted_at = Carbon\Carbon::now();
         $room->save();
       }
 
       $space = Space::find($id);
       $name  = $space->name;
-      $space->status = 0;
+      $space->deleted_at = Carbon\Carbon::now();
       $space->save();
 
       if($space){

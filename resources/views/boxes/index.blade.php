@@ -32,9 +32,68 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>List Box</h4>
+              <h4 class="card-title"><span class="lstick"></span>Add Box</h4>
 
-              <a href="{{ route('box.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Box</a>
+              @include('error-template')
+
+              <form action="{{ route('box.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
+                @csrf
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">Space <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="space_id" required>
+                          <option value=""></option>
+                          @if (!empty($space))
+                            @foreach ($space as $key => $value)
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->warehouse->name }})</option>
+                            @endforeach
+                          @endif
+                        </select>
+                      </div> 
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">Types of Size <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="type_size_id" required>
+                          <option value=""></option>
+                          @if (!empty($type_size))
+                            @foreach ($type_size as $key => $value)
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
+                            @endforeach
+                          @endif
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Name </label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="">
+                      </div>
+                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Location </label>
+                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="" >
+                      </div>                      
+                    </div>
+
+                </div>
+              </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+              <h4 class="card-title"><span class="lstick"></span>List Boxes</h4>
 
               @include('error-template')
 
@@ -44,10 +103,12 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="">Name</th>
-                          <th width="">Location</th>
-                          <th width="">Size</th>
-                          <th width="">Price</th>
-                          <th width="20%" class="text-center no-sort">Action</th>
+                          <th width="10%">Type</th>
+                          <th width="12%">Size</th>
+                          <th width="20%">Space</th>
+                          <th width="20%">Location</th>
+                          
+                          <th width="15%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -56,9 +117,10 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->name }}</td>
+                            <td>{{ $value->type_size->name }}</td>
+                            <td>{{ $value->type_size->size }}</td>
+                            <td>{{ $value->space->name }}</td>
                             <td>{{ $value->location }}</td>
-                            <td>{{ $value->size }}</td>
-                            <td>{{ $value->price }}</td>
                             <td class="text-center">
                               <form action="{{route('box.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf

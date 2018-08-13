@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Entities\Warehouse;
-use App\Entities\User;
-use App\Entities\Boxes;
-use App\Entities\Space;
+use App\Model\Warehouse;
+use App\Model\User;
+use App\Model\Box;
+use App\Model\Space;
 
 class DashboardController extends Controller
 {
@@ -17,9 +17,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $warehouse = Warehouse::where('status', 1)->count();
-        $space     = Space::where('status', 1)->count();
-        $box       = Boxes::where('status', 1)->count();
+        $warehouse = Warehouse::where('deleted_at', NULL)->count();
+        $space     = Space::where('deleted_at', NULL)->count();
+        $box       = Box::where('deleted_at', NULL)->count();
         $user      = User::where('deleted_at', NULL)->count();
         
         return view('dashboard', compact('warehouse', 'space', 'box', 'user'));
