@@ -1,6 +1,7 @@
 <?php
 Auth::routes();
 
+Route::get('/privacyPolicy', 'HomeController@index')->name('privacyPolicy');
 // ROUTE PROTEKSI DENGAN AUTH
 Route::group(['middleware' => 'auth'], function() {
   // Route::get('/home', function(){ return redirect()->route('home'); });
