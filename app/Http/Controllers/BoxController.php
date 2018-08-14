@@ -56,6 +56,7 @@ class BoxController extends Controller
         'space_id'          => $request->space_id,
         'name'              => $name,
         'location'          => $request->location,
+        'status_id'         => 10,
       ]);
 
       if($box){

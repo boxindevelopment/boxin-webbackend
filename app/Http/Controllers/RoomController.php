@@ -55,13 +55,14 @@ class RoomController extends Controller
         'name'              => $name,
         'space_id'          => $request->space_id,
         'types_of_size_id'  => $request->type_size_id,
+        'status_id'         => 10,
       ]);
 
       if($room){
         return redirect()->route('room.index')->with('success', 'Add ['.$name.' Room] success.');
       } else {
         return redirect()->route('room.index')->with('error', 'Add New Room failed.');
-      }      
+      }
     }
 
     /**
@@ -119,7 +120,7 @@ class RoomController extends Controller
       } else {
         return redirect()->route('room.index')->with('error', 'Edit Room  failed.');
       }
-      
+
     }
 
     /**
@@ -140,6 +141,6 @@ class RoomController extends Controller
       } else {
         return redirect()->route('room.index')->with('error', 'Delete Room failed.');
       }
-      
+
     }
 }
