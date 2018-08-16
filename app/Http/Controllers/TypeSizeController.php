@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\TypeSize;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+USE File;
 
 class TypeSizeController extends Controller
 {
@@ -75,11 +78,21 @@ class TypeSizeController extends Controller
         $this->validate($request, [
             'name'  => 'required',
             'size'  => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg',
         ]);
 
         $data          = TypeSize::find($id);
         $data->name    = $request->name;
         $data->size    = $request->size;
+
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $getimageName = time().'.'.$request->image->getClientOriginalExtension();
+                $image = $request->image->move(public_path('images/types_of_size'), $getimageName);
+                $data->image = $getimageName;
+            }
+        }
+
         $data->save();
 
         if($data){

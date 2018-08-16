@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('plugin_css')
-
+  <link rel="stylesheet" href="{{asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
 @endsection
 
 @section('script_css')
-
+    
 @endsection
 
 @section('content')
@@ -32,12 +32,13 @@
 
               <h4 class="card-title"><span class="lstick"></span>Edit Types of Size</h4>
 
-              <form action="{{ route('types-of-size.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('types-of-size.update', ['id' => $id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
+                    
+                    @foreach ($data as $key => $value)
                     <div class="col-md-6">
-                      @foreach ($data as $key => $value)
 
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
@@ -48,11 +49,18 @@
                         <label>Size <span class="text-danger">*</span></label>
                         <input type="text" name="size" class="form-control" placeholder="Enter Size" value="{{ $value->size }}" required>
                       </div>
-                      
-                      @endforeach
+
+                      <div class="form-group">
+                        <label>Image <span class="text-danger">*</span></label>
+                        <input type="file" class="dropify" data-height="200" name="image" data-default-file="{{ asset('images/types_of_size')}}/{{ $value->image }}" value="{{ asset('images/types_of_size')}}/{{ $value->image }}" />
+                        <!-- <img id="myImg" src="{{ asset('images/types_of_size')}}/{{ $value->image }}" width="100%" data-height="200"/> -->
+                      </div>
+
                       <a href="{{ route('types-of-size.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>
                     </div>
+                    @endforeach
+                      
                 </div>
               </form>
 
@@ -70,6 +78,50 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
+<!-- jQuery file upload -->
+    <script src="{{asset('assets/plugins/dropify/dist/js/dropify.min.js')}}"></script>
+    <script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+            messages: {
+                default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+        });
+
+        // Used events
+        var drEvent = $('#input-file-events').dropify();
+
+        drEvent.on('dropify.beforeClear', function(event, element) {
+            return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+        });
+
+        drEvent.on('dropify.afterClear', function(event, element) {
+            alert('File deleted');
+        });
+
+        drEvent.on('dropify.errors', function(event, element) {
+            console.log('Has Errors');
+        });
+
+        var drDestroy = $('#input-file-to-destroy').dropify();
+        drDestroy = drDestroy.data('dropify')
+        $('#toggleDropify').on('click', function(e) {
+            e.preventDefault();
+            if (drDestroy.isDropified()) {
+                drDestroy.destroy();
+            } else {
+                drDestroy.init();
+            }
+        })
+    });
+    </script>
 
 
 <script>

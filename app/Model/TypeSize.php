@@ -10,7 +10,7 @@ class TypeSize extends Model
     protected $table = 'types_of_size';
 
     protected $fillable = [
-        'type_of_box_room_id', 'name', 'size'
+        'type_of_box_room_id', 'name', 'size', 'image'
     ];
 
     public function type_box_room()
