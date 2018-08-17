@@ -30,10 +30,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-
-              <h4 class="card-title"><span class="lstick"></span>Add Box</h4>
-
+            <div class="card-header">
+                <b>Add Box</b>
+                <div class="card-actions" style="float: right;">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse show">
+              
               @include('error-template')
 
               <form action="{{ route('box.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
@@ -85,7 +90,6 @@
 
                 </div>
               </form>
-
             </div>
         </div>
     </div>
@@ -105,9 +109,9 @@
                           <th width="">Name</th>
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
-                          <th width="20%">Space</th>
+                          <th width="10%">Space</th>
                           <th width="20%">Location</th>
-                          
+                          <th width="10%">Status</th>
                           <th width="15%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
@@ -121,6 +125,9 @@
                             <td>{{ $value->type_size->size }}</td>
                             <td>{{ $value->space->name }}</td>
                             <td>{{ $value->location }}</td>
+                            <td class="text-center">
+                              <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>
+                            </td>
                             <td class="text-center">
                               <form action="{{route('box.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf

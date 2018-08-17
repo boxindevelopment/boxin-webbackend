@@ -45,16 +45,10 @@
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
                           <option value=""></option>
-                          @if ($value->status_id == 10)
-                            <option value="10" selected>Pending</option>
-                            <option value="1">On The Way</option>
-                          @elseif ($value->status_id == 1)
-                            <option value="10" >Pending</option>
-                            <option value="1" selected>On The Way</option>
-                          @else
-                            <option value="10">Pending</option>
-                            <option value="1">On The Way</option>
-                          @endif
+                            <option value="11"{{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
+                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On The Way</option>
+                            <option value="3" {{ $value->status_id == 3 ? 'selected' : '' }}>Upcoming</option>
+                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
                         </select>
                       </div>
 
@@ -76,16 +70,8 @@
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
                           <option value=""></option>
-                          @if ($value->status_id == 10)
-                            <option value="10" selected>Pending</option>
-                            <option value="1">On The Way</option>
-                          @elseif ($value->status_id == 1)
-                            <option value="10" >Pending</option>
-                            <option value="1" selected>On The Way</option>
-                          @else
-                            <option value="10">Pending</option>
-                            <option value="1">On The Way</option>
-                          @endif
+                            <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
+                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
                         </select>
                       </div>
                       @endif

@@ -28,4 +28,9 @@ class Box extends Model
     {
         return $this->hasMany('App\Model\OrderDetail', 'room_or_box_id', 'id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Model\Status', 'status_id', 'id');
+    }
 }

@@ -40,8 +40,9 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="15%">Order Date</th>
                           <th width="">Customer Name</th>
-                          <th width="25%">Space</th>
+                          <th width="20%">Space</th>
                           <th width="15%" style="text-align: right;">Total (Rp)</th>
                           <th width="10%" class="text-center no-sort">Action</th>
                         </tr>
@@ -51,6 +52,7 @@
                         @foreach ($order as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
+                            <td>{{ $value->created_at->format('Y-m-d') }}</td>
                             <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
                             <td>{{ $value->space->name }}</td>
                             <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>

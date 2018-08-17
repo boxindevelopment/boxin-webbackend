@@ -28,12 +28,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-
-              <h4 class="card-title"><span class="lstick"></span>Add Room</h4>
-
+            <div class="card-header">
+                <b>Add Room</b>
+                <div class="card-actions" style="float: right;">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse show">              
               @include('error-template')
-
               <form action="{{ route('room.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 <div class="row">
@@ -76,7 +79,6 @@
 
                 </div>
               </form>
-
             </div>
         </div>
     </div>
@@ -95,7 +97,8 @@
                         <th width="">Name</th>
                         <th width="15%">Type</th>
                         <th width="10%">Size</th>
-                        <th width="30%">Space</th>
+                        <th width="20%">Space</th>
+                        <th width="10%">Status</th>
                         <th width="15%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
@@ -108,6 +111,9 @@
                           <td>{{ $value->type_size->name }}</td>
                           <td>{{ $value->type_size->size }}</td>
                           <td>{{ $value->space->name }}</td>
+                          <td class="text-center">
+                              <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>
+                            </td>
                           <td class="text-center">
                             <form action="{{route('room.destroy', ['id' => $value->id])}}" method="post">
                               @csrf

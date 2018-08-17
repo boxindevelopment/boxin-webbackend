@@ -53,9 +53,9 @@
                             <td>{{ $value->order->user->first_name }} {{ $value->order->user->last_name }}</td>
                             <td class="text-center">
                               @php
-                                if($value->status_id == 10){
+                                if($value->status_id == 11){
                                   $label = 'label-danger';
-                                }else if($value->status_id == 1 || $value->status_id == 2){
+                                }else if($value->status_id == 2 || $value->status_id == 3){
                                   $label = 'label-warning';
                                 }else{
                                   $label = 'label-success';

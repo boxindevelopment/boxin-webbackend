@@ -28,10 +28,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-
-              <h4 class="card-title"><span class="lstick"></span>Add Warehouse City</h4>
-
+            <div class="card-header">
+                <b>Add Warehouse City</b>
+                <div class="card-actions" style="float: right;">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse show">
+              
               @include('error-template')
 
               <form action="{{ route('warehouses-city.store') }}" method="POST" enctype="application/x-www-form-urlencoded">

@@ -28,10 +28,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body">
-
-              <h4 class="card-title"><span class="lstick"></span>Add Space</h4>
-
+            <div class="card-header">
+                <b>Add Space</b>
+                <div class="card-actions" style="float: right;">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse show">
+              
               @include('error-template')
 
               <form action="{{ route('space.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
@@ -59,7 +64,6 @@
                     </div>
                 </div>
               </form>
-
             </div>
         </div>
     </div>

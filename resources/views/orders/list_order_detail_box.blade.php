@@ -2,7 +2,7 @@
 
 @section('plugin_css')
   <!-- page css -->
-  <link href="{{asset('assets/css/pages/user-card.css')}}" rel="stylesheet">
+  <link href="{{asset('assets/css/pages/card-pages.css')}}" rel="stylesheet">
   <!-- Popup CSS -->
   <link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection

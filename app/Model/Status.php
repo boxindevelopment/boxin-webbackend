@@ -34,5 +34,15 @@ class Status extends Model
     {
         return $this->hasMany('App\Model\Payment', 'status_id', 'id');
     }
+
+    public function room()
+    {
+        return $this->hasMany('App\Model\Room', 'status_id', 'id');
+    }
+
+    public function box()
+    {
+        return $this->hasMany('App\Model\Box', 'status_id', 'id');
+    }
     
 }
