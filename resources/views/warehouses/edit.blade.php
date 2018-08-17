@@ -43,7 +43,6 @@
                       <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="area_id" required>
-                          <option value=""></option>
                           @if (!empty($area))
                             @foreach ($area as $key => $value)
                               @if ($value->id == $warehouse->area_id)

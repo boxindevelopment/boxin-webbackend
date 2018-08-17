@@ -49,7 +49,6 @@
                       <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="space_id" required>
-                          <option value=""></option>
                           @if (!empty($space))
                             @foreach ($space as $key => $value)
                               <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->warehouse->name }})</option>

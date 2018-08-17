@@ -41,7 +41,6 @@
                       <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="space_id" required>
-                          <option value=""></option>
                           @if (!empty($space))
                             @foreach ($space as $key => $value)
                               @if ($value->id == $room->space_id)
@@ -57,7 +56,6 @@
                       <div class="form-group">
                         <label for="">Types of Size <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="type_size_id" required>
-                          <option value=""></option>
                           @if (!empty($type_size))
                             @foreach ($type_size as $key => $value)
                               @if ($value->id == $room->types_of_size_id)

@@ -40,7 +40,6 @@
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="city_id" required>
-                          <option value=""></option>
                           @if (!empty($cities))
                             @foreach ($cities as $key => $value)
                               @if ($value->id == $area->city_id)
