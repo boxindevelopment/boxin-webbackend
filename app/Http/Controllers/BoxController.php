@@ -49,7 +49,7 @@ class BoxController extends Controller
       $type_size = TypeSize::where('id', $request->type_size_id)->get();
       $name = $request->name;
       if($name == ''){
-        $name = $type_size[0]->name.' Room';
+        $name = $type_size[0]->name;
       }
       $box = Box::create([
         'types_of_size_id'  => $request->type_size_id,
@@ -108,7 +108,7 @@ class BoxController extends Controller
       $type_size              = TypeSize::where('id', $request->type_size_id)->get();
       $name = $request->name;
       if($name == ''){
-        $name = $type_size[0]->name.' Room';
+        $name = $type_size[0]->name;
       }
       $box                = Box::find($id);
       $box->name          = $name;

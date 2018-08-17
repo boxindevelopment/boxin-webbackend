@@ -49,7 +49,7 @@ class RoomController extends Controller
       $type_size = TypeSize::where('id', $request->type_size_id)->get();
       $name = $request->name;
       if($name == ''){
-        $name = $type_size[0]->name.' Room';
+        $name = $type_size[0]->name;
       }
       $room = Room::create([
         'name'              => $name,
@@ -107,7 +107,7 @@ class RoomController extends Controller
       $type_size              = TypeSize::where('id', $request->type_size_id)->get();
       $name = $request->name;
       if($name == ''){
-        $name = $type_size[0]->name.' Room';
+        $name = $type_size[0]->name;
       }
       $room                   = Room::find($id);
       $room->name             = $name;
