@@ -112,7 +112,7 @@ class BoxController extends Controller
       }
       $box                = Box::find($id);
       $box->name          = $name;
-      $box->type_size_id  = $request->type_size_id;
+      $box->types_of_size_id  = $request->type_size_id;
       $box->space_id      = $request->space_id;
       $box->location      = $request->location;
       $box->save();
