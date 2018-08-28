@@ -6,9 +6,18 @@ use Illuminate\Http\Request;
 use App\Model\City;
 use App\Model\Area;
 use Carbon;
+use App\Repositories\CityRepository;
 
 class CityController extends Controller
 {
+
+    protected $city;
+
+    public function __construct(CityRepository $city)
+    {
+        $this->city = $city;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +25,7 @@ class CityController extends Controller
      */
     public function index()
     {
-      $city = City::where('deleted_at', NULL)->orderBy('name')->get();
+      $city = $this->city->all();
       return view('warehouses.list_city', compact('city'));
     }
 
@@ -82,7 +91,7 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $city           = Cities::find($id);
+      $city           = City::find($id);
       $name           = $city->name;
       $city->name     = $request->name;
       $city->save();
@@ -120,6 +129,20 @@ class CityController extends Controller
       } else {
         return redirect()->route('warehouses-city.index')->with('error', 'Delete Warehouse City failed.');
       }
+
+    }
+
+    public function getDataSelect(Request $request){
+
+        $cities = $this->city->getSelect();
+        $arrCities = array();
+        foreach ($cities as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrCities[] = $arr;
+        }
+        echo(json_encode($arrCities));
 
     }
 }

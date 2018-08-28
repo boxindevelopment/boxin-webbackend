@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-8">
 
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="area_id" required>
                           @if (!empty($area))
@@ -53,6 +53,16 @@
                             @endforeach
                           @endif
                         </select>
+                      </div> -->
+
+                      <div class="form-group">
+                        <label for="">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $warehouse->city_id }}" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="">Area <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $warehouse->area_id }}" required>
                       </div>
 
                       <div class="form-group">
@@ -72,7 +82,7 @@
   
                       <hr>
                       <a href="{{ route('warehouses.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                 </div>
               </form>

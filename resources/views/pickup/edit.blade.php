@@ -80,7 +80,7 @@
                       <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
                       @endforeach
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                 </div>
               </form>

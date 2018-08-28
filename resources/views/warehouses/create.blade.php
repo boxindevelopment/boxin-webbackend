@@ -38,14 +38,13 @@
                     <div class="col-8">
 
                       <div class="form-group">
+                        <label for="">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city_id" name="city_id" required>
+                      </div>
+
+                      <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="area_id" required>
-                          @if (!empty($area))
-                            @foreach ($area as $key => $value)
-                              <option value="{{ $value->id }}">{{ $value->name }}</option>
-                            @endforeach
-                          @endif
-                        </select>
+                        <input type="text" class="form-control" id="area_id" name="area_id" required>
                       </div>
 
                       <div class="form-group">
@@ -82,10 +81,10 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
+<script type="text/javascript">  
 
-<script>
-$(function() {
-
-});
+  $(document).ready( function() {
+  
+  });
 </script>
 @endsection

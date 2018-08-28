@@ -7,9 +7,17 @@ use App\Model\Warehouse;
 use App\Model\Area;
 use App\Model\Space;
 use Carbon;
+use App\Repositories\WarehouseRepository;
 
 class WarehousesController extends Controller
 {
+    protected $warehouse;
+
+    public function __construct(WarehouseRepository $warehouse)
+    {
+        $this->warehouse = $warehouse;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +25,7 @@ class WarehousesController extends Controller
      */
     public function index()
     {
-      $warehouse = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
+      $warehouse = $this->warehouse->all();
       return view('warehouses.index', compact('warehouse'));
     }
 
@@ -84,8 +92,9 @@ class WarehousesController extends Controller
      */
     public function edit($id)
     {
-      $area       = Area::orderBy('name')->get();
-      $warehouse  = Warehouse::find($id);
+      // $area       = Area::orderBy('name')->get();
+      $warehouse  = $this->warehouse->getEdit($id);
+      $warehouse = $warehouse[0];
       return view('warehouses.edit', compact('area', 'id', 'warehouse'));
     }
 

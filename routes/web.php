@@ -9,8 +9,9 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('warehouses', 'WarehousesController');
   Route::resource('warehouses-city', 'CityController');
+  Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
   Route::resource('warehouses-area', 'AreaController');
-
+  Route::get('/area/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelect', 'as' => 'area.getDataSelect']);
   Route::resource('space', 'SpaceController')->except(['show']);
 
   Route::resource('room', 'RoomController')->except(['show']);

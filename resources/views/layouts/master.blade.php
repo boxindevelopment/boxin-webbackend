@@ -124,6 +124,80 @@
     <!-- for Date / time use moment.js -->
     <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
 
+    <script type="text/javascript">
+        
+    function city_Selectdata(values) {
+        var data = $.ajax({
+            url: "{{ url('/city/dataSelect') }}",
+            type: "GET",
+            data: { }
+        })
+        .done(function(data) {
+            var obj = jQuery.parseJSON(data);
+            arrs = [];
+            for (var i = 0; i<obj.length; i++) {
+                arrs.push( {
+                    id : obj[i].id, 
+                    text : obj[i].text
+                } );
+            }
+            
+            $("#city_id").select2({
+                multiple: false,
+                placeholder: 'Choose City',
+                tags: true,
+                data : arrs
+            }).on('change', function (e) {
+                console.log($(this).val());
+                var city_id = $(this).val();
+                area_Selectdata(city_id);
+
+            });
+            if(values != ''){
+                $("#city_id").val(values).trigger('change');
+                area_Selectdata(values);
+            }
+        });
+
+        if(values != ''){
+            $("#city_id").val(values).trigger('change');
+            area_Selectdata(values);
+        }
+    }
+    city_Selectdata('');
+
+    function area_Selectdata(city_id) {
+
+        var data = $.ajax({
+            url: "{{ url('/area/dataSelect/') }}/"+city_id,
+            type: "GET"
+        })
+        .done(function(data) {
+            var arrs = jQuery.parseJSON(data);
+
+            $("#area_id").html('');
+            var s_area = $("#area_id").select2({
+                multiple: false,
+                placeholder: 'Choose Area',
+                data : arrs
+            }).on('change', function (e) {
+                
+            })
+
+            if(area_id && area_id != "undefined"){
+                s_area.val(area_id).trigger("change");
+            }else{
+                s_area.val().trigger("change");
+            }
+        });
+
+        $("#area_id").on("select2:select", function(e) {
+            var area_id = $(this).val();
+        });
+    }
+
+    </script>
+
     @yield('close_html')
 </body>
 </html>

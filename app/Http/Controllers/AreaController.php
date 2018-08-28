@@ -7,9 +7,17 @@ use App\Model\Area;
 use App\Model\City;
 use App\Model\Warehouse;
 use Carbon;
+use App\Repositories\AreaRepository;
 
 class AreaController extends Controller
 {
+    protected $area;
+
+    public function __construct(AreaRepository $area)
+    {
+        $this->area = $area;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +25,7 @@ class AreaController extends Controller
      */
     public function index()
     {
-      $area   = Area::where('deleted_at', NULL)->orderBy('name')->get();
+      $area   = $this->area->all();
       $cities = City::where('deleted_at', NULL)->orderBy('name')->get();
       return view('warehouses.list_area', compact('area','cities'));
     }
@@ -133,5 +141,19 @@ class AreaController extends Controller
         return redirect()->route('warehouses-area.index')->with('error', 'Delete Warehouse Area failed.');
       }
       
+    }
+
+    public function getDataSelect($city_id, Request $request){
+
+        $areas = $this->area->getSelect($city_id);
+        $arrAreas = array();
+        foreach ($areas as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrAreas[] = $arr;
+        }
+        echo(json_encode($arrAreas));
+
     }
 }
