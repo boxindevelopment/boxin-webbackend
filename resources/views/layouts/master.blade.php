@@ -125,7 +125,7 @@
     <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
 
     <script type="text/javascript">
-        
+
     function city_Selectdata(values) {
         var data = $.ajax({
             url: "{{ url('/city/dataSelect') }}",
@@ -137,11 +137,11 @@
             arrs = [];
             for (var i = 0; i<obj.length; i++) {
                 arrs.push( {
-                    id : obj[i].id, 
+                    id : obj[i].id,
                     text : obj[i].text
                 } );
             }
-            var area_id = $("area_id").val(); 
+            var area_id = $("area_id").val();
             $("#city_id").select2({
                 multiple: false,
                 placeholder: 'Choose City',
@@ -165,6 +165,18 @@
     }
     city_Selectdata('');
 
+    @if(isset($box->area_id))
+      area_Selectdata({{$box->area_id}}, '');
+    @endif
+
+    @if(isset($space->area_id))
+      area_Selectdata({{$space->area_id}}, '');
+    @endif
+
+    @if(isset($room->area_id))
+      area_Selectdata({{$room->area_id}}, '');
+    @endif
+
     function area_Selectdata(city_id, values) {
         var data = $.ajax({
             url: "{{ url('/area/dataSelect/') }}/"+city_id,
@@ -172,12 +184,12 @@
             data: { }
         })
         .done(function(data) {
-            
+
             var obj = jQuery.parseJSON(data);
             arrs = [];
             for (var i = 0; i<obj.length; i++) {
                 arrs.push( {
-                    id : obj[i].id, 
+                    id : obj[i].id,
                     text : obj[i].text
                 } );
             }
@@ -191,7 +203,7 @@
                 var area_id = $(this).val();
                 warehouse_Selectdata(area_id);
             })
-            
+
 
             if(values != ''){
                 $("#area_id").val(values).trigger("change");
@@ -231,7 +243,19 @@
     //     });
 
     // }
- 
+
+    @if(isset($box->area_id))
+      warehouse_Selectdata({{$box->area_id}});
+    @endif
+
+    @if(isset($space->area_id))
+      warehouse_Selectdata({{$space->area_id}});
+    @endif
+
+    @if(isset($room->area_id))
+      warehouse_Selectdata({{$room->area_id}});
+    @endif
+
     function warehouse_Selectdata(area_id) {
         var $id = area_id;
         var data = $.ajax({
@@ -244,7 +268,7 @@
             arrs = [];
             for (var i = 0; i<obj.length; i++) {
                 arrs.push( {
-                    id : obj[i].id, 
+                    id : obj[i].id,
                     text : obj[i].text
                 } );
             }
@@ -259,7 +283,7 @@
                 space_Selectdata(warehouse_id);
             });
 
-            
+
             if(warehouse_id != ""){
                 $("#warehouse_id").val(warehouse_id).trigger("change");
                 space_Selectdata(warehouse_id);
@@ -268,6 +292,18 @@
             }
         });
     }
+
+    @if(isset($box->warehouse_id))
+      space_Selectdata({{$box->warehouse_id}});
+    @endif
+
+    @if(isset($space->warehouse_id))
+      space_Selectdata({{$space->warehouse_id}});
+    @endif
+
+    @if(isset($room->warehouse_id))
+      space_Selectdata({{$room->warehouse_id}});
+    @endif
 
     function space_Selectdata(warehouse_id) {
         var data = $.ajax({
@@ -280,7 +316,7 @@
             arrs = [];
             for (var i = 0; i<obj.length; i++) {
                 arrs.push( {
-                    id : obj[i].id, 
+                    id : obj[i].id,
                     text : obj[i].text
                 } );
             }
@@ -294,7 +330,7 @@
                 var space_id = $(this).val();
             });
 
-            
+
             if(space_id != ""){
                 $("#space_id").val(space_id).trigger("change");
             }else{
