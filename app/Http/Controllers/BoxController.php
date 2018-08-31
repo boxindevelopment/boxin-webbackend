@@ -7,9 +7,16 @@ use App\Model\Box;
 use App\Model\Space;
 use App\Model\TypeSize;
 use Carbon;
+use App\Repositories\BoxRepository;
 
 class BoxController extends Controller
 {
+    protected $box;
+
+    public function __construct(BoxRepository $box)
+    {
+        $this->box = $box;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +24,8 @@ class BoxController extends Controller
      */
     public function index()
     {
-      $box      = Box::where('deleted_at', NULL)->orderBy('name', 'asc')->get();
-      $space    = Space::where('deleted_at', NULL)->orderBy('name')->get();
-      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
-      return view('boxes.index', compact('box', 'space', 'type_size'));
+      $box      = $this->box->all();
+      return view('boxes.index', compact('box'));
     }
 
     /**
@@ -30,7 +35,8 @@ class BoxController extends Controller
      */
     public function create()
     {
-      abort('404');
+      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
+      return view('boxes.create', compact('type_size'));
     }
 
     /**
@@ -85,10 +91,10 @@ class BoxController extends Controller
      */
     public function edit($id)
     {
-      $box      = Box::find($id);
-      $space    = Space::where('deleted_at', NULL)->orderBy('name')->get();
+      $box      = $this->box->getEdit($id);
+      $box      = $box[0];
       $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
-      return view('boxes.edit', compact('id', 'box', 'space', 'type_size'));
+      return view('boxes.edit', compact('id', 'box', 'type_size'));
     }
 
     /**
@@ -110,7 +116,7 @@ class BoxController extends Controller
       if($name == ''){
         $name = $type_size[0]->name;
       }
-      $box                = Box::find($id);
+      $box                = $this->box->find($id);
       $box->name          = $name;
       $box->types_of_size_id  = $request->type_size_id;
       $box->space_id      = $request->space_id;
@@ -132,7 +138,7 @@ class BoxController extends Controller
      */
     public function destroy($id)
     {
-      $box  = Box::find($id);
+      $box  = $this->box->find($id);
       $name = $box->name;
       $box->deleted_at = Carbon\Carbon::now();
       $box->save();
@@ -143,5 +149,6 @@ class BoxController extends Controller
         return redirect()->route('box.index')->with('error', 'Edit Box failed.');
       }
     }
+
 
 }

@@ -39,17 +39,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="city_id" required>
-                          @if (!empty($cities))
-                            @foreach ($cities as $key => $value)
-                              @if ($value->id == $area->city_id)
-                                <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
-                              @else
-                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                              @endif
-                            @endforeach
-                          @endif
-                        </select>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $area->city_id }}" required>
                       </div>
 
                       <div class="form-group">

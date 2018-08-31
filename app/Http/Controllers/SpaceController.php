@@ -7,9 +7,16 @@ use App\Model\Space;
 use App\Model\Warehouse;
 use App\Model\Room;
 use Carbon;
+use App\Repositories\SpaceRepository;
 
 class SpaceController extends Controller
 {
+    protected $space;
+
+    public function __construct(SpaceRepository $space)
+    {
+        $this->space = $space;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,9 +24,8 @@ class SpaceController extends Controller
      */
     public function index()
     {
-      $space      = Space::where('deleted_at', NULL)->orderBy('name')->get();
-      $warehouse  = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
-      return view('spaces.index', compact('space','warehouse'));
+      $space      = $this->space->all();
+      return view('spaces.index', compact('space'));
     }
 
     /**
@@ -29,7 +35,7 @@ class SpaceController extends Controller
      */
     public function create()
     {
-      abort('404');
+      return view('spaces.create');
     }
 
     /**
@@ -78,9 +84,9 @@ class SpaceController extends Controller
      */
     public function edit($id)
     {
-      $space      = Space::find($id);
-      $warehouse  = Warehouse::where('deleted_at', NULL)->orderBy('name')->get();
-      return view('spaces.edit', compact('space', 'id', 'warehouse'));
+      $space      = $this->space->getEdit($id);
+      $space      = $space[0];
+      return view('spaces.edit', compact('space', 'id'));
     }
 
     /**
@@ -92,7 +98,7 @@ class SpaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $space       = Space::find($id);
+      $space       = $this->space->find($id);
       $space->name = $request->name;
       $space->warehouse_id = $request->warehouse_id;
       $space->save();
@@ -122,7 +128,7 @@ class SpaceController extends Controller
         $room->save();
       }
 
-      $space = Space::find($id);
+      $space = $this->space->find($id);
       $name  = $space->name;
       $space->deleted_at = Carbon\Carbon::now();
       $space->save();
@@ -133,5 +139,33 @@ class SpaceController extends Controller
         return redirect()->route('space.index')->with('error', 'Delete Space Warehouse failed.');
       }
       
+    }
+
+    public function getDataSelectByWarehouse($warehouse_id, Request $request){
+
+        $data = $this->space->getSelectByWarehouse($warehouse_id);
+        $arrData = array();
+        foreach ($data as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+
+    }
+
+    public function getDataSelectAll(Request $request){
+
+        $data = $this->space->getSelectAll();
+        $arrData = array();
+        foreach ($data as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+
     }
 }

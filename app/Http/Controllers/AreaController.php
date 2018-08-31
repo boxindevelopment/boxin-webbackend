@@ -26,8 +26,7 @@ class AreaController extends Controller
     public function index()
     {
       $area   = $this->area->all();
-      $cities = City::where('deleted_at', NULL)->orderBy('name')->get();
-      return view('warehouses.list_area', compact('area','cities'));
+      return view('warehouses.list_area', compact('area'));
     }
 
     /**
@@ -100,7 +99,7 @@ class AreaController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $area       = Area::find($id);
+      $area       = $this->area->find($id);
       $area->name = $request->name;
       $area->city_id = $request->city_id;
       $area->save();
@@ -130,7 +129,7 @@ class AreaController extends Controller
         $warehouse->save();
       }
 
-      $area = Area::find($id);
+      $area = $this->area->find($id);
       $name = $area->name;
       $area->deleted_at = Carbon\Carbon::now();
       $area->save();
@@ -143,9 +142,23 @@ class AreaController extends Controller
       
     }
 
-    public function getDataSelect($city_id, Request $request){
+    public function getDataSelectByCity($city_id, Request $request){
 
         $areas = $this->area->getSelect($city_id);
+        $arrAreas = array();
+        foreach ($areas as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrAreas[] = $arr;
+        }
+        echo(json_encode($arrAreas));
+
+    }
+
+    public function getDataSelectAll(Request $request){
+
+        $areas = $this->area->getSelectAll();
         $arrAreas = array();
         foreach ($areas as $arrVal) {
             $arr = array(

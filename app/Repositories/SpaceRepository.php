@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Model\Warehouse;
-use App\Repositories\Contracts\WarehouseRepository as WarehouseRepositoryInterface;
+use App\Model\Space;
+use App\Repositories\Contracts\SpaceRepository as SpaceRepositoryInterface;
 use DB;
 
-class WarehouseRepository implements WarehouseRepositoryInterface
+class SpaceRepository implements SpaceRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Warehouse $model)
+    public function __construct(Space $model)
     {
         $this->model = $model;
     }
@@ -43,30 +43,31 @@ class WarehouseRepository implements WarehouseRepositoryInterface
 
     }
 
-    public function getSelectByArea($area_id)
+    public function getSelectByWarehouse($warehouse_id)
     {
 
-        $warehouse = $this->model->select()->where('area_id', $area_id)->where('deleted_at', NULL)->orderBy('name')->get();
+        $space = $this->model->select()->where('warehouse_id', $warehouse_id)->where('deleted_at', NULL)->orderBy('name')->get();
 
-        return $warehouse;
+        return $space;
 
     }
 
     public function getSelectAll($args = [])
     {
 
-        $warehouse = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
+        $space = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
 
-        return $warehouse;
+        return $space;
 
     }
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('warehouses.*', DB::raw('(cities.id) as city_id')))
+        $data = $this->model->select(array('spaces.*', DB::raw('(cities.id) as city_id'),  DB::raw('(areas.id) as area_id')))
+                ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-                ->where('warehouses.id', $id)
+                ->where('spaces.id', $id)
                 ->get();
                 
         return $data;
@@ -77,13 +78,13 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         return $this->model->create($data);
     }
     
-    public function update(Warehouse $warehouse, $data)
+    public function update(Space $space, $data)
     {
-        return $warehouse->update($data);
+        return $space->update($data);
     }
 
-    public function delete(Warehouse $warehouse)
+    public function delete(Space $space)
     {
-        return $warehouse->delete();
+        return $space->delete();
     }
 }

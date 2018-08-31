@@ -51,6 +51,15 @@ class AreaRepository implements AreaRepositoryInterface
 
     }
 
+    public function getSelectAll($args = [])
+    {
+
+        $area = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
+
+        return $area;
+
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);

@@ -141,58 +141,165 @@
                     text : obj[i].text
                 } );
             }
-            
+            var area_id = $("area_id").val(); 
             $("#city_id").select2({
                 multiple: false,
                 placeholder: 'Choose City',
                 tags: true,
                 data : arrs
             }).on('change', function (e) {
-                console.log($(this).val());
                 var city_id = $(this).val();
                 area_Selectdata(city_id);
 
             });
             if(values != ''){
                 $("#city_id").val(values).trigger('change');
-                area_Selectdata(values);
+                area_Selectdata(values, area_id);
             }
         });
 
         if(values != ''){
             $("#city_id").val(values).trigger('change');
-            area_Selectdata(values);
+            area_Selectdata(values, area_id);
         }
     }
     city_Selectdata('');
 
-    function area_Selectdata(city_id) {
-
+    function area_Selectdata(city_id, values) {
         var data = $.ajax({
             url: "{{ url('/area/dataSelect/') }}/"+city_id,
-            type: "GET"
+            type: "GET",
+            data: { }
         })
         .done(function(data) {
-            var arrs = jQuery.parseJSON(data);
-
-            $("#area_id").html('');
-            var s_area = $("#area_id").select2({
+            
+            var obj = jQuery.parseJSON(data);
+            arrs = [];
+            for (var i = 0; i<obj.length; i++) {
+                arrs.push( {
+                    id : obj[i].id, 
+                    text : obj[i].text
+                } );
+            }
+            var area_id = $("#area_id").val();
+            $("#area_id").select2({
                 multiple: false,
                 placeholder: 'Choose Area',
+                tags: true,
                 data : arrs
             }).on('change', function (e) {
-                
+                var area_id = $(this).val();
+                warehouse_Selectdata(area_id);
             })
+            
 
-            if(area_id && area_id != "undefined"){
-                s_area.val(area_id).trigger("change");
-            }else{
-                s_area.val().trigger("change");
+            if(values != ''){
+                $("#area_id").val(values).trigger("change");
+                warehouse_Selectdata(area_id);
             }
         });
+        if(values != ''){
+            $("#area_id").val(values).trigger("change");
+            warehouse_Selectdata(area_id);
+        }
+    }
 
-        $("#area_id").on("select2:select", function(e) {
-            var area_id = $(this).val();
+    // function area_Selectdata(city_id, values) {
+    //     $('#area_id').select2({
+    //         ajax: {
+    //             url: "{{ url('/area/dataSelect') }}",
+    //         }
+    //     });
+
+    //     var areaSelect = $('#area_id');
+    //     $.ajax({
+    //         type: 'GET',
+    //         url: "{{ url('/area/dataSelect/') }}/"+city_id,
+    //         data: { }
+    //     }).then(function (data) {
+    //         // create the option and append to Select2
+    //         var option = new Option(data.id, true, true);
+    //         areaSelect.append(option).trigger('change');
+
+    //         // manually trigger the `select2:select` event
+    //         areaSelect.trigger({
+    //             type: 'select2:select',
+    //             params: {
+    //                 data: data
+    //             }
+    //         });
+    //     });
+
+    // }
+ 
+    function warehouse_Selectdata(area_id) {
+        var $id = area_id;
+        var data = $.ajax({
+            url: "{{ url('/warehouse/dataSelect/') }}/"+area_id,
+            type: "GET",
+            data: { }
+        })
+        .done(function(data) {
+            var obj = jQuery.parseJSON(data);
+            arrs = [];
+            for (var i = 0; i<obj.length; i++) {
+                arrs.push( {
+                    id : obj[i].id, 
+                    text : obj[i].text
+                } );
+            }
+            var warehouse_id = $("#warehouse_id").val();
+            $("#warehouse_id").select2({
+                multiple: false,
+                placeholder: 'Choose Warehouse',
+                tags: true,
+                data : arrs
+            }).on('change', function (e) {
+                var warehouse_id = $(this).val();
+                space_Selectdata(warehouse_id);
+            });
+
+            
+            if(warehouse_id != ""){
+                $("#warehouse_id").val(warehouse_id).trigger("change");
+                space_Selectdata(warehouse_id);
+            }else{
+                $("#warehouse_id").val('').trigger("change");
+            }
+        });
+    }
+
+    function space_Selectdata(warehouse_id) {
+        var data = $.ajax({
+            url: "{{ url('/space/dataSelect/') }}/"+warehouse_id,
+            type: "GET",
+            data: { }
+        })
+        .done(function(data) {
+            var obj = jQuery.parseJSON(data);
+            arrs = [];
+            for (var i = 0; i<obj.length; i++) {
+                arrs.push( {
+                    id : obj[i].id, 
+                    text : obj[i].text
+                } );
+            }
+            var space_id = $("#space_id").val();
+            $("#space_id").select2({
+                multiple: false,
+                placeholder: 'Choose Space',
+                tags: true,
+                data : arrs
+            }).on('change', function (e) {
+                var space_id = $(this).val();
+            });
+
+            
+            if(space_id != ""){
+                $("#space_id").val(space_id).trigger("change");
+            }else{
+                $("#space_id").val('').trigger("change");
+            }
         });
     }
 

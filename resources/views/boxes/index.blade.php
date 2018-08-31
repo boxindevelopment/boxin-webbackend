@@ -30,73 +30,15 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
-                <b>Add Box</b>
-                <div class="card-actions" style="float: right;">
-                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
-                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
-                </div>
-            </div>
-            <div class="card-body collapse show">
-              
-              @include('error-template')
-
-              <form action="{{ route('box.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
-                @csrf
-                <div class="row">
-                    
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="space_id" required>
-                          @if (!empty($space))
-                            @foreach ($space as $key => $value)
-                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->warehouse->name }})</option>
-                            @endforeach
-                          @endif
-                        </select>
-                      </div> 
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="">Types of Size <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="type_size_id" required>
-                          <option value=""></option>
-                          @if (!empty($type_size))
-                            @foreach ($type_size as $key => $value)
-                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
-                            @endforeach
-                          @endif
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Name </label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="">
-                      </div>
-                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
-                    </div>
-
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Location </label>
-                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="" >
-                      </div>                      
-                    </div>
-
-                </div>
-              </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-12">
-        <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>List Boxes</h4>
+            <h4 class="card-title"><span class="lstick"></span>List Boxes 
+              <a href="{{ route('box.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right"
+                title="Add" style="margin-right: 10px;">
+                <i class="fa fa-plus"></i>&nbsp;
+                Add Box
+              </a>
+            </h4>
 
               @include('error-template')
 

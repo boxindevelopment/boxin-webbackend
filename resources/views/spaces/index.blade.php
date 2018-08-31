@@ -27,52 +27,16 @@
 <!-- ============================================================== -->
 <div class="row">
     <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <b>Add Space</b>
-                <div class="card-actions" style="float: right;">
-                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
-                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
-                </div>
-            </div>
-            <div class="card-body collapse show">
-              
-              @include('error-template')
-
-              <form action="{{ route('space.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="">Warehouse <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="warehouse_id" required>
-                          <option value=""></option>
-                          @if (!empty($warehouse))
-                            @foreach ($warehouse as $key => $value)
-                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->area->name }})</option>
-                            @endforeach
-                          @endif
-                        </select>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
-                      </div>
-
-                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
-                    </div>
-                </div>
-              </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
       <div class="card">
           <div class="card-body">
 
-            <h4 class="card-title"><span class="lstick"></span>List Spaces</h4>
+            <h4 class="card-title"><span class="lstick"></span>List Spaces 
+              <a href="{{ route('space.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right"
+                title="Add" style="margin-right: 10px;">
+                <i class="fa fa-plus"></i>&nbsp;
+                Add Space
+              </a>
+            </h4>            
 
             <div class="table-responsive m-t-10">
                 <table id="table-type" class="table table-striped table-bordered">

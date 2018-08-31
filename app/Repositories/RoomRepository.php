@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Model\Warehouse;
-use App\Repositories\Contracts\WarehouseRepository as WarehouseRepositoryInterface;
+use App\Model\Room;
+use App\Repositories\Contracts\RoomRepository as RoomRepositoryInterface;
 use DB;
 
-class WarehouseRepository implements WarehouseRepositoryInterface
+class RoomRepository implements RoomRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Warehouse $model)
+    public function __construct(Room $model)
     {
         $this->model = $model;
     }
@@ -32,41 +32,25 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     public function getData($args = [])
     {
 
-        $warehouse = $this->model->select()
+        $data = $this->model->select()
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('name', 'like', '%'.$args['searchValue'].'%')
                 ->skip($args['start'])
                 ->take($args['length'])
                 ->get();
 
-        return $warehouse->toArray();
-
-    }
-
-    public function getSelectByArea($area_id)
-    {
-
-        $warehouse = $this->model->select()->where('area_id', $area_id)->where('deleted_at', NULL)->orderBy('name')->get();
-
-        return $warehouse;
-
-    }
-
-    public function getSelectAll($args = [])
-    {
-
-        $warehouse = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
-
-        return $warehouse;
+        return $data->toArray();
 
     }
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('warehouses.*', DB::raw('(cities.id) as city_id')))
+        $data = $this->model->select(array('rooms.*', DB::raw('(cities.id) as city_id'),  DB::raw('(areas.id) as area_id'), DB::raw('(warehouses.id) as warehouse_id')))
+                ->leftJoin('spaces', 'spaces.id', '=', 'rooms.space_id')
+                ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-                ->where('warehouses.id', $id)
+                ->where('rooms.id', $id)
                 ->get();
                 
         return $data;
@@ -77,13 +61,13 @@ class WarehouseRepository implements WarehouseRepositoryInterface
         return $this->model->create($data);
     }
     
-    public function update(Warehouse $warehouse, $data)
+    public function update(Room $room, $data)
     {
-        return $warehouse->update($data);
+        return $room->update($data);
     }
 
-    public function delete(Warehouse $warehouse)
+    public function delete(Room $room)
     {
-        return $warehouse->delete();
+        return $room->delete();
     }
 }

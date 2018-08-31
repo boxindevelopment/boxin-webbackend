@@ -9,15 +9,20 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('warehouses', 'WarehousesController');
   Route::resource('warehouses-city', 'CityController');
-  Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
   Route::resource('warehouses-area', 'AreaController');
-  Route::get('/area/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelect', 'as' => 'area.getDataSelect']);
   Route::resource('space', 'SpaceController')->except(['show']);
-
   Route::resource('room', 'RoomController')->except(['show']);
-
   Route::resource('box', 'BoxController')->except(['show']);
 
+  
+  Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
+  Route::get('/area/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelectByCity', 'as' => 'area.getDataSelect']);
+  Route::get('/area/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);  
+  Route::get('/warehouse/dataSelect/{area_id}', ['uses' => 'WarehousesController@getDataSelectByArea', 'as' => 'warehouses.getDataSelectByArea']);
+  // Route::get('/warehouse/dataSelect', ['uses' => 'WarehousesController@getDataSelectAll', 'as' => 'warehouses.getDataSelectAll']);
+  Route::get('/space/dataSelect/{warehouse_id}', ['uses' => 'SpaceController@getDataSelectByWarehouse', 'as' => 'space.getDataSelectByWarehouse']);
+  // Route::get('/space/dataSelect', ['uses' => 'SpaceController@getDataSelectAll', 'as' => 'space.getDataSelectAll']);
+  
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
     Route::get('','OrderController@index')->name('order.index');

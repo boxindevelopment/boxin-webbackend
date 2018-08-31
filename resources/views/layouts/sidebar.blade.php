@@ -53,21 +53,21 @@
                   </ul>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.edit') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.create')||Route::currentRouteNamed('space.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('space.index')}}" aria-expanded="false">
                     <i class="mdi mdi-grid"></i>
                     <span class="hide-menu">Spaces</span>
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.edit') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.create')||Route::currentRouteNamed('box.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('box.index')}}" aria-expanded="false">
                     <i class="mdi mdi-dropbox"></i>
                     <span class="hide-menu">Boxes</span>
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('room.index')||Route::currentRouteNamed('room.edit') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('room.index')||Route::currentRouteNamed('room.create')||Route::currentRouteNamed('room.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('room.index')}}" aria-expanded="false">
                     <i class="mdi mdi-home-outline"></i>
                     <span class="hide-menu">Rooms</span>

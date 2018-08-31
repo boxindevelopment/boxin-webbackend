@@ -101,8 +101,6 @@
 <!--PLUGIN JS -->
 
 <script>
-$(function() {
-
-});
+ 
 </script>
 @endsection

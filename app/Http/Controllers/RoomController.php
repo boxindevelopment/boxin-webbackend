@@ -7,9 +7,16 @@ use App\Model\Space;
 use App\Model\Room;
 use App\Model\TypeSize;
 use Carbon;
+use App\Repositories\RoomRepository;
 
 class RoomController extends Controller
 {
+    protected $room;
+
+    public function __construct(RoomRepository $room)
+    {
+        $this->room = $room;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,10 +24,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-      $room   = Room::where('deleted_at', NULL)->orderBy('name')->get();
-      $space  = Space::where('deleted_at', NULL)->orderBy('name')->get();
-      $type_size = TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();
-      return view('rooms.index', compact('room','space', 'type_size'));
+      $room   = $this->room->all();
+      return view('rooms.index', compact('room'));
     }
 
     /**
@@ -30,7 +35,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-      abort('404');
+      $type_size = TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();
+      return view('rooms.create', compact('type_size'));
     }
 
     /**
@@ -84,10 +90,10 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-      $room     = Room::find($id);
-      $space    = Space::where('deleted_at', NULL)->orderBy('name')->get();
+      $room     = $this->room->getEdit($id);
+      $room     = $room[0];
       $type_size= TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();
-      return view('rooms.edit', compact('room', 'id', 'space', 'type_size'));
+      return view('rooms.edit', compact('room', 'id', 'type_size'));
     }
 
     /**
@@ -109,7 +115,7 @@ class RoomController extends Controller
       if($name == ''){
         $name = $type_size[0]->name;
       }
-      $room                   = Room::find($id);
+      $room                   = $this->room->find($id);
       $room->name             = $name;
       $room->types_of_size_id = $request->type_size_id;
       $room->space_id         = $request->space_id;
@@ -131,7 +137,7 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-      $room  = Room::find($id);
+      $room  = $this->room->find($id);
       $name  = $room->name;
       $room->deleted_at = Carbon\Carbon::now();
       $room->save();

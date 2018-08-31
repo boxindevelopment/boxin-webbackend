@@ -36,8 +36,8 @@ class WarehousesController extends Controller
      */
     public function create()
     {
-      $area = Area::where('deleted_at', NULL)->orderBy('name')->get();
-      return view('warehouses.create', compact('area'));
+      // $area = Area::where('deleted_at', NULL)->orderBy('name')->get();
+      return view('warehouses.create');
     }
 
     /**
@@ -92,10 +92,9 @@ class WarehousesController extends Controller
      */
     public function edit($id)
     {
-      // $area       = Area::orderBy('name')->get();
       $warehouse  = $this->warehouse->getEdit($id);
-      $warehouse = $warehouse[0];
-      return view('warehouses.edit', compact('area', 'id', 'warehouse'));
+      $warehouse  = $warehouse[0];
+      return view('warehouses.edit', compact('id', 'warehouse'));
     }
 
     /**
@@ -116,7 +115,7 @@ class WarehousesController extends Controller
       $longitude= $request->longitude;
       $latitude = $request->latitude;
 
-      $warehouse  = Warehouse::find($id);
+      $warehouse  = $this->warehouse->find($id);
       $warehouse->name      = $name;
       $warehouse->area_id   = $area_id;
       $warehouse->long      = $longitude;
@@ -147,7 +146,7 @@ class WarehousesController extends Controller
         $space->save();
       }
 
-      $warehouse = Warehouse::find($id);
+      $warehouse = $this->warehouse->find($id);
       $name = $warehouse->name;
       $warehouse->deleted_at = Carbon\Carbon::now();
       $warehouse->save();
@@ -160,4 +159,31 @@ class WarehousesController extends Controller
 
     }
 
+    public function getDataSelectByArea($area_id, Request $request){
+
+        $warehouse = $this->warehouse->getSelectByArea($area_id);
+        $arrData = array();
+        foreach ($warehouse as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+
+    }
+
+    public function getDataSelectAll(Request $request){
+
+        $warehouse = $this->warehouse->getSelectAll();
+        $arrData = array();
+        foreach ($warehouse as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+
+    }
 }

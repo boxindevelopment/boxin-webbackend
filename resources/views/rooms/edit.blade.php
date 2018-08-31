@@ -39,19 +39,29 @@
                     <div class="col-md-6">
 
                       <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="space_id" required>
-                          @if (!empty($space))
-                            @foreach ($space as $key => $value)
-                              @if ($value->id == $room->space_id)
-                                <option value="{{ $value->id }}" selected>{{ $value->name }} ({{ $value->warehouse->name }})</option>
-                              @else
-                                <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->warehouse->name }})</option>
-                              @endif
-                            @endforeach
-                          @endif
-                        </select>
+                        <label for="">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $room->city_id }}" required>
                       </div>
+
+                      <div class="form-group">
+                        <label for="">Area <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $room->area_id }}" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="">Warehouse <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" value="{{ $room->warehouse_id }}" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="">Space <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $room->space_id }}" required>
+                      </div>
+
+                      <a href="{{ route('room.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                    </div>
+                    <div class="col-md-6">
 
                       <div class="form-group">
                         <label for="">Types of Size <span class="text-danger">*</span></label>
@@ -73,8 +83,6 @@
                         <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $room->name }}" >
                       </div>
 
-                      <a href="{{ route('room.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                 </div>
               </form>
