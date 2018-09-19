@@ -28,4 +28,9 @@ class User extends Authenticatable
     return $this->getRoleNames()->first();
   }
 
+  public function order()
+  {
+      return $this->hasMany('App\Model\Order', 'user_id', 'id');
+  }
+
 }

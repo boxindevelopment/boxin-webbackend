@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\OrderDetailBox;
+use App\Model\PickupOrder;
 use Carbon;
 
 class OrderController extends Controller
@@ -90,6 +91,35 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-      
+        $data = Order::findOrFail($id);
+        
+        if($data){
+            $detail_order       = OrderDetail::where('order_id', $id)->get();
+            $count_detail_order = count($detail_order);
+            for ($i = 0; $i < $count_detail_order ; $i++) {
+                //delete order detail box
+                $detail_order_box       = OrderDetailBox::where('order_detail_id', $detail_order[$i]->id)->get();
+                $count_detail_order_box = count($detail_order_box);
+                for ($a = 0; $a < $count_detail_order_box ; $a++) {
+                    $detailOrderBox = OrderDetailBox::findOrFail($detail_order_box[$a]->id);
+                    $detailOrderBox->delete();
+                }
+                //delete order detail
+                $detailOrder = OrderDetail::findOrFail($detail_order[$i]->id);
+                $detailOrder->delete();
+            }
+            //delete pickup order
+            $pickup_order       = PickupOrder::where('order_id', $id)->get();
+            $count_pickup_order = count($pickup_order);
+            for ($b = 0; $b < $count_pickup_order ; $b++) {
+                $pickupOrder = PickupOrder::findOrFail($pickup_order[$b]->id);
+                $pickupOrder->delete();
+            }
+            $data->delete();
+            return redirect()->route('order.index')->with('success', 'Data order successfully deleted!');
+        } else {
+            return redirect()->route('order.index')->with('error', 'Delete data order failed!');
+        }
+    
     }
 }

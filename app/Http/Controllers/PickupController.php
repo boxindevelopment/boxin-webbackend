@@ -17,9 +17,13 @@ class PickupController extends Controller
      */
     public function index()
     {
-      $pickup1   = PickupOrder::where('types_of_pickup_id', 1)->orderBy('id', 'DESC')->get();
+      $pickup1   = PickupOrder::select('pickup_orders.*', 'users.first_name',  'users.last_name')
+        ->leftJoin('orders','orders.id','=','pickup_orders.order_id')
+        ->leftJoin('users','users.id','=','orders.user_id')
+        ->orderBy('id', 'DESC')
+        ->get();
       $pickup2   = PickupOrder::where('types_of_pickup_id', 2)->orderBy('id', 'DESC')->get();
-      return view('pickup.index', compact('pickup1', 'pickup2'));
+      return view('pickup.index', compact('pickup1'));
     }
 
     /**

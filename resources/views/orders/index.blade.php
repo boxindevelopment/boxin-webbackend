@@ -57,7 +57,12 @@
                             <td>{{ $value->space->name }}</td>
                             <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>
                             <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->id])}}"><i class="fa fa-list"></i> Order Detail</a>
+                              <form action="{{route('order.destroy', ['id' => $value->id])}}" method="post">
+                                @csrf
+                                <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->id])}}"><i class="fa fa-eye"></i> Detail</a>
+                                @method('DELETE')
+                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                              </form>
                             </td>
                           </tr>
                         @endforeach
@@ -67,8 +72,31 @@
                         </tr>
                       @endif
                     </tbody>
-                </table>
+                  </table>
               </div>
+
+              <!-- sample modal content -->
+            <div class="modal fade bs-example-modal-lg" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myLargeModalLabel">Confirmation</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            <h4>[Delete]</h4>
+                            <p>Are you sure to delete this order ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary waves-effect text-left" data-dismiss="modal">Close</button>
+                            <button type="button" data-dismiss="modal" class="btn btn-danger" id="delete">Delete</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->  
 
             </div>
         </div>
