@@ -7,6 +7,7 @@ use App\Model\PickupOrder;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use Carbon;
+use DB;
 
 class PickupController extends Controller
 {
@@ -20,10 +21,18 @@ class PickupController extends Controller
       $pickup1   = PickupOrder::select('pickup_orders.*', 'users.first_name',  'users.last_name')
         ->leftJoin('orders','orders.id','=','pickup_orders.order_id')
         ->leftJoin('users','users.id','=','orders.user_id')
-        ->orderBy('id', 'DESC')
+        ->where('pickup_orders.types_of_pickup_id', 1)
+        ->orderBy('pickup_orders.status_id', 'DESC')
+        ->orderBy('id', 'ASC')
         ->get();
-      $pickup2   = PickupOrder::where('types_of_pickup_id', 2)->orderBy('id', 'DESC')->get();
-      return view('pickup.index', compact('pickup1'));
+      $pickup2   = PickupOrder::select('pickup_orders.*', 'users.first_name',  'users.last_name')
+        ->leftJoin('orders','orders.id','=','pickup_orders.order_id')
+        ->leftJoin('users','users.id','=','orders.user_id')
+        ->where('pickup_orders.types_of_pickup_id', 2)
+        ->orderBy('pickup_orders.status_id', 'DESC')
+        ->orderBy('id', 'ASC')
+        ->get();
+      return view('pickup.index', compact('pickup1', 'pickup2'));
     }
 
     /**
@@ -66,7 +75,7 @@ class PickupController extends Controller
      */
     public function edit($id)
     {
-      $pickup     = PickupOrder::where('id',$id)->get();
+      $pickup     = PickupOrder::select('pickup_orders.*')->where('id',$id)->get();
       return view('pickup.edit', compact('pickup', 'id'));
     }
 

@@ -50,10 +50,10 @@
                           <th width="">Name</th>
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
-                          <th width="10%">Space</th>
+                          <th width="15%">Space</th>
                           <th width="20%">Location</th>
                           <th width="10%">Status</th>
-                          <th width="15%" class="text-center no-sort">Action</th>
+                          <th width="13%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,9 +72,10 @@
                             <td class="text-center">
                               <form action="{{route('box.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf
-                                <a class="btn btn-info btn-sm" href="{{route('box.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
+                                <a class="btn btn-secondary btn-sm" href="{{route('box.barcode', ['id' => $value->id])}}" target="_blank" title="Print Barcode"><i class="mdi mdi-barcode"></i></a>
+                                <a class="btn btn-info btn-sm" href="{{route('box.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                                 @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                                <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
                               </form>
                             </td>
                           </tr>

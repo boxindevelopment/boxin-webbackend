@@ -88,6 +88,14 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-keyboard-return"></i>
+                    <span class="hide-menu">Return Boxes</span>
+                  </a>
+                </li>
+                
+
                 <li class="{{ Route::currentRouteNamed('user.index')||Route::currentRouteNamed('user.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('user.index')}}" aria-expanded="false">
                     <i class="mdi mdi-account"></i>

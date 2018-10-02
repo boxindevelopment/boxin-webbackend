@@ -25,6 +25,11 @@ class BoxRepository implements BoxRepositoryInterface
         return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
     }
 
+    public function getById($id)
+    {
+        return $this->model->where('deleted_at', NULL)->where('id', $id)->get();
+    }
+
     public function getCount($args = [])
     {
         return $this->model->where('name', 'like', $args['searchValue'].'%')->count();

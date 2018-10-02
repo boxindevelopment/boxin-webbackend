@@ -8,6 +8,7 @@ use App\Model\Space;
 use App\Model\TypeSize;
 use Carbon;
 use App\Repositories\BoxRepository;
+use PDF;
 
 class BoxController extends Controller
 {
@@ -57,6 +58,7 @@ class BoxController extends Controller
       if($name == ''){
         $name = $type_size[0]->name;
       }
+      
       $box = Box::create([
         'types_of_size_id'  => $request->type_size_id,
         'space_id'          => $request->space_id,
@@ -64,6 +66,12 @@ class BoxController extends Controller
         'location'          => $request->location,
         'status_id'         => 10,
       ]);
+
+      $boxes    = $this->box->find($box->id);
+      $date     = strtotime($boxes->created_at);
+      $barcode  = $date .''. rand(01, 99) .''. $box->id;
+      $boxes->barcode = $barcode;
+      $boxes->save();
 
       if($box){
         return redirect()->route('box.index')->with('success', 'Add : [' . $name . ' Box] success.');
@@ -150,5 +158,13 @@ class BoxController extends Controller
       }
     }
 
+    public  function printBarcode($id){ 
+      // $produk =  Box::limit(12)->get(); 
+      $produk  = $this->box->getById($id);
+      $no = 1; 
+      $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no')); 
+      $pdf->setPaper('a7',  'landscape'); 
+      return $pdf->stream(); 
+    }
 
 }

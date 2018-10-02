@@ -36,11 +36,28 @@
                 @csrf
                 @method('PUT')
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="background-color: aliceblue;">
                       @foreach ($pickup as $key => $value)
 
                       <!-- pickup delivery box  -->
                       @if ($value->types_of_pickup_id == 1)
+                      <div class="form-group">
+                        <label>Datetime </label>
+                        <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Address </label>
+                        <p>{{ $value->address }}</p>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Note </label>
+                        <p>{{ $value->note }}</p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>

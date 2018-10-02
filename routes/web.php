@@ -13,6 +13,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('space', 'SpaceController')->except(['show']);
   Route::resource('room', 'RoomController')->except(['show']);
   Route::resource('box', 'BoxController')->except(['show']);
+  Route::get('barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
 
   
   Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
@@ -31,6 +32,8 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::resource('pickup', 'PickupController')->except(['show']);
+
+  Route::resource('return', 'ReturnBoxesController')->except(['show']);
 
   Route::resource('user', 'UserController')->except(['show']);
 

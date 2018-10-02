@@ -2,6 +2,52 @@
 
 All notable changes to `laravel-permission` will be documented in this file
 
+
+## 2.20.0 - 2018-09-19
+- It will sync roles/permissions to models that are not persisted, by registering a `saved` callback. 
+(It would previously throw an Integrity constraint violation QueryException on the pivot table insertion.)
+
+## 2.19.2 - 2018-09-19
+- add `@elserole` directive:
+ Usage: 
+```php
+@role('roleA')
+ // user hasRole 'roleA'
+@elserole('roleB')
+ // user hasRole 'roleB' but not 'roleA'
+@endrole
+```
+
+## 2.19.1 - 2018-09-14
+- Spark-related fix to accommodate missing guard[providers] config
+
+## 2.19.0 - 2018-09-10
+- Add ability to pass in IDs or mixed values to `role` scope
+- Add `@unlessrole`/`@endunlessrole` Blade directives
+
+## 2.18.0 - 2018-09-06
+- Expanded CLI `permission:create-role` command to create optionally create-and-link permissions in one command. Also now no longer throws an error if the role already exists.
+
+## 2.17.1 - 2018-08-28
+- Require laravel/framework instead of illuminate/* starting from ~5.4.0 
+- Removed old dependency for illuminate/database@~5.3.0 (Laravel 5.3 is not supported)
+
+## 2.17.0 - 2018-08-24
+- Laravel 5.7 compatibility
+
+## 2.16.0 - 2018-08-20
+- Replace static Permission::class and Role::class with dynamic value (allows custom models more easily)
+- Added type checking in hasPermissionTo and hasDirectPermission
+
+## 2.15.0 - 2018-08-15
+- Make assigning the same role or permission twice not throw an exception
+
+## 2.14.0 - 2018-08-13
+- Allow using another key name than `model_id` by defining new `columns` array with `model_morph_key` key in config file. This improves UUID compatibility as discussed in #777.
+
+## 2.13.0 - 2018-08-02
+- Fix issue with null values passed to syncPermissions & syncRoles
+
 ## 2.12.2 - 2018-06-13
 - added hasAllPermissions method
 
@@ -152,6 +198,8 @@ The 403 response is backward compatible
 - renamed config file from `laravel-permission` to `permission`.
 
 
+## 1.17.0 - 2018-08-24
+- added support for Laravel 5.7
 
 ## 1.16.0 - 2018-02-07
 - added support for Laravel 5.6
