@@ -77,7 +77,7 @@
                       @foreach ($city as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
-                          <td>{{ $value->name }}</td>
+                          <td>{{ $value->name }} {{ $value->id }}</td>
                           <td class="text-center">
                             <form action="{{route('warehouses-city.destroy', ['id' => $value->id])}}" method="post">
                               @csrf

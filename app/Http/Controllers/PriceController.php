@@ -4,9 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Price;
+use App\Repositories\PriceRepository;
 
 class PriceController extends Controller
 {
+    protected $price;
+
+    public function __construct(PriceRepository $price)
+    {
+        $this->price = $price;
+    }
+    
     /**
      * Display a listing of the resource.
      *

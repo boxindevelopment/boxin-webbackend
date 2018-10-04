@@ -1,28 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Model\Warehouse;
-use App\Model\User;
-use App\Model\Box;
-use App\Model\Space;
+use Auth;
+use App\Repositories\DashboardRepository;
 
 class DashboardController extends Controller
 {
+    protected $data;
+
+    public function __construct(DashboardRepository $data)
+    {
+        $this->data = $data;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $warehouse = Warehouse::where('deleted_at', NULL)->count();
-        $space     = Space::where('deleted_at', NULL)->count();
-        $box       = Box::where('deleted_at', NULL)->count();
-        $user      = User::where('deleted_at', NULL)->count();
-        
-        return view('dashboard', compact('warehouse', 'space', 'box', 'user'));
+        $user = $request->user();
+        // dd($user->roles_id);
+        $warehouse = $this->data->countWarehouse();
+        $space     = $this->data->countSpace();
+        $box       = $this->data->countBox();
+        $user      = $this->data->countUser();
+        $me        = Auth::id();
+        return view('dashboard', compact('warehouse', 'space', 'box', 'user', 'me'));
     }
 
     /**

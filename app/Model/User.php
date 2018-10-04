@@ -14,7 +14,7 @@ class User extends Authenticatable
   protected $dates = ['deleted_at'];
 
   protected $fillable = [
-    'first_name', 'last_name', 'phone', 'email', 'password',
+    'first_name', 'last_name', 'phone', 'email', 'password', 'roles_id', 'status'
   ];
 
   protected $hidden = [
@@ -23,14 +23,19 @@ class User extends Authenticatable
 
   protected $primaryKey = 'id';
 
-  public function getRoleAttribute()
+  public function roles()
   {
-    return $this->getRoleNames()->first();
+      return $this->belongsTo('App\Model\Roles', 'roles_id', 'id');
   }
 
   public function order()
   {
       return $this->hasMany('App\Model\Order', 'user_id', 'id');
+  }
+
+  public function admin_city()
+  {
+      return $this->hasMany('App\Model\Roles', 'user_id', 'id');
   }
 
 }

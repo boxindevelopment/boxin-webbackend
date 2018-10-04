@@ -36,7 +36,13 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
 
   Route::resource('user', 'UserController')->except(['show']);
-
+  Route::prefix('user')->group(function () {
+    Route::get('getDataSelectNotAdmin', ['uses' => 'UserController@getDataSelectNotAdmin', 'as' => 'user.getDataSelectNotAdmin']);
+    Route::get('getDataSelectNotSuperadmin', ['uses' => 'UserController@getDataSelectNotSuperadmin', 'as' => 'user.getDataSelectNotSuperadmin']);
+    Route::get('admin-city','UserController@list_admincity')->name('user.list_admincity');
+    Route::get('superadmin','UserController@list_superadmin')->name('user.list_superadmin');
+  });
+  
   Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
 
   Route::resource('price', 'PriceController')->except(['show']);

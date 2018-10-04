@@ -315,6 +315,74 @@
                 }
             });
         }
+
+        function usernotAdmin_Selectdata(values) {
+            var data = $.ajax({
+                url: "{{ url('/user/getDataSelectNotAdmin') }}",
+                type: "GET",
+                data: { }
+            })
+            .done(function(data) {
+                var obj = jQuery.parseJSON(data);
+                arrs = [];
+                for (var i = 0; i<obj.length; i++) {
+                    arrs.push( {
+                        id : obj[i].id,
+                        text : obj[i].text
+                    } );
+                }
+                $("#user_id").select2({
+                    multiple: false,
+                    placeholder: 'Choose User',
+                    tags: true,
+                    data : arrs
+                }).on('change', function (e) {
+                    var user_id = $(this).val();
+                });
+                if(values != ''){
+                    $("#user_id").val(values).trigger('change');
+                }
+            });
+
+            if(values != ''){
+                $("#user_id").val(values).trigger('change');
+            }
+        }
+        usernotAdmin_Selectdata('');
+
+        function usernotSuperadmin_Selectdata(values) {
+            var data = $.ajax({
+                url: "{{ url('/user/getDataSelectNotSuperadmin') }}",
+                type: "GET",
+                data: { }
+            })
+            .done(function(data) {
+                var obj = jQuery.parseJSON(data);
+                arrs = [];
+                for (var i = 0; i<obj.length; i++) {
+                    arrs.push( {
+                        id : obj[i].id,
+                        text : obj[i].text
+                    } );
+                }
+                $("#user").select2({
+                    multiple: false,
+                    placeholder: 'Choose User',
+                    tags: true,
+                    data : arrs
+                }).on('change', function (e) {
+                    var user = $(this).val();
+                });
+                if(values != ''){
+                    $("#user").val(values).trigger('change');
+                }
+            });
+
+            if(values != ''){
+                $("#user").val(values).trigger('change');
+            }
+        }
+        usernotSuperadmin_Selectdata('');
     </script>
 
     @yield('close_html')

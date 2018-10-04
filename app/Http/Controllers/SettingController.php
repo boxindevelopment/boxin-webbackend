@@ -8,6 +8,7 @@ use Validator;
 
 class SettingController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,8 +16,8 @@ class SettingController extends Controller
      */
     public function index()
     {
-      $data   = Setting::get();
-      return view('settings.setting.index', compact('data'));
+        $data   = Setting::get();
+        return view('settings.setting.index', compact('data'));
     }
 
     /**
@@ -26,7 +27,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-      abort('404');
+        abort('404');
     }
 
     /**

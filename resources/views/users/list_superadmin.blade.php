@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          All Users
+          Super Admin
         </h3>
     </div>
 </div>
@@ -30,8 +30,38 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            <div class="card-header">
+                <b>Add Super Admin</b>
+                <div class="card-actions" style="float: right;">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                </div>
+            </div>
+            <div class="card-body collapse show">
+              
+              @include('error-template')
+
+              <form action="{{ route('user.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="">User <span class="text-danger">*</span></label>
+                        <input type="hidden" class="form-control" id="roles_id" name="roles_id" value="3">
+                        <input type="text" class="form-control" id="user_id" name="user_id" required>
+                      </div>
+                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save </button>
+                    </div>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>List Users</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Super Admin</h4>  
 
               @include('error-template')
 
@@ -43,7 +73,6 @@
                           <th width="">Name</th>
                           <th width="15%">Phone</th>
                           <th width="20%">Email</th>
-                          <th width="10%">Status</th>
                           <th width="10%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
@@ -54,18 +83,15 @@
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                             <td>{{ $value->phone }}</td>
-                            <td>{{ $value->email }}</td>
-                            <td class="text-center"><span class="label {{ $value->status == 1 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status == 1 ? 'Verified' : 'Not Verified'  }}</span></td>
-                                                
-                            <td></td>
-                            <!-- <td class="text-center">
+                            <td>{{ $value->email }}</td>          
+                            <td class="text-center">
                               <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf
-                                <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
                                 @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                                <input type="hidden" class="form-control" id="roles_id" name="roles_id" value="3">
+                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                               </form>
-                            </td> -->
+                            </td>
                           </tr>
                         @endforeach
                       @endif
@@ -124,3 +150,4 @@ $(function() {
 });
 </script>
 @endsection
+

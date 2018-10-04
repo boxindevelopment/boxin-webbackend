@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Model\City;
 use App\Repositories\Contracts\CityRepository as CityRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class CityRepository implements CityRepositoryInterface
 {
@@ -44,11 +45,13 @@ class CityRepository implements CityRepositoryInterface
 
     public function getSelect($args = [])
     {
-
-        $city = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
-
+        if(Auth::user()->roles_id == 3){
+            $city = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
+        }else if(Auth::user()->roles_id == 2){
+            $id = Auth::user()->admin_city->city_id;
+            $city = $this->model->select()->where('deleted_at', NULL)->where('id', $id)->orderBy('name')->get();
+        }
         return $city;
-
     }
 
     public function create(array $data)

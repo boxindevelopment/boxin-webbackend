@@ -36,9 +36,11 @@
                     <span class="hide-menu">Warehouse</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
+                    @if(Auth::user()->roles_id == 3)
                     <li class="{{ Route::currentRouteNamed('warehouses-city.index')||Route::currentRouteNamed('warehouses-city.edit') ? 'active' : null }}">
                       <a href="{{ route('warehouses-city.index') }}"><i class="fa fa-circle"></i> &nbsp;Warehouse City</a>
                     </li>
+                    @endif
                     <li class="{{ Route::currentRouteNamed('warehouses-area.index')||Route::currentRouteNamed('warehouses-area.edit') ? 'active' : null }}">
                       <a href="{{ route('warehouses-area.index') }}"><i class="fa fa-circle"></i> &nbsp;Warehouse Areas</a>
                     </li>
@@ -95,12 +97,23 @@
                   </a>
                 </li>
                 
-
+                @if(Auth::user()->roles_id == 3)
                 <li class="{{ Route::currentRouteNamed('user.index')||Route::currentRouteNamed('user.create') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('user.index')}}" aria-expanded="false">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('user.index')}}" aria-expanded="false">
                     <i class="mdi mdi-account"></i>
                     <span class="hide-menu">Users</span>
                   </a>
+                  <ul aria-expanded="false" class="collapse">
+                    <li class="{{ Route::currentRouteNamed('user.index') ? 'active' : null }}">
+                      <a href="{{ route('user.index') }}"><i class="fa fa-circle"></i> &nbsp;All Users</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('user.list_admincity') ? 'active' : null }}">
+                      <a href="{{ route('user.list_admincity') }}"><i class="fa fa-circle"></i> &nbsp;Admin City</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('user.list_superadmin') ? 'active' : null }}">
+                      <a href="{{ route('user.list_superadmin') }}"><i class="fa fa-circle"></i> &nbsp;Super Admin</a>
+                    </li>
+                  </ul>
                 </li>
                 
                 <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
@@ -115,13 +128,12 @@
                     <li class="{{ Route::currentRouteNamed('price.index')||Route::currentRouteNamed('price.edit') ? 'active' : null }}">
                       <a href="{{ route('price.index') }}"><i class="fa fa-circle"></i> &nbsp;Price</a>
                     </li>
-
                     <li class="{{ Route::currentRouteNamed('setting.create')||Route::currentRouteNamed('setting.index')||Route::currentRouteNamed('setting.edit') ? 'active' : null }}">
                       <a href="{{ route('setting.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>
                     </li>
-
                   </ul>
                 </li>
+                @endif
 
             </ul>
         </nav>
