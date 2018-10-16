@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Model\City;
+use App\Model\AdminCity;
 use App\Repositories\Contracts\CityRepository as CityRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,8 +49,8 @@ class CityRepository implements CityRepositoryInterface
         if(Auth::user()->roles_id == 3){
             $city = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
         }else if(Auth::user()->roles_id == 2){
-            $id = Auth::user()->admin_city->city_id;
-            $city = $this->model->select()->where('deleted_at', NULL)->where('id', $id)->orderBy('name')->get();
+            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+            $city = $this->model->select()->where('deleted_at', NULL)->where('id', $admin->city_id)->orderBy('name')->get();
         }
         return $city;
     }
