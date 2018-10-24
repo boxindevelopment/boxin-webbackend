@@ -25,7 +25,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     public function all()
     {
         if(Auth::user()->roles_id == 3){
-            $room = $this->model->where('order_details.status_id', 4)->where('deleted_at', NULL)->orderBy('id','ASC')->get();
+            $room = $this->model->where('order_details.status_id', 4)->orderBy('id','ASC')->get();
         }else if(Auth::user()->roles_id == 2){
             $admin = AdminCity::where('user_id', Auth::user()->id)->first();
             $room = $this->model->select('order_details.*')            
