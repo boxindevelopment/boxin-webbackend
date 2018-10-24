@@ -70,7 +70,7 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
+                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->order_id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
                             </td>
                           </tr>
                         @endforeach
