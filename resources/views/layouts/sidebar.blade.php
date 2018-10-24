@@ -90,6 +90,13 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('storage.index') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('storage.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-checkbox-marked-outline"></i>
+                    <span class="hide-menu">Storage</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>

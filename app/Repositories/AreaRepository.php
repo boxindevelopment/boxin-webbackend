@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Model\Area;
+use App\Model\AdminCity;
 use App\Repositories\Contracts\AreaRepository as AreaRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 class AreaRepository implements AreaRepositoryInterface
 {
@@ -21,7 +23,17 @@ class AreaRepository implements AreaRepositoryInterface
     
     public function all()
     {
-        return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        if(Auth::user()->roles_id == 3){
+            $area = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }else if(Auth::user()->roles_id == 2){
+            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+            $area = $this->model->select('areas.id', 'areas.name', 'areas.city_id')
+            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+            ->where('areas.deleted_at', NULL)
+            ->where('areas.city_id', $admin->city_id)
+            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }
+        return $area;
     }
 
     public function getCount($args = [])

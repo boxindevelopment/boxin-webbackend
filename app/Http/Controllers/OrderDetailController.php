@@ -3,29 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\OrderDetailBox;
 use App\Model\PickupOrder;
-use App\Repositories\OrderRepository;
+use App\Repositories\OrderDetailRepository;
 
-class OrderController extends Controller
+class OrderDetailController extends Controller
 {
-    protected $order;
+    protected $repository;
 
-    public function __construct(OrderRepository $order)
+    public function __construct(OrderDetailRepository $repository)
     {
-        $this->order = $order;
-    }
-    /**
+        $this->repository = $repository;
+    }/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-      $order   = $this->order->all();
-      return view('orders.index', compact('order'));
+      $order   = $this->repository->all();
+      return view('storage.index', compact('order'));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 @section('plugin_css')
   <!-- page css -->
-  <link href="{{asset('assets/css/pages/card-pages.css')}}" rel="stylesheet">
+  <link href="{{asset('assets/css/pages/user-card.css')}}" rel="stylesheet">
   <!-- Popup CSS -->
   <link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
@@ -37,19 +37,32 @@
 <!-- ============================================================== -->
 
 
-<div class="card-columns el-element-overlay">
+<div class="row el-element-overlay">
     @foreach ($detail_order_box as $key => $value)
-    <div class="card">
-        <div class="el-card-item">
-            <div class="el-card-avatar el-overlay-1">
-                <a class="image-popup-vertical-fit" href="{{asset('images/detail_item_box/')}}/{{ $value->item_image }}"> <img src="{{asset('images/detail_item_box/')}}/{{ $value->item_image }}" alt="image" /> </a>
+    @php
+      $url = 'https://boxin-dev-order.azurewebsites.net/images/detail_item_box/';
+    @endphp
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="el-card-item">
+                <div class="el-card-avatar el-overlay-1"> <img src="{{$url}}{{ $value->item_image }}" alt="user" />
+                    <div class="el-overlay">
+                        <ul class="el-info">
+                            <li><a class="btn default btn-outline image-popup-vertical-fit" href="{{$url}}{{ $value->item_image }}"><i class="icon-magnifier"></i></a></li>
+                            <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="icon-link"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="el-card-content">
+                  <h3 class="box-title">{{ $value->item_name }}</h3> <small>{{ $value->note }}</small>
+                    <br/> 
+                </div>
             </div>
-            <div class="el-card-content">
-                <h3 class="box-title">{{ $value->item_name }}</h3> <small>{{ $value->note }}</small>
-                <br/> </div>
         </div>
     </div>
+    
     @endforeach
+    
 </div>
 <!-- ============================================================== -->
 <!-- End Page Content -->

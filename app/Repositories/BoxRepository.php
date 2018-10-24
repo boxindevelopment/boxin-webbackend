@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Model\Box;
+use App\Model\AdminCity;
 use App\Repositories\Contracts\BoxRepository as BoxRepositoryInterface;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class BoxRepository implements BoxRepositoryInterface
 {
@@ -22,7 +24,20 @@ class BoxRepository implements BoxRepositoryInterface
     
     public function all()
     {
-        return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        if(Auth::user()->roles_id == 3){
+            $boxes = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }else if(Auth::user()->roles_id == 2){
+            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+            $boxes = $this->model->select('boxes.*')
+            ->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id')
+            ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
+            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
+            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+            ->where('spaces.deleted_at', NULL)
+            ->where('areas.city_id', $admin->city_id)
+            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }
+        return $boxes;
     }
 
     public function getById($id)

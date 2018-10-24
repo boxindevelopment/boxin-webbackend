@@ -39,15 +39,21 @@
                     <div class="col-md-6" style="background-color: aliceblue;">
                       @foreach ($data as $key => $value)
                       <div class="form-group">
+                        <label>Name </label>
+                        <p>{{ $value->order_detail->order->user->first_name }} {{ $value->order_detail->order->user->last_name }}</p>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone / Email</label>
+                        <p>{{ $value->order_detail->order->user->phone }} / {{ $value->order_detail->order->user->email }}</p>
+                      </div>
+                      <div class="form-group">
                         <label>Datetime </label>
                         <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
                       </div>
-
                       <div class="form-group">
                         <label>Address </label>
                         <p>{{ $value->address }}</p>
                       </div>
-
                       <div class="form-group">
                         <label>Note </label>
                         <p>{{ $value->note }}</p>
@@ -60,10 +66,8 @@
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
-                          <option value=""></option>
                             <option value="11"{{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On The Way</option>
-                            <option value="3" {{ $value->status_id == 3 ? 'selected' : '' }}>Upcoming</option>
+                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                             <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finish</option>
                         </select>
                       </div>

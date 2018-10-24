@@ -17,21 +17,13 @@ class ReturnBoxesController extends Controller
      */
     public function index()
     {
-      $data1   = ReturnBoxes::select('return_boxes.*', 'users.first_name',  'users.last_name')
+      $data   = ReturnBoxes::select('return_boxes.*', 'users.first_name',  'users.last_name')
         ->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id')
         ->leftJoin('orders','orders.id','=','order_details.order_id')
         ->leftJoin('users','users.id','=','orders.user_id')
-        ->where('return_boxes.types_of_pickup_id', 1)
         ->orderBy('return_boxes.id', 'DESC')
         ->get();
-      $data2   = ReturnBoxes::select('return_boxes.*', 'users.first_name',  'users.last_name')
-        ->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id')
-        ->leftJoin('orders','orders.id','=','order_details.order_id')
-        ->leftJoin('users','users.id','=','orders.user_id')
-        ->where('return_boxes.types_of_pickup_id', 2)
-        ->orderBy('return_boxes.id', 'DESC')
-        ->get();
-      return view('returnbox.index', compact('data1', 'data2'));
+      return view('returnbox.index', compact('data'));
     }
 
     /**

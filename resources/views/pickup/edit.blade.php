@@ -38,33 +38,35 @@
                 <div class="row">
                     <div class="col-md-6" style="background-color: aliceblue;">
                       @foreach ($pickup as $key => $value)
-
-                      <!-- pickup delivery box  -->
-                      @if ($value->types_of_pickup_id == 1)
-                      <div class="form-group">
-                        <label>Datetime </label>
-                        <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Address </label>
-                        <p>{{ $value->address }}</p>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Note </label>
-                        <p>{{ $value->note }}</p>
-                      </div>
+                        <div class="form-group">
+                          <label>Name </label>
+                          <p>{{ $value->order->user->first_name }} {{ $value->order->user->last_name }}</p>
+                        </div>
+                        <div class="form-group">
+                          <label>Phone / Email</label>
+                          <p>{{ $value->order->user->phone }} / {{ $value->order->user->email }}</p>
+                        </div>
+                        <div class="form-group">
+                          <label>Datetime </label>
+                          <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                        </div>
+                        <div class="form-group">
+                          <label>Address </label>
+                          <p>{{ $value->address }}</p>
+                        </div>
+                        <div class="form-group">
+                          <label>Note </label>
+                          <p>{{ $value->note }}</p>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
+                      @if ($value->types_of_pickup_id == 1)
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
-                          <option value=""></option>
                             <option value="11"{{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On The Way</option>
-                            <option value="3" {{ $value->status_id == 3 ? 'selected' : '' }}>Upcoming</option>
+                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                             <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
                         </select>
                       </div>

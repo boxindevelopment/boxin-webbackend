@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Return Boxes
+          Storage
         </h3>
     </div>
 </div>
@@ -31,68 +31,60 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>Delivery Box</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Storage</h4>
 
               @include('error-template')
 
               <div class="table-responsive m-t-10">
-                  <table id="table-data1" class="table table-striped table-bordered">
+                  <table id="table-pickup1" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                           <th width="5%">No</th>
-                          <th width="">Customer Name</th>
-                          <th width="15%" class="text-center">Type</th>
-                          <th width="15%" class="text-center">Status</th>
-                          <th width="5%" class="text-center no-sort">Action</th>
+                          <th width="">Name</th>
+                          <th width="12%">Duration</th>
+                          <th width="15%" style="text-align: right;">Amount (Rp)</th>
+                          <th width="20%" class="text-center">StartDate - EndDate</th>
+                          <th width="10%" class="text-center no-sort">Status</th>
+                          <th width="10%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($data) > 0)
-                        @foreach ($data as $key => $value)
-                          @php
-                            if($value->types_of_pickup_id == 1){
-                              $label1  = 'label-warning';
-                              $name    = 'Delivery Box';
-                            }else if($value->types_of_pickup_id == 2){
-                              $label1  = 'label-primary';
-                              $name    = 'Box On Warehouse';
-                            }
-                            
-                            if($value->status_id == 11){
-                              $label = 'label-danger';
-                            }else if($value->status_id == 2 || $value->status_id == 3){
-                              $label = 'label-warning';
-                            }else{
-                              $label = 'label-success';
-                            }
-                          @endphp
+                      @if(count($order) > 0)
+                        @foreach ($order as $key => $value)
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}}</td>
+                            <td align="center">{{ $key+1 }}</th>
+                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
+                            <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
+                            <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
                             <td class="text-center">
-                              <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
-                            </td>
-                            <td class="text-center">
+                              @php
+                                if($value->status_id == 11){
+                                  $label = 'label-danger';
+                                }else if($value->status_id == 2 || $value->status_id == 3){
+                                  $label = 'label-warning';
+                                }else{
+                                  $label = 'label-success';
+                                }
+                              @endphp
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
-                            <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('return.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                            <td>
+                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
                             </td>
                           </tr>
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="5" class="text-center">There are no results yet</td>
+                          <td colspan="7" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>
                 </table>
               </div>
-
             </div>
         </div>
     </div>
-
 </div>
 <!-- ============================================================== -->
 <!-- End Page Content -->
@@ -110,10 +102,10 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-data1').DataTable({
+  $('#table-pickup1').DataTable({
     "aaSorting": []
   });
-  $('#table-data2').DataTable({
+  $('#table-pickup2').DataTable({
     "aaSorting": []
   });
 

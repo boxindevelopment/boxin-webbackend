@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Model\Room;
+use App\Model\AdminCity;
 use App\Repositories\Contracts\RoomRepository as RoomRepositoryInterface;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class RoomRepository implements RoomRepositoryInterface
 {
@@ -22,7 +24,20 @@ class RoomRepository implements RoomRepositoryInterface
     
     public function all()
     {
-        return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        if(Auth::user()->roles_id == 3){
+            $room = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }else if(Auth::user()->roles_id == 2){
+            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+            $room = $this->model->select('rooms.*')
+            ->leftJoin('spaces', 'spaces.id', '=', 'rooms.space_id')
+            ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
+            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
+            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+            ->where('spaces.deleted_at', NULL)
+            ->where('areas.city_id', $admin->city_id)
+            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }
+        return $room;
     }
 
     public function getCount($args = [])

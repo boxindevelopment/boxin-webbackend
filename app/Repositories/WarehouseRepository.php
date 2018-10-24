@@ -3,8 +3,10 @@
 namespace App\Repositories;
 
 use App\Model\Warehouse;
+use App\Model\AdminCity;
 use App\Repositories\Contracts\WarehouseRepository as WarehouseRepositoryInterface;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class WarehouseRepository implements WarehouseRepositoryInterface
 {
@@ -22,7 +24,18 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     
     public function all()
     {
-        return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        if(Auth::user()->roles_id == 3){
+            $warehouse = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }else if(Auth::user()->roles_id == 2){
+            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+            $warehouse = $this->model->select('warehouses.*')
+            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
+            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+            ->where('warehouses.deleted_at', NULL)
+            ->where('areas.city_id', $admin->city_id)
+            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        }
+        return $warehouse;
     }
 
     public function getCount($args = [])
