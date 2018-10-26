@@ -2,16 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Model\Area;
+use App\Model\PickupOrder;
 use App\Model\AdminCity;
-use App\Repositories\Contracts\AreaRepository as AreaRepositoryInterface;
+use App\Repositories\Contracts\PickupOrderRepository as PickupOrderRepositoryInterface;
+use DB;
 use Illuminate\Support\Facades\Auth;
 
-class AreaRepository implements AreaRepositoryInterface
+class PickupOrderRepository implements PickupOrderRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Area $model)
+    public function __construct(PickupOrder $model)
     {
         $this->model = $model;
     }
@@ -25,13 +26,18 @@ class AreaRepository implements AreaRepositoryInterface
     {
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('areas.id', 'areas.name', 'areas.city_id');
+        $data = $data->select('pickup_orders.id', 'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',  'users.last_name');
+        $data = $data->leftJoin('orders','orders.id','=','pickup_orders.order_id');
+        $data = $data->leftJoin('users','users.id','=','orders.user_id');
         if(Auth::user()->roles_id == 2){
+            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id');
+            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
             $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
             $data = $data->where('areas.city_id', $admin->city_id);
         }
-        $data = $data->where('areas.deleted_at', NULL);
-        $data = $data->orderBy('areas.updated_at', 'DESC')->orderBy('id','DESC');
+        $data = $data->where('pickup_orders.status_id', '!=', 4);
+        $data = $data->orderBy('pickup_orders.status_id', 'DESC')->orderBy('id', 'ASC');
         $data = $data->get();
         return $data;
     }
@@ -43,47 +49,29 @@ class AreaRepository implements AreaRepositoryInterface
     public function getData($args = [])
     {
 
-        $area = $this->model->select()
+        $data = $this->model->select()
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('name', 'like', '%'.$args['searchValue'].'%')
                 ->skip($args['start'])
                 ->take($args['length'])
                 ->get();
 
-        return $area->toArray();
+        return $data->toArray();
 
     }
-
-    public function getSelect($city_id)
-    {
-
-        $area = $this->model->select()->where('city_id', $city_id)->where('deleted_at', NULL)->orderBy('name')->get();
-
-        return $area;
-
-    }
-
-    public function getSelectAll($args = [])
-    {
-
-        $area = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
-
-        return $area;
-
-    }
-
+    
     public function create(array $data)
     {
         return $this->model->create($data);
     }
     
-    public function update(Area $area, $data)
+    public function update(PickupOrder $order, $data)
     {
-        return $area->update($data);
+        return $order->update($data);
     }
 
-    public function delete(Area $area)
+    public function delete(PickupOrder $order)
     {
-        return $area->delete();
+        return $order->delete();
     }
 }

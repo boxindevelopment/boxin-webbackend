@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Space;
 use App\Model\Warehouse;
+use App\Model\Box;
 use App\Model\Room;
 use Carbon;
 use App\Repositories\SpaceRepository;
@@ -126,6 +127,14 @@ class SpaceController extends Controller
         $room = Room::find($room_[$i]->id);
         $room->deleted_at = Carbon\Carbon::now();
         $room->save();
+      }
+
+      $box_         = Box::where('space_id', $id)->get();
+      $count_box    = count($box_);
+      for ($a = 0; $a < $count_box ; $a++) {
+        $box = Box::find($box_[$a]->id);
+        $box->deleted_at = Carbon\Carbon::now();
+        $box->save();
       }
 
       $space = $this->space->find($id);

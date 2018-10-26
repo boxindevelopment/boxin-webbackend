@@ -81,6 +81,11 @@
                       <input type="text" name="location" class="form-control" placeholder="Enter Location" value="" >
                     </div> 
 
+                    <div class="form-group">
+                      <label>Total Box <span class="text-danger">*</span></label>
+                      <input type="number" name="count_box" class="form-control" placeholder="How many boxes do you want to create?" min=1 required >
+                    </div> 
+
                   </div>
 
                 </div>

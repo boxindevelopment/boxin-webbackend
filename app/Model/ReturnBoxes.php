@@ -8,8 +8,10 @@ class ReturnBoxes extends Model
 {
     protected $table = 'return_boxes';
 
+    protected $dates = ['date'];
+
     protected $fillable = [
-        'order_detail_id', 'types_of_pickup_id', 'address', 'longitute', 'latitude', 'date', 'time', 'note', 'status_id', 'deliver_fee', 'driver_name', 'driver_phone'
+        'order_detail_id', 'types_of_pickup_id', 'address', 'longitute', 'latitude', 'date', 'time', 'time_pickup', 'note', 'status_id', 'deliver_fee', 'driver_name', 'driver_phone'
     ];
 
     public function order_detail()

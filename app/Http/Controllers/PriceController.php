@@ -22,8 +22,8 @@ class PriceController extends Controller
      */
     public function index()
     {
-      $boxes   = Price::where('types_of_box_room_id', 1)->orderBy('id')->get();
-      $rooms   = Price::where('types_of_box_room_id', 2)->orderBy('id')->get();
+      $boxes   = $this->price->all(1);
+      $rooms   = $this->price->all(2);
       return view('settings.price.index', compact('boxes', 'rooms'));
     }
 
@@ -67,7 +67,7 @@ class PriceController extends Controller
      */
     public function edit($id)
     {
-      $data     = Price::where('id',$id)->get();
+      $data     = $this->price->getById($id);
       return view('settings.price.edit', compact('data', 'id'));
     }
 

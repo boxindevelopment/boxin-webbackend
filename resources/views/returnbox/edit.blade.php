@@ -48,7 +48,7 @@
                       </div>
                       <div class="form-group">
                         <label>Datetime </label>
-                        <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                        <p><?php echo date("d M Y", strtotime($value->date)); ?> ({{ $value->time_pickup }})</p>
                       </div>
                       <div class="form-group">
                         <label>Address </label>
@@ -81,6 +81,11 @@
                         <label>Driver Phone <span class="text-danger">*</span></label>
                         <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
                       </div>
+
+                      <div class="form-group">
+                        <label>Return Price Delivery <span class="text-danger">*</span></label>
+                        <input type="number" name="deliver_fee" class="form-control" placeholder="Enter Return Price Delivery" value="{{ $value->deliver_fee }}" min=0 required>
+                      </div>
                       @endif
                       <!-- end return delivery box  -->
 
@@ -89,7 +94,6 @@
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
-                          <option value=""></option>
                             <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
                             <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finish</option>
                         </select>

@@ -50,31 +50,33 @@ class BoxController extends Controller
     {
       $this->validate($request, [
         'space_id'  => 'required',
-        'type_size_id' => 'required',
+        'type_size_id' => 'required',        
+        'count_box' => 'required',
       ]);
 
-      $type_size = TypeSize::where('id', $request->type_size_id)->get();
+      $type_size = TypeSize::where('id', $request->type_size_id)->first();
       $name = $request->name;
       if($name == ''){
-        $name = $type_size[0]->name;
+        $name = $type_size->name;
       }
       
-      $box = Box::create([
-        'types_of_size_id'  => $request->type_size_id,
-        'space_id'          => $request->space_id,
-        'name'              => $name,
-        'location'          => $request->location,
-        'status_id'         => 10,
-      ]);
+      for($i=0; $i<$request->count_box;$i++){
+        $box = Box::create([
+          'types_of_size_id'  => $request->type_size_id,
+          'space_id'          => $request->space_id,
+          'name'              => $name,
+          'location'          => $request->location,
+          'status_id'         => 10,
+        ]);
 
-      $boxes    = $this->box->find($box->id);
-      $date     = strtotime($boxes->created_at);
-      $barcode  = $date .''. rand(01, 99) .''. $box->id;
-      $boxes->barcode = $barcode;
-      $boxes->save();
-
+        $boxes    = $this->box->find($box->id);
+        $date     = date('Ymd', strtotime($boxes->created_at));
+        $barcode  = $date .''. rand(01, 99) .''. $box->id;
+        $boxes->barcode = $barcode;
+        $boxes->save();
+      }
       if($box){
-        return redirect()->route('box.index')->with('success', 'Add : [' . $name . ' Box] success.');
+        return redirect()->route('box.index')->with('success', 'Add : [' . $name . '] success.');
       } else {
         return redirect()->route('box.index')->with('error', 'Add New Box failed.');
       }

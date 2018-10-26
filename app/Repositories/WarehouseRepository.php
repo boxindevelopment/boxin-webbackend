@@ -24,18 +24,18 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     
     public function all()
     {
-        if(Auth::user()->roles_id == 3){
-            $warehouse = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
-        }else if(Auth::user()->roles_id == 2){
-            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-            $warehouse = $this->model->select('warehouses.*')
-            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
-            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-            ->where('warehouses.deleted_at', NULL)
-            ->where('areas.city_id', $admin->city_id)
-            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $data = $this->model->query();
+        $data = $data->select('warehouses.id', 'warehouses.name', 'warehouses.area_id', 'warehouses.lat', 'warehouses.long');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
+            $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
+            $data = $data->where('areas.city_id', $admin->city_id);
         }
-        return $warehouse;
+        $data = $data->where('warehouses.deleted_at', NULL);
+        $data = $data->orderBy('warehouses.updated_at', 'DESC')->orderBy('warehouses.id','DESC');
+        $data = $data->get();
+        return $data;
     }
 
     public function getCount($args = [])

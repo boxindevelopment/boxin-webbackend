@@ -41,7 +41,7 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="">Customer Name</th>
-                          <th width="15%" class="text-center">Type</th>
+                          <th width="15%" class="text-center">Box Pickup</th>
                           <th width="15%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
@@ -52,10 +52,10 @@
                           @php
                             if($value->types_of_pickup_id == 1){
                               $label1  = 'label-warning';
-                              $name    = 'Delivery Box';
+                              $name    = 'Deliver to user';
                             }else if($value->types_of_pickup_id == 2){
                               $label1  = 'label-primary';
-                              $name    = 'Box On Warehouse';
+                              $name    = 'User pickup';
                             }
                             
                             if($value->status_id == 11){
@@ -68,7 +68,7 @@
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}}</td>
+                            <td>{{ $value->first_name}} {{ $value->last_name}} {{ $value->order_id}}</td>
                             <td class="text-center">
                               <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
                             </td>

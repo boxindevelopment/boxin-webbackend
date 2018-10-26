@@ -10,7 +10,7 @@ class City extends Model
     protected $table = 'cities';
 
     protected $fillable = [
-        'name'
+        'name', 'id_name'
     ];
 
     public function area()
@@ -22,4 +22,9 @@ class City extends Model
   	{
       	return $this->hasMany('App\Model\AdminCity', 'city_id', 'id');
   	}
+
+    public function price()
+    {
+        return $this->hasMany('App\Model\Price', 'city_id', 'id');
+    }
 }

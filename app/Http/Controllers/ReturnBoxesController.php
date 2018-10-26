@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\ReturnBoxes;
-use App\Model\Order;
-use App\Model\OrderDetail;
-use Carbon;
+use App\Repositories\ReturnBoxesRepository;
 
 class ReturnBoxesController extends Controller
 {
+    protected $repository;
+
+    public function __construct(ReturnBoxesRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,12 +21,7 @@ class ReturnBoxesController extends Controller
      */
     public function index()
     {
-      $data   = ReturnBoxes::select('return_boxes.*', 'users.first_name',  'users.last_name')
-        ->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id')
-        ->leftJoin('orders','orders.id','=','order_details.order_id')
-        ->leftJoin('users','users.id','=','orders.user_id')
-        ->orderBy('return_boxes.id', 'DESC')
-        ->get();
+      $data   = $this->repository->all();
       return view('returnbox.index', compact('data'));
     }
 
@@ -66,7 +65,7 @@ class ReturnBoxesController extends Controller
      */
     public function edit($id)
     {
-      $data     = ReturnBoxes::where('id',$id)->get();
+      $data     = $this->repository->getById($id);
       return view('returnbox.edit', compact('data', 'id'));
     }
 
@@ -87,6 +86,7 @@ class ReturnBoxesController extends Controller
         $return->status_id      = $request->status_id;
         $return->driver_name    = $request->driver_name;
         $return->driver_phone   = $request->driver_phone;
+        $return->deliver_fee    = $request->deliver_fee;
         $return->save();
 
         if($return){

@@ -97,7 +97,7 @@
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create') ? 'active' : null }}">
+                <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create')||Route::currentRouteNamed('return.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
                     <span class="hide-menu">Return Boxes</span>
@@ -122,6 +122,7 @@
                     </li>
                   </ul>
                 </li>
+                @endif
                 
                 <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
                   <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
@@ -129,18 +130,19 @@
                     <span class="hide-menu">Settings</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
+                    @if(Auth::user()->roles_id == 3)
                     <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
                       <a href="{{ route('types-of-size.index') }}"><i class="fa fa-circle"></i> &nbsp;Types of Size</a>
                     </li>
+                    @endif
                     <li class="{{ Route::currentRouteNamed('price.index')||Route::currentRouteNamed('price.edit') ? 'active' : null }}">
                       <a href="{{ route('price.index') }}"><i class="fa fa-circle"></i> &nbsp;Price</a>
                     </li>
-                    <li class="{{ Route::currentRouteNamed('setting.create')||Route::currentRouteNamed('setting.index')||Route::currentRouteNamed('setting.edit') ? 'active' : null }}">
+                   <!--  <li class="{{ Route::currentRouteNamed('setting.create')||Route::currentRouteNamed('setting.index')||Route::currentRouteNamed('setting.edit') ? 'active' : null }}">
                       <a href="{{ route('setting.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>
-                    </li>
+                    </li> -->
                   </ul>
                 </li>
-                @endif
 
             </ul>
         </nav>

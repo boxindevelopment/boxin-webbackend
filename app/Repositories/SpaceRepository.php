@@ -24,19 +24,19 @@ class SpaceRepository implements SpaceRepositoryInterface
     
     public function all()
     {
-        if(Auth::user()->roles_id == 3){
-            $space = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
-        }else if(Auth::user()->roles_id == 2){
-            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-            $space = $this->model->select('spaces.*')
-            ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
-            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
-            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-            ->where('spaces.deleted_at', NULL)
-            ->where('areas.city_id', $admin->city_id)
-            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $data = $this->model->query();
+        $data = $data->select('spaces.id', 'spaces.name', 'spaces.warehouse_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
+            $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
+            $data = $data->where('areas.city_id', $admin->city_id);
         }
-        return $space;
+        $data = $data->where('spaces.deleted_at', NULL);
+        $data = $data->orderBy('spaces.updated_at', 'DESC')->orderBy('spaces.id','DESC');
+        $data = $data->get();
+        return $data;
     }
 
     public function getCount($args = [])

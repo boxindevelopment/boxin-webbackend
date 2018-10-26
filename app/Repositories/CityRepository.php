@@ -6,6 +6,7 @@ use App\Model\City;
 use App\Model\AdminCity;
 use App\Repositories\Contracts\CityRepository as CityRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class CityRepository implements CityRepositoryInterface
 {
@@ -53,6 +54,31 @@ class CityRepository implements CityRepositoryInterface
             $city = $this->model->select()->where('deleted_at', NULL)->where('id', $admin->city_id)->orderBy('name')->get();
         }
         return $city;
+    }
+
+    public function insertPrice($id_city)
+    {
+        DB::table('prices')->insert([
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 2, 'price' => 0, ],
+            [ 'city_id' => $id_city, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 3, 'price' => 0, ],
+        ]);
+        return true;
     }
 
     public function create(array $data)

@@ -24,20 +24,20 @@ class BoxRepository implements BoxRepositoryInterface
     
     public function all()
     {
-        if(Auth::user()->roles_id == 3){
-            $boxes = $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
-        }else if(Auth::user()->roles_id == 2){
-            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-            $boxes = $this->model->select('boxes.*')
-            ->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id')
-            ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
-            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
-            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-            ->where('spaces.deleted_at', NULL)
-            ->where('areas.city_id', $admin->city_id)
-            ->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
+        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $data = $this->model->query();
+        $data = $data->select('boxes.*');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id');
+            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
+            $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
+            $data = $data->where('areas.city_id', $admin->city_id);
         }
-        return $boxes;
+        $data = $data->where('boxes.deleted_at', NULL);      
+        $data = $data->orderBy('boxes.updated_at', 'DESC')->orderBy('boxes.id','DESC');
+        $data = $data->get();
+        return $data;
     }
 
     public function getById($id)

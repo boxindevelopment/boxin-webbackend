@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use App\Model\PickupOrder;
 use App\Model\Order;
 use App\Model\OrderDetail;
-use Carbon;
 use DB;
+use App\Repositories\PickupOrderRepository;
 
 class PickupController extends Controller
 {
+    protected $repository;
+
+    public function __construct(PickupOrderRepository $repository)
+    {
+        $this->repository = $repository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,13 +24,8 @@ class PickupController extends Controller
      */
     public function index()
     {
-      $pickup   = PickupOrder::select('pickup_orders.*', 'users.first_name',  'users.last_name')
-        ->leftJoin('orders','orders.id','=','pickup_orders.order_id')
-        ->leftJoin('users','users.id','=','orders.user_id')
-        ->where('pickup_orders.status_id', '!=', 4)
-        ->orderBy('pickup_orders.status_id', 'DESC')
-        ->orderBy('id', 'ASC')
-        ->get();
+      
+      $pickup = $this->repository->all();
       return view('pickup.index', compact('pickup'));
     }
 
@@ -104,6 +105,7 @@ class PickupController extends Controller
         $pickup->status_id      = $status;
         $pickup->driver_name    = $request->driver_name;
         $pickup->driver_phone   = $request->driver_phone;
+        $pickup->pickup_fee     = $request->pickup_fee;
         $pickup->save();
 
         if($pickup){

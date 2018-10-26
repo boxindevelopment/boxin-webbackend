@@ -80,6 +80,11 @@
                         <label>Driver Phone <span class="text-danger">*</span></label>
                         <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
                       </div>
+
+                      <div class="form-group">
+                        <label>Pickup Price Delivery <span class="text-danger">*</span></label>
+                        <input type="number" name="pickup_fee" class="form-control" placeholder="Enter Price Delivery" value="{{ $value->pickup_fee }}" required>
+                      </div>
                       @endif
                       <!-- end pickup delivery box  -->
 

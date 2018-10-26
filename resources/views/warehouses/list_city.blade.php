@@ -43,6 +43,7 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
+                      <input type="hidden" name="id_name" value="{{ $id_name }}" required>
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
@@ -68,8 +69,9 @@
                   <thead>
                       <tr>
                         <th width="5%">No</th>
+                        <th width="15%">ID Name</th>
                         <th width="">Name</th>
-                        <th width="20%" class="text-center no-sort">Action</th>
+                        <th width="10%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -77,13 +79,14 @@
                       @foreach ($city as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
-                          <td>{{ $value->name }} {{ $value->id }}</td>
+                          <td align="center">{{ $value->id_name }}</td>
+                          <td>{{ $value->name }}</td>
                           <td class="text-center">
                             <form action="{{route('warehouses-city.destroy', ['id' => $value->id])}}" method="post">
                               @csrf
-                              <a class="btn btn-info btn-sm" href="{{route('warehouses-city.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
+                              <a class="btn btn-info btn-sm" href="{{route('warehouses-city.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i> </a>
                               @method('DELETE')
-                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                              <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i> </button>
                             </form>
                           </td>
                         </tr>

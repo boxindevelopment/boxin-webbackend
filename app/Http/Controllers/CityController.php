@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\City;
 use App\Model\Area;
+use App\Model\Price;
 use Carbon;
 use App\Repositories\CityRepository;
+use DB;
 
 class CityController extends Controller
 {
@@ -25,8 +27,9 @@ class CityController extends Controller
      */
     public function index()
     {
-      $city = $this->city->all();
-      return view('warehouses.list_city', compact('city'));
+      $id_name  = $this->id_name();
+      $city     = $this->city->all();
+      return view('warehouses.list_city', compact('city', 'id_name'));
     }
 
     /**
@@ -48,10 +51,13 @@ class CityController extends Controller
     public function store(Request $request)
     {
       $cities = City::create([
-        'name' => $request->name
+        'name' => $request->name,
+        'id_name' => $request->id_name,
       ]);
 
       if($cities){
+        $this->city->insertPrice($cities->id);
+        
         return redirect()->route('warehouses-city.index')->with('success', 'Warehouse City : [' . $request->name . '] inserted.');
       } else {
         return redirect()->route('warehouses-city.index')->with('error', 'Add New Warehouse City failed.');
@@ -94,6 +100,7 @@ class CityController extends Controller
       $city           = City::find($id);
       $name           = $city->name;
       $city->name     = $request->name;
+      $city->id_name  = $request->id_name;
       $city->save();
 
       if($city){
@@ -145,4 +152,16 @@ class CityController extends Controller
         echo(json_encode($arrCities));
 
     }
+
+    private function id_name()
+    {
+
+        $sql    = City::orderBy('number', 'desc')->first(['id_name', DB::raw('substring(id_name,1,2) as number')]);
+        $number = isset($sql->number) ? $sql->number : 0;
+        $code   = str_pad($number + 1, 2, "0", STR_PAD_LEFT);
+
+        return $code;
+
+    }
+
 }
