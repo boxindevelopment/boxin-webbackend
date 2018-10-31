@@ -43,9 +43,10 @@
                   <thead>
                       <tr>
                         <th width="5%">No</th>
+                        <th width="15%" class="text-center">Code Number</th>
                         <th width="">Name</th>
                         <th width="30%">Warehouse</th>
-                        <th width="20%" class="text-center no-sort">Action</th>
+                        <th width="5%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -53,14 +54,15 @@
                       @foreach ($space as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
+                          <td align="center">{{ $value->id_name }}</td>
                           <td>{{ $value->name }}</td>
                           <td>{{ $value->warehouse->name }}</td>
                           <td class="text-center">
                             <form action="{{route('space.destroy', ['id' => $value->id])}}" method="post">
                               @csrf
-                              <a class="btn btn-info btn-sm" href="{{route('space.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
+                              <a class="btn btn-info btn-sm" href="{{route('space.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                               @method('DELETE')
-                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                             </form>
                           </td>
                         </tr>

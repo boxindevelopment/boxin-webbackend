@@ -37,6 +37,7 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-6">
+                      <input type="hidden" name="id_name" value="{{ $city->id_name }}" required>
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $city->name }}" required>

@@ -26,8 +26,9 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
     {
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('pickup_orders.id', 'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',  'users.last_name');
-        $data = $data->leftJoin('orders','orders.id','=','pickup_orders.order_id');
+        $data = $data->select('pickup_orders.id', 'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',  'users.last_name', 'order_details.id_name');
+        $data = $data->leftJoin('orders','orders.id','=','pickup_orders.order_id');        
+        $data = $data->leftJoin('order_details','order_details.order_id','=','orders.id');
         $data = $data->leftJoin('users','users.id','=','orders.user_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id');

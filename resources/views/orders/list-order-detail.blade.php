@@ -45,12 +45,13 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="15%">OrderID</th>
                           <th width="">Name</th>
                           <th width="12%">Duration</th>
                           <th width="15%" style="text-align: right;">Amount (Rp)</th>
                           <th width="20%" class="text-center">StartDate - EndDate</th>
                           <th width="10%" class="text-center no-sort">Status</th>
-                          <th width="10%" class="text-center no-sort">Action</th>
+                          <th width="8%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +59,7 @@
                         @foreach ($detail_order as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
+                            <td>{{ $value->id_name }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
@@ -75,7 +77,7 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
+                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Detail</a>
                             </td>
                           </tr>
                         @endforeach

@@ -14,13 +14,17 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('room', 'RoomController')->except(['show']);
   Route::resource('box', 'BoxController')->except(['show']);
   Route::get('barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
-
   
   Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
   Route::get('/area/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelectByCity', 'as' => 'area.getDataSelect']);
   Route::get('/area/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);  
-  Route::get('/warehouse/dataSelect/{area_id}', ['uses' => 'WarehousesController@getDataSelectByArea', 'as' => 'warehouses.getDataSelectByArea']);
+  Route::get('/area/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);  
+  Route::get('/warehouse/dataSelect/{area_id}', ['uses' => 'WarehousesController@getDataSelectByArea', 'as' => 'warehouses.getDataSelectByArea']);  
+  Route::get('/warehouse/getNumber', ['uses' => 'WarehousesController@getNumber', 'as' => 'warehouses.getNumber']);  
   Route::get('/space/dataSelect/{warehouse_id}', ['uses' => 'SpaceController@getDataSelectByWarehouse', 'as' => 'space.getDataSelectByWarehouse']);
+  Route::get('/space/getNumber', ['uses' => 'SpaceController@getNumber', 'as' => 'space.getNumber']);  
+  Route::get('/box/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);  
+  Route::get('/room/getNumber', ['uses' => 'RoomController@getNumber', 'as' => 'room.getNumber']);  
   
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
@@ -31,8 +35,11 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('pickup', 'PickupController')->except(['show']);
 
-  Route::resource('storage', 'OrderDetailController')->except(['show']);
-
+  Route::resource('storage', 'OrderDetailController')->except(['show']);  
+  Route::prefix('storage')->group(function () {
+    Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
+  });
+  
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
 
   Route::resource('user', 'UserController')->except(['show']);

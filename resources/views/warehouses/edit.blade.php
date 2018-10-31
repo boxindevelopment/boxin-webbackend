@@ -54,6 +54,7 @@
                           @endif
                         </select>
                       </div> -->
+                      <input type="text" name="id_name_warehouse" id="id_name_warehouse" value="{{ $warehouse->id_name }}" required>
 
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>

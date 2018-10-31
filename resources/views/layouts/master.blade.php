@@ -149,8 +149,10 @@
                     tags: true,
                     data : arrs
                 }).on('change', function (e) {
-                    var city_id = $(this).val();
-                    area_Selectdata(city_id);
+                    var city_ext = $(this).val().split('##');
+                    var city_id = city_ext[0];
+                    get_id_number_area(city_ext[0], city_ext[1]);
+                    area_Selectdata(city_id, area_id);
 
                 });
                 if(values != ''){
@@ -165,6 +167,18 @@
             }
         }
         city_Selectdata('');
+
+        function get_id_number_area(city_id, city_number){
+
+            var data = $.ajax({
+                url: "{{ url('/area/getNumber') }}",
+                type: "GET",
+                data: { city_id : city_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_area"]').val(city_number + data);
+            });
+        }
 
         @if(isset($warehouse->area_id))
           area_Selectdata({{$warehouse->area_id}}, '');
@@ -205,7 +219,11 @@
                     tags: true,
                     data : arrs
                 }).on('change', function (e) {
-                    var area_id = $(this).val();
+                    var area_ext = $(this).val().split('##');
+                    console.log(area_ext);
+                    var area_id = area_ext[0];
+                    console.log(area_ext[0]);
+                    get_id_number_warehouse(area_ext[0], area_ext[1]);
                     warehouse_Selectdata(area_id);
                 })
 
@@ -219,6 +237,18 @@
                 $("#area_id").val(values).trigger("change");
                 warehouse_Selectdata(area_id);
             }
+        }
+
+        function get_id_number_warehouse(area_id, area_number){
+
+            var data = $.ajax({
+                url: "{{ url('/warehouse/getNumber') }}",
+                type: "GET",
+                data: { area_id : area_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_warehouse"]').val(area_number + data);
+            });
         }
 
         @if(isset($box->area_id))
@@ -256,7 +286,9 @@
                     tags: true,
                     data : arrs
                 }).on('change', function (e) {
-                    var warehouse_id = $(this).val();
+                    var warehouse_ext = $(this).val().split('##');
+                    var warehouse_id = warehouse_ext[0];
+                    get_id_number_space(warehouse_ext[0], warehouse_ext[1]);
                     space_Selectdata(warehouse_id);
                 });
 
@@ -270,12 +302,20 @@
             });
         }
 
+        function get_id_number_space(warehouse_id, warehouse_number){
+
+            var data = $.ajax({
+                url: "{{ url('/space/getNumber') }}",
+                type: "GET",
+                data: { warehouse_id : warehouse_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_space"]').val(warehouse_number + data);
+            });
+        }
+
         @if(isset($box->warehouse_id))
           space_Selectdata({{$box->warehouse_id}});
-        @endif
-
-        @if(isset($space->warehouse_id))
-          space_Selectdata({{$space->warehouse_id}});
         @endif
 
         @if(isset($room->warehouse_id))
@@ -304,15 +344,41 @@
                     tags: true,
                     data : arrs
                 }).on('change', function (e) {
-                    var space_id = $(this).val();
+                    var space_ext = $(this).val().split('##');
+                    var space_id = space_ext[0];
+                    get_id_number_box(space_ext[0], space_ext[1]);
+                    get_id_number_room(space_ext[0], space_ext[1]);
                 });
 
+                // if(space_id != ""){
+                //     $("#space_id").val(space_id).trigger("change");
+                // }else{
+                //     $("#space_id").val('').trigger("change");
+                // }
+            });
+        }
 
-                if(space_id != ""){
-                    $("#space_id").val(space_id).trigger("change");
-                }else{
-                    $("#space_id").val('').trigger("change");
-                }
+        function get_id_number_box(space_id, space_number){
+
+            var data = $.ajax({
+                url: "{{ url('/box/getNumber') }}",
+                type: "GET",
+                data: { space_id : space_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_box"]').val(space_number +'1'+ data);
+            });
+        }
+
+        function get_id_number_room(space_id, space_number){
+
+            var data = $.ajax({
+                url: "{{ url('/room/getNumber') }}",
+                type: "GET",
+                data: { space_id : space_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_room"]').val(space_number +'2'+ data);
             });
         }
 

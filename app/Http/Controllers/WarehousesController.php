@@ -48,26 +48,19 @@ class WarehousesController extends Controller
      */
     public function store(Request $request)
     {
-      $this->validate($request,[
-        'name' => 'required|max:255',
-      ]);
-
-      $area_id  = $request->area_id;
-      $name     = $request->name;
-      $longitude= $request->longitude;
-      $latitude = $request->latitude;
+      $split    = explode('##', $request->area_id);
+      $area_id  = $split[0];
 
       $warehouses = Warehouse::create([
-        'name'      => $name,
+        'name'      => $request->name,
         'area_id'   => $area_id,
-        'long'      => $longitude,
-        'lat'       => $latitude,
+        'long'      => $request->longitude,
+        'lat'       => $request->latitude,
+        'id_name'   => $request->id_name_warehouse,
       ]);
 
-      $name = $warehouses->name;
-
       if($warehouses){
-        return redirect()->route('warehouses.index')->with('success', 'New Warehouse ['.$name.'] added.');
+        return redirect()->route('warehouses.index')->with('success', 'New Warehouse ['.$request->name.'] added.');
       } else {
         return redirect()->route('warehouses.index')->with('error', 'Add New Warehouse failed.');
       }
@@ -93,7 +86,6 @@ class WarehousesController extends Controller
     public function edit($id)
     {
       $warehouse  = $this->warehouse->getEdit($id);
-      $warehouse  = $warehouse[0];
       return view('warehouses.edit', compact('id', 'warehouse'));
     }
 
@@ -106,24 +98,21 @@ class WarehousesController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $this->validate($request,[
-        'name' => 'required|max:255',
-      ]);
-
-      $area_id  = $request->area_id;
-      $name     = $request->name;
-      $longitude= $request->longitude;
-      $latitude = $request->latitude;
+      $split    = explode('##', $request->area_id);
+      $area_id  = $split[0];
 
       $warehouse  = $this->warehouse->find($id);
-      $warehouse->name      = $name;
-      $warehouse->area_id   = $area_id;
-      $warehouse->long      = $longitude;
-      $warehouse->lat       = $latitude;
+      $warehouse->name      = $request->name;
+      $warehouse->long      = $request->longitude;
+      $warehouse->lat       = $request->latitude;
+      if($warehouse->area_id != $area_id){
+        $warehouse->area_id   = $area_id;   
+        $warehouse->id_name   = $request->id_name_warehouse;
+      }          
       $warehouse->save();
 
       if($warehouse){
-        return redirect()->route('warehouses.index')->with('success', 'Warehouse ['.$name.'] edited.');
+        return redirect()->route('warehouses.index')->with('success', 'Warehouse ['.$request->name.'] edited.');
       } else {
         return redirect()->route('warehouses.index')->with('error', 'Edit Warehouse failed.');
       }
@@ -165,7 +154,7 @@ class WarehousesController extends Controller
         $arrData = array();
         foreach ($warehouse as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -179,11 +168,24 @@ class WarehousesController extends Controller
         $arrData = array();
         foreach ($warehouse as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
         echo(json_encode($arrData));
 
+    }
+
+    public function getNumber(Request $request)
+    {
+
+        $area_id = $request->input('area_id');
+        $sql     = Warehouse::where('area_id', '=', $area_id)
+        ->orderBy('id_name', 'desc')
+        ->first();
+        $id_number = isset($sql->id_name) ? substr($sql->id_name, 4) : 0;
+        $code      = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+
+        return $code;
     }
 }

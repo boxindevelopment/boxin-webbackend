@@ -10,7 +10,7 @@ class Space extends Model
     protected $table = 'spaces';
 
     protected $fillable = [
-        'warehouse_id', 'name'
+        'warehouse_id', 'name', 'id_name'
     ];
 
     public function warehouse()

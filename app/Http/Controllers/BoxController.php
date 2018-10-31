@@ -59,21 +59,25 @@ class BoxController extends Controller
       if($name == ''){
         $name = $type_size->name;
       }
-      
+      $split     = explode('##', $request->space_id);
+      $space_id  = $split[0];
+      $id_name   = $split[1];
+
       for($i=0; $i<$request->count_box;$i++){
+        $sql        = Box::where('space_id', '=', $space_id)->orderBy('id_name', 'desc')->first();
+        $id_number  = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
+        $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+
         $box = Box::create([
           'types_of_size_id'  => $request->type_size_id,
-          'space_id'          => $request->space_id,
+          'space_id'          => $space_id,
           'name'              => $name,
           'location'          => $request->location,
+          'id_name'           => $id_name.'1'.$code,
+          'barcode'           => $id_name.'1'.$code,
           'status_id'         => 10,
         ]);
-
-        $boxes    = $this->box->find($box->id);
-        $date     = date('Ymd', strtotime($boxes->created_at));
-        $barcode  = $date .''. rand(01, 99) .''. $box->id;
-        $boxes->barcode = $barcode;
-        $boxes->save();
+        $box->save();
       }
       if($box){
         return redirect()->route('box.index')->with('success', 'Add : [' . $name . '] success.');
@@ -102,7 +106,6 @@ class BoxController extends Controller
     public function edit($id)
     {
       $box      = $this->box->getEdit($id);
-      $box      = $box[0];
       $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
       return view('boxes.edit', compact('id', 'box', 'type_size'));
     }
@@ -116,25 +119,21 @@ class BoxController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $this->validate($request, [
-        'space_id'      => 'required',
-        'type_size_id'  => 'required',
-      ]);
-
-      $type_size              = TypeSize::where('id', $request->type_size_id)->get();
-      $name = $request->name;
-      if($name == ''){
-        $name = $type_size[0]->name;
-      }
-      $box                = $this->box->find($id);
-      $box->name          = $name;
+      $split     = explode('##', $request->space_id);
+      $space_id  = $split[0];
+      $box                    = $this->box->find($id);
+      $box->name              = $request->name;
       $box->types_of_size_id  = $request->type_size_id;
-      $box->space_id      = $request->space_id;
-      $box->location      = $request->location;
+      $box->location          = $request->location;
+      if($box->space_id != $space_id){
+        $box->space_id        = $space_id;
+        $box->id_name         = $request->id_name_box;
+        $box->barcode         = $request->id_name_box;
+      }   
       $box->save();
 
       if($box){
-        return redirect()->route('box.index')->with('success', 'Edit ['.$box->name.'] success.');
+        return redirect()->route('box.index')->with('success', 'Edit ['.$request->name.'] success.');
       } else {
         return redirect()->route('box.index')->with('error', 'Edit Box failed.');
       }
@@ -161,12 +160,23 @@ class BoxController extends Controller
     }
 
     public  function printBarcode($id){ 
-      // $produk =  Box::limit(12)->get(); 
       $produk  = $this->box->getById($id);
       $no = 1; 
       $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no')); 
       $pdf->setPaper('a7',  'landscape'); 
       return $pdf->stream(); 
+    }
+
+    public function getNumber(Request $request)
+    {
+        $space_id= $request->input('space_id');
+        $sql     = Box::where('space_id', '=', $space_id)
+                  ->orderBy('id_name', 'desc')
+                  ->first();
+        $id_number = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
+        $code      = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+
+        return $code;
     }
 
 }

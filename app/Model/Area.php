@@ -10,7 +10,7 @@ class Area extends Model
     protected $table = 'areas';
 
     protected $fillable = [
-        'city_id', 'name'
+        'city_id', 'name', 'id_name'
     ];
 
     public function city()

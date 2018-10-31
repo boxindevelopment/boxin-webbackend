@@ -40,6 +40,7 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="10%" class="text-center">OrderID</th>
                           <th width="">Name</th>
                           <th width="12%">Duration</th>
                           <th width="15%" style="text-align: right;">Amount (Rp)</th>
@@ -52,7 +53,8 @@
                       @if(count($order) > 0)
                         @foreach ($order as $key => $value)
                           <tr>
-                            <td align="center">{{ $key+1 }}</th>
+                            <td align="center">{{ $key+1 }}</tD>
+                            <td>{{ $value->id_name }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
@@ -70,7 +72,7 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->order_id])}}"><i class="fa fa-dropbox"></i> Box Detail</a>
+                              <a class="btn btn-primary btn-sm" href="{{route('storage.orderDetailBox', ['id' => $value->order_id])}}"><i class="fa fa-eye"></i></a>
                             </td>
                           </tr>
                         @endforeach

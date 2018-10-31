@@ -47,6 +47,7 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="10%" class="text-center">Code Number</th>
                           <th width="">Name</th>
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
@@ -61,6 +62,7 @@
                         @foreach ($box as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
+                            <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->type_size->name }}</td>
                             <td>{{ $value->type_size->size }}</td>

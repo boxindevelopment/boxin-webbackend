@@ -26,14 +26,15 @@ class SpaceRepository implements SpaceRepositoryInterface
     {
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('spaces.id', 'spaces.name', 'spaces.warehouse_id');
+        $data = $data->select('spaces.id', 'spaces.name', 'spaces.warehouse_id', 'spaces.id_name');
+        $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
-            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
             $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
             $data = $data->where('areas.city_id', $admin->city_id);
         }
         $data = $data->where('spaces.deleted_at', NULL);
+        $data = $data->where('areas.deleted_at', NULL);
         $data = $data->orderBy('spaces.updated_at', 'DESC')->orderBy('spaces.id','DESC');
         $data = $data->get();
         return $data;
@@ -82,7 +83,7 @@ class SpaceRepository implements SpaceRepositoryInterface
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('spaces.id', $id)
-                ->get();
+                ->first();
                 
         return $data;
     }

@@ -69,7 +69,7 @@
                   <thead>
                       <tr>
                         <th width="5%">No</th>
-                        <th width="15%">ID Name</th>
+                        <th width="15%">Code Number</th>
                         <th width="">Name</th>
                         <th width="10%" class="text-center no-sort">Action</th>
                       </tr>

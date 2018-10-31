@@ -10,7 +10,7 @@ class Warehouse extends Model
     protected $table = 'warehouses';
 
     protected $fillable = [
-        'area_id', 'name', 'lat', 'long'
+        'area_id', 'name', 'lat', 'long', 'id_name'
     ];
 
     public function area()

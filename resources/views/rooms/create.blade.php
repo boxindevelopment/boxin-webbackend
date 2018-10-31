@@ -36,6 +36,8 @@
                 @csrf
                 <div class="row">
                   <div class="col-md-6">
+                    <input type="hidden" name="id_name_room" id="id_name_room" required>
+
                     <div class="form-group">
                       <label for="">City <span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="city_id" name="city_id" required>

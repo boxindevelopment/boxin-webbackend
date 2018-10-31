@@ -40,6 +40,7 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="15%">OrderID</th>
                           <th width="">Customer Name</th>
                           <th width="15%" class="text-center">Box Pickup</th>
                           <th width="15%" class="text-center">Status</th>
@@ -52,28 +53,29 @@
                           @php
                             if($value->types_of_pickup_id == 1){
                               $label1  = 'label-warning';
-                              $name    = 'Deliver to user';
+                              $name1   = 'Deliver to user';
                             }else if($value->types_of_pickup_id == 2){
                               $label1  = 'label-primary';
-                              $name    = 'User pickup';
+                              $name1   = 'User pickup';
                             }
                             
                             if($value->status_id == 11){
                               $label = 'label-danger';
+                              $name  = 'Pending';
                             }else if($value->status_id == 2 || $value->status_id == 3){
-                              $label = 'label-warning';
-                            }else{
                               $label = 'label-success';
+                              $name  = 'On delivery';
                             }
                           @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>
+                            <td align="center">{{ $key+1 }}</td>                            
+                            <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}} {{ $value->order_id}}</td>
                             <td class="text-center">
-                              <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
+                              <span class="label {{ $label1 }} label-rounded">{{ $name1 }}</span>
                             </td>
                             <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
+                              <span class="label {{ $label }} label-rounded">{{ $name }}</span>
                             </td>
                             <td class="text-center">
                               <a class="btn btn-info btn-sm" href="{{route('pickup.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>

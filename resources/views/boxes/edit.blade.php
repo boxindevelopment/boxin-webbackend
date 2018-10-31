@@ -39,7 +39,8 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-6">
-                      
+
+                      <input type="text" name="id_name_box" id="id_name_box" value="{{ $box->id_name }}" required>
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $box->city_id }}" required>
@@ -80,13 +81,13 @@
                       </div>
 
                       <div class="form-group">
-                        <label>Name</label>
+                        <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $box->name }}" required="">
                       </div>
 
                       <div class="form-group">
                         <label>Location </label>
-                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" required="">
+                        <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" >
                       </div>
                       
                     </div>

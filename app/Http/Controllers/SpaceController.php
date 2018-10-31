@@ -47,16 +47,13 @@ class SpaceController extends Controller
      */
     public function store(Request $request)
     {
-      $this->validate($request,[
-        'name' => 'required|max:255',
-      ]);
-
-      $warehouse_id = $request->warehouse_id;
-      $name         = $request->name;
+      $split          = explode('##', $request->warehouse_id);
+      $warehouse_id   = $split[0];
 
       $space = Space::create([
-        'name'              => $name,
-        'warehouse_id'      => $warehouse_id,
+        'name'          => $request->name,
+        'warehouse_id'  => $warehouse_id,        
+        'id_name'       => $request->id_name_space,
       ]);
 
       if($space){
@@ -86,7 +83,6 @@ class SpaceController extends Controller
     public function edit($id)
     {
       $space      = $this->space->getEdit($id);
-      $space      = $space[0];
       return view('spaces.edit', compact('space', 'id'));
     }
 
@@ -99,18 +95,22 @@ class SpaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $space       = $this->space->find($id);
-      $space->name = $request->name;
-      $space->warehouse_id = $request->warehouse_id;
+      $split          = explode('##', $request->warehouse_id);
+      $warehouse_id   = $split[0];
+
+      $space          = $this->space->find($id);
+      $space->name    = $request->name;
+      if($space->warehouse_id != $warehouse_id){
+        $space->warehouse_id  = $warehouse_id;    
+        $space->id_name       = $request->id_name_space;
+      }     
       $space->save();
 
       if($space){
         return redirect()->route('space.index')->with('success', 'Space Warehouse ['.$request->name.'] edited.');
       } else {
         return redirect()->route('space.index')->with('error', 'Edit Space Warehouse failed.');
-      }
-
-      
+      }      
     }
 
     /**
@@ -156,7 +156,7 @@ class SpaceController extends Controller
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -170,11 +170,25 @@ class SpaceController extends Controller
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
         echo(json_encode($arrData));
+
+    }
+
+    public function getNumber(Request $request)
+    {
+
+        $warehouse_id = $request->input('warehouse_id');
+        $sql          = Space::where('warehouse_id', '=', $warehouse_id)
+                        ->orderBy('id_name', 'desc')
+                        ->first();
+        $id_number    = isset($sql->id_name) ? substr($sql->id_name, 6) : 0;
+        $code         = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+
+        return $code;
 
     }
 }

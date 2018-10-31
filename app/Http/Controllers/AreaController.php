@@ -8,6 +8,7 @@ use App\Model\City;
 use App\Model\Warehouse;
 use Carbon;
 use App\Repositories\AreaRepository;
+use DB;
 
 class AreaController extends Controller
 {
@@ -47,16 +48,13 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-      $this->validate($request,[
-        'name' => 'required|max:255',
-      ]);
-
-      $city_id = $request->city_id;
-      $name    = $request->name;
+      $split    = explode('##', $request->city_id);
+      $city_id  = $split[0];
 
       $area = Area::create([
-        'name'              => $name,
-        'city_id'           => $city_id,
+        'name'      => $request->name,
+        'city_id'   => $city_id,
+        'id_name'   => $request->id_name_area,
       ]);
 
       if($area){
@@ -85,9 +83,8 @@ class AreaController extends Controller
      */
     public function edit($id)
     {
-      $area   = Area::find($id);
-      $cities = City::where('deleted_at', NULL)->orderBy('name')->get();
-      return view('warehouses.edit_area', compact('area', 'id', 'cities'));
+      $area   = $this->area->find($id);
+      return view('warehouses.edit_area', compact('area', 'id'));
     }
 
     /**
@@ -99,9 +96,15 @@ class AreaController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $split    = explode('##', $request->city_id);
+      $city_id  = $split[0];
+
       $area       = $this->area->find($id);
       $area->name = $request->name;
-      $area->city_id = $request->city_id;
+      if($area->city_id != $city_id){
+        $area->city_id = $city_id;
+        $area->id_name = $request->id_name_area;
+      }  
       $area->save();
 
       if($area){
@@ -142,13 +145,14 @@ class AreaController extends Controller
       
     }
 
-    public function getDataSelectByCity($city_id, Request $request){
+    public function getDataSelectByCity($city_id, Request $request)
+    {
 
         $areas = $this->area->getSelect($city_id);
         $arrAreas = array();
         foreach ($areas as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrAreas[] = $arr;
         }
@@ -156,17 +160,33 @@ class AreaController extends Controller
 
     }
 
-    public function getDataSelectAll(Request $request){
+    public function getDataSelectAll(Request $request)
+    {
 
         $areas = $this->area->getSelectAll();
         $arrAreas = array();
         foreach ($areas as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrAreas[] = $arr;
         }
         echo(json_encode($arrAreas));
 
     }
+
+    public function getNumber(Request $request)
+    {
+
+        $city_id = $request->input('city_id');
+        $sql     = Area::where('city_id', '=', $city_id)
+        ->orderBy('id_name', 'desc')
+        ->first();
+        $id_number   = isset($sql->id_name) ? substr($sql->id_name, 2) : 0;
+        $code        = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+
+        return $code;
+
+    }
+
 }

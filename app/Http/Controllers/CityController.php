@@ -84,7 +84,7 @@ class CityController extends Controller
      */
     public function edit($id)
     {
-      $city = City::find($id);
+      $city = $this->city->find($id);
       return view('warehouses.edit_city', compact('city', 'id'));
     }
 
@@ -97,7 +97,7 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $city           = City::find($id);
+      $city           = $this->city->find($id);
       $name           = $city->name;
       $city->name     = $request->name;
       $city->id_name  = $request->id_name;
@@ -145,7 +145,7 @@ class CityController extends Controller
         $arrCities = array();
         foreach ($cities as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id,
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrCities[] = $arr;
         }

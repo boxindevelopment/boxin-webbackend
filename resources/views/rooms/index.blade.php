@@ -43,12 +43,13 @@
                   <thead>
                       <tr>
                         <th width="5%">No</th>
+                        <th width="10%" class="text-center">Code Number</th>
                         <th width="">Name</th>
                         <th width="15%">Type</th>
                         <th width="10%">Size</th>
                         <th width="20%">Space</th>
                         <th width="10%">Status</th>
-                        <th width="15%" class="text-center no-sort">Action</th>
+                        <th width="8%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -56,6 +57,7 @@
                       @foreach ($room as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
+                          <td align="center">{{ $value->id_name }}</td>
                           <td>{{ $value->name }}</td>
                           <td>{{ $value->type_size->name }}</td>
                           <td>{{ $value->type_size->size }}</td>
@@ -66,9 +68,9 @@
                           <td class="text-center">
                             <form action="{{route('room.destroy', ['id' => $value->id])}}" method="post">
                               @csrf
-                              <a class="btn btn-info btn-sm" href="{{route('room.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a>
+                              <a class="btn btn-info btn-sm" href="{{route('room.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                               @method('DELETE')
-                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                             </form>
                           </td>
                         </tr>

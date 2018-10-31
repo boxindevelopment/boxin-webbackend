@@ -57,10 +57,19 @@ class RoomController extends Controller
       if($name == ''){
         $name = $type_size[0]->name;
       }
+      $split     = explode('##', $request->space_id);
+      $space_id  = $split[0];
+      $id_name   = $split[1];
+
+      $sql        = Room::where('space_id', '=', $space_id)->orderBy('id_name', 'desc')->first();
+      $id_number  = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
+      $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+
       $room = Room::create([
         'name'              => $name,
-        'space_id'          => $request->space_id,
+        'space_id'          => $space_id,
         'types_of_size_id'  => $request->type_size_id,
+        'id_name'           => $id_name.'2'.$code,
         'status_id'         => 10,
       ]);
 
@@ -105,20 +114,16 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-      $this->validate($request, [
-        'space_id'  => 'required',
-        'type_size_id' => 'required',
-      ]);
+      $split     = explode('##', $request->space_id);
+      $space_id  = $split[0];
 
-      $type_size              = TypeSize::where('id', $request->type_size_id)->get();
-      $name = $request->name;
-      if($name == ''){
-        $name = $type_size[0]->name;
-      }
       $room                   = $this->room->find($id);
-      $room->name             = $name;
+      $room->name             = $request->name;
       $room->types_of_size_id = $request->type_size_id;
-      $room->space_id         = $request->space_id;
+      if($room->space_id != $space_id){
+        $room->space_id        = $space_id;
+        $room->id_name         = $request->id_name_room;
+      }   
       $room->save();
 
       if($room){
@@ -147,6 +152,17 @@ class RoomController extends Controller
       } else {
         return redirect()->route('room.index')->with('error', 'Delete Room failed.');
       }
+    }
 
+    public function getNumber(Request $request)
+    {
+        $space_id= $request->input('space_id');
+        $sql     = Room::where('space_id', '=', $space_id)
+                  ->orderBy('id_name', 'desc')
+                  ->first();
+        $id_number = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
+        $code      = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+
+        return $code;
     }
 }

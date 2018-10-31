@@ -25,7 +25,7 @@ class AreaRepository implements AreaRepositoryInterface
     {
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('areas.id', 'areas.name', 'areas.city_id');
+        $data = $data->select('areas.id', 'areas.name', 'areas.city_id', 'areas.id_name');
         if(Auth::user()->roles_id == 2){
             $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
             $data = $data->where('areas.city_id', $admin->city_id);

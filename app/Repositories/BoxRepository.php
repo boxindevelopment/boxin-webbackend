@@ -27,14 +27,15 @@ class BoxRepository implements BoxRepositoryInterface
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
         $data = $data->select('boxes.*');
+        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id');
+        $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id');
-            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
-            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
             $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
             $data = $data->where('areas.city_id', $admin->city_id);
         }
-        $data = $data->where('boxes.deleted_at', NULL);      
+        $data = $data->where('boxes.deleted_at', NULL); 
+        $data = $data->where('areas.deleted_at', NULL);     
         $data = $data->orderBy('boxes.updated_at', 'DESC')->orderBy('boxes.id','DESC');
         $data = $data->get();
         return $data;
@@ -71,7 +72,7 @@ class BoxRepository implements BoxRepositoryInterface
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('boxes.id', $id)
-                ->get();
+                ->first();
                 
         return $data;
     }

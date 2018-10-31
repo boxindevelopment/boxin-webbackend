@@ -26,13 +26,14 @@ class WarehouseRepository implements WarehouseRepositoryInterface
     {
         $admin = AdminCity::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('warehouses.id', 'warehouses.name', 'warehouses.area_id', 'warehouses.lat', 'warehouses.long');
+        $data = $data->select('warehouses.id', 'warehouses.name', 'warehouses.area_id', 'warehouses.lat', 'warehouses.long', 'warehouses.id_name');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
             $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
             $data = $data->where('areas.city_id', $admin->city_id);
         }
         $data = $data->where('warehouses.deleted_at', NULL);
+        $data = $data->where('areas.deleted_at', NULL);
         $data = $data->orderBy('warehouses.updated_at', 'DESC')->orderBy('warehouses.id','DESC');
         $data = $data->get();
         return $data;
@@ -80,7 +81,7 @@ class WarehouseRepository implements WarehouseRepositoryInterface
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('warehouses.id', $id)
-                ->get();
+                ->first();
                 
         return $data;
     }
