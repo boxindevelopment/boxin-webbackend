@@ -47,12 +47,12 @@
 
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $warehouse->city_id }}" required>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $warehouse->city_id }}##{{ $warehouse->city_id_name }}" required>
                       </div>
 
                       <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $warehouse->area_id }}" required>
+                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $warehouse->area_id }}##{{ $warehouse->area_id_name }}" required>
                       </div>
 
                       <div class="form-group">

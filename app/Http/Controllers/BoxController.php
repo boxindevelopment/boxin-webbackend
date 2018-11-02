@@ -105,9 +105,10 @@ class BoxController extends Controller
      */
     public function edit($id)
     {
-      $box      = $this->box->getEdit($id);
-      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
-      return view('boxes.edit', compact('id', 'box', 'type_size'));
+      $box       = $this->box->getEdit($id);
+      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();      
+      $edit_box  = true;
+      return view('boxes.edit', compact('id', 'box', 'type_size', 'edit_box'));
     }
 
     /**

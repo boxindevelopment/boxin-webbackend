@@ -102,7 +102,8 @@ class RoomController extends Controller
       $room     = $this->room->getEdit($id);
       $room     = $room[0];
       $type_size= TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();
-      return view('rooms.edit', compact('room', 'id', 'type_size'));
+      $edit_room= true;
+      return view('rooms.edit', compact('room', 'id', 'type_size', 'edit_room'));
     }
 
     /**

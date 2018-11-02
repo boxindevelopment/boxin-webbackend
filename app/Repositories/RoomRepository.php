@@ -61,7 +61,11 @@ class RoomRepository implements RoomRepositoryInterface
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('rooms.*', DB::raw('(cities.id) as city_id'),  DB::raw('(areas.id) as area_id'), DB::raw('(warehouses.id) as warehouse_id')))
+        $data = $this->model->select(array('rooms.*',  
+                DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'), 
+                DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name'),
+                DB::raw('(warehouses.id) as warehouse_id'), DB::raw('(warehouses.id_name) as warehouse_id_name'),
+                DB::raw('(spaces.id) as space_id'), DB::raw('(spaces.id_name) as space_id_name')))
                 ->leftJoin('spaces', 'spaces.id', '=', 'rooms.space_id')
                 ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')

@@ -142,6 +142,7 @@
                         text : obj[i].text
                     } );
                 }
+                console.log(arrs);
                 var area_id = $("area_id").val();
                 $("#city_id").select2({
                     multiple: false,
@@ -152,21 +153,50 @@
                     var city_ext = $(this).val().split('##');
                     var city_id = city_ext[0];
                     get_id_number_area(city_ext[0], city_ext[1]);
-                    area_Selectdata(city_id, area_id);
+                    area_Selectdata(city_id, $(this).val());
 
                 });
-                if(values != ''){
-                    $("#city_id").val(values).trigger('change');
-                    area_Selectdata(values, area_id);
-                }
             });
 
             if(values != ''){
-                $("#city_id").val(values).trigger('change');
-                area_Selectdata(values, area_id);
+                split_city = values.split('##');
+                @if(isset($warehouse->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $warehouse->area_id }}##{{ $warehouse->area_id_name }}');
+                @elseif(isset($space->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $space->area_id }}##{{ $space->area_id_name }}');
+                @elseif(isset($box->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $box->area_id }}##{{ $box->area_id_name }}');
+                @elseif(isset($room->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $room->area_id }}##{{ $room->area_id_name }}');
+                @else
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '');
+                @endif
             }
         }
-        city_Selectdata('');
+        @if(isset($edit_space))
+            @if(isset($space))
+                city_Selectdata('{{$space->city_id}}##{{$space->city_id_name}}');
+            @endif
+        @elseif(isset($edit_warehouse))
+            @if(isset($warehouse))
+                city_Selectdata('{{$warehouse->city_id}}##{{$warehouse->city_id_name}}');
+            @endif
+        @elseif(isset($edit_box))
+            @if(isset($box))
+                city_Selectdata('{{$box->city_id}}##{{$box->city_id_name}}');
+            @endif
+        @elseif(isset($edit_room))
+            @if(isset($room))
+                city_Selectdata('{{$room->city_id}}##{{$room->city_id_name}}');
+            @endif
+        @else
+            city_Selectdata('');
+        @endif
 
         function get_id_number_area(city_id, city_number){
 
@@ -179,22 +209,6 @@
                 $('input[name="id_name_area"]').val(city_number + data);
             });
         }
-
-        @if(isset($warehouse->area_id))
-          area_Selectdata({{$warehouse->area_id}}, '');
-        @endif
-
-        @if(isset($box->area_id))
-          area_Selectdata({{$box->area_id}}, '');
-        @endif
-
-        @if(isset($space->area_id))
-          area_Selectdata({{$space->area_id}}, '');
-        @endif
-
-        @if(isset($room->area_id))
-          area_Selectdata({{$room->area_id}}, '');
-        @endif
 
         function area_Selectdata(city_id, values) {
             var data = $.ajax({
@@ -220,22 +234,27 @@
                     data : arrs
                 }).on('change', function (e) {
                     var area_ext = $(this).val().split('##');
-                    console.log(area_ext);
                     var area_id = area_ext[0];
-                    console.log(area_ext[0]);
                     get_id_number_warehouse(area_ext[0], area_ext[1]);
-                    warehouse_Selectdata(area_id);
+                    warehouse_Selectdata(area_id, $(this).val());
                 })
 
-
-                if(values != ''){
-                    $("#area_id").val(values).trigger("change");
-                    warehouse_Selectdata(area_id);
-                }
             });
             if(values != ''){
-                $("#area_id").val(values).trigger("change");
-                warehouse_Selectdata(area_id);
+                split_area = values.split('##');
+                @if(isset($space->warehouse_id_name))
+                    $("#area_id").val(values).trigger("change");
+                    warehouse_Selectdata(split_area[0], '{{ $space->warehouse_id }}##{{ $space->warehouse_id_name }}');                
+                @elseif(isset($box->warehouse_id_name))
+                    $("#area_id").val(values).trigger("change");
+                    warehouse_Selectdata(split_area[0], '{{ $box->warehouse_id }}##{{ $box->warehouse_id_name }}');                
+                @elseif(isset($room->warehouse_id_name))
+                    $("#area_id").val(values).trigger("change");
+                    warehouse_Selectdata(split_area[0], '{{ $room->warehouse_id }}##{{ $room->warehouse_id_name }}');                
+                @else
+                    $("#area_id").val(values).trigger("change");
+                    warehouse_Selectdata(split_area[0], '');
+                @endif
             }
         }
 
@@ -251,19 +270,8 @@
             });
         }
 
-        @if(isset($box->area_id))
-          warehouse_Selectdata({{$box->area_id}});
-        @endif
-
-        @if(isset($space->area_id))
-          warehouse_Selectdata({{$space->area_id}});
-        @endif
-
-        @if(isset($room->area_id))
-          warehouse_Selectdata({{$room->area_id}});
-        @endif
-
-        function warehouse_Selectdata(area_id) {
+        function warehouse_Selectdata(area_id, values) {
+            var split_area = values.split('##');
             var $id = area_id;
             var data = $.ajax({
                 url: "{{ url('/warehouse/dataSelect/') }}/"+area_id,
@@ -289,17 +297,22 @@
                     var warehouse_ext = $(this).val().split('##');
                     var warehouse_id = warehouse_ext[0];
                     get_id_number_space(warehouse_ext[0], warehouse_ext[1]);
-                    space_Selectdata(warehouse_id);
+                    space_Selectdata(warehouse_id, $(this).val());
                 });
 
-
-                if(warehouse_id != ""){
-                    $("#warehouse_id").val(warehouse_id).trigger("change");
-                    space_Selectdata(warehouse_id);
-                }else{
-                    $("#warehouse_id").val('').trigger("change");
-                }
             });
+            if(values != ''){
+                $("#warehouse_id").val(values).trigger("change");
+                split_warehouse = values.split('##');
+                @if(isset($box->space_id_name))
+                    space_Selectdata(split_warehouse[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
+                @elseif(isset($room->space_id_name))
+                    space_Selectdata(split_warehouse[0], '{{ $room->space_id }}##{{ $room->space_id_name }}');
+                @else
+                    space_Selectdata(split_warehouse[0], '');
+                @endif
+            }
+
         }
 
         function get_id_number_space(warehouse_id, warehouse_number){
@@ -314,15 +327,7 @@
             });
         }
 
-        @if(isset($box->warehouse_id))
-          space_Selectdata({{$box->warehouse_id}});
-        @endif
-
-        @if(isset($room->warehouse_id))
-          space_Selectdata({{$room->warehouse_id}});
-        @endif
-
-        function space_Selectdata(warehouse_id) {
+        function space_Selectdata(warehouse_id, values) {
             var data = $.ajax({
                 url: "{{ url('/space/dataSelect/') }}/"+warehouse_id,
                 type: "GET",
@@ -349,12 +354,6 @@
                     get_id_number_box(space_ext[0], space_ext[1]);
                     get_id_number_room(space_ext[0], space_ext[1]);
                 });
-
-                // if(space_id != ""){
-                //     $("#space_id").val(space_id).trigger("change");
-                // }else{
-                //     $("#space_id").val('').trigger("change");
-                // }
             });
         }
 

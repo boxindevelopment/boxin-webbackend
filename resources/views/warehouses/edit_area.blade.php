@@ -45,7 +45,7 @@
 
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $area->city_id }}" required>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $area->city_id }}##{{ $area->city->id_name }}" required>
                       </div>
 
                       <div class="form-group">

@@ -47,22 +47,22 @@
                       
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $box->city_id }}" required>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $box->city_id }}##{{ $box->city_id_name }}" required>
                       </div>
 
                       <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $box->area_id }}" required>
+                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $box->area_id }}##{{ $box->area_id_name }}" required>
                       </div>
 
                       <div class="form-group">
                         <label for="">Warehouse <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" value="{{ $box->warehouse_id }}" required>
+                        <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" value="{{ $box->warehouse_id }}##{{ $box->warehouse_id_name }}" required>
                       </div>
 
                       <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}" required>
+                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
                       </div>
 
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>

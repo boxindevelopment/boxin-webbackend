@@ -59,7 +59,7 @@
                               $name1   = 'User pickup';
                             }
                             
-                            if($value->status_id == 11){
+                            if($value->status_id == 11 || $value->status_id == 15){
                               $label = 'label-danger';
                               $name  = 'Pending';
                             }else if($value->status_id == 2 || $value->status_id == 3){
@@ -84,7 +84,7 @@
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="5" class="text-center">There are no results yet</td>
+                          <td colspan="6" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>

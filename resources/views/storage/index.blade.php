@@ -75,7 +75,7 @@
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="7" class="text-center">There are no results yet</td>
+                          <td colspan="8" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>

@@ -83,7 +83,8 @@ class SpaceController extends Controller
     public function edit($id)
     {
       $space      = $this->space->getEdit($id);
-      return view('spaces.edit', compact('space', 'id'));
+      $edit_space = true;
+      return view('spaces.edit', compact('space', 'id', 'edit_space'));
     }
 
     /**

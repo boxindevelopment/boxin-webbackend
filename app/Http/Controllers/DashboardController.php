@@ -21,14 +21,14 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user();
-        // dd($user->roles_id);
+        $user      = $request->user();
         $warehouse = $this->data->countWarehouse();
         $space     = $this->data->countSpace();
         $box       = $this->data->countBox();
-        $user      = $this->data->countUser();
+        $room      = $this->data->countRoom();
+        $area      = $this->data->countArea();
         $me        = Auth::id();
-        return view('dashboard', compact('warehouse', 'space', 'box', 'user', 'me'));
+        return view('dashboard', compact('warehouse', 'space', 'box', 'area', 'me', 'room'));
     }
 
     /**

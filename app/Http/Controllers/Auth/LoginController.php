@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -18,14 +20,29 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    // use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as performLogout;
+    }
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    // protected $redirectTo = '/';
+    protected $guard;
+    protected function authenticated(Request $request, $user)
+    {
+        $check = User::select('roles_id')->where('id', $user->id)->first();
+        
+        if ($check->roles_id != 1) {
+            $guard = 'admin';
+            return redirect()->route('dashboard');
+        } else {
+            return redirect('/login')->with('error', 'These credentials do not match our records. ');;
+        }        
+    }
 
     /**
      * Create a new controller instance.

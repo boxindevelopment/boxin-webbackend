@@ -61,7 +61,8 @@
                     </div>
 
                     <div class="col-md-6">
-                      @if ($value->types_of_pickup_id == 1)        
+                      @if ($value->types_of_pickup_id == 1)    
+                      @if($value->status_id != 15)    
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
@@ -69,7 +70,8 @@
                             <option value="14" {{ $value->status_id == 14 ? 'selected' : '' }}>Waiting Payment</option>
                             <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
                         </select>
-                      </div>            
+                      </div> 
+                      @endif           
 
                       <div class="form-group">
                         <label>Driver Name <span class="text-danger">*</span></label>

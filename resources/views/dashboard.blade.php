@@ -1,5 +1,36 @@
 @extends('layouts.master')
 
+@section('plugin_css')
+    <style type="text/css">
+        /** Responsive Layout **/
+        .col-xs-6.col-sm-1-5.col-lg-2-5{
+            padding: 0px 10px;
+        }
+        @media (min-width: 992px) {
+          .col-md-1-5 { width: 20%; }
+          .col-md-2-5 { width: 40%; }
+          .col-md-3-5 { width: 60%; }
+          .col-md-4-5 { width: 80%; }
+          .col-md-5-5 { width: 100%; }
+        }
+        @media (min-width: 1200px) {
+          .col-lg-1-5 { width: 20%; }
+          .col-lg-2-5 { width: 40%; }
+          .col-lg-3-5 { width: 60%; }
+          .col-lg-4-5 { width: 80%; }
+          .col-lg-5-5 { width: 100%; }
+        }
+        @media (min-width: 768px) {
+          .col-sm-1-5 { width: 20%; }
+          .col-sm-2-5 { width: 40%; }
+          .col-sm-3-5 { width: 60%; }
+          .col-sm-4-5 { width: 80%; }
+          .col-sm-5-5 { width: 100%; }
+        }
+  </style>
+@endsection
+
+
 @section('content')
 <div class="container-fluid">
 <!-- ============================================================== -->
@@ -21,8 +52,22 @@
     <!-- Stats box -->
     <!-- ============================================================== -->
     <div class="row">
-        <div class="col-lg-3">
-            <div class="card bg-info">
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
+            <div class="card bg-danger">
+                <a href="{{ route('user.index') }}">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-checkbox-blank-circle"></i></div>
+                        <div class="align-self-center">
+                            <h6 class="text-white m-t-10 m-b-0">Total Areas</h6>
+                            <h2 class="m-t-0 text-white">{{ $area }}</h2></div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
+            <div class="card bg-warning">
                 <a href="{{ route('warehouses.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
@@ -35,7 +80,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
             <div class="card bg-success">
                 <a href="{{ route('space.index') }}">
                 <div class="card-body">
@@ -49,8 +94,8 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="card bg-primary">
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
+            <div class="card bg-info">
                 <a href="{{ route('box.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
@@ -63,20 +108,21 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="card bg-danger">
-                <a href="{{ route('user.index') }}">
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
+            <div class="card bg-primary">
+                <a href="{{ route('box.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
-                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-account"></i></div>
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Users</h6>
-                            <h2 class="m-t-0 text-white">{{ $user }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Total Rooms</h6>
+                            <h2 class="m-t-0 text-white">{{ $room }}</h2></div>
                     </div>
                 </div>
                 </a>
             </div>
         </div>
+        
     </div>
 
     <div class="row">

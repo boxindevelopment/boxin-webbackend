@@ -77,7 +77,9 @@ class WarehouseRepository implements WarehouseRepositoryInterface
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('warehouses.*', DB::raw('(cities.id) as city_id')))
+        $data = $this->model->select(array('warehouses.*', 
+            DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),
+            DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name')))
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('warehouses.id', $id)

@@ -85,8 +85,9 @@ class WarehousesController extends Controller
      */
     public function edit($id)
     {
-      $warehouse  = $this->warehouse->getEdit($id);
-      return view('warehouses.edit', compact('id', 'warehouse'));
+      $warehouse  = $this->warehouse->getEdit($id);      
+      $edit_warehouse       = true;
+      return view('warehouses.edit', compact('id', 'warehouse','edit_warehouse'));
     }
 
     /**

@@ -78,7 +78,10 @@ class SpaceRepository implements SpaceRepositoryInterface
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('spaces.*', DB::raw('(cities.id) as city_id'),  DB::raw('(areas.id) as area_id')))
+        $data = $this->model->select(array('spaces.*', 
+            DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),  
+            DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name'),  
+            DB::raw('(warehouses.id) as warehouse_id'), DB::raw('(warehouses.id_name) as warehouse_id_name')))
                 ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
                 ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
