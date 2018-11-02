@@ -104,7 +104,7 @@ class AreaController extends Controller
       if($area->city_id != $city_id){
         $area->city_id = $city_id;
         $area->id_name = $request->id_name_area;
-      }  
+      } 
       $area->save();
 
       if($area){

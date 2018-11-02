@@ -103,7 +103,7 @@ class SpaceController extends Controller
       if($space->warehouse_id != $warehouse_id){
         $space->warehouse_id  = $warehouse_id;    
         $space->id_name       = $request->id_name_space;
-      }     
+      } 
       $space->save();
 
       if($space){

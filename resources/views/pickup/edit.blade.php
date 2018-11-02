@@ -61,15 +61,15 @@
                     </div>
 
                     <div class="col-md-6">
-                      @if ($value->types_of_pickup_id == 1)
+                      @if ($value->types_of_pickup_id == 1)        
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
-                            <option value="11"{{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
-                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
+                            <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
+                            <option value="14" {{ $value->status_id == 14 ? 'selected' : '' }}>Waiting Payment</option>
+                            <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
                         </select>
-                      </div>
+                      </div>            
 
                       <div class="form-group">
                         <label>Driver Name <span class="text-danger">*</span></label>
@@ -93,7 +93,6 @@
                       <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
-                          <option value=""></option>
                             <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
                             <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
                         </select>
@@ -101,6 +100,15 @@
                       @endif
                       <!-- end pickup box on warehouse  -->
 
+                      @if($value->status_id == 15 || $value->status_id == 2)
+                      <div class="form-group">
+                        <label for="">Status <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="status_id" >
+                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
+                        </select>
+                      </div>
+                      @endif
                       <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
                       @endforeach
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>

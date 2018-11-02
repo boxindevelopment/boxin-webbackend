@@ -41,7 +41,7 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="10%" class="text-center">OrderID</th>
-                          <th width="">Name</th>
+                          <th width="">Customer Name</th>
                           <th width="12%">Duration</th>
                           <th width="15%" style="text-align: right;">Amount (Rp)</th>
                           <th width="20%" class="text-center">StartDate - EndDate</th>
@@ -55,21 +55,18 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</tD>
                             <td>{{ $value->id_name }}</td>
-                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
                             <td class="text-center">
                               @php
-                                if($value->status_id == 11){
-                                  $label = 'label-danger';
-                                }else if($value->status_id == 2 || $value->status_id == 3){
-                                  $label = 'label-warning';
-                                }else{
+                                if($value->status_id == 4){
                                   $label = 'label-success';
+                                  $name  = 'Stored';
                                 }
                               @endphp
-                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
+                              <span class="label {{ $label }} label-rounded">{{ $name }}</span>
                             </td>
                             <td>
                               <a class="btn btn-primary btn-sm" href="{{route('storage.orderDetailBox', ['id' => $value->order_id])}}"><i class="fa fa-eye"></i></a>

@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\OrderDetail;
-use App\Model\OrderDetailBox;
-use App\Model\PickupOrder;
 use App\Repositories\OrderDetailRepository;
 
 class OrderDetailController extends Controller
@@ -89,10 +86,8 @@ class OrderDetailController extends Controller
 
     public function orderDetailBox($id)
     {
-        $detail             = OrderDetail::leftJoin('orders','orders.id','=','order_details.order_id')
-        ->leftJoin('users','users.id','=','orders.user_id')
-        ->where('order_id',$id)->first();
-        $detail_order_box   = OrderDetailBox::where('order_detail_id',$id)->orderBy('id')->get();
+        $detail             = $this->repository->getOrderDetail($id);
+        $detail_order_box   = $this->repository->getDetailBox($id);
         return view('storage.box-detail', compact('detail_order_box', 'id', 'detail'));
     }
 }

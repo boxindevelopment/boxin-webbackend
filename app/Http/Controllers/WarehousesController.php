@@ -108,7 +108,7 @@ class WarehousesController extends Controller
       if($warehouse->area_id != $area_id){
         $warehouse->area_id   = $area_id;   
         $warehouse->id_name   = $request->id_name_warehouse;
-      }          
+      }        
       $warehouse->save();
 
       if($warehouse){

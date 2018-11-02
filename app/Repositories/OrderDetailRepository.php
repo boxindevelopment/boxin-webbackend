@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Model\OrderDetail;
+use App\Model\OrderDetailBox;
 use App\Model\AdminCity;
 use App\Repositories\Contracts\OrderDetailRepository as OrderDetailRepositoryInterface;
 use DB;
@@ -11,10 +12,12 @@ use Illuminate\Support\Facades\Auth;
 class OrderDetailRepository implements OrderDetailRepositoryInterface
 {
     protected $model;
+    protected $detail_box;
 
-    public function __construct(OrderDetail $model)
+    public function __construct(OrderDetail $model, OrderDetailBox $detail_box)
     {
         $this->model = $model;
+        $this->detail_box = $detail_box;
     }
 
     public function find($id)
@@ -24,22 +27,22 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     
     public function all()
     {
-        if(Auth::user()->roles_id == 3){
-            $room = $this->model->where('order_details.status_id', 4)->orderBy('id','ASC')->get();
-        }else if(Auth::user()->roles_id == 2){
-            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-            $room = $this->model->select('order_details.*')            
-            ->leftJoin('orders', 'orders.id', '=', 'order_details.order_id')
-            ->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id')
-            ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
-            ->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id')
-            ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-            ->where('order_details.status_id', 4)
-            ->where('spaces.deleted_at', NULL)
-            ->where('areas.city_id', $admin->city_id)
-            ->orderBy('id','ASC')->get();
+        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $data = $this->model->query();
+        $data = $data->select('order_details.*', 'users.*');
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');               
+        $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id');
+            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
+            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
+            $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
+            $data = $data->where('areas.city_id', $admin->city_id);
         }
-        return $room;
+        $data = $data->where('order_details.status_id', 4);
+        $data = $data->orderBy('order_details.id','DESC');
+        $data = $data->get();
+        return $data;
     }
 
     public function getCount($args = [])
@@ -60,16 +63,22 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
 
     }
 
-    public function getEdit($id)
-    {
-        $data = $this->model->select(array('rooms.*', DB::raw('(cities.id) as city_id'),  DB::raw('(areas.id) as area_id'), DB::raw('(warehouses.id) as warehouse_id')))
-                ->leftJoin('spaces', 'spaces.id', '=', 'rooms.space_id')
-                ->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id')
-                ->leftJoin('areas', 'areas.id', '=' ,'warehouses.area_id')
-                ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
-                ->where('rooms.id', $id)
-                ->get();
-                
+    public function getOrderDetail($id){
+        $data = $this->model->query();
+        $data = $data->select('order_details.*', 'users.*', 'pickup_orders.*');
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');             
+        $data = $data->leftJoin('pickup_orders', 'pickup_orders.order_id', '=', 'orders.id');        
+        $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
+        $data = $data->where('order_details.order_id', $id);
+        $data = $data->first();
+        return $data;
+    }
+
+    public function getDetailBox($id){
+        $data = $this->detail_box->query();
+        $data = $data->where('order_detail_id', $id);
+        $data = $data->orderBy('id', 'ASC');
+        $data = $data->get();
         return $data;
     }
     

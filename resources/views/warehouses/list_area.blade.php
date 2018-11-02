@@ -43,7 +43,12 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
-                      <input type="hidden" name="id_name_area" id="id_name_area" required>
+
+                      <div class="form-group">
+                        <label for="">Code Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="id_name_area" id="id_name_area" required readonly>
+                      </div>
+                      
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="city_id" name="city_id" required>

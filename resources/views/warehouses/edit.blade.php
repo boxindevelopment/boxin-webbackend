@@ -38,23 +38,12 @@
                 @csrf
                 @method('PUT')
                 <div class="row">
-                    <div class="col-8">
+                      <div class="col-8">
 
-                      <!-- <div class="form-group">
-                        <label for="">Area <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="area_id" required>
-                          @if (!empty($area))
-                            @foreach ($area as $key => $value)
-                              @if ($value->id == $warehouse->area_id)
-                                <option value="{{ $value->id }}" selected>{{ $value->name }}</option>
-                              @else
-                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                              @endif
-                            @endforeach
-                          @endif
-                        </select>
-                      </div> -->
-                      <input type="text" name="id_name_warehouse" id="id_name_warehouse" value="{{ $warehouse->id_name }}" required>
+                      <div class="form-group">
+                        <label for="">Code Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="id_name_warehouse" id="id_name_warehouse" value="{{ $warehouse->id_name }}" required readonly>
+                      </div>
 
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
