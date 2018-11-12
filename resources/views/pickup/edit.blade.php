@@ -62,31 +62,45 @@
 
                     <div class="col-md-6">
                       @if ($value->types_of_pickup_id == 1)    
-                      @if($value->status_id != 15)    
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" required>
-                            <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="14" {{ $value->status_id == 14 ? 'selected' : '' }}>Waiting Payment</option>
-                            <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
+                        @if($value->status_id == 11 && $value->status_id == 14)    
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
+                              <option value="14" {{ $value->status_id == 14 ? 'selected' : '' }}>Waiting Payment</option>
+                              <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
+                          </select>
+                        </div> 
+                        @endif  
+
+                        @if($value->status_id == 15 || $value->status_id == 2)    
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
+                              <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                              <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
                         </select>
-                      </div> 
-                      @endif           
+                          </select>
+                        </div> 
+                        @endif           
+                        
+                        @if($value->status_id == 15 || $value->status_id == 2)   
+                        <div class="form-group">
+                          <label>Driver Name <span class="text-danger">*</span></label>
+                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" >
+                        </div>
 
-                      <div class="form-group">
-                        <label>Driver Name <span class="text-danger">*</span></label>
-                        <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
-                      </div>
+                        <div class="form-group">
+                          <label>Driver Phone <span class="text-danger">*</span></label>
+                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" >
+                        </div>
 
-                      <div class="form-group">
-                        <label>Driver Phone <span class="text-danger">*</span></label>
-                        <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Pickup Price Delivery <span class="text-danger">*</span></label>
-                        <input type="number" name="pickup_fee" class="form-control" placeholder="Enter Price Delivery" value="{{ $value->pickup_fee }}" required>
-                      </div>
+                        <div class="form-group">
+                          <label>Pickup Price Delivery <span class="text-danger">*</span></label>
+                          <input type="number" name="pickup_fee" class="form-control" placeholder="Enter Price Delivery" value="{{ $value->pickup_fee }}" required>
+                        </div>
+                        @endif
                       @endif
                       <!-- end pickup delivery box  -->
 

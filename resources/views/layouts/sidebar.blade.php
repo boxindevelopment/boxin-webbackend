@@ -115,7 +115,10 @@
                       <a href="{{ route('user.index') }}"><i class="fa fa-circle"></i> &nbsp;All Users</a>
                     </li>
                     <li class="{{ Route::currentRouteNamed('user.list_admincity') ? 'active' : null }}">
-                      <a href="{{ route('user.list_admincity') }}"><i class="fa fa-circle"></i> &nbsp;Admin City</a>
+                      <a href="{{ route('user.list_admincity') }}"><i class="fa fa-circle"></i> &nbsp;Admin Area</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('user.list_admincity') ? 'active' : null }}">
+                      <a href="{{ route('user.list_admincity') }}"><i class="fa fa-circle"></i> &nbsp;Admin Finance</a>
                     </li>
                     <li class="{{ Route::currentRouteNamed('user.list_superadmin') ? 'active' : null }}">
                       <a href="{{ route('user.list_superadmin') }}"><i class="fa fa-circle"></i> &nbsp;Super Admin</a>
