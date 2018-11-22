@@ -21,6 +21,8 @@
   * [Using "direct" permissions](#using-direct-permissions-see-below-to-use-both-roles-and-permissions)
   * [Using permissions via roles](#using-permissions-via-roles)
   * [Using Blade directives](#using-blade-directives)
+  * [Defining a Super-Admin](#defining-a-super-admin)
+  * [Best Practices -- roles vs permissions](#best-practices----roles-vs-permissions)
   * [Using multiple guards](#using-multiple-guards)
   * [Using a middleware](#using-a-middleware)
   * [Using artisan commands](#using-artisan-commands)
@@ -594,6 +596,21 @@ or
 @endif
 ```
 
+## Defining a Super-Admin
+
+We strongly recommend that a Super-Admin be handled by setting a global `Gate::before` rule which checks for the desired role. 
+
+Then you can implement the best-practice of primarily using permission-based controls throughout your app, without always having to check for "is this a super-admin" everywhere.
+
+See this wiki article on [Defining a Super-Admin Gate rule](https://github.com/spatie/laravel-permission/wiki/Global-%22Admin%22-role) in your app.
+
+## Best Practices -- roles vs permissions
+
+It is generally best to code your app around `permissions` only. That way you can always use the native Laravel `@can` and `can()` directives everywhere in your app.
+
+Roles can still be used to group permissions for easy assignment, and you can still use the role-based helper methods if truly necessary. But most app-related logic can usually be best controlled using the `can` methods, which allows Laravel's Gate layer to do all the heavy lifting.
+
+
 ## Using multiple guards
 
 When using the default Laravel auth configuration all of the above methods will work out of the box, no extra configuration required.
@@ -645,13 +662,14 @@ You can use all of the blade directives listed in [using blade directives](#usin
 
 ## Using a middleware
 
-This package comes with `RoleMiddleware` and `PermissionMiddleware` middleware. You can add them inside your `app/Http/Kernel.php` file.
+This package comes with `RoleMiddleware`, `PermissionMiddleware` and `RoleOrPermissionMiddleware` middleware. You can add them inside your `app/Http/Kernel.php` file.
 
 ```php
 protected $routeMiddleware = [
     // ...
     'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
     'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
 ];
 ```
 
@@ -669,6 +687,14 @@ Route::group(['middleware' => ['permission:publish articles']], function () {
 Route::group(['middleware' => ['role:super-admin','permission:publish articles']], function () {
     //
 });
+
+Route::group(['middleware' => ['role_or_permission:super-admin']], function () {
+    //
+});
+
+Route::group(['middleware' => ['role_or_permission:publish articles']], function () {
+    //
+});
 ```
 
 Alternatively, you can separate multiple roles or permission with a `|` (pipe) character:
@@ -681,6 +707,10 @@ Route::group(['middleware' => ['role:super-admin|writer']], function () {
 Route::group(['middleware' => ['permission:publish articles|edit articles']], function () {
     //
 });
+
+Route::group(['middleware' => ['role_or_permission:super-admin|edit articles']], function () {
+    //
+});
 ```
 
 You can protect your controllers similarly, by setting desired middleware in the constructor:
@@ -689,6 +719,13 @@ You can protect your controllers similarly, by setting desired middleware in the
 public function __construct()
 {
     $this->middleware(['role:super-admin','permission:publish articles|edit articles']);
+}
+```
+
+```php
+public function __construct()
+{
+    $this->middleware(['role_or_permission:super-admin|edit articles']);
 }
 ```
 
@@ -704,7 +741,6 @@ public function render($request, Exception $exception)
 
     return parent::render($request, $exception);
 }
-
 ```
 
 ## Using artisan commands
@@ -895,7 +931,8 @@ Special thanks to [Alex Vanderbist](https://github.com/AlexVanderbist) who great
 
 ## Alternatives
 
-[Povilas Korop](https://twitter.com/@povilaskorop) did an excellent job listing the alternatives [in an article on Laravel News](https://laravel-news.com/two-best-roles-permissions-packages). In that same article, he compares laravel-permission to [Joseph Silber](https://github.com/JosephSilber)'s [Bouncer]((https://github.com/JosephSilber/bouncer)), which in our book is also an excellent package.
+- [Povilas Korop](https://twitter.com/@povilaskorop) did an excellent job listing the alternatives [in an article on Laravel News](https://laravel-news.com/two-best-roles-permissions-packages). In that same article, he compares laravel-permission to [Joseph Silber](https://github.com/JosephSilber)'s [Bouncer]((https://github.com/JosephSilber/bouncer)), which in our book is also an excellent package.
+- [ultraware/roles](https://github.com/ultraware/roles) takes a slightly different approach to its features.
 
 ## Support us
 

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Model\User;
-use App\Model\AdminCity;
+use App\Model\AdminArea;
 use App\Repositories\Contracts\UserRepository as UserRepositoryInterface;
 use DB;
 
@@ -12,7 +12,7 @@ class UserRepository implements UserRepositoryInterface
     protected $model;
     protected $admin;
 
-    public function __construct(User $model, AdminCity $admin)
+    public function __construct(User $model, AdminArea $admin)
     {
         $this->model = $model;
         $this->admin = $admin;
@@ -28,37 +28,48 @@ class UserRepository implements UserRepositoryInterface
         return $this->admin->findOrFail($id);
     }
 
-    public function getByRoles($roles_id)
+    public function getAll()
     {
-        return $this->model->where('deleted_at', NULL)->where('roles_id', $roles_id)->orderBy('first_name', 'asc')->get();
+        return $this->model->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
-    public function getSelectAllnotAdmin()
+    public function getAdminByRoles($roles_id)
     {
-        return $this->model->select()->where('roles_id', '!=', 2)->where('roles_id', '!=', 3)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
+        return $this->admin->select('admins.*')->leftJoin('users', 'users.id', '=' ,'admins.user_id')->where('users.roles_id', $roles_id)->where('users.deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
-    public function getSelectAllnotSuperadmin()
+    public function getSuperadmin()
     {
-        return $this->model->select()->where('roles_id', '!=', 3)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
+        return $this->model->where('roles_id', 3)->where('status', 1)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
-    public function getAllAdminCity()
+    public function getSelectAllForAdmin()
     {
-        return $this->admin->get();
+        return $this->model->select()->where('roles_id', '!=', 3)->where('roles_id', '!=', 4)->where('status', 1)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
+    }
+
+    public function getSelectAllForSuperadmin()
+    {
+        return $this->model->select()->where('roles_id', '!=', 2)->where('roles_id', '!=', 4)->where('status', 1)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
+    }
+
+    public function getSelectAllForFinance()
+    {
+        return $this->model->select()->where('roles_id', '!=', 2)->where('roles_id', '!=', 3)->where('status', 1)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
     public function getEdit($id)
     {
-        $data = $this->admin->select(array('admin_city.*', 
-                    DB::raw('(users.first_name) as first_name'), 
-                    DB::raw('(users.last_name) as last_name'), 
-                    DB::raw('(cities.name) as city_name')
+        $data = $this->admin->select(array('admins.*',             
+                    DB::raw('(users.roles_id) as roles_id'), 
+                    DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),
+                    DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name')
                 ))
-                ->leftJoin('users', 'users.id', '=' ,'admin_city.user_id')
-                ->leftJoin('cities', 'cities.id', '=', 'admin_city.city_id')
-                ->where('admin_city.id', $id)
-                ->first();                
+                ->leftJoin('users', 'users.id', '=' ,'admins.user_id')
+                ->leftJoin('areas', 'areas.id', '=', 'admins.area_id')                
+                ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+                ->where('admins.id', $id)
+                ->first();        
         return $data;
     }
     

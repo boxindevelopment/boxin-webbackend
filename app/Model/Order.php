@@ -12,7 +12,7 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'user_id', 'space_id', 'total', 'qty', 'status_id' 
+        'user_id', 'area_id', 'total', 'qty', 'status_id' 
     ];
 
     public function user()
@@ -20,9 +20,9 @@ class Order extends Model
         return $this->belongsTo('App\Model\User', 'user_id', 'id');
     }
 
-    public function space()
+    public function area()
     {
-        return $this->belongsTo('App\Model\Space', 'space_id', 'id');
+        return $this->belongsTo('App\Model\Area', 'area_id', 'id');
     }
 
     public function status()

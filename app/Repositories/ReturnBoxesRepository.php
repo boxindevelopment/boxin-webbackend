@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Model\ReturnBoxes;
-use App\Model\AdminCity;
+use App\Model\AdminArea;
 use App\Repositories\Contracts\ReturnBoxesRepository as ReturnBoxesRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -30,17 +30,13 @@ class ReturnBoxesRepository implements ReturnBoxesRepositoryInterface
     
     public function all()
     {
-        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-        $order =  $this->model->query();
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $order = $this->model->query();
         $order = $order->select('return_boxes.id', 'return_boxes.types_of_pickup_id', 'return_boxes.status_id', 'return_boxes.created_at', 'return_boxes.date', 'return_boxes.time_pickup');
         $order = $order->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
         if(Auth::user()->roles_id == 2){
-            $order = $order->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id');
-            $order = $order->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
-            $order = $order->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
-            $order = $order->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
-            $order = $order->where('areas.city_id', $admin->city_id);
+            $order = $order->where('orders.area_id', $admin->area_id);
         }
         $order = $order->orderBy('status_id','DESC');
         $order = $order->orderBy('id','DESC')->get();
@@ -52,9 +48,9 @@ class ReturnBoxesRepository implements ReturnBoxesRepositoryInterface
     {
         return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
     }
+    
     public function getData($args = [])
     {
-
         $data = $this->model->select()
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('name', 'like', '%'.$args['searchValue'].'%')
@@ -63,7 +59,6 @@ class ReturnBoxesRepository implements ReturnBoxesRepositoryInterface
                 ->get();
 
         return $data->toArray();
-
     }
     
     public function create(array $data)

@@ -3,193 +3,165 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Model\Area;
 use App\Model\Space;
-use App\Model\Warehouse;
-use App\Model\Box;
-use App\Model\Room;
+use App\Model\Shelves;
+use App\Model\TypeSize;
 use Carbon;
 use App\Repositories\SpaceRepository;
 
 class SpaceController extends Controller
 {
-    protected $space;
+    protected $repository;
 
-    public function __construct(SpaceRepository $space)
+    public function __construct(SpaceRepository $repository)
     {
-        $this->space = $space;
+        $this->repository = $repository;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-      $space      = $this->space->all();
-      return view('spaces.index', compact('space'));
+      $data = $this->repository->all();
+      return view('spaces.index', compact('data'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-      return view('spaces.create');
+      $type_size = TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();
+      return view('spaces.create', compact('type_size'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-      $split          = explode('##', $request->warehouse_id);
-      $warehouse_id   = $split[0];
+      $type_size = TypeSize::where('id', $request->type_size_id)->first();
+      $name = $request->name;
+      if($name == ''){
+        $name = $type_size->name;
+      }
 
-      $space = Space::create([
-        'name'          => $request->name,
-        'warehouse_id'  => $warehouse_id,        
-        'id_name'       => $request->id_name_space,
-      ]);
+      $split    = explode('##', $request->area_id);
+      $area_id  = $split[0];
+
+      $id_name_space = intval($request->id_name_space);
+      for($i=0; $i<$request->count_space;$i++){
+        $no = $i+1;
+        if($request->count_space == 1){
+          $name_space = $name;
+        }else{
+          $name_space = $name.' '.$no;
+        }
+        $space = Space::create([
+          'name'      => $name_space,
+          'area_id'   => $area_id,
+          'long'      => $request->longitude,
+          'lat'       => $request->latitude,
+          'id_name'   => $id_name_space,
+          'types_of_size_id'  => $request->type_size_id,
+        ]);
+        $space->save();
+        $id_name_space += 1;
+      }   
 
       if($space){
-        return redirect()->route('space.index')->with('success', 'Space Warehouse ['.$request->name.'] added.');
+        return redirect()->route('space.index')->with('success', 'New Space ['.$request->name.'] added.');
       } else {
-        return redirect()->route('space.index')->with('error', 'Add New Space Warehouse failed.');
-      }      
+        return redirect()->route('space.index')->with('error', 'Add New Space failed.');
+      }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
       abort('404');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-      $space      = $this->space->getEdit($id);
+      $space      = $this->repository->getEdit($id);   
+      $type_size  = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();   
       $edit_space = true;
-      return view('spaces.edit', compact('space', 'id', 'edit_space'));
+      return view('spaces.edit', compact('id', 'space', 'type_size', 'edit_space'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-      $split          = explode('##', $request->warehouse_id);
-      $warehouse_id   = $split[0];
+      $split    = explode('##', $request->area_id);
+      $area_id  = $split[0];
 
-      $space          = $this->space->find($id);
-      $space->name    = $request->name;
-      if($space->warehouse_id != $warehouse_id){
-        $space->warehouse_id  = $warehouse_id;    
-        $space->id_name       = $request->id_name_space;
-      } 
+      $space                    = $this->repository->find($id);
+      $space->name              = $request->name;
+      $space->long              = $request->longitude;
+      $space->lat               = $request->latitude;
+      $space->types_of_size_id  = $request->type_size_id;
+      if($space->area_id != $area_id){
+        $space->area_id   = $area_id;   
+        $space->id_name   = $request->id_name_space;
+      }        
       $space->save();
 
       if($space){
-        return redirect()->route('space.index')->with('success', 'Space Warehouse ['.$request->name.'] edited.');
+        return redirect()->route('space.index')->with('success', 'Space ['.$request->name.'] edited.');
       } else {
-        return redirect()->route('space.index')->with('error', 'Edit Space Warehouse failed.');
-      }      
+        return redirect()->route('space.index')->with('error', 'Edit Space failed.');
+      }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-      $room_       = Room::where('space_id', $id)->get();
-      $count_room  = count($room_);
-      for ($i = 0; $i < $count_room ; $i++) {
-        $room = Room::find($room_[$i]->id);
-        $room->deleted_at = Carbon\Carbon::now();
-        $room->save();
+      $shelves_       = Shelves::where('space_id', $id)->get();
+      $count_shelves  = count($shelves_);
+      for ($i = 0; $i < $count_shelves ; $i++) {
+        $shelves = Shelves::find($shelves_[$i]->id);
+        $shelves->deleted_at = Carbon\Carbon::now();
+        $shelves->save();
       }
 
-      $box_         = Box::where('space_id', $id)->get();
-      $count_box    = count($box_);
-      for ($a = 0; $a < $count_box ; $a++) {
-        $box = Box::find($box_[$a]->id);
-        $box->deleted_at = Carbon\Carbon::now();
-        $box->save();
-      }
-
-      $space = $this->space->find($id);
-      $name  = $space->name;
+      $space  = $this->repository->find($id);
+      $name   = $space->name;
       $space->deleted_at = Carbon\Carbon::now();
       $space->save();
 
       if($space){
-        return redirect()->route('space.index')->with('success', 'Space Warehouse ['.$name.'] deleted.');
+        return redirect()->route('space.index')->with('success', 'Space ['.$name.'] deleted.');
       } else {
-        return redirect()->route('space.index')->with('error', 'Delete Space Warehouse failed.');
+        return redirect()->route('space.index')->with('error', 'Delete Space failed.');
       }
-      
     }
 
-    public function getDataSelectByWarehouse($warehouse_id, Request $request){
-
-        $data = $this->space->getSelectByWarehouse($warehouse_id);
-        $arrData = array();
-        foreach ($data as $arrVal) {
+    public function getDataSelectByArea($area_id, Request $request)
+    {
+        $space    = $this->repository->getSelectByArea($area_id);
+        $arrData  = array();
+        foreach ($space as $arrVal) {
             $arr = array(
                       'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
         echo(json_encode($arrData));
-
     }
 
-    public function getDataSelectAll(Request $request){
-
-        $data = $this->space->getSelectAll();
-        $arrData = array();
-        foreach ($data as $arrVal) {
+    public function getDataSelectAll(Request $request)
+    {
+        $space    = $this->repository->getSelectAll();
+        $arrData  = array();
+        foreach ($space as $arrVal) {
             $arr = array(
                       'id'    => $arrVal->id . '##' . $arrVal->id_name,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
         echo(json_encode($arrData));
-
     }
 
     public function getNumber(Request $request)
     {
-
-        $warehouse_id = $request->input('warehouse_id');
-        $sql          = Space::where('warehouse_id', '=', $warehouse_id)
-                        ->orderBy('id_name', 'desc')
-                        ->first();
-        $id_number    = isset($sql->id_name) ? substr($sql->id_name, 6) : 0;
-        $code         = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+        $sql     = Space::where('area_id', '=', $request->input('area_id'))
+                  ->where('deleted_at', NULL)
+                  ->orderBy('id_name', 'desc')
+                  ->first();
+        $id_number = isset($sql->id_name) ? substr($sql->id_name, 4) : 0;
+        $code      = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;
-
     }
 }

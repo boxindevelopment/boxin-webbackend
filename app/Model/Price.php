@@ -9,7 +9,7 @@ class Price extends Model
     protected $table = 'prices';
 
     protected $fillable = [
-        'types_of_box_room_id', 'types_of_size_id', 'types_of_duration_id', 'price', 'city_id'
+        'types_of_box_room_id', 'types_of_size_id', 'types_of_duration_id', 'price', 'area_id'
     ];
 
     public function type_box_room()
@@ -27,8 +27,8 @@ class Price extends Model
         return $this->belongsTo('App\Model\TypeSize', 'types_of_size_id', 'id');
     }
 
-    public function city()
+    public function area()
     {
-        return $this->belongsTo('App\Model\City', 'city_id', 'id');
+        return $this->belongsTo('App\Model\Area', 'area_id', 'id');
     }
 }

@@ -51,7 +51,7 @@
                           <th width="">Name</th>
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
-                          <th width="15%">Space</th>
+                          <th width="15%">Shelf (Space)</th>
                           <th width="20%">Location</th>
                           <th width="10%">Status</th>
                           <th width="13%" class="text-center no-sort">Action</th>
@@ -66,7 +66,7 @@
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->type_size->name }}</td>
                             <td>{{ $value->type_size->size }}</td>
-                            <td>{{ $value->space->name }}</td>
+                            <td>{{ $value->shelves->name }} ({{ $value->shelves->space->name }})</td>
                             <td>{{ $value->location }}</td>
                             <td class="text-center">
                               <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>

@@ -12,44 +12,29 @@ use PDF;
 
 class BoxController extends Controller
 {
-    protected $box;
+    protected $repository;
 
-    public function __construct(BoxRepository $box)
+    public function __construct(BoxRepository $repository)
     {
-        $this->box = $box;
+        $this->repository = $repository;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-      $box      = $this->box->all();
+      $box      = $this->repository->all();
       return view('boxes.index', compact('box'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
       $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
       return view('boxes.create', compact('type_size'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
       $this->validate($request, [
-        'space_id'  => 'required',
+        'shelves_id'  => 'required',
         'type_size_id' => 'required',        
         'count_box' => 'required',
       ]);
@@ -59,22 +44,29 @@ class BoxController extends Controller
       if($name == ''){
         $name = $type_size->name;
       }
-      $split     = explode('##', $request->space_id);
-      $space_id  = $split[0];
-      $id_name   = $split[1];
+      $split        = explode('##', $request->shelves_id);
+      $shelves_id   = $split[0];
+      $id_name      = $split[1];
 
       for($i=0; $i<$request->count_box;$i++){
-        $sql        = Box::where('space_id', '=', $space_id)->orderBy('id_name', 'desc')->first();
+        $no = $i+1;
+        if($request->count_box == 1){
+          $name_box = $name;
+        }else{
+          $name_box = $name.' '.$no;
+        }
+
+        $sql        = Box::where('shelves_id', '=', $shelves_id)->where('deleted_at', NULL)->orderBy('id_name', 'desc')->first();
         $id_number  = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
         $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
 
         $box = Box::create([
           'types_of_size_id'  => $request->type_size_id,
-          'space_id'          => $space_id,
-          'name'              => $name,
+          'shelves_id'        => $shelves_id,
+          'name'              => $name_box,
           'location'          => $request->location,
-          'id_name'           => $id_name.'1'.$code,
-          'barcode'           => $id_name.'1'.$code,
+          'id_name'           => $id_name.''.$code,
+          'barcode'           => $id_name.''.$code,
           'status_id'         => 10,
         ]);
         $box->save();
@@ -86,48 +78,29 @@ class BoxController extends Controller
       }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-      $box       = $this->box->getEdit($id);
-      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();      
+      $box       = $this->repository->getEdit($id);
+      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
       $edit_box  = true;
       return view('boxes.edit', compact('id', 'box', 'type_size', 'edit_box'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-      $split     = explode('##', $request->space_id);
-      $space_id  = $split[0];
-      $box                    = $this->box->find($id);
+      $split      = explode('##', $request->shelves_id);
+      $shelves_id = $split[0];
+      $box                    = $this->repository->find($id);
       $box->name              = $request->name;
       $box->types_of_size_id  = $request->type_size_id;
       $box->location          = $request->location;
-      if($box->space_id != $space_id){
-        $box->space_id        = $space_id;
+      if($box->shelves_id != $shelves_id){
+        $box->shelves_id      = $shelves_id;
         $box->id_name         = $request->id_name_box;
         $box->barcode         = $request->id_name_box;
       }   
@@ -140,15 +113,9 @@ class BoxController extends Controller
       }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-      $box  = $this->box->find($id);
+      $box  = $this->repository->find($id);
       $name = $box->name;
       $box->deleted_at = Carbon\Carbon::now();
       $box->save();
@@ -161,7 +128,7 @@ class BoxController extends Controller
     }
 
     public  function printBarcode($id){ 
-      $produk  = $this->box->getById($id);
+      $produk  = $this->repository->getById($id);
       $no = 1; 
       $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no')); 
       $pdf->setPaper('a7',  'landscape'); 
@@ -170,8 +137,8 @@ class BoxController extends Controller
 
     public function getNumber(Request $request)
     {
-        $space_id= $request->input('space_id');
-        $sql     = Box::where('space_id', '=', $space_id)
+        $sql     = Box::where('shelves_id', '=', $request->input('shelves_id'))
+                  ->where('deleted_at', NULL)
                   ->orderBy('id_name', 'desc')
                   ->first();
         $id_number = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;

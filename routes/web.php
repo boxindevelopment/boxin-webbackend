@@ -4,26 +4,40 @@ Auth::routes();
 Route::get('/privacyPolicy', 'HomeController@index')->name('privacyPolicy');
 // ROUTE PROTEKSI DENGAN AUTH
 Route::group(['middleware' => 'auth'], function() {
-  // Route::get('/home', function(){ return redirect()->route('home'); });
+
   Route::get('/', 'DashboardController@index')->name('dashboard');
 
-  Route::resource('warehouses', 'WarehousesController');
-  Route::resource('warehouses-city', 'CityController');
-  Route::resource('warehouses-area', 'AreaController');
+  Route::resource('city', 'CityController')->except(['show']);
+  Route::prefix('city')->group(function () {
+    Route::get('/dataSelect','CityController@getDataSelect')->name('city.getDataSelect');
+  });
+
+  Route::resource('area', 'AreaController')->except(['show']);
+  Route::prefix('area')->group(function () {
+    Route::get('/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelectByCity', 'as' => 'area.getDataSelect']);
+    Route::get('/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);  
+    Route::get('/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);  
+  });
+
   Route::resource('space', 'SpaceController')->except(['show']);
-  Route::resource('room', 'RoomController')->except(['show']);
+  Route::prefix('space')->group(function () {
+    Route::get('/dataSelect/{area_id}', ['uses' => 'SpaceController@getDataSelectByArea', 'as' => 'space.getDataSelectByArea']);  
+    Route::get('/getNumber', ['uses' => 'SpaceController@getNumber', 'as' => 'space.getNumber']);  
+  });
+
+  Route::resource('shelves', 'ShelvesController')->except(['show']);
+  Route::prefix('shelves')->group(function () {
+    Route::get('/dataSelect/{space_id}', ['uses' => 'ShelvesController@getDataSelectBySpace', 'as' => 'shelves.getDataSelectBySpace']);
+    Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);  
+  });
+
   Route::resource('box', 'BoxController')->except(['show']);
-  Route::get('barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
-  
-  Route::get('/city/dataSelect', ['uses' => 'CityController@getDataSelect', 'as' => 'city.getDataSelect']);
-  Route::get('/area/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelectByCity', 'as' => 'area.getDataSelect']);
-  Route::get('/area/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);  
-  Route::get('/area/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);  
-  Route::get('/warehouse/dataSelect/{area_id}', ['uses' => 'WarehousesController@getDataSelectByArea', 'as' => 'warehouses.getDataSelectByArea']);  
-  Route::get('/warehouse/getNumber', ['uses' => 'WarehousesController@getNumber', 'as' => 'warehouses.getNumber']);  
-  Route::get('/space/dataSelect/{warehouse_id}', ['uses' => 'SpaceController@getDataSelectByWarehouse', 'as' => 'space.getDataSelectByWarehouse']);
-  Route::get('/space/getNumber', ['uses' => 'SpaceController@getNumber', 'as' => 'space.getNumber']);  
-  Route::get('/box/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);  
+  Route::prefix('box')->group(function () {
+    Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);  
+    Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
+  });
+
+  Route::resource('room', 'RoomController')->except(['show']);
   Route::get('/room/getNumber', ['uses' => 'RoomController@getNumber', 'as' => 'room.getNumber']);  
   
   Route::resource('order', 'OrderController')->except(['show']);
@@ -44,16 +58,28 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
-    Route::get('getDataSelectNotAdmin', ['uses' => 'UserController@getDataSelectNotAdmin', 'as' => 'user.getDataSelectNotAdmin']);
-    Route::get('getDataSelectNotSuperadmin', ['uses' => 'UserController@getDataSelectNotSuperadmin', 'as' => 'user.getDataSelectNotSuperadmin']);
-    Route::get('admin-city','UserController@list_admincity')->name('user.list_admincity');
-    Route::get('superadmin','UserController@list_superadmin')->name('user.list_superadmin');
+    Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);
+    Route::get('getDataSelectForSuperadmin', ['uses' => 'UserController@getDataSelectForSuperadmin', 'as' => 'user.getDataSelectForSuperadmin']);
+    Route::get('getDataSelectForFinance', ['uses' => 'UserController@getDataSelectForFinance', 'as' => 'user.getDataSelectForFinance']);
+    Route::get('admin','UserController@list_admin')->name('user.admin.index');
+    Route::post('admin/store','UserController@storeAdmin')->name('user.admin.store');
+
+    Route::get('finance','UserController@list_finance')->name('user.finance.index');
+    Route::post('finance/store','UserController@storeFinance')->name('user.finance.store');
+    
+    Route::get('superadmin','UserController@list_superadmin')->name('user.superadmin.index');  
+    Route::post('superadmin/store','UserController@storeSuperadmin')->name('user.superadmin.store');
   });
   
   Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
+  Route::prefix('types-of-size')->group(function () {
+    Route::get('createBox','TypeSizeController@createBox')->name('types-of-size.createBox');
+    Route::get('createRoom','TypeSizeController@createBox')->name('types-of-size.createRoom');
+    Route::post('store','TypeSizeController@store')->name('types-of-size.store');
+  });
 
   Route::resource('price', 'PriceController')->except(['show']);
 
-  Route::resource('setting', 'SettingController')->except(['show']);
+  Route::resource('delivery-fee', 'DeliveryFeeController')->except(['show']);
 
 });

@@ -40,21 +40,21 @@
                     @foreach ($data as $key => $value)
                     <div class="col-md-6">
 
-                      <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $value->name }}" required>
-                      </div>
+                        <div class="form-group">
+                            <label>Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $value->name }}" required>
+                        </div>
 
-                      <div class="form-group">
-                        <label>Size <span class="text-danger">*</span></label>
-                        <input type="text" name="size" class="form-control" placeholder="Enter Size" value="{{ $value->size }}" required>
-                      </div>
+                        <div class="form-group">
+                            <label>Size <span class="text-danger">*</span></label>
+                            <input type="text" name="size" class="form-control" placeholder="Enter Size" value="{{ $value->size }}" required>
+                        </div>
 
-                      <div class="form-group">
-                        <label>Image <span class="text-danger">*</span></label>
-                        <input type="file" class="dropify" data-height="200" name="image" data-default-file="{{ asset('images/types_of_size')}}/{{ $value->image }}" value="{{ asset('images/types_of_size')}}/{{ $value->image }}" />
+                        <div class="form-group">
+                            <label>Image <span class="text-danger">*</span></label>
+                            <input type="file" class="dropify" data-height="200" name="image" data-default-file="{{ asset('images/types_of_size')}}/{{ $value->image }}" value="{{ asset('images/types_of_size')}}/{{ $value->image }}" />
                         <!-- <img id="myImg" src="{{ asset('images/types_of_size')}}/{{ $value->image }}" width="100%" data-height="200"/> -->
-                      </div>
+                        </div>
 
                       <a href="{{ route('types-of-size.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Save</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>

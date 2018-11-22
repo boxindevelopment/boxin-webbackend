@@ -34,7 +34,7 @@ class PriceController extends Controller
      */
     public function create()
     {
-      abort('404');
+      return view('settings.price.create');
     }
 
     /**

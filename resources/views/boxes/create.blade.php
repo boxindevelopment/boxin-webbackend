@@ -53,13 +53,13 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="">Warehouse <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" required>
+                      <label for="">Space <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="space_id" name="space_id" required>
                     </div>
 
                     <div class="form-group">
-                      <label for="">Space <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" id="space_id" name="space_id" required>
+                      <label for="">Shelf <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="shelves_id" name="shelves_id" required>
                     </div>
 
                     <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>

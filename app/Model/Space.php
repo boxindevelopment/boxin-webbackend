@@ -10,27 +10,16 @@ class Space extends Model
     protected $table = 'spaces';
 
     protected $fillable = [
-        'warehouse_id', 'name', 'id_name'
+        'area_id', 'name', 'lat', 'long', 'id_name', 'types_of_size_id'
     ];
 
-    public function warehouse()
+    public function area()
     {
-        return $this->belongsTo('App\Model\Warehouse', 'warehouse_id', 'id');
+        return $this->belongsTo('App\Model\Area', 'area_id', 'id');
     }
 
-    public function room()
+    public function type_size()
     {
-        return $this->hasMany('App\Model\Room', 'space_id', 'id');
+        return $this->belongsTo('App\Model\TypeSize', 'types_of_size_id', 'id');
     }
-
-    public function box()
-    {
-        return $this->hasMany('App\Model\Box', 'space_id', 'id');
-    }
-
-    public function order_detail()
-    {
-        return $this->hasMany('App\Model\OrderDetail', 'space_id', 'id');
-    }
-
 }

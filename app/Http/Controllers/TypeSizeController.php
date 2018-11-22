@@ -10,11 +10,7 @@ USE File;
 
 class TypeSizeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
       $boxes   = TypeSize::where('types_of_box_room_id', 1)->get();
@@ -22,57 +18,54 @@ class TypeSizeController extends Controller
       return view('settings.types-of-size.index', compact('boxes', 'rooms'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function createBox()
     {
-      abort('404');
+      return view('settings.types-of-size.create_box');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createRoom()
     {
-      abort('404');   
+      return view('settings.types-of-size.create_room');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function store(Request $r)
+    {
+        $this->validate($r, [
+            'name'  => 'required',
+            'size'  => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg',
+        ]);
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $getimageName = time().'.'.$request->image->getClientOriginalExtension();
+                $image = $request->image->move(public_path('images/types_of_size'), $getimageName);
+                $data = TypeSize::create([
+                    'type_of_box_room_id' => $r->type_of_box_room_id,
+                    'name'                => $r->name,
+                    'size'                => $r,
+                    'image'               => $getimageName,
+                ]);
+            }
+        }        
+
+        if($data){
+            return redirect()->route('types-of-size.index')->with('success', 'Success add data size.');
+        } else {
+            return redirect()->route('types-of-size.index')->with('error', 'Add data size failed.');
+        }     
+    }
+
     public function show($id)
     {
       abort('404');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
       $data     = TypeSize::where('id',$id)->get();
       return view('settings.types-of-size.edit', compact('data', 'id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
@@ -84,7 +77,6 @@ class TypeSizeController extends Controller
         $data          = TypeSize::find($id);
         $data->name    = $request->name;
         $data->size    = $request->size;
-
         if ($request->hasFile('image')) {
             if ($request->file('image')->isValid()) {
                 $getimageName = time().'.'.$request->image->getClientOriginalExtension();
@@ -92,22 +84,15 @@ class TypeSizeController extends Controller
                 $data->image = $getimageName;
             }
         }
-
         $data->save();
 
         if($data){
-            return redirect()->route('types-of-size.index')->with('success', 'Edit Data Types of Size success.');
+            return redirect()->route('types-of-size.index')->with('success', 'Edit Data Size success.');
         } else {
-            return redirect()->route('types-of-size.index')->with('error', 'Edit Data Types of Size failed.');
+            return redirect()->route('types-of-size.index')->with('error', 'Edit Data Size failed.');
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
       

@@ -160,18 +160,18 @@
 
             if(values != ''){
                 split_city = values.split('##');
-                @if(isset($warehouse->area_id_name))
-                    $("#city_id").val(values).trigger('change');
-                    area_Selectdata(split_city[0], '{{ $warehouse->area_id }}##{{ $warehouse->area_id_name }}');
-                @elseif(isset($space->area_id_name))
+                @if(isset($space->area_id_name))
                     $("#city_id").val(values).trigger('change');
                     area_Selectdata(split_city[0], '{{ $space->area_id }}##{{ $space->area_id_name }}');
+                @elseif(isset($shelves->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $shelves->area_id }}##{{ $shelves->area_id_name }}');
                 @elseif(isset($box->area_id_name))
                     $("#city_id").val(values).trigger('change');
                     area_Selectdata(split_city[0], '{{ $box->area_id }}##{{ $box->area_id_name }}');
-                @elseif(isset($room->area_id_name))
+                @elseif(isset($user->area_id_name))
                     $("#city_id").val(values).trigger('change');
-                    area_Selectdata(split_city[0], '{{ $room->area_id }}##{{ $room->area_id_name }}');
+                    area_Selectdata(split_city[0], '{{ $user->area_id }}##{{ $user->area_id_name }}');
                 @else
                     $("#city_id").val(values).trigger('change');
                     area_Selectdata(split_city[0], '');
@@ -182,17 +182,17 @@
             @if(isset($space))
                 city_Selectdata('{{$space->city_id}}##{{$space->city_id_name}}');
             @endif
-        @elseif(isset($edit_warehouse))
-            @if(isset($warehouse))
-                city_Selectdata('{{$warehouse->city_id}}##{{$warehouse->city_id_name}}');
+        @elseif(isset($edit_shelves))
+            @if(isset($shelves))
+                city_Selectdata('{{$shelves->city_id}}##{{$shelves->city_id_name}}');
             @endif
         @elseif(isset($edit_box))
             @if(isset($box))
                 city_Selectdata('{{$box->city_id}}##{{$box->city_id_name}}');
             @endif
-        @elseif(isset($edit_room))
-            @if(isset($room))
-                city_Selectdata('{{$room->city_id}}##{{$room->city_id_name}}');
+        @elseif(isset($edit_user))
+            @if(isset($user))
+                city_Selectdata('{{$user->city_id}}##{{$user->city_id_name}}');
             @endif
         @else
             city_Selectdata('');
@@ -235,101 +235,43 @@
                 }).on('change', function (e) {
                     var area_ext = $(this).val().split('##');
                     var area_id = area_ext[0];
-                    get_id_number_warehouse(area_ext[0], area_ext[1]);
-                    warehouse_Selectdata(area_id, $(this).val());
+                    get_id_number_space(area_ext[0], area_ext[1]);
+                    space_Selectdata(area_id, $(this).val());
                 })
 
             });
             if(values != ''){
                 split_area = values.split('##');
-                @if(isset($space->warehouse_id_name))
+                @if(isset($shelves->space_id_name))
                     $("#area_id").val(values).trigger("change");
-                    warehouse_Selectdata(split_area[0], '{{ $space->warehouse_id }}##{{ $space->warehouse_id_name }}');                
-                @elseif(isset($box->warehouse_id_name))
+                    space_Selectdata(split_area[0], '{{ $shelves->space_id }}##{{ $shelves->space_id_name }}');                
+                @elseif(isset($box->space_id_name))
                     $("#area_id").val(values).trigger("change");
-                    warehouse_Selectdata(split_area[0], '{{ $box->warehouse_id }}##{{ $box->warehouse_id_name }}');                
-                @elseif(isset($room->warehouse_id_name))
-                    $("#area_id").val(values).trigger("change");
-                    warehouse_Selectdata(split_area[0], '{{ $room->warehouse_id }}##{{ $room->warehouse_id_name }}');                
+                    space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');                      
                 @else
-                    $("#area_id").val(values).trigger("change");
-                    warehouse_Selectdata(split_area[0], '');
+                    // $("#area_id").val(values).trigger("change");
+                    // space_Selectdata(split_area[0], '');
                 @endif
             }
         }
 
-        function get_id_number_warehouse(area_id, area_number){
-
-            var data = $.ajax({
-                url: "{{ url('/warehouse/getNumber') }}",
-                type: "GET",
-                data: { area_id : area_id }
-            })
-            .done(function(data) {
-                $('input[name="id_name_warehouse"]').val(area_number + data);
-            });
-        }
-
-        function warehouse_Selectdata(area_id, values) {
-            var split_area = values.split('##');
-            var $id = area_id;
-            var data = $.ajax({
-                url: "{{ url('/warehouse/dataSelect/') }}/"+area_id,
-                type: "GET",
-                data: { }
-            })
-            .done(function(data) {
-                var obj = jQuery.parseJSON(data);
-                arrs = [];
-                for (var i = 0; i<obj.length; i++) {
-                    arrs.push( {
-                        id : obj[i].id,
-                        text : obj[i].text
-                    } );
-                }
-                var warehouse_id = $("#warehouse_id").val();
-                $("#warehouse_id").select2({
-                    multiple: false,
-                    placeholder: 'Choose Warehouse',
-                    tags: true,
-                    data : arrs
-                }).on('change', function (e) {
-                    var warehouse_ext = $(this).val().split('##');
-                    var warehouse_id = warehouse_ext[0];
-                    get_id_number_space(warehouse_ext[0], warehouse_ext[1]);
-                    space_Selectdata(warehouse_id, $(this).val());
-                });
-
-            });
-            if(values != ''){
-                $("#warehouse_id").val(values).trigger("change");
-                split_warehouse = values.split('##');
-                @if(isset($box->space_id_name))
-                    space_Selectdata(split_warehouse[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
-                @elseif(isset($room->space_id_name))
-                    space_Selectdata(split_warehouse[0], '{{ $room->space_id }}##{{ $room->space_id_name }}');
-                @else
-                    space_Selectdata(split_warehouse[0], '');
-                @endif
-            }
-
-        }
-
-        function get_id_number_space(warehouse_id, warehouse_number){
+        function get_id_number_space(area_id, area_number){
 
             var data = $.ajax({
                 url: "{{ url('/space/getNumber') }}",
                 type: "GET",
-                data: { warehouse_id : warehouse_id }
+                data: { area_id : area_id }
             })
             .done(function(data) {
-                $('input[name="id_name_space"]').val(warehouse_number + data);
+                $('input[name="id_name_space"]').val(area_number + data);
             });
         }
 
-        function space_Selectdata(warehouse_id, values) {
+        function space_Selectdata(area_id, values) {
+            var split_area = values.split('##');
+            var $id = area_id;
             var data = $.ajax({
-                url: "{{ url('/space/dataSelect/') }}/"+warehouse_id,
+                url: "{{ url('/space/dataSelect/') }}/"+area_id,
                 type: "GET",
                 data: { }
             })
@@ -351,39 +293,40 @@
                 }).on('change', function (e) {
                     var space_ext = $(this).val().split('##');
                     var space_id = space_ext[0];
-                    get_id_number_box(space_ext[0], space_ext[1]);
-                    get_id_number_room(space_ext[0], space_ext[1]);
+                    get_id_number_shelves(space_ext[0], space_ext[1]);
+                    shelves_Selectdata(space_id, $(this).val());
                 });
+
             });
+            if(values != ''){
+                $("#space_id").val(values).trigger("change");
+                split_space = values.split('##');
+                @if(isset($box->space_id_name))
+                    shelves_Selectdata(split_space[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
+                @elseif(isset($room->space_id_name))
+                    shelves_Selectdata(split_space[0], '{{ $room->space_id }}##{{ $room->space_id_name }}');
+                @else
+                    // shelves_Selectdata(split_space[0], '');
+                @endif
+            }
+
         }
 
-        function get_id_number_box(space_id, space_number){
+        function get_id_number_shelves(space_id, space_number){
 
             var data = $.ajax({
-                url: "{{ url('/box/getNumber') }}",
+                url: "{{ url('/shelves/getNumber') }}",
                 type: "GET",
                 data: { space_id : space_id }
             })
             .done(function(data) {
-                $('input[name="id_name_box"]').val(space_number +'1'+ data);
+                $('input[name="id_name_shelf"]').val(space_number + data);
             });
         }
 
-        function get_id_number_room(space_id, space_number){
-
+        function shelves_Selectdata(space_id, values) {
             var data = $.ajax({
-                url: "{{ url('/room/getNumber') }}",
-                type: "GET",
-                data: { space_id : space_id }
-            })
-            .done(function(data) {
-                $('input[name="id_name_room"]').val(space_number +'2'+ data);
-            });
-        }
-
-        function usernotAdmin_Selectdata(values) {
-            var data = $.ajax({
-                url: "{{ url('/user/getDataSelectNotAdmin') }}",
+                url: "{{ url('/shelves/dataSelect/') }}/"+space_id,
                 type: "GET",
                 data: { }
             })
@@ -396,7 +339,48 @@
                         text : obj[i].text
                     } );
                 }
-                $("#user_id").select2({
+                var shelves_id = $("#shelves_id").val();
+                $("#shelves_id").select2({
+                    multiple: false,
+                    placeholder: 'Choose Shelves',
+                    tags: true,
+                    data : arrs
+                }).on('change', function (e) {
+                    var shelves_ext = $(this).val().split('##');
+                    var space_id = shelves_ext[0];
+                    get_id_number_box(shelves_ext[0], shelves_ext[1]);
+                });
+            });
+        }
+
+        function get_id_number_box(shelves_id, shelves_number){
+
+            var data = $.ajax({
+                url: "{{ url('/box/getNumber') }}",
+                type: "GET",
+                data: { shelves_id : shelves_id }
+            })
+            .done(function(data) {
+                $('input[name="id_name_box"]').val(shelves_number + data);
+            });
+        }
+
+        function userForAdmin_Selectdata(values) {
+            var data = $.ajax({
+                url: "{{ url('/user/getDataSelectForAdmin') }}",
+                type: "GET",
+                data: { }
+            })
+            .done(function(data) {
+                var obj = jQuery.parseJSON(data);
+                arrs = [];
+                for (var i = 0; i<obj.length; i++) {
+                    arrs.push( {
+                        id : obj[i].id,
+                        text : obj[i].text
+                    } );
+                }
+                $("#admin_id").select2({
                     multiple: false,
                     placeholder: 'Choose User',
                     tags: true,
@@ -405,19 +389,19 @@
                     var user_id = $(this).val();
                 });
                 if(values != ''){
-                    $("#user_id").val(values).trigger('change');
+                    $("#admin_id").val(values).trigger('change');
                 }
             });
 
             if(values != ''){
-                $("#user_id").val(values).trigger('change');
+                $("#admin_id").val(values).trigger('change');
             }
         }
-        usernotAdmin_Selectdata('');
+        userForAdmin_Selectdata('');
 
-        function usernotSuperadmin_Selectdata(values) {
+        function userForSuperadmin_Selectdata(values) {
             var data = $.ajax({
-                url: "{{ url('/user/getDataSelectNotSuperadmin') }}",
+                url: "{{ url('/user/getDataSelectForSuperadmin') }}",
                 type: "GET",
                 data: { }
             })
@@ -430,7 +414,7 @@
                         text : obj[i].text
                     } );
                 }
-                $("#user").select2({
+                $("#superadmin_id").select2({
                     multiple: false,
                     placeholder: 'Choose User',
                     tags: true,
@@ -439,15 +423,50 @@
                     var user = $(this).val();
                 });
                 if(values != ''){
-                    $("#user").val(values).trigger('change');
+                    $("#superadmin_id").val(values).trigger('change');
                 }
             });
 
             if(values != ''){
-                $("#user").val(values).trigger('change');
+                $("#superadmin_id").val(values).trigger('change');
             }
         }
-        usernotSuperadmin_Selectdata('');
+        userForSuperadmin_Selectdata('');
+
+        function userForFinance_Selectdata(values) {
+            var data = $.ajax({
+                url: "{{ url('/user/getDataSelectForFinance') }}",
+                type: "GET",
+                data: { }
+            })
+            .done(function(data) {
+                var obj = jQuery.parseJSON(data);
+                arrs = [];
+                for (var i = 0; i<obj.length; i++) {
+                    arrs.push( {
+                        id : obj[i].id,
+                        text : obj[i].text
+                    } );
+                }
+                $("#finance_id").select2({
+                    multiple: false,
+                    placeholder: 'Choose User',
+                    tags: true,
+                    data : arrs
+                }).on('change', function (e) {
+                    var user = $(this).val();
+                });
+                if(values != ''){
+                    $("#finance_id").val(values).trigger('change');
+                }
+            });
+
+            if(values != ''){
+                $("#finance_id").val(values).trigger('change');
+            }
+        }
+        userForFinance_Selectdata('');
+
     </script>
 
     @yield('close_html')

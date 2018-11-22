@@ -2,6 +2,7 @@
 
 namespace Spatie\Permission;
 
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Compilers\BladeCompiler;
 use Spatie\Permission\Contracts\Role as RoleContract;
@@ -22,6 +23,10 @@ class PermissionServiceProvider extends ServiceProvider
                 $this->publishes([
                     __DIR__.'/../database/migrations/create_permission_tables.php.stub' => $this->app->databasePath()."/migrations/{$timestamp}_create_permission_tables.php",
                 ], 'migrations');
+            }
+
+            if (app()->version() >= '5.5') {
+                $this->registerMacroHelpers();
             }
         }
 
@@ -109,6 +114,33 @@ class PermissionServiceProvider extends ServiceProvider
             $bladeCompiler->directive('endunlessrole', function () {
                 return '<?php endif; ?>';
             });
+        });
+    }
+
+    protected function registerMacroHelpers()
+    {
+        Route::macro('role', function ($roles = []) {
+            if (! is_array($roles)) {
+                $roles = [$roles];
+            }
+
+            $roles = implode('|', $roles);
+
+            $this->middleware("role:$roles");
+
+            return $this;
+        });
+
+        Route::macro('permission', function ($permissions = []) {
+            if (! is_array($permissions)) {
+                $permissions = [$permissions];
+            }
+
+            $permissions = implode('|', $permissions);
+
+            $this->middleware("permission:$permissions");
+
+            return $this;
         });
     }
 }

@@ -9,14 +9,14 @@ class Box extends Model
     protected $table = 'boxes';
 
     protected $fillable = [
-        'space_id', 'types_of_size_id', 'name', 'barcode', 'location', 'size', 'price', 'status_id', 'id_name'
+        'shelves_id', 'types_of_size_id', 'name', 'barcode', 'location', 'size', 'price', 'status_id', 'id_name'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];
 
-    public function space()
+    public function shelves()
     {
-        return $this->belongsTo('App\Model\Space', 'space_id', 'id');
+        return $this->belongsTo('App\Model\Shelves', 'shelves_id', 'id');
     }
 
     public function type_size()

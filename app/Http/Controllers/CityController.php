@@ -13,109 +13,66 @@ use DB;
 class CityController extends Controller
 {
 
-    protected $city;
+    protected $repository;
 
-    public function __construct(CityRepository $city)
+    public function __construct(CityRepository $repository)
     {
-        $this->city = $city;
+        $this->repository = $repository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
       $id_name  = $this->id_name();
-      $city     = $this->city->all();
-      return view('warehouses.list_city', compact('city', 'id_name'));
+      $city     = $this->repository->all();
+      return view('cities.index', compact('city', 'id_name'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
       abort('404');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
       $cities = City::create([
-        'name' => $request->name,
+        'name'    => $request->name,
         'id_name' => $request->id_name,
       ]);
 
-      if($cities){
-        $this->city->insertPrice($cities->id);
-        
-        return redirect()->route('warehouses-city.index')->with('success', 'Warehouse City : [' . $request->name . '] inserted.');
+      if($cities){        
+        return redirect()->route('city.index')->with('success', 'City : [' . $request->name . '] inserted.');
       } else {
-        return redirect()->route('warehouses-city.index')->with('error', 'Add New Warehouse City failed.');
+        return redirect()->route('city.index')->with('error', 'Add New City failed.');
       }
       
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
       abort('404');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-      $city = $this->city->find($id);
-      return view('warehouses.edit_city', compact('city', 'id'));
+      $city = $this->repository->find($id);
+      return view('cities.edit', compact('city', 'id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-      $city           = $this->city->find($id);
+      $city           = $this->repository->find($id);
       $name           = $city->name;
       $city->name     = $request->name;
       $city->id_name  = $request->id_name;
       $city->save();
 
       if($city){
-        return redirect()->route('warehouses-city.index')->with('success', '['.$name.'] successfully edited.');
+        return redirect()->route('city.index')->with('success', '['.$name.'] successfully edited.');
       } else {
-        return redirect()->route('warehouses-city.index')->with('error', 'Edit Warehouse City failed.');
+        return redirect()->route('city.index')->with('error', 'Edit City failed.');
       }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
       $area_       = Area::where('city_id', $id)->get();
@@ -132,16 +89,15 @@ class CityController extends Controller
       $city->save();
       
       if($city){
-        return redirect()->route('warehouses-city.index')->with('success', '['.$name.'] successfully deleted.');
+        return redirect()->route('city.index')->with('success', '['.$name.'] successfully deleted.');
       } else {
-        return redirect()->route('warehouses-city.index')->with('error', 'Delete Warehouse City failed.');
+        return redirect()->route('city.index')->with('error', 'Delete City failed.');
       }
-
     }
 
-    public function getDataSelect(Request $request){
-
-        $cities = $this->city->getSelect();
+    public function getDataSelect(Request $request)
+    {
+        $cities = $this->repository->getSelect();
         $arrCities = array();
         foreach ($cities as $arrVal) {
             $arr = array(
@@ -150,18 +106,14 @@ class CityController extends Controller
             $arrCities[] = $arr;
         }
         echo(json_encode($arrCities));
-
     }
 
     private function id_name()
     {
-
-        $sql    = City::orderBy('number', 'desc')->first(['id_name', DB::raw('substring(id_name,1,2) as number')]);
+        $sql    = City::where('deleted_at', NULL)->orderBy('number', 'desc')->first(['id_name', DB::raw('substring(id_name,1,2) as number')]);
         $number = isset($sql->number) ? $sql->number : 0;
         $code   = str_pad($number + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;
-
     }
-
 }

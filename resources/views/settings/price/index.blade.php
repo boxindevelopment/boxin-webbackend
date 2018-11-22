@@ -32,7 +32,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title"><span class="lstick"></span>Settings Price</h4>
+                <h4 class="card-title"><span class="lstick"></span>List Settings Price</h4>
                 @include('error-template')
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
@@ -48,7 +48,7 @@
                                 <thead>
                                     <tr>
                                       <th width="3%">No</th>
-                                      <th width="">City</th>
+                                      <th width="">Area</th>
                                       <th width="">Type Size</th>                           
                                       <th width="">Type Duration</th>
                                       <th width="" class="text-right">Price (Rp)</th>
@@ -60,7 +60,7 @@
                                     @foreach ($boxes as $key => $value)
                                       <tr>
                                         <td align="center">{{ $key+1 }}</td>
-                                        <td>{{ $value->city->name }}</td>   
+                                        <td>{{ $value->area->name }}</td>   
                                         <td>{{ $value->type_size->name }}</td>   
                                         <td>{{ $value->type_duration->name }}</td>                            
                                         <td class="text-right">{{ number_format($value->price, 0, '', '.') }}</td>
@@ -97,7 +97,7 @@
                               @foreach ($rooms as $key => $value)
                                 <tr>
                                   <td align="center">{{ $key+1 }}</td>
-                                  <td>{{ $value->city->name }}</td>   
+                                  <td>{{ $value->area->name }}</td>   
                                   <td>{{ $value->type_size->name }}</td>   
                                   <td>{{ $value->type_duration->name }}</td>                            
                                   <td class="text-right">{{ number_format($value->price, 0, '', '.') }}</td>
@@ -142,8 +142,6 @@ $(function() {
   $('#table-room').DataTable({
     "aaSorting": []
   });
-
-
 });
 </script>
 @endsection

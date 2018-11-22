@@ -23,8 +23,4 @@ class City extends Model
       	return $this->hasMany('App\Model\AdminCity', 'city_id', 'id');
   	}
 
-    public function price()
-    {
-        return $this->hasMany('App\Model\Price', 'city_id', 'id');
-    }
 }

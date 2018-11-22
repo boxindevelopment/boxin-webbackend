@@ -54,21 +54,21 @@
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->created_at->format('Y-m-d') }}</td>
                             <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
-                            <td>{{ $value->space->name }}</td>
+                            <td>{{ $value->area->name }}</td>
                             <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>
-                            <td>
+                            <td align="center">
                               <form action="{{route('order.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf
-                                <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->id])}}"><i class="fa fa-eye"></i> Detail</a>
+                                <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->id])}}" title="View Detail"><i class="fa fa-eye"></i></a>
                                 @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
+                                <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
                               </form>
                             </td>
                           </tr>
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="5" class="text-center">There are no results yet</td>
+                          <td colspan="6" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>

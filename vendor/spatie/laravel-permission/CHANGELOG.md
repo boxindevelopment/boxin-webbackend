@@ -2,6 +2,27 @@
 
 All notable changes to `laravel-permission` will be documented in this file
 
+## 2.25.0 - 2018-11-07
+- A model's `roles` and `permissions` relations (respectively) are now automatically reloaded after an Assign/Remove role or Grant/Revoke of permissions. This means there's no longer a need to call `->fresh()` on the model if the only reason is to reload the role/permission relations. (That said, you may want to call it for other reasons.)
+- Added support for passing id to HasRole()
+
+## 2.24.0 - 2018-11-06
+- Fix operator used on RoleOrPermissionMiddleware, and avoid throwing PermissionDoesNotExist if invalid permission passed
+- Auto-reload model role relation after using AssignRole
+- Avoid empty permission creation when using the CreateRole command
+
+## 2.23.0 - 2018-10-15
+- Avoid unnecessary queries of user roles when fetching all permissions
+
+## 2.22.1 - 2018-10-15
+- Fix Lumen issue with Route helper added in 2.22.0
+
+## 2.22.0 - 2018-10-11
+- Added `Route::role()` and `Route::permission()` middleware helper functions
+- Added new `role_or_permission` middleware to allow specifying "or" combinations
+
+## 2.21.0 - 2018-09-29
+- Revert changes from 2.17.1 in order to support Lumen 5.7
 
 ## 2.20.0 - 2018-09-19
 - It will sync roles/permissions to models that are not persisted, by registering a `saved` callback. 

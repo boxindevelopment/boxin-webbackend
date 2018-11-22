@@ -22,13 +22,12 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $user      = $request->user();
-        $warehouse = $this->data->countWarehouse();
+        $city      = $this->data->countCity();
+        $area      = $this->data->countArea();
         $space     = $this->data->countSpace();
         $box       = $this->data->countBox();
-        $room      = $this->data->countRoom();
-        $area      = $this->data->countArea();
         $me        = Auth::id();
-        return view('dashboard', compact('warehouse', 'space', 'box', 'area', 'me', 'room'));
+        return view('dashboard', compact('city', 'space', 'box', 'area', 'me'));
     }
 
     /**

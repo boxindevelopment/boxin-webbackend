@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Model\OrderDetail;
 use App\Model\OrderDetailBox;
-use App\Model\AdminCity;
+use App\Model\AdminArea;
 use App\Repositories\Contracts\OrderDetailRepository as OrderDetailRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -27,17 +27,13 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     
     public function all()
     {
-        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
         $data = $data->select('order_details.*', 'users.*');
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');               
         $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'orders.space_id');
-            $data = $data->leftJoin('warehouses', 'warehouses.id', '=', 'spaces.warehouse_id');
-            $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
-            $data = $data->leftJoin('cities', 'cities.id', '=', 'areas.city_id');
-            $data = $data->where('areas.city_id', $admin->city_id);
+            $data = $data->where('orders.area_id', $admin->area_id);
         }
         $data = $data->where('order_details.status_id', 4);
         $data = $data->orderBy('order_details.id','DESC');
@@ -49,6 +45,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     {
         return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
     }
+
     public function getData($args = [])
     {
 
@@ -63,7 +60,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
 
     }
 
-    public function getOrderDetail($id){
+    public function getOrderDetail($id)
+    {
         $data = $this->model->query();
         $data = $data->select('order_details.*', 'users.*', 'pickup_orders.*');
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');             
@@ -74,7 +72,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         return $data;
     }
 
-    public function getDetailBox($id){
+    public function getDetailBox($id)
+    {
         $data = $this->detail_box->query();
         $data = $data->where('order_detail_id', $id);
         $data = $data->orderBy('id', 'ASC');

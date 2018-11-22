@@ -5,47 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Area;
 use App\Model\City;
-use App\Model\Warehouse;
+use App\Model\Space;
 use Carbon;
 use App\Repositories\AreaRepository;
 use DB;
 
 class AreaController extends Controller
 {
-    protected $area;
+    protected $repository;
 
-    public function __construct(AreaRepository $area)
+    public function __construct(AreaRepository $repository)
     {
-        $this->area = $area;
+        $this->repository = $repository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-      $area   = $this->area->all();
-      return view('warehouses.list_area', compact('area'));
+      $area   = $this->repository->all();
+      return view('areas.index', compact('area'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
       abort('404');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
       $split    = explode('##', $request->city_id);
@@ -58,48 +42,31 @@ class AreaController extends Controller
       ]);
 
       if($area){
-        return redirect()->route('warehouses-area.index')->with('success', 'Warehouse Area ['.$request->name.'] added.');
+        $this->repository->insertDeliveryFee($area->id);
+        $this->repository->insertPrice($area->id);
+        return redirect()->route('area.index')->with('success', 'Area ['.$request->name.'] added.');
       } else {
-        return redirect()->route('warehouses-area.index')->with('error', 'Add New Warehouse Area failed.');
+        return redirect()->route('area.index')->with('error', 'Add New Area failed.');
       }      
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+  
     public function show($id)
     {
       abort('404');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-      $area   = $this->area->find($id);
-      return view('warehouses.edit_area', compact('area', 'id'));
+      $area   = $this->repository->find($id);
+      return view('areas.edit', compact('area', 'id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-      $split    = explode('##', $request->city_id);
-      $city_id  = $split[0];
+      $split      = explode('##', $request->city_id);
+      $city_id    = $split[0];
 
-      $area       = $this->area->find($id);
+      $area       = $this->repository->find($id);
       $area->name = $request->name;
       if($area->city_id != $city_id){
         $area->city_id = $city_id;
@@ -108,47 +75,39 @@ class AreaController extends Controller
       $area->save();
 
       if($area){
-        return redirect()->route('warehouses-area.index')->with('success', 'Warehouse Area ['.$request->name.'] edited.');
+        return redirect()->route('area.index')->with('success', 'Area ['.$request->name.'] edited.');
       } else {
-        return redirect()->route('warehouses-area.index')->with('error', 'Edit Warehouse Area failed.');
+        return redirect()->route('area.index')->with('error', 'Edit Area failed.');
       }
-
       
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-      $warehouse_       = Warehouse::where('area_id', $id)->get();
-      $count_warehouse  = count($warehouse_);
-      for ($i = 0; $i < $count_warehouse; $i++) {
-        $warehouse = Warehouse::find($warehouse_[$i]->id);
-        $warehouse->deleted_at = Carbon\Carbon::now();
-        $warehouse->save();
+      $space_          = Space::where('area_id', $id)->get();
+      $count_space     = count($space_);
+      for ($i = 0; $i < $count_space; $i++) {
+        $space = Space::find($space_[$i]->id);
+        $space->deleted_at = Carbon\Carbon::now();
+        $space->save();
       }
 
-      $area = $this->area->find($id);
+      $area = $this->repository->find($id);
       $name = $area->name;
       $area->deleted_at = Carbon\Carbon::now();
       $area->save();
 
       if($area){
-        return redirect()->route('warehouses-area.index')->with('success', 'Warehouse Area ['.$name.'] deleted.');
+        return redirect()->route('area.index')->with('success', 'Area ['.$name.'] deleted.');
       } else {
-        return redirect()->route('warehouses-area.index')->with('error', 'Delete Warehouse Area failed.');
+        return redirect()->route('area.index')->with('error', 'Delete Area failed.');
       }
       
     }
 
     public function getDataSelectByCity($city_id, Request $request)
     {
-
-        $areas = $this->area->getSelect($city_id);
+        $areas = $this->repository->getSelect($city_id);
         $arrAreas = array();
         foreach ($areas as $arrVal) {
             $arr = array(
@@ -157,13 +116,11 @@ class AreaController extends Controller
             $arrAreas[] = $arr;
         }
         echo(json_encode($arrAreas));
-
     }
 
     public function getDataSelectAll(Request $request)
     {
-
-        $areas = $this->area->getSelectAll();
+        $areas = $this->repository->getSelectAll();
         $arrAreas = array();
         foreach ($areas as $arrVal) {
             $arr = array(
@@ -172,21 +129,15 @@ class AreaController extends Controller
             $arrAreas[] = $arr;
         }
         echo(json_encode($arrAreas));
-
     }
 
     public function getNumber(Request $request)
     {
-
-        $city_id = $request->input('city_id');
-        $sql     = Area::where('city_id', '=', $city_id)
-        ->orderBy('id_name', 'desc')
-        ->first();
+        $sql     = Area::where('city_id', '=', $request->input('city_id'))->where('deleted_at', NULL)->orderBy('id_name', 'desc')->first();
         $id_number   = isset($sql->id_name) ? substr($sql->id_name, 2) : 0;
         $code        = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;
-
     }
 
 }

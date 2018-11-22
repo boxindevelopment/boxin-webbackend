@@ -56,13 +56,13 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="">Warehouse <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" value="{{ $box->warehouse_id }}##{{ $box->warehouse_id_name }}" required>
+                        <label for="">Space <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
                       </div>
 
                       <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
+                        <label for="">Shelf <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->shelves_id_name }}" required>
                       </div>
 
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>

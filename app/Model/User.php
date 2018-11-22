@@ -33,9 +33,9 @@ class User extends Authenticatable
       return $this->hasMany('App\Model\Order', 'user_id', 'id');
   }
 
-  public function admin_city()
+  public function admin()
   {
-      return $this->hasMany('App\Model\Roles', 'user_id', 'id');
+      return $this->hasMany('App\Model\AdminArea', 'user_id', 'id');
   }
 
 }

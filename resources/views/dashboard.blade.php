@@ -54,13 +54,13 @@
     <div class="row">
         <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
             <div class="card bg-danger">
-                <a href="{{ route('user.index') }}">
+                <a href="{{ route('city.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-checkbox-blank-circle"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Areas</h6>
-                            <h2 class="m-t-0 text-white">{{ $area }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Total City</h6>
+                            <h2 class="m-t-0 text-white">{{ $city }}</h2></div>
                     </div>
                 </div>
                 </a>
@@ -68,13 +68,13 @@
         </div>
         <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
             <div class="card bg-warning">
-                <a href="{{ route('warehouses.index') }}">
+                <a href="{{ route('area.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-map-marker"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Warehouse</h6>
-                            <h2 class="m-t-0 text-white">{{ $warehouse }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Total Areas</h6>
+                            <h2 class="m-t-0 text-white">{{ $area }}</h2></div>
                     </div>
                 </div>
                 </a>
@@ -85,7 +85,7 @@
                 <a href="{{ route('space.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
-                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-grid"></i></div>
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Total Spaces</h6>
                             <h2 class="m-t-0 text-white">{{ $space }}</h2></div>
@@ -99,9 +99,9 @@
                 <a href="{{ route('box.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
-                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-dropbox"></i></div>
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-grid"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Boxes</h6>
+                            <h6 class="text-white m-t-10 m-b-0">Total Shelves</h6>
                             <h2 class="m-t-0 text-white">{{ $box }}</h2></div>
                     </div>
                 </div>
@@ -113,10 +113,10 @@
                 <a href="{{ route('box.index') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
-                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-dropbox"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Rooms</h6>
-                            <h2 class="m-t-0 text-white">{{ $room }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Total Boxes</h6>
+                            <h2 class="m-t-0 text-white">{{ $box }}</h2></div>
                     </div>
                 </div>
                 </a>

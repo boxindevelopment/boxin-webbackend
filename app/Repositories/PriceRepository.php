@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Model\Price;
 use App\Repositories\Contracts\PriceRepository as PriceRepositoryInterface;
 use DB;
-use App\Model\AdminCity;
+use App\Model\AdminArea;
 use Illuminate\Support\Facades\Auth;
 
 class PriceRepository implements PriceRepositoryInterface
@@ -29,12 +29,11 @@ class PriceRepository implements PriceRepositoryInterface
     
     public function all($box_or_room_id)
     {
-        $admin = AdminCity::where('user_id', Auth::user()->id)->first();
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('prices.*');
+        // $data = $data->select('prices.*');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('cities', 'cities.id', '=', 'prices.city_id');
-            $data = $data->where('prices.city_id', $admin->city_id);
+            $data = $data->where('prices.area_id', $admin->area_id);
         }
         $data = $data->where('types_of_box_room_id', $box_or_room_id);
         $data = $data->orderBy('id');

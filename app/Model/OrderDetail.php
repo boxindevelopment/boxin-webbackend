@@ -22,9 +22,9 @@ class OrderDetail extends Model
         return $this->belongsTo('App\Model\Box', 'room_or_box_id', 'id');
     }
 
-    public function room()
+    public function space()
     {
-        return $this->belongsTo('App\Model\Room', 'room_or_box_id', 'id');
+        return $this->belongsTo('App\Model\Space', 'room_or_box_id', 'id');
     }
 
     public function type_box_room()
