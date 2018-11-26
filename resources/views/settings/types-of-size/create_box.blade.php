@@ -32,23 +32,13 @@
 
               @include('error-template')
 
-              <form action="{{ route('types-of-size.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('types-of-size.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
 
-                      <input type="hidden" class="form-control" id="type_of_box_room_id" name="type_of_box_room_id" value="1">
-                      
-                      <div class="form-group">
-                        <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" required>
-                      </div>
-
+                      <input type="text" class="form-control" id="type_of_box_room_id" name="type_of_box_room_id" value="1">
+                  
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" placeholder="Enter Name" required>
@@ -66,7 +56,7 @@
 
                       <div class="form-group">
                           <label>Image <span class="text-danger">*</span></label>
-                          <input type="file" class="dropify" data-height="200" name="image" data-default-file="" value="" />
+                          <input type="file" class="dropify" data-height="200" name="image" data-default-file="" value="" required />
                       </div>
 
                     </div>

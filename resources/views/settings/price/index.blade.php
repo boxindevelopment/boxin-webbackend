@@ -43,6 +43,7 @@
                 <div class="tab-content tabcontent-border">
                     <div class="tab-pane active" id="home" role="tabpanel">
                         <div class="p-20">
+                            <a href="{{ route('price.priceBox') }}" class="btn waves-effect waves-light btn-sm btn-primary" title="Add" style="margin-right: 10px;"><i class="fa fa-plus"></i>&nbsp;Add Price Box</a>
                             <div class="table-responsive m-t-10">
                               <table id="table-box" class="table table-striped table-bordered">
                                 <thead>
@@ -65,7 +66,7 @@
                                         <td>{{ $value->type_duration->name }}</td>                            
                                         <td class="text-right">{{ number_format($value->price, 0, '', '.') }}</td>
                                         <td class="text-center">
-                                          <a class="btn btn-primary btn-sm" href="{{route('price.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                                          <a class="btn btn-info btn-sm" href="{{route('price.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                                         </td>
                                       </tr>
                                     @endforeach
@@ -80,12 +81,14 @@
                         </div>
                     </div>
                     <div class="tab-pane p-20" id="profile" role="tabpanel">
+                      <a href="{{ route('price.priceRoom') }}" class="btn waves-effect waves-light btn-sm btn-primary" title="Add" style="margin-right: 10px;"><i class="fa fa-plus"></i>&nbsp;Add Price Room
+                      </a>
                       <div class="table-responsive m-t-10">
                         <table id="table-room" class="table table-striped table-bordered">
                           <thead>
                               <tr>
                                 <th width="3%">No</th>
-                                <th width="">City</th>
+                                <th width="">Area</th>
                                 <th width="">Type Size</th>                           
                                 <th width="">Type Duration</th>
                                 <th width="" class="text-right">Price (Rp)</th>
@@ -102,13 +105,13 @@
                                   <td>{{ $value->type_duration->name }}</td>                            
                                   <td class="text-right">{{ number_format($value->price, 0, '', '.') }}</td>
                                   <td class="text-center">
-                                    <a class="btn btn-primary btn-sm" href="{{route('price.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-info btn-sm" href="{{route('price.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                                   </td>
                                 </tr>
                               @endforeach
                             @else
                               <tr>
-                                <td colspan="6" class="text-center"> Data Not Found</td>
+                                <td colspan="6" class="text-center">There are no results yet</td>
                               </tr>
                             @endif
                           </tbody>

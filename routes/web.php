@@ -74,11 +74,16 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
   Route::prefix('types-of-size')->group(function () {
     Route::get('createBox','TypeSizeController@createBox')->name('types-of-size.createBox');
-    Route::get('createRoom','TypeSizeController@createBox')->name('types-of-size.createRoom');
+    Route::get('createRoom','TypeSizeController@createRoom')->name('types-of-size.createRoom');
     Route::post('store','TypeSizeController@store')->name('types-of-size.store');
   });
 
   Route::resource('price', 'PriceController')->except(['show']);
+   Route::prefix('price')->group(function () {
+    Route::get('box','PriceController@priceBox')->name('price.priceBox');
+    Route::get('room','PriceController@priceRoom')->name('price.priceRoom');
+    Route::post('store','PriceController@store')->name('price.store');
+  });
 
   Route::resource('delivery-fee', 'DeliveryFeeController')->except(['show']);
 

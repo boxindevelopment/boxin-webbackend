@@ -51,7 +51,7 @@
 
                       <div class="form-group">
                         <label>Price <span class="text-danger">*</span></label>
-                        <input type="text" name="price" class="form-control" placeholder="Enter Price" value="{{ $value->price }}" required>
+                        <input type="text" name="price" class="form-control" placeholder="Enter Price" value="{{ $value->price }}" min="0" required>
                       </div>
 
                       @endforeach

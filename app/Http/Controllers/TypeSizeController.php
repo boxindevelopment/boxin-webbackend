@@ -35,14 +35,14 @@ class TypeSizeController extends Controller
             'size'  => 'required',
             'image' => 'image|mimes:jpeg,png,jpg',
         ]);
-        if ($request->hasFile('image')) {
-            if ($request->file('image')->isValid()) {
-                $getimageName = time().'.'.$request->image->getClientOriginalExtension();
-                $image = $request->image->move(public_path('images/types_of_size'), $getimageName);
+        if ($r->hasFile('image')) {
+            if ($r->file('image')->isValid()) {
+                $getimageName = time().'.'.$r->image->getClientOriginalExtension();
+                $image = $r->image->move(public_path('images/types_of_size'), $getimageName);
                 $data = TypeSize::create([
-                    'type_of_box_room_id' => $r->type_of_box_room_id,
-                    'name'                => $r->name,
-                    'size'                => $r,
+                    'types_of_box_room_id'=> intval($r->input('type_of_box_room_id')),
+                    'name'                => $r->input('name'),
+                    'size'                => $r->input('size'),
                     'image'               => $getimageName,
                 ]);
             }

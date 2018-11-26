@@ -15,7 +15,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Add Space</h3>
+        <h3 class="text-themecolor">Add Price Room</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -32,15 +32,12 @@
 
               @include('error-template')
 
-              <form action="{{ route('space.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('price.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                       
-                      <div class="form-group">
-                        <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_space" id="id_name_space" required readonly>
-                      </div>
+                      <input type="hidden" class="form-control" id="type_of_box_room_id" name="type_of_box_room_id" value="2">
 
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
@@ -53,13 +50,49 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="">Warehouse <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="warehouse_id" name="warehouse_id" required>
+                        <label for="">Types of Size <span class="text-danger">*</span></label>
+                        <select class="form-control" id="select2" name="type_size_id" required>
+                          <option value=""></option>
+                          @if (!empty($type_size))
+                            @foreach ($type_size as $key => $value)
+                              <option value="{{ $value->id }}">{{ $value->name }} ({{ $value->size }})</option>
+                            @endforeach
+                          @endif
+                        </select>
                       </div>
 
                       <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
+                        <label for="">Duration Price :</label>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <label>Daily <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="number" name="daily_price" class="form-control" placeholder="Enter Daily Price" value="0" min="0" required>
+
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <label>Weekly <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="number" name="weekly_price" class="form-control" placeholder="Enter Weekly Price"  value="0" min="0" required>
+
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <label>Monthly <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="number" name="monthly_price" class="form-control" placeholder="Enter Monthly Price"  value="0" min="0" required>
+
+                        </div>
                       </div>
 
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>

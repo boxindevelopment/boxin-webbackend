@@ -31,7 +31,6 @@ class PriceRepository implements PriceRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        // $data = $data->select('prices.*');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('prices.area_id', $admin->area_id);
         }
@@ -41,6 +40,11 @@ class PriceRepository implements PriceRepositoryInterface
         return $data;
     }
 
+    public function checkPrice($type, $type_size, $area_id)
+    {
+        $data = $this->model->where('types_of_size_id', $type_size)->where('types_of_box_room_id', $type)->where('area_id', $area_id)->first();
+        return $data;
+    }
     public function getCount($args = [])
     {
         return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
