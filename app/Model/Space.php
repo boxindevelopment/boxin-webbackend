@@ -10,7 +10,7 @@ class Space extends Model
     protected $table = 'spaces';
 
     protected $fillable = [
-        'area_id', 'name', 'lat', 'long', 'id_name', 'types_of_size_id'
+        'area_id', 'name', 'lat', 'long', 'id_name', 'types_of_size_id', 'status_id',
     ];
 
     public function area()
@@ -22,4 +22,10 @@ class Space extends Model
     {
         return $this->belongsTo('App\Model\TypeSize', 'types_of_size_id', 'id');
     }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Model\Status', 'status_id', 'id');
+    }
+
 }

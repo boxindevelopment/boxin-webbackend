@@ -35,9 +35,9 @@ class Status extends Model
         return $this->hasMany('App\Model\Payment', 'status_id', 'id');
     }
 
-    public function room()
+    public function space()
     {
-        return $this->hasMany('App\Model\Room', 'status_id', 'id');
+        return $this->hasMany('App\Model\Space', 'status_id', 'id');
     }
 
     public function box()

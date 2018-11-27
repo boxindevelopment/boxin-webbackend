@@ -17,6 +17,11 @@ class OrderDetailBox extends Model
         return $this->belongsTo('App\Model\OrderDetail', 'order_detail_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Model\Category', 'category_id', 'id');
+    }
+    
     public function getUrlAttribute()
     {
         if (!empty($this->item_image)) {

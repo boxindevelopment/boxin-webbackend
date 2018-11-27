@@ -18,9 +18,4 @@ class City extends Model
         return $this->hasMany('App\Model\Area', 'city_id', 'id');
     }
 
-    public function admin_city()
-  	{
-      	return $this->hasMany('App\Model\AdminCity', 'city_id', 'id');
-  	}
-
 }

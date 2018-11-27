@@ -37,7 +37,7 @@ class Order extends Model
 
     public function pickup_order()
     {
-        return $this->hasMany('App\Model\PickupOrder', 'order_id', 'id');
+        return $this->hasOne('App\Model\PickupOrder', 'order_id', 'id');
     }
 
 }
