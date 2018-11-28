@@ -43,7 +43,15 @@ class SpaceController extends Controller
       $area_id  = $split[0];
 
       $id_name_space = intval($request->id_name_space);
+
       for($i=0; $i<$request->count_space;$i++){
+      
+        if(strlen($id_name_space) < 6){
+          $name_space_id = '0'.$id_name_space;
+        }else{
+          $name_space_id = $id_name_space;
+        }
+
         $no = $i+1;
         if($request->count_space == 1){
           $name_space = $name;
@@ -55,8 +63,9 @@ class SpaceController extends Controller
           'area_id'   => $area_id,
           'long'      => $request->longitude,
           'lat'       => $request->latitude,
-          'id_name'   => $id_name_space,
-          'types_of_size_id'  => $request->type_size_id,
+          'id_name'   => $name_space_id,
+          'types_of_size_id'  => $request->type_size_id,          
+          'status_id' => 10,
         ]);
         $space->save();
         $id_name_space += 1;
