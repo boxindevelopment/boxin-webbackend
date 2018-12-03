@@ -12,7 +12,7 @@ class CategoryController extends Controller
     
     public function index()
     {
-        $data   = Category::get();
+        $data   = Category::where('deleted_at', NULL)->get();
         return view('category.index', compact('data'));
     }
 
@@ -62,6 +62,14 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-      
+      $data  = Category::find($id);
+      $data->deleted_at = Carbon\Carbon::now();
+      $data->save();
+
+      if($data){
+        return redirect()->route('category.index')->with('success', 'Delete Data Category success.');
+      } else {
+        return redirect()->route('category.index')->with('error', 'Edit Data Category failed.');
+      }
     }
 }

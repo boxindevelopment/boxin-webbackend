@@ -71,6 +71,7 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="">Name</th>
+                          <th width="60%">Description</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
@@ -80,8 +81,14 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->name }}</td>  
+                            <td>{{ $value->description }}</td> 
                             <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('category.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                              <form action="{{route('category.destroy', ['id' => $value->id])}}" method="post">
+                                @csrf
+                                <a class="btn btn-info btn-sm" href="{{route('category.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                                @method('DELETE')
+                                <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                              </form>                              
                             </td>
                           </tr>
                         @endforeach
