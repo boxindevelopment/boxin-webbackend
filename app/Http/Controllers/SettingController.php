@@ -28,7 +28,7 @@ class SettingController extends Controller
 
     public function edit($id)
     {
-        $data = Setting::select(array('settings.*'))->get();
+        $data = Setting::where('id', $id)->get();
         return view('settings.others.edit', compact('data', 'id'));
     }
 

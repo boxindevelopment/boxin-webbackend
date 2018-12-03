@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Settings Other
+          Settings Others
         </h3>
     </div>
 </div>
@@ -51,8 +51,7 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->name }}</td>                            
-                            <td>{{ $value->value }}</td>
-                            <td>{{ $value->name }}</td>                            
+                            <td>{{ $value->value }}</td>                      
                             <td>{{ $value->unit }}</td>
                             <td>{{ $value->description }}</td>  
                             <td class="text-center">

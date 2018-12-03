@@ -15,7 +15,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Settings Delivery Fee</h3>
+        <h3 class="text-themecolor">Settings Others</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -30,11 +30,11 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Delivery Fee</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Others</h4>
 
               @include('error-template')
 
-              <form action="{{ route('delivery-fee.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('settings.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -42,22 +42,27 @@
                       @foreach ($data as $key => $value)
 
                       <div class="form-group">
-                        <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $value->city_id }}##{{ $value->id_name }}" required>
+                        <label>Name</label>
+                        <input type="text" name="name" class="form-control" value="{{ $value->name }}" readonly>
                       </div>
 
                       <div class="form-group">
-                        <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $value->area_id }}##{{ $value->area_id_name }}" required>
+                        <label>Value <span class="text-danger">*</span></label>
+                        <input type="text" name="value" class="form-control" placeholder="Enter Value" value="{{ $value->value }}" required>
                       </div>
 
                       <div class="form-group">
-                        <label>Fee <span class="text-danger">*</span></label>
-                        <input type="text" name="fee" class="form-control" placeholder="Enter Fee" value="{{ $value->fee }}" required>
+                        <label>Unit</label>
+                        <input type="text" name="unit" class="form-control" value="{{ $value->unit }}" readonly>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Description </label>
+                        <textarea name="description" class="form-control" placeholder="Enter Description" rows="3">{{ $value->description }}</textarea> 
                       </div>
                       
                       @endforeach
-                      <a href="{{ route('delivery-fee.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <a href="{{ route('settings.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                 </div>
