@@ -65,6 +65,13 @@
                     <i class="mdi mdi-dropbox"></i>
                     <span class="hide-menu">Boxes</span>
                   </a>
+                </li>      
+
+                <li class="{{ Route::currentRouteNamed('category.index')||Route::currentRouteNamed('category.create')||Route::currentRouteNamed('category.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('category.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-format-list-bulleted"></i>
+                    <span class="hide-menu">Categories</span>
+                  </a>
                 </li>        
 
                 <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
@@ -136,7 +143,7 @@
                       <a href="{{ route('delivery-fee.index') }}"><i class="fa fa-circle"></i> &nbsp;Delivery Fee</a>
                     </li> 
                     @if(Auth::user()->roles_id == 3)
-                    <li class="{{ Route::currentRouteNamed('settings.index')||Route::currentRouteNamed('settings.create')||Route::currentRouteNamed('settings.edit') ? 'active' : null }}">
+                    <li class="{{ Route::currentRouteNamed('settings.index')||Route::currentRouteNamed('settings.edit') ? 'active' : null }}">
                       <a href="{{ route('settings.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>
                     </li>
                     @endif

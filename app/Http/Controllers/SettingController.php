@@ -40,9 +40,9 @@ class SettingController extends Controller
         $data->save();
 
         if($data){
-            return redirect()->route('delivery-fee.index')->with('success', 'Edit Data Delivery Fee success.');
+            return redirect()->route('settings.others.index')->with('success', 'Edit Data success.');
         } else {
-            return redirect()->route('delivery-fee.index')->with('error', 'Edit Data Delivery Fee failed.');
+            return redirect()->route('settings.others.index')->with('error', 'Edit Data failed.');
         }
     }
 

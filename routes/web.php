@@ -37,9 +37,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
   });
 
-  Route::resource('room', 'RoomController')->except(['show']);
-  Route::get('/room/getNumber', ['uses' => 'RoomController@getNumber', 'as' => 'room.getNumber']);  
-  
+  Route::resource('category', 'CategoryController')->except(['show']);
+
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
     Route::get('','OrderController@index')->name('order.index');
