@@ -87,4 +87,6 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('delivery-fee', 'DeliveryFeeController')->except(['show']);
 
+  Route::resource('settings', 'SettingController')->except(['show']);
+
 });

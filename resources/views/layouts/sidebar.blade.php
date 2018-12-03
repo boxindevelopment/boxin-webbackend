@@ -135,6 +135,11 @@
                     <li class="{{ Route::currentRouteNamed('delivery-fee.create')||Route::currentRouteNamed('delivery-fee.index')||Route::currentRouteNamed('delivery-fee.edit') ? 'active' : null }}">
                       <a href="{{ route('delivery-fee.index') }}"><i class="fa fa-circle"></i> &nbsp;Delivery Fee</a>
                     </li> 
+                    @if(Auth::user()->roles_id == 3)
+                    <li class="{{ Route::currentRouteNamed('settings.index')||Route::currentRouteNamed('settings.create')||Route::currentRouteNamed('settings.edit') ? 'active' : null }}">
+                      <a href="{{ route('settings.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>
+                    </li>
+                    @endif
                   </ul>
                 </li>
 
