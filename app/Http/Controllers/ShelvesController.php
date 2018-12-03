@@ -40,6 +40,10 @@ class ShelvesController extends Controller
         'id_name'   => $request->id_name_shelf,
       ]);
 
+      $space = Space::find($space_id);
+      $space->status_id = 9;
+      $space->save();
+
       if($shelves){
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] added.');
       } else {
@@ -93,6 +97,10 @@ class ShelvesController extends Controller
       $name     = $shelves->name;
       $shelves->deleted_at = Carbon\Carbon::now();
       $shelves->save();
+
+      $space = Space::find($shelves->space_id);
+      $space->status_id = 10;
+      $space->save();
 
       if($shelves){
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$name.'] deleted.');
