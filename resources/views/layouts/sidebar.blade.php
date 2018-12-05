@@ -88,6 +88,21 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('payment.index')||Route::currentRouteNamed('payment.create')||Route::currentRouteNamed('payment.edit') ? 'active' : null }}">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('payment.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-cash-multiple"></i>
+                    <span class="hide-menu">Payments</span>
+                  </a>
+                  <ul aria-expanded="false" class="collapse">
+                    <li class="{{ Route::currentRouteNamed('payment.index') ? 'active' : null }}">
+                      <a href="{{ route('payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Order Payments</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('returnboxpayment.index') ? 'active' : null }}">
+                      <a href="{{ route('returnboxpayment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Return Box Payments</a>
+                    </li>
+                  </ul>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('storage.index') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('storage.index')}}" aria-expanded="false">
                     <i class="mdi mdi-checkbox-marked-outline"></i>

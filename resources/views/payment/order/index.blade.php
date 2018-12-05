@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          PickUp Orders
+          Order Payments 
         </h3>
     </div>
 </div>
@@ -31,7 +31,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>List PickUp Orders</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Order Payments</h4>
 
               @include('error-template')
 
@@ -40,45 +40,31 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
-                          <th width="15%">OrderID</th>
                           <th width="">Customer Name</th>
-                          <th width="15%" class="text-center">Box Pickup</th>
-                          <th width="15%" class="text-center">Status</th>
+                          <th width="25%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($pickup) > 0)
-                        @foreach ($pickup as $key => $value)
-                          @php
-                            if($value->types_of_pickup_id == 1){
-                              $label1  = 'label-warning';
-                              $name1   = 'Deliver to user';
-                            }else if($value->types_of_pickup_id == 2){
-                              $label1  = 'label-primary';
-                              $name1   = 'User pickup';
-                            }
-                            
-                            if($value->status_id == 11 || $value->status_id == 15){
-                              $label = 'label-danger';
-                              $name  = 'Pending';
-                            }else if($value->status_id == 2 || $value->status_id == 3){
+                      @if(count($data) > 0)
+                        @foreach ($data as $key => $value)
+                          @php                            
+                            if($value->status_id == 15){
+                              $label = 'label-warning';
+                            }else if($value->status_id == 7){
                               $label = 'label-success';
-                              $name  = 'On delivery';
+                            }else if($value->status_id == 7){
+                              $label = 'label-danger';
                             }
                           @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>                            
-                            <td align="center">{{ $value->id_name }}</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}}</td>
+                            <td align="center">{{ $key+1 }}</td>              
+                            <td>{{ $value->first_name}} {{ $value->last_name}} </td>
                             <td class="text-center">
-                              <span class="label {{ $label1 }} label-rounded">{{ $name1 }}</span>
+                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <a class="btn btn-info btn-sm" href="{{route('pickup.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach
