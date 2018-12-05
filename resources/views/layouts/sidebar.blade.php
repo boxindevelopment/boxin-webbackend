@@ -88,6 +88,13 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('order.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-cart-outline"></i>
+                    <span class="hide-menu">Payments</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('storage.index') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('storage.index')}}" aria-expanded="false">
                     <i class="mdi mdi-checkbox-marked-outline"></i>

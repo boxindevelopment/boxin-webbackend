@@ -59,11 +59,14 @@
                               $name1   = 'User pickup';
                             }
                             
-                            if($value->status_id == 11 || $value->status_id == 15){
+                            if($value->status_id == 11 || $value->status_id == 14){
                               $label = 'label-danger';
-                              $name  = 'Pending';
-                            }else if($value->status_id == 2 || $value->status_id == 3){
+                              $name  = 'Waiting Payment';
+                            } else if($value->status_id == 12){
                               $label = 'label-success';
+                              $name  = 'Finished';
+                            } else if($value->status_id == 2){
+                              $label = 'label-warning';
                               $name  = 'On delivery';
                             }
                           @endphp

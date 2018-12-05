@@ -55,14 +55,14 @@ class PickupController extends Controller
         $status                 = $request->status_id;
         
         $order                  = Order::find($order_id);
-        $order->status_id       = $status;
+        $order->status_id       = $status == '12' ? '4' : $status;
         $order->save();
 
         $order_details          = OrderDetail::where('order_id', $order_id)->get();
         $count                  = count($order_details);
         for ($i = 0; $i < $count; $i++) {
             $order_detail            = OrderDetail::find($order_details[$i]->id);
-            $order_detail->status_id = $status;
+            $order_detail->status_id =  $status == '12' ? '4' : $status;
             $order_detail->save();
         }
 
@@ -70,7 +70,6 @@ class PickupController extends Controller
         $pickup->status_id      = $status;
         $pickup->driver_name    = $request->driver_name;
         $pickup->driver_phone   = $request->driver_phone;
-        $pickup->pickup_fee     = $request->pickup_fee;
         $pickup->save();
 
         if($pickup){
