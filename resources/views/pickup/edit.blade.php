@@ -61,8 +61,9 @@
                     </div>
 
                     <div class="col-md-6">
+                      <!-- pickup delivery box -->
                       @if ($value->types_of_pickup_id == 1)    
-                        @if($value->status_id == 11 && $value->status_id == 14)    
+                        @if($value->status_id == 11 || $value->status_id == 14)    
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
@@ -79,13 +80,11 @@
                           <select class="form-control" id="select2" name="status_id" required>
                               <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
-                              <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
+                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                         </select>
                           </select>
                         </div> 
-                        @endif           
-                        
-                        @if($value->status_id == 15 || $value->status_id == 2)   
+
                         <div class="form-group">
                           <label>Driver Name <span class="text-danger">*</span></label>
                           <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" >
@@ -96,10 +95,6 @@
                           <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" >
                         </div>
 
-                        <div class="form-group">
-                          <label>Pickup Price Delivery <span class="text-danger">*</span></label>
-                          <input type="number" name="pickup_fee" class="form-control" placeholder="Enter Price Delivery" value="{{ $value->pickup_fee }}" required>
-                        </div>
                         @endif
                       @endif
                       <!-- end pickup delivery box  -->
@@ -110,21 +105,12 @@
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" required>
                             <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
+                            <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                         </select>
                       </div>
                       @endif
                       <!-- end pickup box on warehouse  -->
 
-                      @if($value->status_id == 15 || $value->status_id == 2)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" >
-                            <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
-                            <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
-                        </select>
-                      </div>
-                      @endif
                       <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
                       @endforeach
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>

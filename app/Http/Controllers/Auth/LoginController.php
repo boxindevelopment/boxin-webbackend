@@ -36,7 +36,7 @@ class LoginController extends Controller
     {
         $check = User::select('roles_id')->where('id', $user->id)->first();
         
-        if ($check->roles_id != 1) {
+        if ($check->roles_id == 2 || $check->roles_id == 3) {
             $guard = 'admin';
             return redirect()->route('dashboard');
         } else {
