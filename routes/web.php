@@ -84,7 +84,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::resource('price', 'PriceController')->except(['show']);
-   Route::prefix('price')->group(function () {
+  Route::prefix('price')->group(function () {
     Route::get('box','PriceController@priceBox')->name('price.priceBox');
     Route::get('room','PriceController@priceRoom')->name('price.priceRoom');
     Route::post('store','PriceController@store')->name('price.store');
@@ -93,5 +93,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('delivery-fee', 'DeliveryFeeController')->except(['show']);
 
   Route::resource('settings', 'SettingController')->except(['show']);
+  Route::prefix('settings')->group(function () {
+    Route::get('','SettingController@index')->name('settings.others.index');
+  });
 
 });
