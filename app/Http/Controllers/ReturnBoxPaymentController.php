@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Payment;
+use App\Model\ReturnBoxPayment;
 use App\Model\Order;
 use App\Model\OrderDetail;
-use App\Repositories\PaymentRepository;
+use App\Repositories\ReturnBoxPaymentRepository;
 
-class PaymentController extends Controller
+class ReturnBoxPaymentController extends Controller
 {
     protected $repository;
 
-    public function __construct(PaymentRepository $repository)
+    public function __construct(ReturnBoxPaymentRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -69,9 +69,9 @@ class PaymentController extends Controller
         $payment->save();
 
         if($payment){
-            return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
+            return redirect()->route('returnboxpayment.index')->with('success', 'Edit status order return box payment success.');
         } else {
-            return redirect()->route('payment.index')->with('error', 'Edit status order payment failed.');
+            return redirect()->route('returnboxpayment.index')->with('error', 'Edit status order return box payment failed.');
         }
     }
 

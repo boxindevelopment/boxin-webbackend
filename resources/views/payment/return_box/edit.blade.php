@@ -18,7 +18,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Order Payments</h3>
+        <h3 class="text-themecolor">Return Box Payments</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -33,15 +33,15 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Order Payment</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Return Box Payment</h4>
 
-              <form action="{{ route('payment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('returnboxpayment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row el-element-overlay">
                   @foreach ($data as $key => $value)
                   @php
-                    $url = 'https://boxin-dev-order.azurewebsites.net/images/payment/order/';
+                    $url = 'https://boxin-dev-order.azurewebsites.net/images/payment/payment/';
                   @endphp
                     <div class="col-md-6">                      
                         <div class="card">
@@ -76,7 +76,7 @@
                       </div>
                       <div class="form-group">
                         <label>Amount </label>
-                        <p>Rp. {{ $value->order->total }}</p>
+                        <p>Rp. {{ $value->order_detail->total }}</p>
                       </div>
                       @if($value->status_id == 15)
                       <div class="form-group">
