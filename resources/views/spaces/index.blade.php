@@ -47,7 +47,8 @@
                           <th width="20%">Area</th>
                           <th width="">Name</th>
                           <th width="12%" class="no-sort">Latitude</th>
-                          <th width="12%" class="no-sort">Longitude</th>
+                          <th width="12%" class="no-sort">Longitude</th>                          
+                          <th width="12%" class="no-sort">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
@@ -61,6 +62,9 @@
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->lat }}</td>
                             <td>{{ $value->long }}</td>
+                            <td class="text-center">
+                              <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>
+                            </td>
                             <td class="text-center">
                               <form action="{{route('space.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf

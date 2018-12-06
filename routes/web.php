@@ -48,6 +48,12 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('pickup', 'PickupController')->except(['show']);
 
+  Route::resource('payment', 'PaymentController')->except(['show']);  
+  Route::prefix('payment')->group(function () {
+    Route::get('','PaymentController@index')->name('payment.index');    
+    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');
+  });
+
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');

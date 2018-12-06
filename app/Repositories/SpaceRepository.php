@@ -26,7 +26,7 @@ class SpaceRepository implements SpaceRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('spaces.id', 'spaces.name', 'spaces.area_id', 'spaces.lat', 'spaces.long', 'spaces.id_name');
+        $data = $data->select('spaces.id', 'spaces.name', 'spaces.area_id', 'spaces.lat', 'spaces.long', 'spaces.id_name', 'spaces.status_id');
         $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);

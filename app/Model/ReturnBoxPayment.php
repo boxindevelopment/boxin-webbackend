@@ -4,18 +4,18 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class ReturnBoxPayment extends Model
 {
 
-    protected $table = 'payments';
+    protected $table = 'return_box_payments';
 
     protected $fillable = [
-        'order_id', 'user_id', 'payment_type', 'bank', 'amount', 'status_payment', 'status_id'
+        'order_detail_id', 'user_id', 'payment_type', 'bank', 'amount', 'status_payment', 'status_id', 'id_name'
     ];
 
-    public function order()
+    public function order_detail()
     {
-        return $this->belongsTo('App\Model\Order', 'order_id', 'id');
+        return $this->belongsTo('App\Model\OrderDetail', 'order_detail_id', 'id');
     }
 
     public function user()

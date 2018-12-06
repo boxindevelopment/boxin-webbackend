@@ -86,7 +86,7 @@ class SpaceController extends Controller
     public function edit($id)
     {
       $space      = $this->repository->getEdit($id);   
-      $type_size  = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();   
+      $type_size  = TypeSize::where('types_of_box_room_id', 2)->orderBy('id')->get();   
       $edit_space = true;
       return view('spaces.edit', compact('id', 'space', 'type_size', 'edit_space'));
     }
