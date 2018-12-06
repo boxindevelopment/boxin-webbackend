@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Model\Area;
 use App\Model\City;
 use App\Model\Space;
+use App\Model\Shelves;
+use App\Model\Box;
+use App\Model\Price;
+use App\Model\DeliveryFee;
 use Carbon;
 use App\Repositories\AreaRepository;
 use DB;
@@ -84,18 +88,54 @@ class AreaController extends Controller
 
     public function destroy($id)
     {
-      $space_          = Space::where('area_id', $id)->get();
-      $count_space     = count($space_);
-      for ($i = 0; $i < $count_space; $i++) {
-        $space = Space::find($space_[$i]->id);
-        $space->deleted_at = Carbon\Carbon::now();
-        $space->save();
-      }
 
+      //delete area
       $area = $this->repository->find($id);
       $name = $area->name;
       $area->deleted_at = Carbon\Carbon::now();
       $area->save();
+
+      $space_          = Space::where('area_id', $id)->get();
+      $count_space     = count($space_);
+      //delete space
+      for ($i = 0; $i < $count_space; $i++) {
+        $space = Space::find($space_[$i]->id);
+        $space->deleted_at = Carbon\Carbon::now();
+        $space->save();
+        //delete shelves
+        $shelves_        = Shelves::where('space_id', $space_[$i]->id)->get();
+        $count_shelves   = count($shelves_);
+        for ($a = 0; $a < $count_shelves; $a++) {
+          $shelves = Shelves::find($shelves_[$a]->id);
+          $shelves->deleted_at = Carbon\Carbon::now();
+          $shelves->save();
+          //delete box
+          $box_        = Box::where('shelves_id', $shelves_[$a]->id)->get();
+          $count_box   = count($box_);
+          for ($b = 0; $b < $count_box; $b++) {
+            $box = Box::find($box_[$b]->id);
+            $box->deleted_at = Carbon\Carbon::now();
+            $box->save();
+          }
+        }
+      }
+
+      //delete price
+      $price_          = Price::where('area_id', $id)->get();
+      $count_price     = count($price_);
+      for ($c = 0; $c < $count_space; $c++) {
+        $price = Price::find($price_[$c]->id);
+        $price->deleted_at = Carbon\Carbon::now();
+        $price->save();
+      }
+      //delete delivery-fee
+      $deliveryfee_       = DeliveryFee::where('area_id', $id)->get();
+      $count_deliveryfee  = count($deliveryfee_);
+      for ($d = 0; $d < $count_deliveryfee; $d++) {
+        $deliveryfee = DeliveryFee::find($deliveryfee_[$d]->id);
+        $deliveryfee->deleted_at = Carbon\Carbon::now();
+        $deliveryfee->save();
+      }
 
       if($area){
         return redirect()->route('area.index')->with('success', 'Area ['.$name.'] deleted.');

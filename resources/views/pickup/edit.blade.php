@@ -103,9 +103,10 @@
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                           </select>
                         </div>
+                        
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
 
-                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                       @endif
                       <!-- end pickup box on warehouse  -->
                       
