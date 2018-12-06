@@ -34,7 +34,7 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
             $data = $data->where('orders.area_id', $admin->area_id);
         }
         $data = $data->where('pickup_orders.status_id', '!=', 4);
-        $data = $data->orderBy('pickup_orders.status_id', 'DESC')->orderBy('id', 'ASC');
+        $data = $data->orderBy('pickup_orders.status_id', 'DESC')->orderBy('orders.created_at', 'DESC');
         $data = $data->get();
         return $data;
     }

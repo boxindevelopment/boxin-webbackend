@@ -31,42 +31,6 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              
-              <h4 class="card-title"><span class="lstick"></span>Add Delivery Fee</h4>
-
-              @include('error-template')
-
-              <form action="{{ route('delivery-fee.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label>Fee <span class="text-danger">*</span></label>
-                        <input type="text" name="fee" class="form-control" placeholder="Enter Fee" value="" required>
-                      </div>
-
-                      <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save </button>
-                    </div>
-                </div>
-              </form>
-
-            </div>
-        </div>
-    </div> 
-
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
               <h4 class="card-title"><span class="lstick"></span>List Delivery Fee</h4>
 
               <div class="table-responsive m-t-10">

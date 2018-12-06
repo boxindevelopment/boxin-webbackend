@@ -87,8 +87,8 @@
                     <div class="d-flex no-block">
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Spaces</h6>
-                            <h2 class="m-t-0 text-white">{{ $space }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Available Spaces</h6>
+                            <h2 class="m-t-0 text-white">{{ $available_space }} of {{ $space }}</h2></div>
                     </div>
                 </div>
                 </a>
@@ -102,7 +102,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-grid"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Total Shelves</h6>
-                            <h2 class="m-t-0 text-white">{{ $box }}</h2></div>
+                            <h2 class="m-t-0 text-white">{{ $shelves }}</h2></div>
                     </div>
                 </div>
                 </a>
@@ -115,8 +115,8 @@
                     <div class="d-flex no-block">
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-dropbox"></i></div>
                         <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Total Boxes</h6>
-                            <h2 class="m-t-0 text-white">{{ $box }}</h2></div>
+                            <h6 class="text-white m-t-10 m-b-0">Available Boxes</h6>
+                            <h2 class="m-t-0 text-white">{{ $available_box }} of {{ $box }}</h2></div>
                     </div>
                 </div>
                 </a>

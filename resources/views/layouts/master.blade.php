@@ -148,7 +148,7 @@
                     multiple: false,
                     placeholder: 'Choose City',
                     tags: true,
-                    data : arrs
+                    data : arrs,
                 }).on('change', function (e) {
                     var city_ext = $(this).val().split('##');
                     var city_id = city_ext[0];
@@ -172,6 +172,12 @@
                 @elseif(isset($user->area_id_name))
                     $("#city_id").val(values).trigger('change');
                     area_Selectdata(split_city[0], '{{ $user->area_id }}##{{ $user->area_id_name }}');
+                @elseif(isset($delfee->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $delfee->area_id }}##{{ $delfee->area_id_name }}');
+                @elseif(isset($price->area_id_name))
+                    $("#city_id").val(values).trigger('change');
+                    area_Selectdata(split_city[0], '{{ $price->area_id }}##{{ $price->area_id_name }}');
                 @else
                     $("#city_id").val(values).trigger('change');
                     area_Selectdata(split_city[0], '');
@@ -193,6 +199,14 @@
         @elseif(isset($edit_user))
             @if(isset($user))
                 city_Selectdata('{{$user->city_id}}##{{$user->city_id_name}}');
+            @endif
+        @elseif(isset($edit_delfee))
+            @if(isset($delfee))
+                city_Selectdata('{{$delfee->city_id}}##{{$delfee->city_id_name}}');
+            @endif
+        @elseif(isset($edit_price))
+            @if(isset($price))
+                city_Selectdata('{{$price->city_id}}##{{$price->city_id_name}}');
             @endif
         @else
             city_Selectdata('');

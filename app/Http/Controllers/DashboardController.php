@@ -25,9 +25,12 @@ class DashboardController extends Controller
         $city      = $this->data->countCity();
         $area      = $this->data->countArea();
         $space     = $this->data->countSpace();
+        $available_space = $this->data->countSpaceAvailable();
         $box       = $this->data->countBox();
+        $shelves   = $this->data->countShelves();
+        $available_box = $this->data->countBoxAvailable();
         $me        = Auth::id();
-        return view('dashboard', compact('city', 'space', 'box', 'area', 'me'));
+        return view('dashboard', compact('city', 'space', 'box', 'area', 'me', 'available_space', 'available_box', 'shelves'));
     }
 
     /**
