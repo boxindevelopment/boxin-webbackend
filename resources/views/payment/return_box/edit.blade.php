@@ -93,9 +93,9 @@
                         <p>{{ $value->status->name }}</p>
                       </div>
                       @endif
-                      <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
+                      <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail->id }}" required>                
                       
-                      <a href="{{ route('payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <a href="{{ route('returnboxpayment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                   @endforeach

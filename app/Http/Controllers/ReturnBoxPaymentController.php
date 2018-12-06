@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\ReturnBoxPayment;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use App\Model\ReturnBoxes;
 use App\Repositories\ReturnBoxPaymentRepository;
 
 class ReturnBoxPaymentController extends Controller
@@ -20,7 +21,7 @@ class ReturnBoxPaymentController extends Controller
     public function index()
     {      
       $data = $this->repository->all();
-      return view('payment.order.index', compact('data'));
+      return view('payment.return_box.index', compact('data'));
     }
 
     public function create()
@@ -41,7 +42,7 @@ class ReturnBoxPaymentController extends Controller
     public function edit($id)
     {
       $data     = $this->repository->getById($id);
-      return view('payment.order.edit', compact('data', 'id'));
+      return view('payment.return_box.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -50,20 +51,17 @@ class ReturnBoxPaymentController extends Controller
             'status_id'  => 'required',
         ]);
 
-        $order_id               = $request->order_id; 
+        $order_detail_id        = $request->order_detail_id; 
         $status                 = $request->status_id;
         
-        $order                  = Order::find($order_id);
+        $orderdetail            = OrderDetail::find($order_detail_id);
+        $orderdetail->status_id = $status;
+        $orderdetail->save();
+
+        $order                  = Order::find($orderdetail->id);
         $order->status_id       = $status;
         $order->save();
-
-        $order_details          = OrderDetail::where('order_id', $order_id)->get();
-        for ($i = 0; $i < count($order_details); $i++) {
-            $order_detail            = OrderDetail::find($order_details[$i]->id);
-            $order_detail->status_id = $status;
-            $order_detail->save();
-        }
-
+        
         $payment                 = $this->repository->find($id);
         $payment->status_id      = $status;
         $payment->save();

@@ -66,8 +66,8 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">                              
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
-                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
+                              {{-- <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a> --}}
+                              <a class="btn btn-info btn-sm" href="{{route('returnboxpayment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach
