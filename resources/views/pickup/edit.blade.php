@@ -38,6 +38,9 @@
                 <div class="row">
                     <div class="col-md-6" style="background-color: aliceblue;">
                       @foreach ($pickup as $key => $value)
+
+                        <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>       
+                        
                         <div class="form-group">
                           <label>Name </label>
                           <p>{{ $value->order->user->first_name }} {{ $value->order->user->last_name }}</p>
@@ -62,23 +65,12 @@
 
                     <div class="col-md-6">
                       <!-- pickup delivery box -->
-                      @if ($value->types_of_pickup_id == 1)    
-                        @if($value->status_id == 11 || $value->status_id == 14)    
+                      @if ($value->types_of_pickup_id == 1)  
+                        @if($value->status_id == 7)    
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
-                              <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                              <option value="14" {{ $value->status_id == 14 ? 'selected' : '' }}>Waiting Payment</option>
-                              <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
-                          </select>
-                        </div> 
-                        @endif  
-
-                        @if($value->status_id == 15 || $value->status_id == 2)    
-                        <div class="form-group">
-                          <label for="">Status <span class="text-danger">*</span></label>
-                          <select class="form-control" id="select2" name="status_id" required>
-                              <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Paid</option>
+                              <option value="15" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                         </select>
@@ -95,26 +87,31 @@
                           <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" >
                         </div>
 
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
+
                       @endif
                       <!-- end pickup delivery box  -->
 
                       <!-- pickup box on warehouse -->
                       @if ($value->types_of_pickup_id == 2)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" required>
-                            <option value="11" {{ $value->status_id == 11 ? 'selected' : '' }}>Pending</option>
-                            <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                        </select>
-                      </div>
+                        @if($value->status_id == 7)   
+                        <div class="form-group"> 
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                          </select>
+                        </div>
+                        @endif
+
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                       @endif
                       <!-- end pickup box on warehouse  -->
-
-                      <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
-                      @endforeach
+                      
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                      @endforeach
+                      
                     </div>
                 </div>
               </form>

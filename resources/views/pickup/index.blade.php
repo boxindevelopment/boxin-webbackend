@@ -59,16 +59,13 @@
                               $name1   = 'User pickup';
                             }
                             
-                            if($value->status_id == 11 || $value->status_id == 14){
+                            if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8){
                               $label = 'label-danger';
-                              $name  = 'Waiting Payment';
-                            } else if($value->status_id == 12){
+                            } else if($value->status_id == 12 || $value->status_id == 7){
                               $label = 'label-success';
-                              $name  = 'Finished';
                             } else if($value->status_id == 2){
                               $label = 'label-warning';
-                              $name  = 'On delivery';
-                            }
+                            } 
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>                            
@@ -78,7 +75,7 @@
                               <span class="label {{ $label1 }} label-rounded">{{ $name1 }}</span>
                             </td>
                             <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $name }}</span>
+                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">
                               <a class="btn btn-info btn-sm" href="{{route('pickup.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
