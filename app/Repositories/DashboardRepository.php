@@ -6,6 +6,7 @@ use App\Model\Box;
 use App\Model\Space;
 use App\Model\Area;
 use App\Model\Shelves;
+use App\Model\Order;
 use App\Repositories\Contracts\DashboardRepository as DashboardRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +19,16 @@ class DashboardRepository implements DashboardRepositoryInterface
     protected $space;
     protected $shelves;
     protected $box;
+    protected $order;
     
-    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box)
+    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, Order $order)
     {        
         $this->city      = $city;
         $this->area      = $area;
         $this->space     = $space;
         $this->shelves   = $shelves;
         $this->box       = $box;
+        $this->order     = $order;
     }
 
     public function countCity()
@@ -126,5 +129,15 @@ class DashboardRepository implements DashboardRepositoryInterface
         return $data;
     }
    
-
+    public function totalSales(){
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->order->query();     
+        $data = $data->select(DB::raw('COUNT(orders.total) as total'));   
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->where('orders.deleted_at', NULL);   
+        return $data;
+    }
 }
