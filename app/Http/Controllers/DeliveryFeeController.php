@@ -20,24 +20,7 @@ class DeliveryFeeController extends Controller
     {
         abort('404');
     }
-
-    public function store(Request $request)
-    {
-        $split    = explode('##', $request->area_id);
-        $area_id  = $split[0];
-        
-        $data = DeliveryFee::create([
-            'area_id'    => $area_id,
-            'fee'        => $request->fee,
-        ]);
-
-        if($data){
-            return redirect()->route('delivery-fee.index')->with('success', 'Add New Data Delivery Fee Success.');
-        } else {
-            return redirect()->route('delivery-fee.index')->with('error', 'Add New Data Delivery Fee failed.');
-        }         
-    }
-
+    
     public function show($id)
     {
       abort('404');
