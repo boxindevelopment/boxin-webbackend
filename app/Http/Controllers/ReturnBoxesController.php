@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\ReturnBoxes;
+use App\Model\OrderDetail;
 use App\Repositories\ReturnBoxesRepository;
 
 class ReturnBoxesController extends Controller
@@ -52,10 +53,13 @@ class ReturnBoxesController extends Controller
         $return->status_id      = $request->status_id;
         $return->driver_name    = $request->driver_name;
         $return->driver_phone   = $request->driver_phone;
-        $return->deliver_fee    = $request->deliver_fee;
         $return->save();
 
         if($return){
+            $order              = OrderDetail::find($request->order_detail_id);
+            $order->status_id   = $request->status_id;
+            $order->save();
+            
             return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');
         } else {
             return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');

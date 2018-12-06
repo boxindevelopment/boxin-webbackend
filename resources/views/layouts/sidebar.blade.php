@@ -97,9 +97,9 @@
                     <li class="{{ Route::currentRouteNamed('payment.index') ? 'active' : null }}">
                       <a href="{{ route('payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Order Payments</a>
                     </li>
-                    <li class="{{ Route::currentRouteNamed('returnboxpayment.index') ? 'active' : null }}">
+                    {{--<li class="{{ Route::currentRouteNamed('returnboxpayment.index') ? 'active' : null }}">
                       <a href="{{ route('returnboxpayment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Return Box Payments</a>
-                    </li>
+                    </li>--}}
                   </ul>
                 </li>
 

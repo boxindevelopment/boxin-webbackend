@@ -60,12 +60,12 @@
                               $name    = 'User pickup';
                             }
                             
-                            if($value->status_id == 11){
-                              $label = 'label-danger';
-                            }else if($value->status_id == 2 || $value->status_id == 3){
+                            if($value->status_id == 16){
                               $label = 'label-warning';
-                            }else{
+                            }else if($value->status_id == 17){
                               $label = 'label-success';
+                            }else{
+                              $label = 'label-danger';
                             }
                           @endphp
                           <tr>

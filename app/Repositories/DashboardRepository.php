@@ -58,7 +58,37 @@ class DashboardRepository implements DashboardRepositoryInterface
             $data = $data->where('areas.id', $admin->area_id);
         }
         $data = $data->where('spaces.deleted_at', NULL);
-        $data = $data->where('areas.deleted_at', NULL);
+        $data = $data->where('areas.deleted_at', NULL);    
+        $data = $data->count();
+        return $data;
+    }
+
+    public function countSpaceAvailable()
+    {
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->space->query();
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->where('spaces.status_id', 10);
+        $data = $data->where('spaces.deleted_at', NULL);
+        $data = $data->where('areas.deleted_at', NULL);    
+        $data = $data->count();
+        return $data;
+    }
+
+    public function countShelves()
+    {
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->shelves->query();
+        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');        
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->where('shelves.deleted_at', NULL);  
+        $data = $data->where('areas.deleted_at', NULL);     
         $data = $data->count();
         return $data;
     }
@@ -75,6 +105,23 @@ class DashboardRepository implements DashboardRepositoryInterface
         }
         $data = $data->where('boxes.deleted_at', NULL); 
         $data = $data->where('areas.deleted_at', NULL);     
+        $data = $data->count();
+        return $data;
+    }
+
+    public function countBoxAvailable()
+    {
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->box->query();
+        $data = $data->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id');
+        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');        
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->where('boxes.deleted_at', NULL);    
+        $data = $data->where('areas.deleted_at', NULL);          
+        $data = $data->where('boxes.status_id', 10); 
         $data = $data->count();
         return $data;
     }

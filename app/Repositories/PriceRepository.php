@@ -51,7 +51,6 @@ class PriceRepository implements PriceRepositoryInterface
     }
     public function getData($args = [])
     {
-
         $data = $this->model->select()
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('name', 'like', '%'.$args['searchValue'].'%')
@@ -60,7 +59,19 @@ class PriceRepository implements PriceRepositoryInterface
                 ->get();
 
         return $data->toArray();
+    }
 
+    public function getEdit($id)
+    {
+        $data = $this->model->select(array('prices.*', 
+            DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),  
+            DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name')))
+                ->leftJoin('areas', 'areas.id', '=' ,'prices.area_id')
+                ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
+                ->where('prices.id', $id)
+                ->first();
+                
+        return $data;
     }
     
     public function create(array $data)

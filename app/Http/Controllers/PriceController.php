@@ -86,8 +86,9 @@ class PriceController extends Controller
 
     public function edit($id)
     {
-      $data     = $this->price->getById($id);
-      return view('settings.price.edit', compact('data', 'id'));
+      $price      = $this->price->getEdit($id);
+      $edit_price = true;
+      return view('settings.price.edit', compact('price', 'id', 'edit_price'));
     }
 
     public function update(Request $request, $id)
