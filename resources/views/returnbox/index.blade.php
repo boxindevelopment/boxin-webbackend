@@ -41,7 +41,7 @@
                         <tr>
                           <th width="5%">No</th>                          
                           <th width="15%" class="text-center">Request Date</th>
-                          <th width="15%" class="text-center">Returning Date</th>
+                          <th width="20%" class="text-center">Returning Date</th>
                           <th width="">Customer Name</th>
                           <th width="15%" class="text-center">Box Pickup</th>
                           <th width="15%" class="text-center">Status</th>
@@ -71,8 +71,8 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
                             <td align="center">{{ $value->created_at->format('d-m-Y') }}</td>
-                            <td align="center">{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}}</td>
+                            <td>{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
+                            <td>{{ $value->order_detail->order->user->first_name}} {{ $value->order_detail->order->user->last_name}}</td>
                             <td class="text-center">
                               <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
                             </td>
