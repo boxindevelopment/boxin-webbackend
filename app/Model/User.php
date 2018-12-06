@@ -38,4 +38,9 @@ class User extends Authenticatable
       return $this->hasMany('App\Model\AdminArea', 'user_id', 'id');
   }
 
+  public function payment()
+  {
+      return $this->hasMany('App\Model\Payment', 'user_id', 'id');
+  }
+
 }

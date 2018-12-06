@@ -26,7 +26,7 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('payments.id', 'payments.order_id', 'payments.status_id', 'users.first_name',  'users.last_name');
+        $data = $data->select('payments.id', 'payments.order_id', 'payments.status_id', 'payments.id_name', 'payments.created_at', 'users.first_name',  'users.last_name');
         $data = $data->leftJoin('orders','orders.id','=','payments.order_id');      
         $data = $data->leftJoin('users','users.id','=','payments.user_id');
         if(Auth::user()->roles_id == 2){
@@ -37,9 +37,15 @@ class PaymentRepository implements PaymentRepositoryInterface
         return $data;
     }
 
-    public function getCount($args = [])
+    public function getById($id)
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        $data = $this->model->query();
+        $data = $data->select('payments.*', 'users.first_name',  'users.last_name');
+        $data = $data->leftJoin('orders','orders.id','=','payments.order_id');      
+        $data = $data->leftJoin('users','users.id','=','payments.user_id');
+        $data = $data->where('payments.id', $id);
+        $data = $data->get();
+        return $data;
     }
     public function getData($args = [])
     {

@@ -36,10 +36,11 @@
               @include('error-template')
 
               <div class="table-responsive m-t-10">
-                  <table id="table-pickup1" class="table table-striped table-bordered">
+                  <table id="table-pay" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>
+                          <th width="5%">No</th>                          
+                          <th width="10%">ID</th>
                           <th width="">Customer Name</th>
                           <th width="25%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
@@ -53,24 +54,26 @@
                               $label = 'label-warning';
                             }else if($value->status_id == 7){
                               $label = 'label-success';
-                            }else if($value->status_id == 7){
+                            }else if($value->status_id == 8){
                               $label = 'label-danger';
                             }
                           @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>              
+                            <td align="center">{{ $key+1 }}</td>  
+                            <td align="center">{{ $value->id_name }}</td>              
                             <td>{{ $value->first_name}} {{ $value->last_name}} </td>
                             <td class="text-center">
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
-                            <td class="text-center">
-                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                            <td class="text-center">                              
+                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
+                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="6" class="text-center">There are no results yet</td>
+                          <td colspan="5" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>
@@ -96,14 +99,9 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-pickup1').DataTable({
+  $('#table-pay').DataTable({
     "aaSorting": []
   });
-  $('#table-pickup2').DataTable({
-    "aaSorting": []
-  });
-
-
 });
 </script>
 @endsection

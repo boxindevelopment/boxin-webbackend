@@ -66,9 +66,9 @@
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
                             <td class="text-center">
                               @php
-                                if($value->status_id == 11){
+                                if($value->status_id == 11 || $value->status_id == 8){
                                   $label = 'label-danger';
-                                }else if($value->status_id == 2 || $value->status_id == 3){
+                                }else if($value->status_id == 2 || $value->status_id == 3|| $value->status_id == 15){
                                   $label = 'label-warning';
                                 }else{
                                   $label = 'label-success';
