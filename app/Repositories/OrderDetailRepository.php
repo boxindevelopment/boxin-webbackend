@@ -82,23 +82,6 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         return $data;
     }
 
-    public function getGraphicOrder(){
-        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
-        $data = $this->model->query();     
-        $data = $data->select(DB::raw('DATEPART(Year, order_details.created_at) Year'), DB::raw('DATEPART(Month, order_details.created_at) Month'), DB::raw('SUM(amount) [TotalAmount]'));   
-        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
-        if(Auth::user()->roles_id == 2){
-            $data = $data->where('areas.id', $admin->area_id);
-        }
-        $data = $data->whereBetween("order_details.created_at", [Carbon\Carbon::now()->subMonth(12), Carbon\Carbon::now()]);
-        // $data = $data->whereRaw("YEAR(order_details.created_at) = " . date('Y'));
-        $data = $data->groupBy(DB::raw("DATEPART(Year, order_details.created_at)"), DB::raw("DATEPART(Month, order_details.created_at)"));
-        $data = $data->orderBy('Month');
-        // $data = $data->get();
-        return $data;
-    }
-
     public function create(array $data)
     {
         return $this->model->create($data);

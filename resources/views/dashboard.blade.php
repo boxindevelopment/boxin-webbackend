@@ -179,7 +179,7 @@
 $(document).ready(function() {
 
     $.ajax({
-        url: "{{ url('/order/graphicOrder') }}",
+        url: "{{ url('/graphicOrder') }}",
         type: 'GET',
         async: true,
         dataType: "json",
@@ -202,7 +202,6 @@ $(document).ready(function() {
 });
     
 function visitorData (detail,data,tgl) {
-    console.log('s',tgl,data);
     Highcharts.chart(detail.container, {
         chart: {
             type: 'line'

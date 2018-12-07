@@ -21,14 +21,14 @@ class DashboardRepository implements DashboardRepositoryInterface
     protected $box;
     protected $order;
     
-    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, OrderDetail $order)
+    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, OrderDetail $order_detail)
     {        
         $this->city      = $city;
         $this->area      = $area;
         $this->space     = $space;
         $this->shelves   = $shelves;
         $this->box       = $box;
-        $this->order     = $order;
+        $this->order_detail     = $order_detail;
     }
 
     public function countCity()
@@ -131,7 +131,7 @@ class DashboardRepository implements DashboardRepositoryInterface
    
     public function totalSales(){
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
-        $data = $this->order->query();     
+        $data = $this->order_detail->query();     
         $data = $data->select(DB::raw('SUM(order_details.amount) as total'));  
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id'); 
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
@@ -145,7 +145,7 @@ class DashboardRepository implements DashboardRepositoryInterface
 
     public function totalSalesMonth(){
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
-        $data = $this->order->query();     
+        $data = $this->order_detail->query();     
         $data = $data->select(DB::raw('SUM(order_details.amount) as total'));   
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
@@ -157,5 +157,22 @@ class DashboardRepository implements DashboardRepositoryInterface
         $data = $data->first();
         return $data;
     }
+
+    public function getGraphicOrder(){
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->order_detail->query();     
+        $data = $data->select(DB::raw('DATEPART(Year, order_details.created_at) Year'), DB::raw('DATEPART(Month, order_details.created_at) Month'), DB::raw('SUM(amount) [TotalAmount]'));   
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->whereRaw("YEAR(order_details.created_at) = " . date('Y'));
+        $data = $data->groupBy(DB::raw("DATEPART(Year, order_details.created_at)"));
+        $data = $data->groupBy(DB::raw("DATEPART(Month, order_details.created_at)"));
+        $data = $data->orderBy('Month', 'DESC');
+        return $data;
+    }
+
 
 }
