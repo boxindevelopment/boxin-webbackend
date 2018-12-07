@@ -157,7 +157,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="sales-overview2" class="p-relative" style="height:360px;"></div>
+                    <div id="container-month" class="p-relative" style="height:360px;"></div>
                 </div>
             </div>
         </div>
@@ -176,15 +176,74 @@
 
 
 <script>
-$(function() {
+$(document).ready(function() {
+
+    $.ajax({
+        url: "{{ url('/order/graphicOrder') }}",
+        type: 'GET',
+        async: true,
+        dataType: "json",
+        success: function (data) {
+            var tgl   = [];
+            var graph = [];
+            $.each(data, function(index, dataa){
+                tgl.push(index);
+                graph.push(parseInt(dataa));
+            });
+            var detail = {
+                container : 'container-month',
+                title: 'Number of sales per month',
+                axisTitle: 'Month'
+            }
+            visitorData(detail,graph,tgl);
+        }
+    });
 
 });
+    
+function visitorData (detail,data,tgl) {
+    console.log('s',tgl,data);
+    Highcharts.chart(detail.container, {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: detail.title
+        },
+
+        yAxis: {
+            title: {
+                text: 'Total'
+            },
+            labels: {
+                formatter: function () {
+                    var label = numeral(this.value).format('0,0');
+                    return label;
+                }
+            }
+        },
+        xAxis: {
+            categories:tgl,
+            title: {
+                text: detail.axisTitle
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'center',
+            verticalAlign: 'bottom'
+        },
+        series: [{
+            name: 'Total Sales',
+            data: data
+        }],
+
+    });
+}
+
 </script>
-<script src="{{asset('assets/plugins/chartist-js/dist/chartist.min.js')}}"></script>
-<script src="{{asset('assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js')}}"></script>
-<!--c3 JavaScript -->
-<script src="{{asset('assets/plugins/d3/d3.min.js')}}"></script>
-<script src="{{asset('assets/plugins/c3-master/c3.min.js')}}"></script>
-<!-- Chart JS -->
-<script src="{{asset('assets/js/dashboard2.js"')}}></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 @endsection

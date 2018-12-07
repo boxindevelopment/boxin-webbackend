@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','OrderController@index')->name('order.index');
     Route::get('/order-detail/{id}','OrderController@orderDetail')->name('order.orderDetail');
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
+    Route::get('/graphicOrder','OrderDetailController@graphicOrder')->name('order.graphicOrder');
   });
 
   Route::resource('pickup', 'PickupController')->except(['show']);

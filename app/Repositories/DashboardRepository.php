@@ -6,7 +6,7 @@ use App\Model\Box;
 use App\Model\Space;
 use App\Model\Area;
 use App\Model\Shelves;
-use App\Model\Order;
+use App\Model\OrderDetail;
 use App\Repositories\Contracts\DashboardRepository as DashboardRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class DashboardRepository implements DashboardRepositoryInterface
     protected $box;
     protected $order;
     
-    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, Order $order)
+    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, OrderDetail $order)
     {        
         $this->city      = $city;
         $this->area      = $area;
@@ -132,7 +132,8 @@ class DashboardRepository implements DashboardRepositoryInterface
     public function totalSales(){
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->order->query();     
-        $data = $data->select(DB::raw('SUM(orders.total) as total'));   
+        $data = $data->select(DB::raw('SUM(order_details.amount) as total'));  
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id'); 
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
@@ -145,7 +146,8 @@ class DashboardRepository implements DashboardRepositoryInterface
     public function totalSalesMonth(){
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->order->query();     
-        $data = $data->select(DB::raw('SUM(orders.total) as total'));   
+        $data = $data->select(DB::raw('SUM(order_details.amount) as total'));   
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
@@ -155,6 +157,5 @@ class DashboardRepository implements DashboardRepositoryInterface
         $data = $data->first();
         return $data;
     }
-
 
 }
