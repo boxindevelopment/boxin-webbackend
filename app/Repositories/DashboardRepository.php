@@ -132,12 +132,29 @@ class DashboardRepository implements DashboardRepositoryInterface
     public function totalSales(){
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->order->query();     
-        $data = $data->select(DB::raw('COUNT(orders.total) as total'));   
+        $data = $data->select(DB::raw('SUM(orders.total) as total'));   
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
         $data = $data->where('orders.deleted_at', NULL);   
+        $data = $data->first();
         return $data;
     }
+
+    public function totalSalesMonth(){
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $data = $this->order->query();     
+        $data = $data->select(DB::raw('SUM(orders.total) as total'));   
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
+        if(Auth::user()->roles_id == 2){
+            $data = $data->where('areas.id', $admin->area_id);
+        }
+        $data = $data->where('orders.deleted_at', NULL);   
+        $data = $data->whereRaw("MONTH(orders.created_at) = " . date('m'));
+        $data = $data->first();
+        return $data;
+    }
+
+
 }

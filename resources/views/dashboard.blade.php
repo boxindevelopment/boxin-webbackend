@@ -139,19 +139,19 @@
                         <div class="col-lg-3 col-md-4">
                             <div class="p-20 active">
                                 <h6 class="text-white">Total Sales</h6>
-                                <h3 class="text-white m-b-0">$10,345</h3>
+                                <h3 class="text-white m-b-0">Rp {{ number_format($totalSales->total, 0, '', '.') }}</h3>
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-4">
                             <div class="p-20">
                                 <h6 class="text-white">This Month</h6>
-                                <h3 class="text-white m-b-0">$7,589</h3>
+                                <h3 class="text-white m-b-0">Rp {{ number_format($totalSalesMonth->total, 0, '', '.') }}</h3>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-4">
+                        <div class="col-lg-3 col-md-4" style="display: none">
                             <div class="p-20">
                                 <h6 class="text-white">This Week</h6>
-                                <h3 class="text-white m-b-0">$1,476</h3>
+                                <h3 class="text-white m-b-0">Rp </h3>
                             </div>
                         </div>
                     </div>

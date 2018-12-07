@@ -28,9 +28,11 @@ class DashboardController extends Controller
         $available_space = $this->data->countSpaceAvailable();
         $box       = $this->data->countBox();
         $shelves   = $this->data->countShelves();
-        $available_box = $this->data->countBoxAvailable();
+        $available_box      = $this->data->countBoxAvailable();
+        $totalSales         = $this->data->totalSales();
+        $totalSalesMonth    = $this->data->totalSalesMonth();
         $me        = Auth::id();
-        return view('dashboard', compact('city', 'space', 'box', 'area', 'me', 'available_space', 'available_box', 'shelves'));
+        return view('dashboard', compact('city', 'space', 'box', 'area', 'me', 'available_space', 'available_box', 'shelves', 'totalSales', 'totalSalesMonth'));
     }
 
     /**
