@@ -60,7 +60,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-checkbox-blank-circle"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Total City</h6>
-                            <h2 class="m-t-0 text-white">{{ $city }}</h2></div>
+                            <h4 class="m-t-0 text-white">{{ $city }}</h4></div>
                     </div>
                 </div>
                 </a>
@@ -74,7 +74,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-map-marker"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Total Areas</h6>
-                            <h2 class="m-t-0 text-white">{{ $area }}</h2></div>
+                            <h4 class="m-t-0 text-white">{{ $area }}</h4></div>
                     </div>
                 </div>
                 </a>
@@ -88,7 +88,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Available Spaces</h6>
-                            <h2 class="m-t-0 text-white">{{ $available_space }} of {{ $space }}</h2></div>
+                            <h4 class="m-t-0 text-white">{{ $available_space }} of {{ $space }}</h4></div>
                     </div>
                 </div>
                 </a>
@@ -102,7 +102,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-grid"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Total Shelves</h6>
-                            <h2 class="m-t-0 text-white">{{ $shelves }}</h2></div>
+                            <h4 class="m-t-0 text-white">{{ $shelves }}</h4></div>
                     </div>
                 </div>
                 </a>
@@ -116,7 +116,7 @@
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-dropbox"></i></div>
                         <div class="align-self-center">
                             <h6 class="text-white m-t-10 m-b-0">Available Boxes</h6>
-                            <h2 class="m-t-0 text-white">{{ $available_box }} of {{ $box }}</h2></div>
+                            <h4 class="m-t-0 text-white">{{ $available_box }} of {{ $box }}</h4></div>
                     </div>
                 </div>
                 </a>
