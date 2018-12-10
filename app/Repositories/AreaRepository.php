@@ -39,24 +39,36 @@ class AreaRepository implements AreaRepositoryInterface
     public function insertPrice($area_id)
     {
         DB::table('prices')->insert([
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 1, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 3, 'price' => 0, ],
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 1, 'types_of_duration_id' => 8, 'price' => 0, ],
+
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 3, 'price' => 0, ],
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 2, 'types_of_duration_id' => 8, 'price' => 0, ],
+
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 3, 'price' => 0, ],
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 1, 'types_of_size_id' => 3, 'types_of_duration_id' => 8, 'price' => 0, ],
+
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 3, 'price' => 0, ],
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 4, 'types_of_duration_id' => 8, 'price' => 0, ],
+
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 3, 'price' => 0, ],
-            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 1, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 5, 'types_of_duration_id' => 8, 'price' => 0, ],
+            
+
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 2, 'price' => 0, ],
             [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 3, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 7, 'price' => 0, ],
+            [ 'area_id' => $area_id, 'types_of_box_room_id' => 2, 'types_of_size_id' => 6, 'types_of_duration_id' => 8, 'price' => 0, ],
         ]);
         return true;
     }
