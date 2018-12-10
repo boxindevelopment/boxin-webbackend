@@ -79,6 +79,16 @@ class PickupController extends Controller
                 // monthly
                 else if ($order_detail->types_of_duration_id == 3 || $order_detail->types_of_duration_id == '3') {
                     $order_detail->end_date     = date('Y-m-d', strtotime('+'.$order_detail->duration.' month', strtotime($order_detail->start_date)));
+                }                
+                // 6month
+                else if ($order_detail->types_of_duration_id == 7 || $order_detail->types_of_duration_id == '7') {
+                    $end_date                   = $order_detail->duration*6;
+                    $order_detail->end_date     = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($order_detail->start_date)));
+                }
+                // annual
+                else if ($order_detail->types_of_duration_id == 8 || $order_detail->types_of_duration_id == '8') {
+                    $end_date                   = $order_detail->duration*12;
+                    $order_detail->end_date     = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($order_detail->start_date)));
                 }
             }
             $order_detail->save();
