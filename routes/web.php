@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('payment', 'PaymentController')->except(['show']);  
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');    
-    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');
+    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');    
+    Route::get('/changebox','ChangeBoxPaymentController@index')->name('changeboxpayment.index');
   });
 
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
