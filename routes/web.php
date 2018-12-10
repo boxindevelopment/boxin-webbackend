@@ -62,6 +62,11 @@ Route::group(['middleware' => 'auth'], function() {
   
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
 
+  Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
+  Route::prefix('change-box')->group(function () {
+    Route::get('','ChangeBoxesController@index')->name('change-box.index');    
+  });
+
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
     Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);

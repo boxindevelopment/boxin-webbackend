@@ -116,6 +116,13 @@
                     <span class="hide-menu">Return Boxes</span>
                   </a>
                 </li>
+
+                <li class="{{ Route::currentRouteNamed('change-box.index')||Route::currentRouteNamed('change-box.create')||Route::currentRouteNamed('change-box.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('change-box.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-box"></i>
+                    <span class="hide-menu">Change Item Boxes</span>
+                  </a>
+                </li>
                 
                 @if(Auth::user()->roles_id == 3)
                 <li class="{{ Route::currentRouteNamed('user.index')||Route::currentRouteNamed('user.create')||Route::currentRouteNamed('user.admin.index')||Route::currentRouteNamed('user.admin.edit')||Route::currentRouteNamed('user.admin.update')||Route::currentRouteNamed('user.finance.index')||Route::currentRouteNamed('user.finance.edit') ? 'active' : null }}">
