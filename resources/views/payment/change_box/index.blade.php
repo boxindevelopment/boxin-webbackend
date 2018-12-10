@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Order Payments 
+          Change Item Box Payments
         </h3>
     </div>
 </div>
@@ -31,7 +31,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>List Order Payments</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Change Item Box Payments</h4>
 
               @include('error-template')
 
@@ -66,8 +66,7 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">                              
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
-                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
+                              <a class="btn btn-info btn-sm" href="{{route('change-box-payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach

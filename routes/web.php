@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/changebox','ChangeBoxPaymentController@index')->name('changeboxpayment.index');
   });
 
+  Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
+  
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');

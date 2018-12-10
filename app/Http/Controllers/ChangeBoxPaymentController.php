@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use App\Model\ReturnBoxPayment;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use App\Model\OrderDetailBox;
 use App\Model\ChangeBox;
-use App\Repositories\ReturnBoxPaymentRepository;
+use App\Repositories\ChangeBoxPaymentRepository;
 
 class ChangeBoxPaymentController extends Controller
 {
     protected $repository;
 
-    public function __construct(ReturnBoxPaymentRepository $repository)
+    public function __construct(ChangeBoxPaymentRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -21,7 +22,7 @@ class ChangeBoxPaymentController extends Controller
     public function index()
     {      
       $data = $this->repository->all();
-      return view('payment.return_box.index', compact('data'));
+      return view('payment.change_box.index', compact('data'));
     }
 
     public function create()
@@ -42,7 +43,7 @@ class ChangeBoxPaymentController extends Controller
     public function edit($id)
     {
       $data     = $this->repository->getById($id);
-      return view('payment.return_box.edit', compact('data', 'id'));
+      return view('payment.change_box.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -57,19 +58,15 @@ class ChangeBoxPaymentController extends Controller
         $orderdetail            = OrderDetail::find($order_detail_id);
         $orderdetail->status_id = $status;
         $orderdetail->save();
-
-        $order                  = Order::find($orderdetail->id);
-        $order->status_id       = $status;
-        $order->save();
         
         $payment                 = $this->repository->find($id);
         $payment->status_id      = $status;
         $payment->save();
 
         if($payment){
-            return redirect()->route('returnboxpayment.index')->with('success', 'Edit status order return box payment success.');
+            return redirect()->route('changeboxpayment.index')->with('success', 'Edit status order change box payment success.');
         } else {
-            return redirect()->route('returnboxpayment.index')->with('error', 'Edit status order return box payment failed.');
+            return redirect()->route('changeboxpayment.index')->with('error', 'Edit status order change box payment failed.');
         }
     }
 

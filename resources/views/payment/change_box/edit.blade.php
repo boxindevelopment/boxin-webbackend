@@ -18,7 +18,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Order Payments</h3>
+        <h3 class="text-themecolor">Change Item Box Payments</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -33,15 +33,15 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Order Payment</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Change Item Box Payments</h4>
 
-              <form action="{{ route('payment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('change-box-payment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row el-element-overlay">
                   @foreach ($data as $key => $value)
                   @php
-                    $url = 'https://boxin-dev-order.azurewebsites.net/images/payment/order/';
+                    $url = 'https://boxin-dev-order.azurewebsites.net/images/payment/changebox/';
                   @endphp
                     <div class="col-md-6">                      
                         <div class="card">
@@ -76,7 +76,7 @@
                       </div>
                       <div class="form-group">
                         <label>Amount </label>
-                        <p>Rp. {{ $value->order->total }}</p>
+                        <p>Rp. {{ $value->amount }}</p>
                       </div>
                       @if($value->status_id == 15)
                       <div class="form-group">
@@ -93,9 +93,9 @@
                         <p>{{ $value->status->name }}</p>
                       </div>
                       @endif
-                      <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
+                      <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>                
                       
-                      <a href="{{ route('payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <a href="{{ route('change-box-payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                   @endforeach

@@ -67,21 +67,10 @@
 
                       <div class="form-group row">
                         <div class="col-md-3">
-                          <label>Daily <span class="text-danger">*</span></label>
-                        </div>
-                        <div class="col-md-9">
-                          <input type="number" name="daily_price" class="form-control" placeholder="Enter Daily Price" value="0" min="0" required>
-
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <div class="col-md-3">
                           <label>Weekly <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-md-9">
                           <input type="number" name="weekly_price" class="form-control" placeholder="Enter Weekly Price"  value="0" min="0" required>
-
                         </div>
                       </div>
 
@@ -91,7 +80,24 @@
                         </div>
                         <div class="col-md-9">
                           <input type="number" name="monthly_price" class="form-control" placeholder="Enter Monthly Price"  value="0" min="0" required>
+                        </div>
+                      </div>
 
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <label>6month <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="number" name="6month_price" class="form-control" placeholder="Enter 6month Price" value="0" min="0" required>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <div class="col-md-3">
+                          <label>Annual <span class="text-danger">*</span></label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="number" name="annual_price" class="form-control" placeholder="Enter Annual Price" value="0" min="0" required>
                         </div>
                       </div>
 
