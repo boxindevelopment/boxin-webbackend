@@ -40,7 +40,7 @@
 <div class="row el-element-overlay">
     @foreach ($detail_order_box as $key => $value)
     @php
-      $url = 'https://boxin-dev-order.azurewebsites.net/images/detail_item_box/';
+      $url = 'https://boxin-prod-order.azurewebsites.net/images/detail_item_box/';
     @endphp
     <div class="col-lg-3 col-md-6">
         <div class="card">
