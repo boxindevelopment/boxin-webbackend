@@ -52,11 +52,11 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('payment', 'PaymentController')->except(['show']);  
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');    
-    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');    
-    Route::get('/changebox','ChangeBoxPaymentController@index')->name('changeboxpayment.index');
   });
 
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
+
+  Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
   
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
   Route::prefix('storage')->group(function () {
@@ -64,6 +64,9 @@ Route::group(['middleware' => 'auth'], function() {
   });
   
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
+  Route::prefix('return')->group(function () {
+    Route::get('','ReturnBoxesController@index')->name('return.index');    
+  });
 
   Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
   Route::prefix('change-box')->group(function () {

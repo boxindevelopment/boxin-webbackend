@@ -64,43 +64,54 @@
 
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>  
 
-                      @if($value->status_id != 18)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" required>
-                            <option value="16"{{ $value->status_id == 16 ? 'selected' : '' }}>Return Request</option>
-                            <option value="17" {{ $value->status_id == 17 ? 'selected' : '' }}>Return Approved</option>
-                        </select>
-                      </div>
-                      @endif
                       <!-- return delivery box  -->
                       @if ($value->types_of_pickup_id == 1)
 
-                      <div class="form-group">
-                        <label>Driver Name <span class="text-danger">*</span></label>
-                        <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
-                      </div>
+                        @if($value->status_id == 7 || $value->status_id == 2)
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                            <select class="form-control" id="select2" name="status_id" required>
+                                <option value="15" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              </select>
+                        </div>
 
-                      <div class="form-group">
-                        <label>Driver Phone <span class="text-danger">*</span></label>
-                        <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
-                      </div>
+                        <div class="form-group">
+                          <label>Driver Name <span class="text-danger">*</span></label>
+                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
+                        </div>
 
-                      {{--
-                      <div class="form-group">
-                        <label>Return Price Delivery <span class="text-danger">*</span></label>
-                        <input type="number" name="deliver_fee" class="form-control" placeholder="Enter Return Price Delivery" value="{{ $value->deliver_fee }}" min=0 required>
-                      </div>
-                      --}}
+                        <div class="form-group">
+                          <label>Driver Phone <span class="text-danger">*</span></label>
+                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif
+
                       @endif
                       <!-- end return delivery box  -->
 
                       <!-- return box on warehouse -->
+                      @if ($value->types_of_pickup_id == 2)
+
+                      @if($value->status_id == 16)
+                      <div class="form-group">
+                        <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              <option value="16" {{ $value->status_id == 16 ? 'selected' : '' }}>Return Requested</option>
+                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                          </select>
+                      </div>
+                      @endif
+
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                      @endif
                       <!-- end return box on warehouse  -->
               
                       @endforeach
                       <a href="{{ route('return.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                 </div>
               </form>
