@@ -88,7 +88,7 @@
                           <label>6month <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-md-9">
-                          <input type="number" name="6month_price" class="form-control" placeholder="Enter 6month Price" value="0" min="0" required>
+                          <input type="number" name="sixmonth_price" class="form-control" placeholder="Enter 6month Price" value="0" min="0" required>
                         </div>
                       </div>
 

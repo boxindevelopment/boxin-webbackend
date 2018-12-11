@@ -67,7 +67,7 @@ class PriceController extends Controller
               'area_id'                 => $area_id,
               'types_of_size_id'        => $r->type_size_id,
               'types_of_duration_id'    => 3,
-              'price'                   => $r->6month_price,
+              'price'                   => $r->sixmonth_price,
             ]);
             $price4->save();
             //annual

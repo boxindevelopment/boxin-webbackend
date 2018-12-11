@@ -41,7 +41,7 @@
                           <th width="">Name</th>
                           <th width="">Value</th>
                           <th width="">Unit</th>
-                          <th width="">Description</th>
+                          <th width="20%">Description</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>

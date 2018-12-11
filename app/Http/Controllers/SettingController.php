@@ -40,9 +40,9 @@ class SettingController extends Controller
         $data->save();
 
         if($data){
-            return redirect()->route('settings.others.index')->with('success', 'Edit Data setting success.');
+            return redirect()->route('settings.index')->with('success', 'Edit Data setting success.');
         } else {
-            return redirect()->route('settings.others.index')->with('error', 'Edit Data setting failed.');
+            return redirect()->route('settings.index')->with('error', 'Edit Data setting failed.');
         }
     }
 
