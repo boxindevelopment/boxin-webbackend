@@ -103,7 +103,7 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('settings', 'SettingController')->except(['show']);
   Route::prefix('settings')->group(function () {
-    Route::get('','SettingController@index')->name('settings.others.index');
+    Route::get('','SettingController@index')->name('settings.index');
   });
 
 });

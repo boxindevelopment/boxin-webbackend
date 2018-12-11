@@ -94,7 +94,7 @@
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="3" class="text-center">There are no results yet</td>
+                          <td colspan="4" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>
