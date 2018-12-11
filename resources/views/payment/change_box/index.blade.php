@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Settings Delivery Fee
+          Change Item Box Payments
         </h3>
     </div>
 </div>
@@ -31,39 +31,53 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>List Delivery Fee</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Change Item Box Payments</h4>
+
+              @include('error-template')
 
               <div class="table-responsive m-t-10">
-                  <table id="table-setting" class="table table-striped table-bordered">
+                  <table id="table-pay" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>
-                          <th width="">Area</th>
-                          <th width="40%">Fee</th>
+                          <th width="5%">No</th>                          
+                          <th width="10%">ID</th>
+                          <th width="">Customer Name</th>
+                          <th width="25%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @if (count($data) > 0)
+                      @if(count($data) > 0)
                         @foreach ($data as $key => $value)
+                          @php                            
+                            if($value->status_id == 15){
+                              $label = 'label-warning';
+                            }else if($value->status_id == 7){
+                              $label = 'label-success';
+                            }else if($value->status_id == 8){
+                              $label = 'label-danger';
+                            }
+                          @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</th>
-                            <td>{{ $value->area->name }}</td>                            
-                            <td>{{ number_format($value->fee, 0, '', '.') }}</td>
+                            <td align="center">{{ $key+1 }}</td>  
+                            <td align="center">{{ $value->id_name }}</td>              
+                            <td>{{ $value->first_name}} {{ $value->last_name}} </td>
                             <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('delivery-fee.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
+                            </td>
+                            <td class="text-center">                              
+                              <a class="btn btn-info btn-sm" href="{{route('change-box-payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach
                       @else
                         <tr>
-                          <td colspan="4" class="text-center">There are no results yet</td>
+                          <td colspan="5" class="text-center">There are no results yet</td>
                         </tr>
                       @endif
                     </tbody>
                 </table>
               </div>
-
             </div>
         </div>
     </div>
@@ -84,7 +98,7 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-setting').DataTable({
+  $('#table-pay').DataTable({
     "aaSorting": []
   });
 });

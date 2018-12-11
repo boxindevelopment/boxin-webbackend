@@ -56,7 +56,7 @@
                         <!-- <img id="myImg" src="{{ asset('images/types_of_size')}}/{{ $value->image }}" width="100%" data-height="200"/> -->
                         </div>
 
-                      <a href="{{ route('types-of-size.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Save</a>
+                      <a href="{{ route('types-of-size.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Edit</button>
                     </div>
                     @endforeach

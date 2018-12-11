@@ -34,15 +34,15 @@ class SettingController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data          = Setting::find($id);
-        $data->area_id = $area_id;
-        $data->fee     = $request->fee;
+        $data               = Setting::find($id);
+        $data->value        = $request->value;
+        $data->description  = $request->description;
         $data->save();
 
         if($data){
-            return redirect()->route('settings.others.index')->with('success', 'Edit Data success.');
+            return redirect()->route('settings.index')->with('success', 'Edit Data setting success.');
         } else {
-            return redirect()->route('settings.others.index')->with('error', 'Edit Data failed.');
+            return redirect()->route('settings.index')->with('error', 'Edit Data setting failed.');
         }
     }
 
