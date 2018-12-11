@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Repositories\DashboardRepository;
+use Carbon;
 
 class DashboardController extends Controller
 {
@@ -25,74 +26,37 @@ class DashboardController extends Controller
         $city      = $this->data->countCity();
         $area      = $this->data->countArea();
         $space     = $this->data->countSpace();
+        $available_space = $this->data->countSpaceAvailable();
         $box       = $this->data->countBox();
-        $me        = Auth::id();
-        return view('dashboard', compact('city', 'space', 'box', 'area', 'me'));
+        $shelves   = $this->data->countShelves();
+        $available_box      = $this->data->countBoxAvailable();
+        $totalSales         = $this->data->totalSales();
+        $totalSalesMonth    = $this->data->totalSalesMonth();
+        $me                 = Auth::id();
+        return view('dashboard', compact('city', 'space', 'box', 'area', 'me', 'available_space', 'available_box', 'shelves', 'totalSales', 'totalSalesMonth'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function graphicOrder()
     {
-        //
-    }
+        $chartData = $this->data->getGraphicOrder();
+        $chartDatas = $chartData->get()->toArray();
+        
+        $chartDataByDay = array();
+        foreach($chartDatas as $data) {
+             $chartDataByDay[date("Y-m", mktime(0, 0, 0, $data['Month'], 1,$data['Year']))] = $data['TotalAmount'];
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $date = new Carbon\Carbon;
+        for($i = 0; $i < 12; $i++) {
+            $dateString = $date->format('Y-m');
+            if(!isset($chartDataByDay[ $dateString ])) {
+                $chartDataByDay[ $dateString ] = 0;
+            }
+            $date->subMonth();
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        ksort($chartDataByDay);
+        echo (json_encode($chartDataByDay));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

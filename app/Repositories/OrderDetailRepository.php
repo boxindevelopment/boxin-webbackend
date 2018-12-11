@@ -8,6 +8,7 @@ use App\Model\AdminArea;
 use App\Repositories\Contracts\OrderDetailRepository as OrderDetailRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Carbon;
 
 class OrderDetailRepository implements OrderDetailRepositoryInterface
 {
@@ -80,7 +81,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         $data = $data->get();
         return $data;
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);

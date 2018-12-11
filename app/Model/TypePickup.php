@@ -22,4 +22,9 @@ class TypePickup extends Model
     {
         return $this->hasMany('App\Model\ReturnBox', 'type_pickup_id', 'id');
     }
+
+    public function change_box()
+    {
+        return $this->hasMany('App\Model\ChangeBoxes', 'type_pickup_id', 'id');
+    }
 }

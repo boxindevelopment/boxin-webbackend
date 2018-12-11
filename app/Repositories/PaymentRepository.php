@@ -32,7 +32,7 @@ class PaymentRepository implements PaymentRepositoryInterface
         if(Auth::user()->roles_id == 2){
             $data = $data->where('orders.area_id', $admin->area_id);
         }
-        $data = $data->orderBy('payments.status_id', 'DESC')->orderBy('id', 'ASC');
+        $data = $data->orderBy('orders.created_at', 'DESC')->orderBy('payments.status_id', 'DESC');
         $data = $data->get();
         return $data;
     }

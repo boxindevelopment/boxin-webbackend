@@ -37,24 +37,32 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-6">
-                      @foreach ($data as $key => $value)
+
+                      <div class="form-group">
+                        <label for="">City <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $price->city_id }}##{{ $price->city_id_name }}" disabled="">
+                      </div>
+
+                      <div class="form-group">
+                        <label for="">Area <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $price->area_id }}##{{ $price->area_id_name }}" disabled="">
+                      </div>
 
                       <div class="form-group">
                         <label>Types of Size </label>
-                        <input type="text" name="size" class="form-control" value="{{ $value->type_size->name }}" disabled>
+                        <input type="text" name="size" class="form-control" value="{{ $price->type_size->name }}" disabled>
                       </div>
 
                       <div class="form-group">
                         <label>Types of Duration </label>
-                        <input type="text" name="duration" class="form-control" value="{{ $value->type_duration->name }}" disabled>
+                        <input type="text" name="duration" class="form-control" value="{{ $price->type_duration->name }}" disabled>
                       </div>
 
                       <div class="form-group">
                         <label>Price <span class="text-danger">*</span></label>
-                        <input type="text" name="price" class="form-control" placeholder="Enter Price" value="{{ $value->price }}" min="0" required>
+                        <input type="text" name="price" class="form-control" placeholder="Enter Price" value="{{ $price->price }}" min="0" required>
                       </div>
 
-                      @endforeach
                       <a href="{{ route('price.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>

@@ -61,6 +61,20 @@
 
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save </button>
                     </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="">Latitude <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Enter Latitude" required >
+                      </div>
+
+                      <div class="form-group">
+                        <label>Longitude <span class="text-danger">*</span></label>
+                        <input type="text" name="longitude" class="form-control" id="longitude" placeholder="Enter Longitude" required>
+                      </div>
+                      
+                    </div>
                 </div>
               </form>
             </div>
