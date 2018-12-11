@@ -34,7 +34,8 @@ class PriceRepository implements PriceRepositoryInterface
         if(Auth::user()->roles_id == 2){
             $data = $data->where('prices.area_id', $admin->area_id);
         }
-        $data = $data->where('types_of_box_room_id', $box_or_room_id);
+        $data = $data->where('types_of_box_room_id', $box_or_room_id);        
+        $data = $data->where('prices.deleted_at', NULL);
         $data = $data->orderBy('id');
         $data = $data->get();
         return $data;
