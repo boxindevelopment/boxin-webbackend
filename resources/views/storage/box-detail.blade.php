@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="card-body collapse show">
-          <h5 class="card-title"><span class="lstick"></span>* Data Customer</h5>
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Customer</b></h5>
           <form class="form-material row">
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">First Name</label></div>
@@ -68,7 +68,7 @@
                   <input type="text" class="form-control form-control-line" value="{{ $detail->order->user->phone }}" readonly> </div>
           </form>
 
-          <h5 class="card-title"><span class="lstick"></span>* Data Order</h5>
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Order</b></h5>
           <form class="form-material row">
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">Order ID</label></div>
@@ -96,7 +96,20 @@
                   <input type="text" class="form-control form-control-line" value="{{ $detail->end_date }}" readonly> </div>
           </form>
 
-          <h5 class="card-title"><span class="lstick"></span>* Data Pickup Order</h5>
+          <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
+          <form class="form-material row">
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->id_name : $detail->room->id_name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->name : $detail->room->name }}" readonly> </div>
+          </form>
+
+
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
           <form class="form-material row">
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
@@ -145,7 +158,7 @@
               @if(count($detail_order_box)>0)
                 @foreach ($detail_order_box as $key => $value)
                 @php
-                  $url = 'https://boxin-dev-order.azurewebsites.net/images/detail_item_box/';
+                  $url = 'https://boxin-prod-order.azurewebsites.net/images/detail_item_box/';
                 @endphp
                 <div class="col-lg-3 col-md-6">
                     <div class="card">

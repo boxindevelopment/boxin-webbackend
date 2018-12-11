@@ -64,7 +64,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     public function getOrderDetail($id)
     {
         $data = $this->model->query();
-        $data = $data->select('order_details.*', 'users.*', 'pickup_orders.*');
+        $data = $data->select('order_details.*', 'users.*', 'pickup_orders.*', 'orders.*');
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');             
         $data = $data->leftJoin('pickup_orders', 'pickup_orders.order_id', '=', 'orders.id');        
         $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
@@ -76,8 +76,9 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     public function getDetailBox($id)
     {
         $data = $this->detail_box->query();
-        $data = $data->where('order_detail_id', $id);
-        $data = $data->orderBy('id', 'ASC');
+        $data = $data->leftJoin('order_details', 'order_details.id', '=', 'order_detail_boxes.order_detail_id'); 
+        $data = $data->where('order_details.order_id', $id);
+        $data = $data->orderBy('order_detail_boxes.id', 'ASC');
         $data = $data->get();
         return $data;
     }
