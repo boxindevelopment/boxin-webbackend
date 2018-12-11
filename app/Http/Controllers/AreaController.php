@@ -73,8 +73,8 @@ class AreaController extends Controller
       $city_id    = $split[0];
 
       $area             = $this->repository->find($id);
-      $area->name       = $request->latitude;
-      $area->latitude   = $request->name;
+      $area->name       = $request->name;
+      $area->latitude   = $request->latitude;
       $area->longitude  = $request->longitude;
       if($area->city_id != $city_id){
         $area->city_id = $city_id;
