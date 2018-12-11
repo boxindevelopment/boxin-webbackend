@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Return Boxes
+          Change Item Boxes
         </h3>
     </div>
 </div>
@@ -31,7 +31,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>Delivery Box</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Change Item Box</h4>
 
               @include('error-template')
 
@@ -60,9 +60,9 @@
                               $name    = 'User pickup';
                             }
                             
-                            if($value->status_id == 16){
+                            if($value->status_id == 19){
                               $label = 'label-warning';
-                            }else if($value->status_id == 17){
+                            }else if($value->status_id == 22){
                               $label = 'label-success';
                             }else{
                               $label = 'label-danger';
@@ -72,7 +72,7 @@
                             <td align="center">{{ $key+1 }}</td>
                             <td align="center">{{ $value->created_at->format('d-m-Y') }}</td>
                             <td>{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
-                            <td>{{ $value->order_detail->order->user->first_name}} {{ $value->order_detail->order->user->last_name}}</td>
+                            <td>{{ $value->order_detail_box->order_detail->order->user->first_name}} {{ $value->order_detail_box->order_detail->order->user->last_name}}</td>
                             <td class="text-center">
                               <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
                             </td>
@@ -80,7 +80,7 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('return.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                              <a class="btn btn-primary btn-sm" href="{{route('change-box.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach

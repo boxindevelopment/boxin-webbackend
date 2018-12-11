@@ -50,4 +50,5 @@ class OrderDetailController extends Controller
         $detail_order_box   = $this->repository->getDetailBox($id);
         return view('storage.box-detail', compact('detail_order_box', 'id', 'detail'));
     }
+
 }

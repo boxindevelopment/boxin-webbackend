@@ -36,5 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind('App\Repositories\Contracts\DeliveryFeeRepository', 'App\Repositories\DeliveryFeeRepository');     
         $this->app->bind('App\Repositories\Contracts\PaymentRepository', 'App\Repositories\PaymentRepository');  
         $this->app->bind('App\Repositories\Contracts\ReturnBoxPaymentRepository', 'App\Repositories\ReturnBoxPaymentRepository');
+        $this->app->bind('App\Repositories\Contracts\ChangeBoxRepository', 'App\Repositories\ChangeBoxRepository');        
+        $this->app->bind('App\Repositories\Contracts\ChangeBoxPaymentRepository', 'App\Repositories\ChangeBoxPaymentRepository');
     }
 }

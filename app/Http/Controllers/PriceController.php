@@ -43,15 +43,6 @@ class PriceController extends Controller
         if($check){
             return redirect()->route('price.index')->with('error', 'Add New Price failed. Prices in the area already exist.');
         }else{
-            //day
-            $price1 = Price::create([
-              'types_of_box_room_id'    => $r->type_of_box_room_id,
-              'area_id'                 => $area_id,
-              'types_of_size_id'        => $r->type_size_id,
-              'types_of_duration_id'    => 1,
-              'price'                   => $r->daily_price,
-            ]);
-            $price1->save();
             //week
             $price2 = Price::create([
               'types_of_box_room_id'    => $r->type_of_box_room_id,
@@ -70,9 +61,27 @@ class PriceController extends Controller
               'price'                   => $r->monthly_price,
             ]);
             $price3->save();
+             //6month
+            $price4 = Price::create([
+              'types_of_box_room_id'    => $r->type_of_box_room_id,
+              'area_id'                 => $area_id,
+              'types_of_size_id'        => $r->type_size_id,
+              'types_of_duration_id'    => 3,
+              'price'                   => $r->sixmonth_price,
+            ]);
+            $price4->save();
+            //annual
+            $price5 = Price::create([
+              'types_of_box_room_id'    => $r->type_of_box_room_id,
+              'area_id'                 => $area_id,
+              'types_of_size_id'        => $r->type_size_id,
+              'types_of_duration_id'    => 3,
+              'price'                   => $r->annual_price,
+            ]);
+            $price5->save();
         }        
 
-        if($price3){
+        if($price5){
             return redirect()->route('price.index')->with('success', 'New Price added.');
         } else {
             return redirect()->route('price.index')->with('error', 'Add New Price failed.');
@@ -86,8 +95,9 @@ class PriceController extends Controller
 
     public function edit($id)
     {
-      $data     = $this->price->getById($id);
-      return view('settings.price.edit', compact('data', 'id'));
+      $price      = $this->price->getEdit($id);
+      $edit_price = true;
+      return view('settings.price.edit', compact('price', 'id', 'edit_price'));
     }
 
     public function update(Request $request, $id)
