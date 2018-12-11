@@ -6,6 +6,7 @@ Route::get('/privacyPolicy', 'HomeController@index')->name('privacyPolicy');
 Route::group(['middleware' => 'auth'], function() {
 
   Route::get('/', 'DashboardController@index')->name('dashboard');
+  Route::get('/graphicOrder','DashboardController@graphicOrder')->name('dashboard.graphicOrder');
 
   Route::resource('city', 'CityController')->except(['show']);
   Route::prefix('city')->group(function () {
@@ -51,15 +52,23 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('payment', 'PaymentController')->except(['show']);  
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');    
-    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');
+    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');    
+    Route::get('/changebox','ChangeBoxPaymentController@index')->name('changeboxpayment.index');
   });
 
+  Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
+  
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
   });
   
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
+
+  Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
+  Route::prefix('change-box')->group(function () {
+    Route::get('','ChangeBoxesController@index')->name('change-box.index');    
+  });
 
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
@@ -84,7 +93,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::resource('price', 'PriceController')->except(['show']);
-   Route::prefix('price')->group(function () {
+  Route::prefix('price')->group(function () {
     Route::get('box','PriceController@priceBox')->name('price.priceBox');
     Route::get('room','PriceController@priceRoom')->name('price.priceRoom');
     Route::post('store','PriceController@store')->name('price.store');
@@ -93,5 +102,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('delivery-fee', 'DeliveryFeeController')->except(['show']);
 
   Route::resource('settings', 'SettingController')->except(['show']);
+  Route::prefix('settings')->group(function () {
+    Route::get('','SettingController@index')->name('settings.index');
+  });
 
 });

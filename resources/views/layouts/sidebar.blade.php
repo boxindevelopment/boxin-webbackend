@@ -97,8 +97,8 @@
                     <li class="{{ Route::currentRouteNamed('payment.index') ? 'active' : null }}">
                       <a href="{{ route('payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Order Payments</a>
                     </li>
-                    <li class="{{ Route::currentRouteNamed('returnboxpayment.index') ? 'active' : null }}">
-                      <a href="{{ route('returnboxpayment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Return Box Payments</a>
+                    <li class="{{ Route::currentRouteNamed('changeboxpayment.index') ? 'active' : null }}">
+                      <a href="{{ route('changeboxpayment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Change Item Box Payments</a>
                     </li>
                   </ul>
                 </li>
@@ -114,6 +114,13 @@
                   <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
                     <span class="hide-menu">Return Boxes</span>
+                  </a>
+                </li>
+
+                <li class="{{ Route::currentRouteNamed('change-box.index')||Route::currentRouteNamed('change-box.create')||Route::currentRouteNamed('change-box.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('change-box.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-box"></i>
+                    <span class="hide-menu">Change Item Boxes</span>
                   </a>
                 </li>
                 

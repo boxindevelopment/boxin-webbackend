@@ -66,7 +66,7 @@
                     <div class="col-md-6">
                       <!-- pickup delivery box -->
                       @if ($value->types_of_pickup_id == 1)  
-                        @if($value->status_id == 7)    
+                        @if($value->status_id == 7 || $value->status_id == 2)    
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>

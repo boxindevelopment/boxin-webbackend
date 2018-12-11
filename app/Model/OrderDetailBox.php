@@ -22,6 +22,11 @@ class OrderDetailBox extends Model
         return $this->belongsTo('App\Model\Category', 'category_id', 'id');
     }
     
+    public function change_box()
+    {
+        return $this->hasMany('App\Model\ChangeBox', 'order_detail_box_id', 'id');
+    }
+
     public function getUrlAttribute()
     {
         if (!empty($this->item_image)) {

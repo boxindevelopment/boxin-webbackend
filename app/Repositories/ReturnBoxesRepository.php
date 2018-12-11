@@ -32,7 +32,7 @@ class ReturnBoxesRepository implements ReturnBoxesRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $order = $this->model->query();
-        $order = $order->select('return_boxes.id', 'return_boxes.types_of_pickup_id', 'return_boxes.status_id', 'return_boxes.created_at', 'return_boxes.date', 'return_boxes.time_pickup');
+        $order = $order->select('return_boxes.id', 'return_boxes.order_detail_id', 'return_boxes.types_of_pickup_id', 'return_boxes.status_id', 'return_boxes.created_at', 'return_boxes.date', 'return_boxes.time_pickup');
         $order = $order->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
         if(Auth::user()->roles_id == 2){
