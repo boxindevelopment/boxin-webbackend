@@ -70,7 +70,7 @@ class ShelvesController extends Controller
 
       $shelves            = $this->repository->find($id);
       $shelves->name      = $request->name;
-      if($box->space_id != $space_id){
+      if($shelves->space_id != $space_id){
         $shelves->space_id  = $space_id;    
         $shelves->id_name   = $request->id_name_shelf;
       }

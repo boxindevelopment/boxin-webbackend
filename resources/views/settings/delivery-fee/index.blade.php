@@ -49,7 +49,7 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->area->name }}</td>                            
-                            <td>{{ $value->fee }}</td>
+                            <td>{{ number_format($value->fee, 0, '', '.') }}</td>
                             <td class="text-center">
                               <a class="btn btn-primary btn-sm" href="{{route('delivery-fee.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                             </td>

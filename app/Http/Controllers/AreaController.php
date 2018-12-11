@@ -43,6 +43,8 @@ class AreaController extends Controller
         'name'      => $request->name,
         'city_id'   => $city_id,
         'id_name'   => $request->id_name_area,
+        'latitude'  => $request->latitude,
+        'longitude' => $request->longitude,
       ]);
 
       if($area){
@@ -70,8 +72,10 @@ class AreaController extends Controller
       $split      = explode('##', $request->city_id);
       $city_id    = $split[0];
 
-      $area       = $this->repository->find($id);
-      $area->name = $request->name;
+      $area             = $this->repository->find($id);
+      $area->name       = $request->name;
+      $area->latitude   = $request->latitude;
+      $area->longitude  = $request->longitude;
       if($area->city_id != $city_id){
         $area->city_id = $city_id;
         $area->id_name = $request->id_name_area;
