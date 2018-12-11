@@ -24,17 +24,15 @@ class BoxRepository implements BoxRepositoryInterface
     
     public function all()
     {
-        $admin = AdminArea::with('shelves', 'shelves.space', 'shelves.space.area')->where('user_id', Auth::user()->id)->first();
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('boxes.*');
-        // $data = $data->leftJoin('shelves', 'warehouses.id', '=', 'spaces.warehouse_id');
-        // $data = $data->leftJoin('spaces', 'spaces.id', '=', 'boxes.space_id');
-        // $data = $data->leftJoin('areas', 'areas.id', '=', 'warehouses.area_id');
+        $data = $data->select('boxes.*');        
         if(Auth::user()->roles_id == 2){
-            $data = $data->where('areas.id', $admin->area_id);
+            $data = $data->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id');
+            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');
+            $data = $data->where('spaces.area_id', $admin->area_id);
         }
         $data = $data->where('boxes.deleted_at', NULL); 
-        // $data = $data->where('areas.deleted_at', NULL);     
         $data = $data->orderBy('boxes.updated_at', 'DESC')->orderBy('boxes.id','DESC');
         $data = $data->get();
         return $data;

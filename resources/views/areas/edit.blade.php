@@ -55,6 +55,21 @@
 
                       <a href="{{ route('area.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save </button>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label for="">Latitude <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="latitude" id="latitude" placeholder="Enter Latitude" value="{{ $area->latitude }}" required >
+                      </div>
+
+                      <div class="form-group">
+                        <label>Longitude <span class="text-danger">*</span></label>
+                        <input type="text" name="longitude" class="form-control" id="longitude" placeholder="Enter Longitude" value="{{ $area->longitude }}" required>
+                      </div>
+
                     </div>
                 </div>
               </form>
