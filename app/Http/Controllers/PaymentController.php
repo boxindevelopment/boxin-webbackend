@@ -8,18 +8,27 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\PickupOrder;
 use App\Repositories\PaymentRepository;
+use Requests;
 
 class PaymentController extends Controller
 {
+
     protected $repository;
+
+	private $environment = 'development';
+	private $url;
+	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
+	CONST LOC_URL = 'http://localhost:5252/';
+	CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
 
     public function __construct(PaymentRepository $repository)
     {
+		$this->url = self::DEV_URL;
         $this->repository = $repository;
     }
 
     public function index()
-    {      
+    {
       $data = $this->repository->all();
       return view('payment.order.index', compact('data'));
     }
@@ -31,7 +40,7 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
-      abort('404');   
+      abort('404');
     }
 
     public function show($id)
@@ -51,7 +60,7 @@ class PaymentController extends Controller
             'status_id'  => 'required',
         ]);
 
-        $order_id               = $request->order_id; 
+        $order_id               = $request->order_id;
         $status                 = $request->status_id;
 
         $payment                 = $this->repository->find($id);
@@ -63,7 +72,7 @@ class PaymentController extends Controller
             $order->status_id       = $status;
             $order->save();
 
-            $po                     = PickupOrder::where('order_id', $order_id)->first();            
+            $po                     = PickupOrder::where('order_id', $order_id)->first();
             $pickuporder            = PickupOrder::find($po->id);
             $pickuporder->status_id = $status;
             $pickuporder->save();
@@ -75,7 +84,9 @@ class PaymentController extends Controller
                 $order_detail->save();
             }
 
-            return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
+    		$params['status_id'] =  $request->status_id;
+    		$response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+
         } else {
             return redirect()->route('payment.index')->with('error', 'Edit status order payment failed.');
         }
@@ -83,6 +94,6 @@ class PaymentController extends Controller
 
     public function destroy($id)
     {
-      
+
     }
 }
