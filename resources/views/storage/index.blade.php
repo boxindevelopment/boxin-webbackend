@@ -55,7 +55,7 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</tD>
                             <td>{{ $value->id_name }}</td>
-                            <td>{{ $value->first_name }} {{ $value->last_name }}</td>
+                            <td>{{ $value->first_name }} {{ $value->last_name }} </td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>

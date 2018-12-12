@@ -58,18 +58,23 @@ class ReturnBoxPaymentController extends Controller
         $orderdetail->status_id = $status;
         $orderdetail->save();
 
-        $order                  = Order::find($orderdetail->id);
+        $order                  = Order::find($orderdetail->order_id);
         $order->status_id       = $status;
         $order->save();
         
-        $payment                 = $this->repository->find($id);
-        $payment->status_id      = $status;
+        $return_box             = ReturnBoxes::where('order_detail_id', $order_detail_id)->first();
+        $return_boxes           = ReturnBoxes::find($return_box->id);
+        $return_boxes->status_id= $status;
+        $return_boxes->save();
+
+        $payment                = $this->repository->find($id);
+        $payment->status_id     = $status;
         $payment->save();
 
         if($payment){
-            return redirect()->route('returnboxpayment.index')->with('success', 'Edit status order return box payment success.');
+            return redirect()->route('return-box-payment.index')->with('success', 'Edit status order return box payment success.');
         } else {
-            return redirect()->route('returnboxpayment.index')->with('error', 'Edit status order return box payment failed.');
+            return redirect()->route('return-box-payment.index')->with('error', 'Edit status order return box payment failed.');
         }
     }
 

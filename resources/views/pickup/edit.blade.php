@@ -66,6 +66,7 @@
                     <div class="col-md-6">
                       <!-- pickup delivery box -->
                       @if ($value->types_of_pickup_id == 1)  
+                        
                         @if($value->status_id == 7 || $value->status_id == 2)    
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
@@ -73,7 +74,6 @@
                               <option value="15" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                        </select>
                           </select>
                         </div> 
 
@@ -95,6 +95,7 @@
 
                       <!-- pickup box on warehouse -->
                       @if ($value->types_of_pickup_id == 2)
+                        
                         @if($value->status_id == 7)   
                         <div class="form-group"> 
                           <label for="">Status <span class="text-danger">*</span></label>

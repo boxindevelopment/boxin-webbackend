@@ -86,7 +86,8 @@ class PaymentController extends Controller
 
     		$params['status_id'] =  $request->status_id;
     		$response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
-
+            
+            return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
         } else {
             return redirect()->route('payment.index')->with('error', 'Edit status order payment failed.');
         }

@@ -48,18 +48,18 @@ class ChangeBoxesController extends Controller
         $this->validate($request, [
             'status_id'  => 'required',
         ]);
-
+        $status                 = $request->status_id;
         $change                 = ChangeBox::find($id);
-        $change->status_id      = $request->status_id;
+        $change->status_id      = $status;
         $change->driver_name    = $request->driver_name;
         $change->driver_phone   = $request->driver_phone;
         $change->save();
 
         if($change){
-            $order_              = OrderDetail::find($request->order_detail_id);
-            $order->status_id    = $request->status_id;
+            $order               = OrderDetail::find($request->order_detail_id);
+            $order->status_id    = $status == '12' ? '4' : $status;
             $order->save();
-            
+
             return redirect()->route('change-box.index')->with('success', 'Edit Data Return Boxes success.');
         } else {
             return redirect()->route('change-box.index')->with('error', 'Edit Data Return Boxes failed.');
