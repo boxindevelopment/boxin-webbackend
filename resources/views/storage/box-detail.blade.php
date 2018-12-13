@@ -101,11 +101,11 @@
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label></div>
               <div class="form-group col-md-4">
-                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->id_name : $detail->room->id_name }}" readonly> </div>
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->id_name : $detail->space->id_name }}" readonly> </div>
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
               <div class="form-group col-md-4">
-                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->name : $detail->room->name }}" readonly> </div>
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->name : $detail->space->name }}" readonly> </div>
           </form>
 
 
