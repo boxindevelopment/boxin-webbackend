@@ -38,28 +38,34 @@
                     <div class="col-md-6">
                       
                       <div class="form-group">
-                        <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_shelf" id="id_name_shelf" required readonly>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">City <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="city_id" name="city_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">Area <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="area_id" name="area_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" required>
-                      </div>
-
-                      <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="" required>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name" value="" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Code <span class="text-danger">*</span></label>
+                        <input type="text" name="code" id="code" class="form-control" placeholder="Enter Code" value="" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Description <span class="text-danger">*</span></label>
+                        <input type="text" name="description" id="description" class="form-control" placeholder="Enter Description" value="" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Type Voucher <span class="text-danger">*</span></label>
+                        <div class="demo-radio-button">
+                          <input name="type_voucher" type="radio" class="with-gap" id="type_voucher_percen" checked />
+                          <label for="type_voucher_percen">Percen</label>
+                          <input name="type_voucher" type="radio" class="with-gap" id="type_voucher_nominal" />
+                          <label for="type_voucher_nominal">Nominal</label>
+                        </div>
+                      </div>
+
+                      <div class="form-group value">
+                        <label>Value <span class="text-danger">*</span></label>
+                        <input type="text" name="value" id="value1" class="form-control value1" placeholder="Enter Percen" max="100" min="0" >
+                        <input style="display: none" type="text" name="value" id="value2" class="form-control value2" placeholder="Enter Nominal" value="" min="0">
                       </div>
 
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
@@ -82,8 +88,8 @@
 <!--PLUGIN JS -->
 <script type="text/javascript">  
 
-  $(document).ready( function() {
-  
-  });
+$(document).ready( function() {
+
+});
 </script>
 @endsection
