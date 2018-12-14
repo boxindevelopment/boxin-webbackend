@@ -4524,7 +4524,8 @@ File: scss
   -ms-touch-action: auto;
   touch-action: auto;
   overflow: hidden !important;
-  -ms-overflow-style: none; }
+  -ms-overflow-style: none; 
+  height: 100%; }
 
 @supports (-ms-overflow-style: none) {
   .ps {

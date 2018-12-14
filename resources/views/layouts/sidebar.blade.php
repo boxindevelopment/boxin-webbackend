@@ -74,6 +74,13 @@
                   </a>
                 </li>        
 
+                <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('voucher.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-star-circle"></i>
+                    <span class="hide-menu">Vouchers</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('order.index')}}" aria-expanded="false">
                     <i class="mdi mdi-cart-outline"></i>

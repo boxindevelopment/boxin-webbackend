@@ -53,7 +53,7 @@
                             <td>{{ $value->name }}</td>                            
                             <td>{{ $value->value }}</td>                      
                             <td>{{ $value->unit }}</td>
-                            <td>{{ $value->description }}</td>  
+                            <td>{{ $value->name != 'term_and_conditions' ? $value->description : substr($value->description,0,100).'...' }}</td>  
                             <td class="text-center">
                               <a class="btn btn-primary btn-sm" href="{{route('settings.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                             </td>

@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('category', 'CategoryController')->except(['show']);
 
+  Route::resource('voucher', 'VoucherController')->except(['show']);
+
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
     Route::get('','OrderController@index')->name('order.index');
@@ -63,15 +65,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
   });
   
-  Route::resource('return', 'ReturnBoxesController')->except(['show']);
-  Route::prefix('return')->group(function () {
-    Route::get('','ReturnBoxesController@index')->name('return.index');    
-  });
-
   Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
   Route::prefix('change-box')->group(function () {
     Route::get('','ChangeBoxesController@index')->name('change-box.index');    
   });
+
+  Route::resource('return', 'ReturnBoxesController')->except(['show']);
+  Route::prefix('return')->group(function () {
+    Route::get('','ReturnBoxesController@index')->name('return.index');    
+  });  
 
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
