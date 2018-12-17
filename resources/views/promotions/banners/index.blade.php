@@ -53,9 +53,9 @@
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
                           <td align="center">{{ $value->name }}</td>
-                          <td align="center"><img src="{{ asset('images/voucher')}}/{{ $value->image }}"/></td>
+                          <td align="center"><img src="{{ asset('images/banner')}}/{{ $value->image }}"/></td>
                           <td class="text-center">
-                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-warning' }} label-rounded">{{ $value->status_id == 20 ? 'Active' : 'Non Active' }}</span>
+                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status_id == 20 ? 'Active' : 'Non Active' }}</span>
                           </td>
                           <td class="text-center">
                             <form action="{{route('banner.destroy', ['id' => $value->id])}}" method="post">
