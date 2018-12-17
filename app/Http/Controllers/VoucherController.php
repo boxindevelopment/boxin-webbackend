@@ -29,20 +29,31 @@ class VoucherController extends Controller
       return view('vouchers.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $r)
     {
-      $data = Voucher::create([
-        'name'            => $request->name,
-        'code'            => $request->code,
-        'description'     => $request->description,
-        'start_date'      => $request->start_date,
-        'end_date'        => $request->end_date,
-        'value'           => $request->value,
-        'type_voucher'    => $request->type_voucher,
+      $this->validate($r, [
+          'image' => 'image|mimes:jpeg,png,jpg',
       ]);
-
+      $data = false;
+      if ($r->hasFile('image')) {
+          if ($r->file('image')->isValid()) {
+              $getimageName = time().'.'.$r->image->getClientOriginalExtension();
+              $image = $r->image->move(public_path('images/voucher'), $getimageName);
+              $data = Voucher::create([
+                  'name'            => $r->name,
+                  'code'            => $r->code,
+                  'description'     => $r->description,
+                  'start_date'      => $r->start_date,
+                  'end_date'        => $r->end_date,
+                  'type_voucher'    => $r->type_voucher,
+                  'value'           => $r->type_voucher == '1' ? $r->value1 : $r->value2,
+                  'image'           => $getimageName,
+              ]);
+              $data->save();
+          }
+      }        
       if($data){        
-        return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $request->name . '] inserted.');
+        return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $r->name . '] inserted.');
       } else {
         return redirect()->route('voucher.index')->with('error', 'Add New Voucher failed.');
       }
