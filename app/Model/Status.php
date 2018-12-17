@@ -49,5 +49,10 @@ class Status extends Model
     {
         return $this->hasMany('App\Model\Voucher', 'status_id', 'id');
     }
+
+    public function banner()
+    {
+        return $this->hasMany('App\Model\Banner', 'status_id', 'id');
+    }
     
 }

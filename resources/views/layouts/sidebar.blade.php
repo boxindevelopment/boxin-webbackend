@@ -70,13 +70,13 @@
                 @if(Auth::user()->roles_id == 3)
                 <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit')||
                 Route::currentRouteNamed('banner.index')||Route::currentRouteNamed('banner.create')||Route::currentRouteNamed('banner.edit') ? 'active' : null }}">
-                  <a class="has-arrow waves-effect waves-dark" href="{{ route('city.index')}}" aria-expanded="false">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('banner.index')}}" aria-expanded="false">
                     <i class="mdi mdi-star-circle"></i>
                     <span class="hide-menu">Promotions</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
-                    <li class="{{ Route::currentRouteNamed('city.index') ? 'active' : null }}">
-                      <a href="{{ route('city.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
+                    <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
+                      <a href="{{ route('banner.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
                     </li>
                     <li class="{{ Route::currentRouteNamed('voucher.index') ? 'active' : null }}">
                       <a href="{{ route('voucher.index') }}"><i class="mdi mdi-tag-multiple"></i> &nbsp;Voucher </a>

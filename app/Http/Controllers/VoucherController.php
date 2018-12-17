@@ -82,6 +82,14 @@ class VoucherController extends Controller
       $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
       $data->type_voucher   = $request->type_voucher;
       $data->status_id      = $request->status_id;
+
+      if ($request->hasFile('image')) {
+        if ($request->file('image')->isValid()) {
+            $getimageName = time().'.'.$request->image->getClientOriginalExtension();
+            $image = $request->image->move(public_path('images/voucher'), $getimageName);
+            $data->image = $getimageName;
+        }
+      }
       $data->save();
 
       if($data){
