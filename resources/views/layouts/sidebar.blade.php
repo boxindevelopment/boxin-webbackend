@@ -29,7 +29,6 @@
                       <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-
                 
                 <li class="{{ Route::currentRouteNamed('city.index')||Route::currentRouteNamed('city.create')||Route::currentRouteNamed('city.edit')||
                 Route::currentRouteNamed('area.index')||Route::currentRouteNamed('area.create')||Route::currentRouteNamed('area.edit')||
@@ -68,12 +67,23 @@
                   </a>
                 </li>        
 
-                <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('voucher.index')}}" aria-expanded="false">
+                @if(Auth::user()->roles_id == 3)
+                <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit')||
+                Route::currentRouteNamed('banner.index')||Route::currentRouteNamed('banner.create')||Route::currentRouteNamed('banner.edit') ? 'active' : null }}">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('city.index')}}" aria-expanded="false">
                     <i class="mdi mdi-star-circle"></i>
-                    <span class="hide-menu">Vouchers</span>
+                    <span class="hide-menu">Promotions</span>
                   </a>
+                  <ul aria-expanded="false" class="collapse">
+                    <li class="{{ Route::currentRouteNamed('city.index') ? 'active' : null }}">
+                      <a href="{{ route('city.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('voucher.index') ? 'active' : null }}">
+                      <a href="{{ route('voucher.index') }}"><i class="mdi mdi-tag-multiple"></i> &nbsp;Voucher </a>
+                    </li>
+                  </ul>
                 </li>
+                @endif
 
                 <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('order.index')}}" aria-expanded="false">
