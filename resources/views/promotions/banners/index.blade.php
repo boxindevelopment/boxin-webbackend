@@ -2,6 +2,7 @@
 
 @section('plugin_css')
 
+  <link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
 
 @section('script_css')
@@ -43,7 +44,7 @@
                         <th width="5%">No</th>
                         <th width="25%" class="text-center">Name </th>
                         <th width="">Image</th>
-                        <th width="5%">Status</th>
+                        <th width="15%" class="text-center">Status</th>
                         <th width="10%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
@@ -52,10 +53,14 @@
                       @foreach ($data as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
-                          <td align="center">{{ $value->name }}</td>
-                          <td align="center"><img src="{{ asset('images/banner')}}/{{ $value->image }}"/></td>
+                          <td>{{ $value->name }}</td>
+                          <td>
+                            <a class="btn default btn-outline image-popup-vertical-fit" href="{{ asset('images/banner')}}/{{ $value->image }}">
+                              <img width="50%" src="{{ asset('images/banner')}}/{{ $value->image }}" alt="user" />
+                            </a>
+                          </td>
                           <td class="text-center">
-                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status_id == 20 ? 'Active' : 'Non Active' }}</span>
+                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status_id == 20 ? 'Actived' : 'Non Actived' }}</span>
                           </td>
                           <td class="text-center">
                             <form action="{{route('banner.destroy', ['id' => $value->id])}}" method="post">
@@ -110,7 +115,6 @@
 @section('close_html')
 <!--PLUGIN JS -->
 
-
 <script>
 $(function() {
   $('#table-type').DataTable({
@@ -118,4 +122,8 @@ $(function() {
   });
 });
 </script>
+
+<!-- Magnific popup JavaScript -->
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js')}}"></script>
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js')}}"></script>
 @endsection

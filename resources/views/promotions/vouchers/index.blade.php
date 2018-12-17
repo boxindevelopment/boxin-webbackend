@@ -54,12 +54,12 @@
                       @foreach ($data as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
-                          <td align="center">{{ $value->name }} ({{ $value->code }})</td>
+                          <td>{{ $value->name }} ({{ $value->code }})</td>
                           <td>{{ $value->type_voucher == 1 ? $value->value : number_format($value->value, 0, '', '.') }}</td>
                           <td>{{ $value->type_voucher == 1 ? 'Percen' : 'Nominal' }}</td>
                           <td>{{ $value->start_date->format('d-m-Y') }} - {{ $value->end_date->format('d-m-Y') }}</td>
                           <td class="text-center">
-                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-warning' }} label-rounded">{{ $value->status->name  }}</span>
+                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status->name  }}</span>
                           </td>
                           <td class="text-center">
                             <form action="{{route('voucher.destroy', ['id' => $value->id])}}" method="post">
