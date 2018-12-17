@@ -79,7 +79,7 @@ class VoucherController extends Controller
       $data->description    = $request->description;
       $data->start_date     = $request->start_date;
       $data->end_date       = $request->end_date;
-      $data->value          = $request->value;
+      $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
       $data->type_voucher   = $request->type_voucher;
       $data->save();
 
