@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('category', 'CategoryController')->except(['show']);
 
+  Route::resource('banner', 'BannerController')->except(['show']);
+
   Route::resource('voucher', 'VoucherController')->except(['show']);
 
   Route::resource('order', 'OrderController')->except(['show']);

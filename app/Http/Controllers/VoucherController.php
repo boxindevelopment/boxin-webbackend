@@ -21,28 +21,39 @@ class VoucherController extends Controller
     public function index()
     {
       $data  = $this->repository->all();
-      return view('vouchers.index', compact('data'));
+      return view('promotions.vouchers.index', compact('data'));
     }
 
     public function create()
     {
-      return view('vouchers.create');
+      return view('promotions.vouchers.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $r)
     {
-      $data = Voucher::create([
-        'name'            => $request->name,
-        'code'            => $request->code,
-        'description'     => $request->description,
-        'start_date'      => $request->start_date,
-        'end_date'        => $request->end_date,
-        'value'           => $request->value,
-        'type_voucher'    => $request->type_voucher,
+      $this->validate($r, [
+          'image' => 'image|mimes:jpeg,png,jpg',
       ]);
-
+      $data = false;
+      if ($r->hasFile('image')) {
+          if ($r->file('image')->isValid()) {
+              $getimageName = time().'.'.$r->image->getClientOriginalExtension();
+              $image = $r->image->move(public_path('images/voucher'), $getimageName);
+              $data = Voucher::create([
+                  'name'            => $r->name,
+                  'code'            => $r->code,
+                  'description'     => $r->description,
+                  'start_date'      => $r->start_date,
+                  'end_date'        => $r->end_date,
+                  'type_voucher'    => $r->type_voucher,
+                  'value'           => $r->type_voucher == '1' ? $r->value1 : $r->value2,
+                  'image'           => $getimageName,
+              ]);
+              $data->save();
+          }
+      }        
       if($data){        
-        return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $request->name . '] inserted.');
+        return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $r->name . '] inserted.');
       } else {
         return redirect()->route('voucher.index')->with('error', 'Add New Voucher failed.');
       }
@@ -57,7 +68,7 @@ class VoucherController extends Controller
     public function edit($id)
     {
       $data = $this->repository->find($id);
-      return view('vouchers.edit', compact('data', 'id'));
+      return view('promotions.vouchers.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -68,8 +79,17 @@ class VoucherController extends Controller
       $data->description    = $request->description;
       $data->start_date     = $request->start_date;
       $data->end_date       = $request->end_date;
-      $data->value          = $request->value;
+      $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
       $data->type_voucher   = $request->type_voucher;
+      $data->status_id      = $request->status_id;
+
+      if ($request->hasFile('image')) {
+        if ($request->file('image')->isValid()) {
+            $getimageName = time().'.'.$request->image->getClientOriginalExtension();
+            $image = $request->image->move(public_path('images/voucher'), $getimageName);
+            $data->image = $getimageName;
+        }
+      }
       $data->save();
 
       if($data){
@@ -83,6 +103,7 @@ class VoucherController extends Controller
     {      
       $data     = Voucher::find($id);
       $data->deleted_at = Carbon\Carbon::now();
+      $data->status_id  = 21;
       $data->save();
       
       if($data){

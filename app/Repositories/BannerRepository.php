@@ -2,17 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Model\Voucher;
-use App\Model\AdminArea;
-use App\Repositories\Contracts\VoucherRepository as VoucherRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
-use DB;
+use App\Model\Banner;
+use App\Repositories\Contracts\BannerRepository as BannerRepositoryInterface;
 
-class VoucherRepository implements VoucherRepositoryInterface
+class BannerRepository implements BannerRepositoryInterface
 {
     protected $model;
 
-    public function __construct(Voucher $model)
+    public function __construct(Banner $model)
     {
         $this->model = $model;
     }
@@ -32,14 +29,14 @@ class VoucherRepository implements VoucherRepositoryInterface
         return $this->model->create($data);
     }
     
-    public function update(Voucher $voucher, $data)
+    public function update(Banner $banner, $data)
     {
-        return $voucher->update($data);
+        return $banner->update($data);
     }
 
-    public function delete(Voucher $voucher)
+    public function delete(Banner $banner)
     {
-        return $voucher->delete();
+        return $banner->delete();
     }
     
 }

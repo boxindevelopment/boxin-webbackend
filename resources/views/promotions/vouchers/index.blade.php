@@ -45,6 +45,7 @@
                         <th width="10%">Value</th>
                         <th width="15%">Percen/Nominal</th>
                         <th width="">Valid Voucher</th>
+                        <th width="5%">Status</th>
                         <th width="10%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
@@ -54,9 +55,12 @@
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
                           <td align="center">{{ $value->name }} ({{ $value->code }})</td>
-                          <td>{{ $value->value }}</td>
-                          <td>{{ $value->type_voucher }}</td>
+                          <td>{{ $value->type_voucher == 1 ? $value->value : number_format($value->value, 0, '', '.') }}</td>
+                          <td>{{ $value->type_voucher == 1 ? 'Percen' : 'Nominal' }}</td>
                           <td>{{ $value->start_date->format('d-m-Y') }} - {{ $value->end_date->format('d-m-Y') }}</td>
+                          <td class="text-center">
+                            <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-warning' }} label-rounded">{{ $value->status->name  }}</span>
+                          </td>
                           <td class="text-center">
                             <form action="{{route('voucher.destroy', ['id' => $value->id])}}" method="post">
                               @csrf
