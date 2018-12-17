@@ -27,35 +27,6 @@ class VoucherRepository implements VoucherRepositoryInterface
         return $this->model->where('deleted_at', NULL)->orderBy('updated_at', 'DESC')->orderBy('id','DESC')->get();
     }
 
-    public function getCount($args = [])
-    {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
-    }
-
-    public function getData($args = [])
-    {
-
-        $city = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
-
-        return $city->toArray();
-    }
-
-    public function getSelect($args = [])
-    {
-        if(Auth::user()->roles_id == 3){
-            $city = $this->model->select()->where('deleted_at', NULL)->orderBy('name')->get();
-        }else if(Auth::user()->roles_id == 2){
-            $admin = AdminCity::where('user_id', Auth::user()->id)->first();
-            $city = $this->model->select()->where('deleted_at', NULL)->where('id', $admin->city_id)->orderBy('name')->get();
-        }
-        return $city;
-    }
-
     public function create(array $data)
     {
         return $this->model->create($data);
