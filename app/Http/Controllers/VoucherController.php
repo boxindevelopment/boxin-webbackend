@@ -94,6 +94,7 @@ class VoucherController extends Controller
     {      
       $data     = Voucher::find($id);
       $data->deleted_at = Carbon\Carbon::now();
+      $data->status_id  = 21;
       $data->save();
       
       if($data){
