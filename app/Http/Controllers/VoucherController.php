@@ -21,12 +21,12 @@ class VoucherController extends Controller
     public function index()
     {
       $data  = $this->repository->all();
-      return view('vouchers.index', compact('data'));
+      return view('promotions.vouchers.index', compact('data'));
     }
 
     public function create()
     {
-      return view('vouchers.create');
+      return view('promotions.vouchers.create');
     }
 
     public function store(Request $r)
@@ -68,7 +68,7 @@ class VoucherController extends Controller
     public function edit($id)
     {
       $data = $this->repository->find($id);
-      return view('vouchers.edit', compact('data', 'id'));
+      return view('promotions.vouchers.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -81,6 +81,7 @@ class VoucherController extends Controller
       $data->end_date       = $request->end_date;
       $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
       $data->type_voucher   = $request->type_voucher;
+      $data->status_id      = $request->status_id;
       $data->save();
 
       if($data){
