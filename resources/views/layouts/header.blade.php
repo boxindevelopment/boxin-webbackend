@@ -95,6 +95,7 @@
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('assets/images/gear.png')}}" alt="user" class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated flipInY">
                         <ul class="dropdown-user">
+                            <li><a href="{{ route('profile') }}"><i class="ti-user"></i> My Profile</a></li>
                             <li>
                               <a href="javascript:void(0);" onclick="document.getElementById('logoutUser').submit();"><i class="fa fa-power-off"></i> Logout</a>
                               <form id="logoutUser" action="{{ route('logout') }}" method="post">

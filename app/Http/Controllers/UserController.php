@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\User;
 use App\Model\AdminArea;
 use App\Repositories\UserRepository;
+use Auth;
 
 class UserController extends Controller
 {
@@ -190,7 +191,8 @@ class UserController extends Controller
         }   
     }
 
-    public function getDataSelectForAdmin($args = []){
+    public function getDataSelectForAdmin($args = [])
+    {
 
         $user       = $this->user->getSelectAllForAdmin();
         $arrUser    = array();
@@ -203,7 +205,8 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
-    public function getDataSelectForSuperadmin($args = []){
+    public function getDataSelectForSuperadmin($args = [])
+    {
 
         $user       = $this->user->getSelectAllForSuperadmin();
         $arrUser    = array();
@@ -216,7 +219,8 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
-    public function getDataSelectForFinance($args = []){
+    public function getDataSelectForFinance($args = [])
+    {
 
         $user       = $this->user->getSelectAllForFinance();
         $arrUser    = array();
@@ -229,4 +233,10 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
+    public function myProfile(Request $request) 
+    {
+      $user      = $request->user();
+      $me                 = Auth::id();
+      return view('profile', compact('user'));
+    }
 }

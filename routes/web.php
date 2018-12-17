@@ -8,6 +8,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/', 'DashboardController@index')->name('dashboard');
   Route::get('/graphicOrder','DashboardController@graphicOrder')->name('dashboard.graphicOrder');
 
+  Route::get('/profile', 'UserController@myProfile')->name('profile');
+
   Route::resource('city', 'CityController')->except(['show']);
   Route::prefix('city')->group(function () {
     Route::get('/dataSelect','CityController@getDataSelect')->name('city.getDataSelect');
