@@ -35,11 +35,10 @@
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
+                    @include('error-template')
                     <!--second tab-->
                     <div class="tab-pane active" id="profile" role="tabpanel">
                         <div class="card-body">
-                            
-                            @include('error-template')
 
                             <form action="{{ route('user.changeProfile', ['id' => $user->id]) }}" class="form-horizontal form-material" method="POST" enctype="application/x-www-form-urlencoded">
                             @csrf
@@ -79,23 +78,25 @@
                     </div>
                     <div class="tab-pane" id="settings" role="tabpanel">
                         <div class="card-body">
-                            <form class="form-horizontal form-material" method="POST">        
+                            <form action="{{ route('user.changePassword', ['id' => $user->id]) }}" class="form-horizontal form-material" method="POST" enctype="application/x-www-form-urlencoded">
+                            @csrf
+                            @method('PUT')     
                                 <div class="form-group">
                                     <label class="col-md-12">Old Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" name="old_password" class="form-control form-control-line">
+                                        <input type="password" name="old_password" class="form-control form-control-line" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">New Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" name="new_password" class="form-control form-control-line">
+                                        <input type="password" name="new_password" class="form-control form-control-line" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">Retype New Password</label>
+                                    <label class="col-md-12">Confirmation New Password</label>
                                     <div class="col-md-12">
-                                        <input type="password" name="re_password" class="form-control form-control-line">
+                                        <input type="password" name="confirmation_password" class="form-control form-control-line" required>
                                     </div>
                                 </div>
                                 <div class="form-group">

@@ -82,7 +82,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
     Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
-    Route::post('change/password','UserController@changePassword')->name('user.changePassword');
+    Route::put('change-password/{id}','UserController@changePassword')->name('user.changePassword');
 
     Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);
     Route::get('getDataSelectForSuperadmin', ['uses' => 'UserController@getDataSelectForSuperadmin', 'as' => 'user.getDataSelectForSuperadmin']);
