@@ -7,6 +7,7 @@ use App\Model\User;
 use App\Model\AdminArea;
 use App\Repositories\UserRepository;
 use Auth;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -236,7 +237,35 @@ class UserController extends Controller
     public function myProfile(Request $request) 
     {
       $user      = $request->user();
-      $me                 = Auth::id();
       return view('profile', compact('user'));
+    }
+
+    public function changeProfile(Request $request, $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore(Auth::id(), 'id')
+            ]
+        ]);
+
+        if($validator->fails()) {
+            return redirect()->route('profile')->with('error', 'The email has already been taken.');
+        }
+
+        $user           = $this->user->find(Auth::id());
+        if($user){
+          $user->first_name   = $request->first_name;
+          $user->last_name    = $request->last_name;
+          $user->email        = $request->email;
+          $user->save();
+        }
+
+        if($user){
+          return redirect()->route('profile')->with('success', 'Succes edit profile.');
+        } else {
+          return redirect()->route('profile')->with('error', 'Edit profile failed.');
+        }     
     }
 }
