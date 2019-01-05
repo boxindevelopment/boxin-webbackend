@@ -43,21 +43,24 @@ class VoucherController extends Controller
                   'name'            => $r->name,
                   'code'            => $r->code,
                   'description'     => $r->description,
+                  'term_condition'  => $r->term_condition,
                   'start_date'      => $r->start_date,
                   'end_date'        => $r->end_date,
                   'type_voucher'    => $r->type_voucher,
-                  'value'           => $r->type_voucher == '1' ? $r->value1 : $r->value2,
+                  'value'           => $r->value,
+                  'min_amount'      => $r->min_amount,
+                  'max_value'       => $r->max_value,
                   'image'           => $getimageName,
               ]);
               $data->save();
           }
-      }        
-      if($data){        
+      }
+      if($data){
         return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $r->name . '] inserted.');
       } else {
         return redirect()->route('voucher.index')->with('error', 'Add New Voucher failed.');
       }
-      
+
     }
 
     public function show($id)
@@ -79,9 +82,14 @@ class VoucherController extends Controller
       $data->description    = $request->description;
       $data->start_date     = $request->start_date;
       $data->end_date       = $request->end_date;
-      $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
+      // $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
+      $data->value          = $request->value;
+      $data->min_amount     = $request->min_amount;
+      $data->max_value      = $request->max_value;
+      $data->value          = $request->value;
       $data->type_voucher   = $request->type_voucher;
       $data->status_id      = $request->status_id;
+      $data->term_condition = $request->term_condition;
 
       if ($request->hasFile('image')) {
         if ($request->file('image')->isValid()) {
@@ -100,12 +108,12 @@ class VoucherController extends Controller
     }
 
     public function destroy($id)
-    {      
+    {
       $data     = Voucher::find($id);
       $data->deleted_at = Carbon\Carbon::now();
       $data->status_id  = 21;
       $data->save();
-      
+
       if($data){
         return redirect()->route('voucher.index')->with('success', 'Voucher successfully deleted.');
       } else {
