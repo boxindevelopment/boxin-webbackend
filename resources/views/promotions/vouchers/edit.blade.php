@@ -185,7 +185,6 @@ $(document).ready( function() {
 </script>
 
 <script src="{{asset('assets/plugins/dropify/dist/js/dropify.min.js')}}"></script>
-<!-- <script src="https://cdn.ckeditor.com/ckeditor5/11.2.0/classic/ckeditor.js"></script> -->
 <!-- CKeditor -->
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 

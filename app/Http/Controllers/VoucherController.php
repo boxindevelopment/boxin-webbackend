@@ -51,6 +51,7 @@ class VoucherController extends Controller
                   'min_amount'      => $r->min_amount,
                   'max_value'       => $r->max_value,
                   'image'           => $getimageName,
+                  'status_id'       => $r->status_id,
               ]);
               $data->save();
           }
