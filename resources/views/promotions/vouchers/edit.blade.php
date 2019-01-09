@@ -37,7 +37,7 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-6">
-                      
+
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name" value="{{ $data->name }}" required>
@@ -51,10 +51,10 @@
                       <div class="form-group">
                         <label>Available Date <span class="text-danger">*</span></label>
                           <div class="col-md-6" style="display: flex">
-                              <input class="form-control" type="date" value="{{ date_format($data->start_date, 'Y-m-d') }}" placeholder="Start Date" name="start_date" id="start_date" >&nbsp;-&nbsp; 
+                              <input class="form-control" type="date" value="{{ date_format($data->start_date, 'Y-m-d') }}" placeholder="Start Date" name="start_date" id="start_date" >&nbsp;-&nbsp;
                               <input class="form-control" type="date" value="{{ date_format($data->end_date, 'Y-m-d') }}" placeholder="End Date" name="end_date" id="end_date">
                           </div>
-                      </div>                     
+                      </div>
 
                       <div class="">
                         <label>Type Voucher <span class="text-danger">*</span></label>
@@ -67,27 +67,36 @@
                       </div>
 
                       <div class="form-group">
-                        <label>Value <span class="text-danger">*</span></label>                      
-                        <div class="input-group" <?php if ($data->type_voucher == 2) echo 'style="display: none"' ; ?> >
-                            <input type="number" name="value1" id="value1" class="form-control value1" placeholder="Enter Percen" max="100" min="0" aria-describedby="basic-addon2" value="{{ $data->value }}">
-                            <div class="input-group-append">
+                        <label>Value <span class="text-danger">*</span></label>
+                        <div class="input-group" >
+                            <div class="input-group-append value_nominal" <?php if ($data->type_voucher == 1) echo 'style="display: none"' ; ?>>
+                                <span class="input-group-text" id="basic-addon2">Rp</span>
+                            </div>
+                            <input type="number" name="value" id="value" class="form-control value" placeholder="Enter {{($data->type_voucher == 2) ? 'Nominal' : 'Persen' }}" max="{{($data->type_voucher == 2) ? 1000000000000 : 100 }}" min="0" aria-describedby="basic-addon2" value="{{ ($data->value) ? $data->value : 0 }}" base_value="{{ ($data->value) ? $data->value : 0 }}">
+                            <div class="input-group-append value_discount" <?php if ($data->type_voucher == 2) echo 'style="display: none"' ; ?>>
                                 <span class="input-group-text" id="basic-addon1">%</span>
                             </div>
                         </div>
-                        <input <?php if ($data->type_voucher == 1) echo 'style="display: none"' ; ?> type="number" name="value2" id="value2" class="form-control value2" placeholder="Enter Nominal" min="0"  value="{{ $data->value }}" >
-                      </div>
-                    </div>
-
-                    <div class="col-md-6">
-
-                      <div class="form-group">
-                        <label>Description <span class="text-danger">*</span></label>
-                        <textarea name="description" id="description" class="form-control" placeholder="Enter Description" rows="3" required>{{ $data->description }}</textarea>
                       </div>
 
                       <div class="form-group">
-                        <label>Image <span class="text-danger">*</span></label>
-                        <input type="file" class="dropify" data-height="200" name="image" data-default-file="{{ asset('images/voucher')}}/{{ $data->image }}" value="{{ asset('images/voucher')}}/{{ $data->image }}" />
+                        <label>Max value <span class="text-danger">*</span></label>
+                        <div class="input-group" >
+                            <div class="input-group-append max_value_addon">
+                                <span class="input-group-text" id="basic-addon3">Rp</span>
+                            </div>
+                            <input type="number" name="max_value" id="max_value" class="form-control max_value" placeholder="Enter Max Value" min="0" aria-describedby="basic-addon2" value="{{ ($data->max_value) ? $data->max_value : 0 }}">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Min Amount <span class="text-danger">*</span></label>
+                        <div class="input-group" >
+                            <div class="input-group-append min_amount_addon">
+                                <span class="input-group-text" id="basic-addon1">Rp</span>
+                            </div>
+                            <input type="number" name="min_amount" id="min_amount" class="form-control min_amount" placeholder="Enter Min Amount" aria-describedby="basic-addon2" value="{{ ($data->min_amount) ? $data->min_amount : 0 }}" base_value="{{ ($data->value) ? $data->value : 0 }}">
+                        </div>
                       </div>
 
                       <div class="form-group">
@@ -96,7 +105,26 @@
                             <option value="20" {{ $data->status_id == 20 ? 'selected' : '' }}>Actived</option>
                             <option value="21" {{ $data->status_id == 21 ? 'selected' : '' }}>Non Actived</option>
                         </select>
-                      </div> 
+                      </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                          <label>Image <span class="text-danger">*</span></label>
+                          <input type="file" class="dropify" data-height="200" name="image" data-default-file="{{ asset('images/voucher')}}/{{ $data->image }}" value="{{ asset('images/voucher')}}/{{ $data->image }}" />
+                        </div>
+
+                      <div class="form-group">
+                        <label>Description <span class="text-danger">*</span></label>
+                        <textarea name="description" id="description" class="form-control" placeholder="Enter Description" rows="3" required>{{ $data->description }}</textarea>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Term & Conditions <span class="text-danger">*</span></label>
+                        <textarea name="term_condition" id="term_condition" class="form-control" placeholder="Enter Term & Conditions" rows="3" required>{{ $data->term_condition }}</textarea>
+                      </div>
 
                     </div>
 
@@ -122,15 +150,34 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
-<script type="text/javascript">  
+<script type="text/javascript">
 
 $(document).ready( function() {
+  $('#value').on('keyup', function() {
+      value = $(this).val();
+      console.log('base value : ' + value);
+      $('#value').attr('base_value', value);
+  });
   $('#myForm input').on('change', function() {
-     var val = $('input[name=type_voucher]:checked', '#myForm').val(); 
+     var val = $('input[name=type_voucher]:checked', '#myForm').val();
      if(val == '1'){
-      $('#myForm .form-group .input-group').show();$('#value2').hide();
+        $('#myForm .form-group .input-group .value_discount').show();
+        $('#myForm .form-group .input-group .value_nominal').hide();
+        // $('#value2').hide();
+        $('#value').attr('placeholder', 'Enter Percen');
+        $('#value').attr('max', 100);
+        var value = $('.form-group .input-group #value').val();
+        if(value > 100){
+            $('#value').val(100);
+        }
      }else if(val == '2'){
-      $('#value2').show();$('#myForm .form-group .input-group').hide();
+        // $('#value2').show();
+        $('#myForm .form-group .input-group .value_discount').hide();
+        $('#myForm .form-group .input-group .value_nominal').show();
+        $('#value').attr('placeholder', 'Enter Nominal');
+        $('#value').attr('max', 10000000000000000);
+        var value = $('#value').attr('base_value');
+        $('#value').val(value);
      }
   });
 });
@@ -138,9 +185,22 @@ $(document).ready( function() {
 </script>
 
 <script src="{{asset('assets/plugins/dropify/dist/js/dropify.min.js')}}"></script>
+<!-- CKeditor -->
+<script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 
 <script>
 $(document).ready(function() {
+
+    CKEDITOR.replace('description', {
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,Image,About,Preview,Source'
+    });
+
+    CKEDITOR.replace('term_condition', {
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,Image,About,Preview,Source'
+    });
+
     // Basic
     $('.dropify').dropify();
 

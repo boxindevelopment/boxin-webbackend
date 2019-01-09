@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Model\User;
 use App\Model\AdminArea;
 use App\Repositories\UserRepository;
+use Auth;
+use Illuminate\Validation\Rule;
+use Hash;
 
 class UserController extends Controller
 {
@@ -190,7 +193,8 @@ class UserController extends Controller
         }   
     }
 
-    public function getDataSelectForAdmin($args = []){
+    public function getDataSelectForAdmin($args = [])
+    {
 
         $user       = $this->user->getSelectAllForAdmin();
         $arrUser    = array();
@@ -203,7 +207,8 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
-    public function getDataSelectForSuperadmin($args = []){
+    public function getDataSelectForSuperadmin($args = [])
+    {
 
         $user       = $this->user->getSelectAllForSuperadmin();
         $arrUser    = array();
@@ -216,7 +221,8 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
-    public function getDataSelectForFinance($args = []){
+    public function getDataSelectForFinance($args = [])
+    {
 
         $user       = $this->user->getSelectAllForFinance();
         $arrUser    = array();
@@ -229,4 +235,73 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
+    public function myProfile(Request $request) 
+    {
+      $user      = $request->user();
+      return view('profile', compact('user'));
+    }
+
+    public function changeProfile(Request $request, $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users')->ignore(Auth::id(), 'id')
+            ]
+        ]);
+
+        if($validator->fails()) {
+            return redirect()->route('profile')->with('error', 'The email has already been taken.');
+        }
+
+        $user           = $this->user->find(Auth::id());
+        if($user){
+          $user->first_name   = $request->first_name;
+          $user->last_name    = $request->last_name;
+          $user->email        = $request->email;
+          $user->save();
+        }
+
+        if($user){
+          return redirect()->route('profile')->with('success', 'Succes edit profile.');
+        } else {
+          return redirect()->route('profile')->with('error', 'Edit profile failed.');
+        }     
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'new_password' => 'required',
+            'confirmation_password' => 'required|same:new_password',
+        ]);
+
+        if($validator->fails()) {
+          return redirect()->route('profile')->with('error', 'The confirmation password and new password must match.');
+        }
+
+        $user   = $this->user->find(Auth::id());
+        //check old pass with current pass
+        $check  = Hash::check($request->input('old_password'), $user->password, []);
+        //check old pass with new pass
+        $check2 = Hash::check($request->input('new_password'), $user->password, []);
+        
+        $user   = $this->user->find(Auth::id());
+
+        if($check){
+          if(!$check2){
+              $user->password = bcrypt($request->input('new_password'));
+              if($user->save()){
+                  return redirect()->route('profile')->with('success', 'Succes change password.');
+              } else {
+                  return redirect()->route('profile')->with('error', 'Change password failed.');
+              }
+          }else{
+              return redirect()->route('profile')->with('error', 'Cannot save, because new password same with current password.');
+          }            
+        }else{
+          return redirect()->route('profile')->with('error', 'Your old password wrong.');
+        }     
+    }
 }

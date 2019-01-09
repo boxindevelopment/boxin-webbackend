@@ -8,6 +8,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/', 'DashboardController@index')->name('dashboard');
   Route::get('/graphicOrder','DashboardController@graphicOrder')->name('dashboard.graphicOrder');
 
+  Route::get('/profile', 'UserController@myProfile')->name('profile');
+
   Route::resource('city', 'CityController')->except(['show']);
   Route::prefix('city')->group(function () {
     Route::get('/dataSelect','CityController@getDataSelect')->name('city.getDataSelect');
@@ -79,6 +81,9 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
+    Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
+    Route::put('change-password/{id}','UserController@changePassword')->name('user.changePassword');
+
     Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);
     Route::get('getDataSelectForSuperadmin', ['uses' => 'UserController@getDataSelectForSuperadmin', 'as' => 'user.getDataSelectForSuperadmin']);
     Route::get('getDataSelectForFinance', ['uses' => 'UserController@getDataSelectForFinance', 'as' => 'user.getDataSelectForFinance']);
