@@ -15,7 +15,6 @@ class PaymentController extends Controller
 
     protected $repository;
 
-	private $environment = 'development';
 	private $url;
 	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
 	CONST LOC_URL = 'http://localhost:5252/';
@@ -23,7 +22,7 @@ class PaymentController extends Controller
 
     public function __construct(PaymentRepository $repository)
     {
-		$this->url = self::DEV_URL;
+		$this->url        = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
         $this->repository = $repository;
     }
 
@@ -84,9 +83,11 @@ class PaymentController extends Controller
                 $order_detail->save();
             }
 
-    		$params['status_id'] =  $request->status_id;
-    		$response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
-            
+            if($request->status_id == 7 || $request->status_id == 8){
+        		$params['status_id'] =  $request->status_id;
+        		$response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+            }
+
             return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
         } else {
             return redirect()->route('payment.index')->with('error', 'Edit status order payment failed.');

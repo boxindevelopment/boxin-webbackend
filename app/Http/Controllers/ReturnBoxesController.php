@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\ReturnBoxes;
 use App\Model\OrderDetail;
+use App\Model\Order;
 use App\Model\Box;
 use App\Model\Space;
 use App\Repositories\ReturnBoxesRepository;
+use Requests;
 
 class ReturnBoxesController extends Controller
 {
     protected $repository;
 
+	private $url;
+	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
+	CONST LOC_URL = 'http://localhost:5252/';
+	CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
+
     public function __construct(ReturnBoxesRepository $repository)
     {
+		$this->url        = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
         $this->repository = $repository;
     }
 
@@ -31,7 +39,7 @@ class ReturnBoxesController extends Controller
 
     public function store(Request $request)
     {
-      abort('404');   
+      abort('404');
     }
 
     public function show($id)
@@ -77,7 +85,15 @@ class ReturnBoxesController extends Controller
                     $room->save();
                 }
             }
-            
+
+            $params['status_id'] =  $request->status_id;
+            if($request->status_id == 12){
+
+                $order = Order::find($request->order_detail_id);
+                //Notif message "Thank you for using Boxin Apps"
+        		$response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+            }
+
             return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');
         } else {
             return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
@@ -86,6 +102,6 @@ class ReturnBoxesController extends Controller
 
     public function destroy($id)
     {
-      
+
     }
 }

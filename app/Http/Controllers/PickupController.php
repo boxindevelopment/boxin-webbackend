@@ -9,18 +9,25 @@ use App\Model\OrderDetail;
 use DB;
 use Carbon\Carbon;
 use App\Repositories\PickupOrderRepository;
+use Requests;
 
 class PickupController extends Controller
 {
     protected $repository;
 
+	private $url;
+	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
+	CONST LOC_URL = 'http://localhost:5252/';
+	CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
+
     public function __construct(PickupOrderRepository $repository)
     {
+		$this->url        = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
         $this->repository = $repository;
     }
 
     public function index()
-    {      
+    {
       $pickup = $this->repository->all();
       return view('pickup.index', compact('pickup'));
     }
@@ -32,7 +39,7 @@ class PickupController extends Controller
 
     public function store(Request $request)
     {
-      abort('404');   
+      abort('404');
     }
 
     public function show($id)
@@ -52,9 +59,9 @@ class PickupController extends Controller
             'status_id'  => 'required',
         ]);
 
-        $order_id               = $request->order_id; 
+        $order_id               = $request->order_id;
         $status                 = $request->status_id;
-        
+
         $order                  = Order::find($order_id);
         $order->status_id       = $status == '12' ? '4' : $status;
         $order->save();
@@ -79,7 +86,7 @@ class PickupController extends Controller
                 // monthly
                 else if ($order_detail->types_of_duration_id == 3 || $order_detail->types_of_duration_id == '3') {
                     $order_detail->end_date     = date('Y-m-d', strtotime('+'.$order_detail->duration.' month', strtotime($order_detail->start_date)));
-                }                
+                }
                 // 6month
                 else if ($order_detail->types_of_duration_id == 7 || $order_detail->types_of_duration_id == '7') {
                     $end_date                   = $order_detail->duration*6;
@@ -101,6 +108,14 @@ class PickupController extends Controller
         $pickup->save();
 
         if($pickup){
+            $params['status_id'] =  $status;
+            if($status == 2){
+                //Notif message "Your items is on the way back to you"
+        		$response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
+            } else if($status == 12){
+                //Notif message "Congratulation! Your items has been stored"
+        		$response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+            }
             return redirect()->route('pickup.index')->with('success', 'Edit Data Pickup Order success.');
         } else {
             return redirect()->route('pickup.index')->with('error', 'Edit Data Pickup Order failed.');
@@ -109,6 +124,6 @@ class PickupController extends Controller
 
     public function destroy($id)
     {
-      
+
     }
 }
