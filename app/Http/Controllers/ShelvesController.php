@@ -36,7 +36,7 @@ class ShelvesController extends Controller
 
       $shelves = Shelves::create([
         'name'      => $request->name,
-        'space_id'  => $space_id,        
+        'space_id'  => $space_id,
         'id_name'   => $request->id_name_shelf,
       ]);
 
@@ -48,7 +48,7 @@ class ShelvesController extends Controller
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] added.');
       } else {
         return redirect()->route('shelves.index')->with('error', 'Add New Shelf failed.');
-      }      
+      }
     }
 
     public function show($id)
@@ -71,7 +71,7 @@ class ShelvesController extends Controller
       $shelves            = $this->repository->find($id);
       $shelves->name      = $request->name;
       if($shelves->space_id != $space_id){
-        $shelves->space_id  = $space_id;    
+        $shelves->space_id  = $space_id;
         $shelves->id_name   = $request->id_name_shelf;
       }
       $shelves->save();
@@ -80,7 +80,7 @@ class ShelvesController extends Controller
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] edited.');
       } else {
         return redirect()->route('shelves.index')->with('error', 'Edit Shelf failed.');
-      }      
+      }
     }
 
     public function destroy($id)
@@ -112,6 +112,19 @@ class ShelvesController extends Controller
     public function getDataSelectBySpace($space_id, Request $request)
     {
         $data = $this->repository->getSelectBySpace($space_id);
+        $arrData = array();
+        foreach ($data as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+    }
+
+    public function getDataSelectByArea($area_id, Request $request)
+    {
+        $data = $this->repository->getSelectByArea($area_id);
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(

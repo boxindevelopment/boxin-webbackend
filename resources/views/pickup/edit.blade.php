@@ -39,8 +39,8 @@
                     <div class="col-md-6" style="background-color: aliceblue;">
                       @foreach ($pickup as $key => $value)
 
-                        <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>       
-                        
+                        <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>
+
                         <div class="form-group">
                           <label>Name </label>
                           <p>{{ $value->order->user->first_name }} {{ $value->order->user->last_name }}</p>
@@ -65,9 +65,9 @@
 
                     <div class="col-md-6">
                       <!-- pickup delivery box -->
-                      @if ($value->types_of_pickup_id == 1)  
-                        
-                        @if($value->status_id == 7 || $value->status_id == 2)    
+                      @if ($value->types_of_pickup_id == 1)
+
+                        @if($value->status_id == 7 || $value->status_id == 2)
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
@@ -75,7 +75,7 @@
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                           </select>
-                        </div> 
+                        </div>
 
                         <div class="form-group">
                           <label>Driver Name <span class="text-danger">*</span></label>
@@ -95,25 +95,25 @@
 
                       <!-- pickup box on warehouse -->
                       @if ($value->types_of_pickup_id == 2)
-                        
-                        @if($value->status_id == 7)   
-                        <div class="form-group"> 
+
+                        @if($value->status_id == 7)
+                        <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
                               <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                           </select>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
 
                       @endif
                       <!-- end pickup box on warehouse  -->
-                      
+
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       @endforeach
-                      
+
                     </div>
                 </div>
               </form>
