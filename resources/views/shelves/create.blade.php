@@ -36,7 +36,7 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
-                      
+
                       <div class="form-group">
                         <label for="">Code Number <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="id_name_shelf" id="id_name_shelf" required readonly>
@@ -50,11 +50,6 @@
                       <div class="form-group">
                         <label for="">Area <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="area_id" name="area_id" required>
-                      </div>
-
-                      <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" required>
                       </div>
 
                       <div class="form-group">
@@ -80,10 +75,10 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
-<script type="text/javascript">  
+<script type="text/javascript">
 
   $(document).ready( function() {
-  
+
   });
 </script>
 @endsection
