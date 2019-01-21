@@ -35,7 +35,7 @@ class BoxController extends Controller
     {
       $this->validate($request, [
         'shelves_id'  => 'required',
-        'type_size_id' => 'required',        
+        'type_size_id' => 'required',
         'count_box' => 'required',
       ]);
 
@@ -103,7 +103,7 @@ class BoxController extends Controller
         $box->shelves_id      = $shelves_id;
         $box->id_name         = $request->id_name_box;
         $box->barcode         = $request->id_name_box;
-      }   
+      }
       $box->save();
 
       if($box){
@@ -127,12 +127,13 @@ class BoxController extends Controller
       }
     }
 
-    public  function printBarcode($id){ 
+    public  function printBarcode($id)
+    { 
       $produk  = $this->repository->getById($id);
-      $no = 1; 
-      $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no')); 
-      $pdf->setPaper('a7',  'landscape'); 
-      return $pdf->stream(); 
+      $no = 1;
+      $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no'));
+      $pdf->setPaper('a7',  'landscape');
+      return $pdf->stream();
     }
 
     public function getNumber(Request $request)

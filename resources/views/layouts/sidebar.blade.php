@@ -29,7 +29,7 @@
                       <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-                
+
                 <li class="{{ Route::currentRouteNamed('city.index')||Route::currentRouteNamed('city.create')||Route::currentRouteNamed('city.edit')||
                 Route::currentRouteNamed('area.index')||Route::currentRouteNamed('area.create')||Route::currentRouteNamed('area.edit')||
                 Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.create')||Route::currentRouteNamed('space.edit')||
@@ -48,11 +48,11 @@
                       <a href="{{ route('area.index') }}"><i class="mdi mdi-home-map-marker"></i> &nbsp;Areas </a>
                     </li>
                     @endif
-                    <li class="{{ Route::currentRouteNamed('space.index') ? 'active' : null }}">
-                      <a href="{{ route('space.index') }}"><i class="mdi mdi-home-outline"></i> &nbsp;Spaces </a>
-                    </li>
                     <li class="{{ Route::currentRouteNamed('shelves.index') ? 'active' : null }}">
                       <a href="{{ route('shelves.index') }}"><i class="mdi mdi-grid"></i> &nbsp;Shelves </a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('space.index') ? 'active' : null }}">
+                      <a href="{{ route('space.index') }}"><i class="mdi mdi-home-outline"></i> &nbsp;Spaces </a>
                     </li>
                     <li class="{{ Route::currentRouteNamed('box.index') ? 'active' : null }}">
                       <a href="{{ route('box.index') }}"><i class="mdi mdi-dropbox"></i> &nbsp;Boxes </a>
@@ -65,7 +65,7 @@
                     <i class="mdi mdi-format-list-bulleted"></i>
                     <span class="hide-menu">Categories</span>
                   </a>
-                </li>        
+                </li>
 
                 @if(Auth::user()->roles_id == 3)
                 <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit')||
@@ -137,7 +137,7 @@
                     <span class="hide-menu">Return Boxes</span>
                   </a>
                 </li>
-                
+
                 @if(Auth::user()->roles_id == 3)
                 <li class="{{ Route::currentRouteNamed('user.index')||Route::currentRouteNamed('user.create')||Route::currentRouteNamed('user.admin.index')||Route::currentRouteNamed('user.admin.edit')||Route::currentRouteNamed('user.admin.update')||Route::currentRouteNamed('user.finance.index')||Route::currentRouteNamed('user.finance.edit') ? 'active' : null }}">
                   <a class="has-arrow waves-effect waves-dark" href="{{ route('user.index')}}" aria-expanded="false">
@@ -160,7 +160,7 @@
                   </ul>
                 </li>
                 @endif
-                
+
                 <li class="{{ Route::currentRouteNamed('types-of-size.index')||Route::currentRouteNamed('types-of-size.create')||Route::currentRouteNamed('types-of-size.edit') ? 'active' : null }}">
                   <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
                     <i class="mdi mdi-settings"></i>
@@ -177,7 +177,7 @@
                     </li>
                     <li class="{{ Route::currentRouteNamed('delivery-fee.create')||Route::currentRouteNamed('delivery-fee.index')||Route::currentRouteNamed('delivery-fee.edit') ? 'active' : null }}">
                       <a href="{{ route('delivery-fee.index') }}"><i class="fa fa-circle"></i> &nbsp;Delivery Fee</a>
-                    </li> 
+                    </li>
                     @if(Auth::user()->roles_id == 3)
                     <li class="{{ Route::currentRouteNamed('settings.index')||Route::currentRouteNamed('settings.edit') ? 'active' : null }}">
                       <a href="{{ route('settings.index') }}"><i class="fa fa-plus"></i> &nbsp;Others</a>

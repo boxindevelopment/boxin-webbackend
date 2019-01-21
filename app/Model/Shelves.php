@@ -18,6 +18,11 @@ class Shelves extends Model
         return $this->belongsTo('App\Model\Space', 'space_id', 'id');
     }
 
+    public function area()
+    {
+        return $this->belongsTo('App\Model\Area', 'area_id');
+    }
+
     public function box()
     {
         return $this->hasMany('App\Model\Box', 'shelves_id', 'id');
