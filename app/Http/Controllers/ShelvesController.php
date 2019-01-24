@@ -160,4 +160,23 @@ class ShelvesController extends Controller
         return $code;
     }
 
+    public function resetNumber(Request $request)
+    {
+        $shelveses    = Shelves::whereNull('code_shelves')->get();
+        foreach ($shelveses as $k => $v) {
+            if(!is_null($v->space_id)){
+                $space = Space::with('area')->find($v->space_id);
+                if($space){
+                    $areaCode = $space->area->id_name;
+                    $lengthCode = strlen($space->id_name);
+                    $subCode = substr($v->id_name, $lengthCode);
+                    $v->code_shelves = $areaCode . $subCode;
+                    $v->save();
+                }
+            }
+        }
+
+        echo(json_encode($shelveses));
+    }
+
 }

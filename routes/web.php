@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/dataSelect/{area_id}', ['uses' => 'ShelvesController@getDataSelectByArea', 'as' => 'shelves.getDataSelectByArea']);
     Route::get('/dataSelect/{space_id}', ['uses' => 'ShelvesController@getDataSelectBySpace', 'as' => 'shelves.getDataSelectBySpace']);
     Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);
+    Route::get('/resetNumber', ['uses' => 'ShelvesController@resetNumber', 'as' => 'shelves.resetNumber']);
   });
 
   Route::resource('box', 'BoxController')->except(['show']);
