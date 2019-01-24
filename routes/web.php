@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/dataSelect/{shelves_id}', ['uses' => 'SpaceSmallController@getDataSelectByShelves', 'as' => 'space.getDataSelectByShelves']);
     Route::get('/getNumber', ['uses' => 'SpaceSmallController@getNumber', 'as' => 'space.getNumber']);
     Route::get('/barcode/{id}', ['uses' => 'SpaceSmallController@printBarcode', 'as' => 'space.barcode']);
+    Route::get('/resetNumber', ['uses' => 'SpaceSmallController@resetNumber', 'as' => 'space.resetNumber']);
   });
 
   Route::resource('shelves', 'ShelvesController')->except(['show']);
@@ -43,6 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
     Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
+    Route::get('/resetNumber', ['uses' => 'BoxController@resetNumber', 'as' => 'box.resetNumber']);
   });
 
   Route::resource('category', 'CategoryController')->except(['show']);

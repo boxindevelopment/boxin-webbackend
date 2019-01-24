@@ -180,4 +180,21 @@ class SpaceSmallController extends Controller
       $pdf->setPaper('a7',  'landscape');
       return $pdf->stream();
     }
+
+    public function resetNumber(Request $request)
+    {
+        $spaceSmalls    = SpaceSmall::whereNull('code_space_small')->get();
+        foreach ($spaceSmalls as $k => $v) {
+            if(!is_null($v->shelves_id)){
+                $shelves = Shelves::find($v->shelves_id);
+                if($shelves){
+                    $shelvesCode = $shelves->code_shelves;
+                    $v->code_space_small = $shelvesCode . 'S1';
+                    $v->save();
+                }
+            }
+        }
+
+        echo(json_encode($spaceSmalls));
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Box;
 use App\Model\Space;
+use App\Model\Shelves;
 use App\Model\TypeSize;
 use Carbon;
 use App\Repositories\BoxRepository;
@@ -169,6 +170,23 @@ class BoxController extends Controller
         } else {
             return 'not';
         }
+    }
+
+    public function resetNumber(Request $request)
+    {
+        $boxes    = Box::whereNull('code_box')->get();
+        foreach ($boxes as $k => $v) {
+            if(!is_null($v->shelves_id)){
+                $shelves = Shelves::find($v->shelves_id);
+                if($shelves){
+                    $shelvesCode = $shelves->code_shelves;
+                    $v->code_box = $shelvesCode . 'B1010101';
+                    $v->save();
+                }
+            }
+        }
+
+        echo(json_encode($boxes));
     }
 
 }
