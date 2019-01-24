@@ -39,12 +39,7 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-6">
-                      
-                      <div class="form-group">
-                        <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_box" id="id_name_box" value="{{ $box->id_name }}" required readonly>
-                      </div>
-                      
+
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $box->city_id }}##{{ $box->city_id_name }}" required>
@@ -55,14 +50,54 @@
                         <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $box->area_id }}##{{ $box->area_id_name }}" required>
                       </div>
 
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="">Space <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
-                      </div>
+                      </div> -->
 
                       <div class="form-group">
                         <label for="">Shelf <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->shelves_id_name }}" required>
+                      </div>
+
+                      <div class="form-group">
+                          <div class="row">
+                              <div class="col-md-3">
+                                  <label for="">Box <span class="text-danger">*</span></label>
+                                  <select class="form-control" name="shelves_box" id="shelves_box" required>
+                                      <option value="B1">Box 1</option>
+                                      <option value="B2">Box 2</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-3">
+                                  <label for="">Row <span class="text-danger">*</span></label>
+                                  <select class="form-control" name="row_box" id="row_box" required>
+                                      <option value="01">Row 1</option>
+                                      <option value="02">Row 2</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-3">
+                                  <label for="">Column <span class="text-danger">*</span></label>
+                                  <select class="form-control" name="column_box" id="column_box" required>
+                                      <option value="01">Column 1</option>
+                                      <option value="02">Column 2</option>
+                                      <option value="03">Column 3</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-3">
+                                  <label for="">Height <span class="text-danger">*</span></label>
+                                  <select class="form-control" name="height_box" id="height_box" required>
+                                      <option value="01">Height 1</option>
+                                      <option value="02">Height 2</option>
+                                      <option value="03">Height 3</option>
+                                  </select>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="">Code Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="id_name_box" id="id_name_box" value="{{ $box->id_name }}" required readonly>
                       </div>
 
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
@@ -93,7 +128,7 @@
                         <label>Location </label>
                         <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" >
                       </div>
-                      
+
                     </div>
                 </div>
               </form>

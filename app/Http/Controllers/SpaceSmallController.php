@@ -46,9 +46,9 @@ class SpaceSmallController extends Controller
         if($name == ''){
             $name = $type_size->name;
         }
-        $split        = explode('##', $request->shelves_id);
-        $shelves_id   = $split[0];
-        $id_name      = $split[1];
+        $split              = explode('##', $request->shelves_id);
+        $shelves_id         = $split[0];
+        $code_shelves       = $split[1];
 
         for($i=0; $i<$request->count_space;$i++){
             $no = $i+1;
@@ -58,17 +58,17 @@ class SpaceSmallController extends Controller
                 $name_space = $name.' '.$no;
             }
 
-            $sql        = SpaceSmall::where('shelves_id', '=', $shelves_id)->where('deleted_at', NULL)->orderBy('id_name', 'desc')->first();
-            $id_number  = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
-            $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+            // $sql        = SpaceSmall::where('shelves_id', '=', $shelves_id)->where('deleted_at', NULL)->orderBy('code_space_smalls', 'desc')->first();
+            // $id_number  = isset($sql->code_space_smalls) ? substr($sql->code_space_smalls, 9) : 0;
+            // $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
 
             $spaceSmall = SpaceSmall::create([
                 'types_of_size_id'  => $request->type_size_id,
-                'shelves_id'         => $shelves_id,
+                'shelves_id'        => $shelves_id,
                 'name'              => $name_space,
                 'location'          => $request->location,
-                'id_name'           => $id_name.''.$code,
-                'barcode'           => $id_name.''.$code,
+                'code_space_smalls' => $code_shelves . 'S1',
+                'barcode'           => $code_shelves . 'S1',
                 'status_id'         => 10,
             ]);
             $spaceSmall->save();
@@ -76,7 +76,7 @@ class SpaceSmallController extends Controller
         if($spaceSmall){
             return redirect()->route('space.index')->with('success', 'Add : [' . $name . '] success.');
         } else {
-            return redirect()->route('space.index')->with('error', 'Add New Box failed.');
+            return redirect()->route('space.index')->with('error', 'Add New Space Small failed.');
         }
 
     }
@@ -105,28 +105,21 @@ class SpaceSmallController extends Controller
         $space->location              = $request->location;
 
         if($space->shelves_id != $shelves_id){
-            $space->shelves_id        = $shelves_id;
-            $space->id_name           = $request->id_name_space;
-            $space->barcode           = $request->id_name_space;
+            $space->shelves_id                  = $shelves_id;
+            $space->code_space_smalls           = $request->code_space_smalls;
+            $space->code_space_smalls           = $request->code_space_smalls;
         }
         $space->save();
 
         if($space){
             return redirect()->route('space.index')->with('success', 'Edit ['.$request->name.'] success.');
         } else {
-            return redirect()->route('space.index')->with('error', 'Edit Space failed.');
+            return redirect()->route('space.index')->with('error', 'Edit Space Small failed.');
         }
     }
 
     public function destroy($id)
     {
-        $shelves_       = Shelves::where('space_id', $id)->get();
-        $count_shelves  = count($shelves_);
-        for ($i = 0; $i < $count_shelves ; $i++) {
-            $shelves = Shelves::find($shelves_[$i]->id);
-            $shelves->deleted_at = Carbon\Carbon::now();
-            $shelves->save();
-        }
 
         $space  = $this->repository->find($id);
         $name   = $space->name;
@@ -134,9 +127,9 @@ class SpaceSmallController extends Controller
         $space->save();
 
         if($space){
-            return redirect()->route('space.index')->with('success', 'Space ['.$name.'] deleted.');
+            return redirect()->route('space.index')->with('success', 'Space small ['.$name.'] deleted.');
         } else {
-            return redirect()->route('space.index')->with('error', 'Delete Space failed.');
+            return redirect()->route('space.index')->with('error', 'Delete Space Small failed.');
         }
     }
 
@@ -146,7 +139,7 @@ class SpaceSmallController extends Controller
         $arrData  = array();
         foreach ($space as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'id'    => $arrVal->id . '##' . $arrVal->code_space_smalls,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -159,7 +152,7 @@ class SpaceSmallController extends Controller
         $arrData  = array();
         foreach ($space as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'id'    => $arrVal->id . '##' . $arrVal->code_space_smalls,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -170,9 +163,9 @@ class SpaceSmallController extends Controller
     {
         $sql     = SpaceSmall::where('shelves_id', '=', $request->input('shelves_id'))
                   ->where('deleted_at', NULL)
-                  ->orderBy('id_name', 'desc')
+                  ->orderBy('code_space_smalls', 'desc')
                   ->first();
-        $id_number = isset($sql->id_name) ? substr($sql->id_name, 4) : 0;
+        $id_number = isset($sql->code_space_smalls) ? substr($sql->code_space_smalls, 4) : 0;
         $code      = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;

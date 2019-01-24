@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('box', 'BoxController')->except(['show']);
   Route::prefix('box')->group(function () {
     Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
+    Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
   });
 

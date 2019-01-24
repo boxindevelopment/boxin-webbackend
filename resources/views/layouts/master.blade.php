@@ -266,7 +266,8 @@
                     space_Selectdata(split_area[0], '{{ $shelves->space_id }}##{{ $shelves->space_id_name }}');
                 @elseif(isset($box->space_id_name))
                     $("#area_id").val(values).trigger("change");
-                    space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
+                    // space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
+                    shelves_Selectdata(split_area[0], '{{ $box->shelves_id }}##{{ $box->shelves->id_name }}');
                 @elseif(isset($space->shelves->id_name))
                     $("#area_id").val(values).trigger("change");
                     shelves_Selectdata(split_area[0], '{{ $space->shelves_id }}##{{ $space->shelves->id_name }}');
@@ -370,7 +371,7 @@
                 }).on('change', function (e) {
                     var shelves_ext = $(this).val().split('##');
                     var space_id = shelves_ext[0];
-                    get_id_number_box(shelves_ext[0], shelves_ext[1]);
+                    get_id_number_box();
                     get_id_number_space(shelves_ext[0], shelves_ext[1]);
                 });
             });
@@ -379,16 +380,33 @@
             }
         }
 
-        function get_id_number_box(shelves_id, shelves_number){
+        $('#shelves_box, #row_box, #column_box, #height_box').on('change', function(){
+            get_id_number_box();
+        });
 
-            var data = $.ajax({
-                url: "{{ url('/box/getNumber') }}",
-                type: "GET",
-                data: { shelves_id : shelves_id }
-            })
-            .done(function(data) {
-                $('input[name="id_name_box"]').val(shelves_number + data);
-            });
+        function get_id_number_box(){
+            var area_id = $('#area_id').val().split('##');
+            var shelves_id = $('#shelves_id').val().split('##');
+            var row_box = $('#row_box').val();
+            var column_box = $('#column_box').val();
+            var height_box = $('#height_box').val();
+            var shelves_box = $('#shelves_box').val();
+            if(shelves_id[1]) {
+                var code_box = shelves_id[1] + shelves_box + row_box + column_box + height_box;
+                var data = $.ajax({
+                    url: "{{ url('/box/checkCode') }}",
+                    type: "GET",
+                    data: { code_box : code_box }
+                })
+                .done(function(data) {
+                    if(data == 'used'){
+                        $('input[name="code_box"]').val('');
+                    } else {
+                        $('input[name="code_box"]').val(code_box);
+                    }
+                });
+            }
+
         }
 
         function userForAdmin_Selectdata(values) {

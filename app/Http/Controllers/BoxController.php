@@ -21,61 +21,68 @@ class BoxController extends Controller
 
     public function index()
     {
-      $box      = $this->repository->all();
-      return view('boxes.index', compact('box'));
+        $box      = $this->repository->all();
+        return view('boxes.index', compact('box'));
     }
 
     public function create()
     {
-      $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
-      return view('boxes.create', compact('type_size'));
+        $type_size = TypeSize::where('types_of_box_room_id', 1)->orderBy('id')->get();
+        return view('boxes.create', compact('type_size'));
     }
 
     public function store(Request $request)
     {
-      $this->validate($request, [
-        'shelves_id'  => 'required',
-        'type_size_id' => 'required',
-        'count_box' => 'required',
-      ]);
+        $this->validate($request, [
+            'shelves_id'  => 'required',
+            'type_size_id' => 'required',
+            'code_box' => 'required',
+            'count_box' => 'required',
+        ]);
 
-      $type_size = TypeSize::where('id', $request->type_size_id)->first();
-      $name = $request->name;
-      if($name == ''){
-        $name = $type_size->name;
-      }
-      $split        = explode('##', $request->shelves_id);
-      $shelves_id   = $split[0];
-      $id_name      = $split[1];
+        $box = Box::where('code_box', $request->input('code_box'))
+             ->where('deleted_at', NULL)
+             ->first();
 
-      for($i=0; $i<$request->count_box;$i++){
-        $no = $i+1;
-        if($request->count_box == 1){
-          $name_box = $name;
-        }else{
-          $name_box = $name.' '.$no;
+        if($box){
+            return redirect()->route('box.index')->with('error', 'Add New Box failed (code is used).');
         }
 
-        $sql        = Box::where('shelves_id', '=', $shelves_id)->where('deleted_at', NULL)->orderBy('id_name', 'desc')->first();
-        $id_number  = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
-        $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
+        $type_size = TypeSize::where('id', $request->type_size_id)->first();
+        $name = $request->name;
+        if($name == ''){
+            $name = $type_size->name;
+        }
 
-        $box = Box::create([
-          'types_of_size_id'  => $request->type_size_id,
-          'shelves_id'        => $shelves_id,
-          'name'              => $name_box,
-          'location'          => $request->location,
-          'id_name'           => $id_name.''.$code,
-          'barcode'           => $id_name.''.$code,
-          'status_id'         => 10,
-        ]);
-        $box->save();
-      }
-      if($box){
-        return redirect()->route('box.index')->with('success', 'Add : [' . $name . '] success.');
-      } else {
-        return redirect()->route('box.index')->with('error', 'Add New Box failed.');
-      }
+        $split        = explode('##', $request->shelves_id);
+        $shelves_id   = $split[0];
+        $id_name      = $split[1];
+
+        for($i=0; $i<$request->count_box;$i++){
+            $no = $i+1;
+            if($request->count_box == 1){
+                $name_box = $name;
+            }else{
+                $name_box = $name.' '.$no;
+            }
+
+            $box = Box::create([
+                        'types_of_size_id'  => $request->type_size_id,
+                        'shelves_id'        => $shelves_id,
+                        'name'              => $name_box,
+                        'location'          => $request->location,
+                        'id_name'           => $request->code_box,
+                        'barcode'           => $request->code_box,
+                        'code_box'          => $request->code_box,
+                        'status_id'         => 10,
+                    ]);
+            $box->save();
+        }
+        if($box){
+            return redirect()->route('box.index')->with('success', 'Add : [' . $name . '] success.');
+        } else {
+            return redirect()->route('box.index')->with('error', 'Add New Box failed.');
+        }
     }
 
     public function show($id)
@@ -128,7 +135,7 @@ class BoxController extends Controller
     }
 
     public  function printBarcode($id)
-    { 
+    {
       $produk  = $this->repository->getById($id);
       $no = 1;
       $pdf =  PDF::loadView('boxes.barcode'  ,  compact('produk','no'));
@@ -146,6 +153,19 @@ class BoxController extends Controller
         $code      = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
 
         return $code;
+    }
+
+    public function checkCode(Request $request)
+    {
+        $box     = Box::where('code_box', $request->input('code_box'))
+                  ->where('deleted_at', NULL)
+                  ->first();
+
+        if($box){
+            return 'used';
+        } else {
+            return 'not';
+        }
     }
 
 }
