@@ -108,8 +108,11 @@ class BoxController extends Controller
       $box->location          = $request->location;
       if($box->shelves_id != $shelves_id){
         $box->shelves_id      = $shelves_id;
-        $box->id_name         = $request->id_name_box;
-        $box->barcode         = $request->id_name_box;
+      }
+      if($request->code_box != ''){
+        $box->id_name         = $request->code_box;
+        $box->barcode         = $request->code_box;
+        $box->code_box         = $request->code_box;
       }
       $box->save();
 

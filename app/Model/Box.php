@@ -9,7 +9,7 @@ class Box extends Model
     protected $table = 'boxes';
 
     protected $fillable = [
-        'shelves_id', 'types_of_size_id', 'name', 'barcode', 'location', 'size', 'price', 'status_id', 'id_name'
+        'shelves_id', 'types_of_size_id', 'name', 'barcode', 'location', 'size', 'price', 'status_id', 'id_name', 'code_box'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

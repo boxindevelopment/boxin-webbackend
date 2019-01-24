@@ -97,7 +97,7 @@
 
                       <div class="form-group">
                         <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_box" id="id_name_box" value="{{ $box->id_name }}" required readonly>
+                        <input type="text" class="form-control" name="code_box" id="code_box" value="{{ $box->code_box }}" required readonly>
                       </div>
 
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
