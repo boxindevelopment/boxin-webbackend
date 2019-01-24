@@ -62,7 +62,7 @@
                         @foreach ($data as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
-                            <td align="center">{{ $value->code_space_smalls }}</td>
+                            <td align="center">{{ $value->code_space_small }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->type_size->name }}</td>
                             <td>{{ $value->type_size->size }}</td>

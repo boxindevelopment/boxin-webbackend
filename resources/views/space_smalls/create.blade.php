@@ -39,7 +39,7 @@
 
                     <div class="form-group">
                       <label for="">Code Number <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" name="code_space_smalls" id="code_space_smalls" required readonly>
+                      <input type="text" class="form-control" name="code_space_small" id="code_space_small" required readonly>
                     </div>
 
                     <div class="form-group">

@@ -280,14 +280,18 @@
 
         function get_id_number_space(shelve_id, shelve_number){
 
-            var data = $.ajax({
-                url: "{{ url('/space/getNumber') }}",
-                type: "GET",
-                data: { shelve_id : shelve_id }
-            })
-            .done(function(data) {
-                $('input[name="id_name_space"]').val(shelve_number + data);
-            });
+            // var data = $.ajax({
+            //     url: "{{ url('/space/getNumber') }}",
+            //     type: "GET",
+            //     data: { shelve_id : shelve_id }
+            // })
+            // .done(function(data) {
+            //     $('input[name="code_space_small"]').val(shelve_number + data);
+            // });
+            var shelves_id = $('#shelves_id').val().split('##');
+            if(shelves_id[1]) {
+                $('input[name="code_space_small"]').val(shelves_id[1] + 'S1');
+            }
         }
 
         function space_Selectdata(area_id, values) {
