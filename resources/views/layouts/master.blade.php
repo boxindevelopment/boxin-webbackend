@@ -268,9 +268,9 @@
                     $("#area_id").val(values).trigger("change");
                     // space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
                     shelves_Selectdata(split_area[0], '{{ $box->shelves_id }}##{{ $box->shelves->id_name }}');
-                @elseif(isset($space->shelves->id_name))
+                @elseif(isset($space->shelves->code_shelves))
                     $("#area_id").val(values).trigger("change");
-                    shelves_Selectdata(split_area[0], '{{ $space->shelves_id }}##{{ $space->shelves->id_name }}');
+                    shelves_Selectdata(split_area[0], '{{ $space->shelves_id }}##{{ $space->shelves->code_shelves }}');
                 @else
                     // $("#area_id").val(values).trigger("change");
                     // space_Selectdata(split_area[0], '');
