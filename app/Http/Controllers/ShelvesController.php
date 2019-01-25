@@ -128,7 +128,7 @@ class ShelvesController extends Controller
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'id'    => $arrVal->id . '##' . $arrVal->code_shelves,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -141,7 +141,7 @@ class ShelvesController extends Controller
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'id'    => $arrVal->id . '##' . $arrVal->code_shelves,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }

@@ -59,37 +59,48 @@
                         <label for="">Shelf <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->shelves_id_name }}" required>
                       </div>
-
+                      @php
+                        if($box->code_box){
+                            $exp_code = explode('B', $box->code_box);
+                            if(count($exp_code) > 1){
+                                $exp_code = $exp_code[1];
+                            } else {
+                                $exp_code = '1010101';
+                            }
+                        } else {
+                            $exp_code = '1010101';
+                        }
+                      @endphp
                       <div class="form-group">
                           <div class="row">
                               <div class="col-md-3">
                                   <label for="">Box <span class="text-danger">*</span></label>
                                   <select class="form-control" name="shelves_box" id="shelves_box" required>
-                                      <option value="B1">Box 1</option>
-                                      <option value="B2">Box 2</option>
+                                      <option value="B1" {{(substr($exp_code, 0, 1) == '1') ? 'selected' : '' }}>Box 1</option>
+                                      <option value="B2" {{(substr($exp_code, 0, 1) == '2') ? 'selected' : '' }}>Box 2</option>
                                   </select>
                               </div>
                               <div class="col-md-3">
                                   <label for="">Row <span class="text-danger">*</span></label>
                                   <select class="form-control" name="row_box" id="row_box" required>
-                                      <option value="01">Row 1</option>
-                                      <option value="02">Row 2</option>
+                                      <option value="01"{{(substr($exp_code, 1, 2) == '01') ? 'selected' : '' }}>Row 1</option>
+                                      <option value="02"{{(substr($exp_code, 1, 2) == '02') ? 'selected' : '' }}>Row 2</option>
                                   </select>
                               </div>
                               <div class="col-md-3">
                                   <label for="">Column <span class="text-danger">*</span></label>
                                   <select class="form-control" name="column_box" id="column_box" required>
-                                      <option value="01">Column 1</option>
-                                      <option value="02">Column 2</option>
-                                      <option value="03">Column 3</option>
+                                      <option value="01" {{(substr($exp_code, 3, 2) == '01') ? 'selected' : '' }}>Column 1</option>
+                                      <option value="02" {{(substr($exp_code, 3, 2) == '02') ? 'selected' : '' }}>Column 2</option>
+                                      <option value="03" {{(substr($exp_code, 3, 2) == '03') ? 'selected' : '' }}>Column 3</option>
                                   </select>
                               </div>
                               <div class="col-md-3">
                                   <label for="">Height <span class="text-danger">*</span></label>
                                   <select class="form-control" name="height_box" id="height_box" required>
-                                      <option value="01">Height 1</option>
-                                      <option value="02">Height 2</option>
-                                      <option value="03">Height 3</option>
+                                      <option value="01" {{(substr($exp_code, 5, 2) == '01') ? 'selected' : '' }}>Height 1</option>
+                                      <option value="02" {{(substr($exp_code, 5, 2) == '02') ? 'selected' : '' }}>Height 2</option>
+                                      <option value="03" {{(substr($exp_code, 5, 2) == '03') ? 'selected' : '' }}>Height 3</option>
                                   </select>
                               </div>
                           </div>
