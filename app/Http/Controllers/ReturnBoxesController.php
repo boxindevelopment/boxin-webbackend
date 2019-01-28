@@ -8,6 +8,7 @@ use App\Model\OrderDetail;
 use App\Model\Order;
 use App\Model\Box;
 use App\Model\Space;
+use App\Model\UserDevice;
 use App\Repositories\ReturnBoxesRepository;
 use Requests;
 
@@ -89,9 +90,12 @@ class ReturnBoxesController extends Controller
             $params['status_id'] =  $request->status_id;
             if($request->status_id == 12){
 
-                $order = Order::find($request->order_detail_id);
-                //Notif message "Thank you for using Boxin Apps"
-        		$response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+                $order = Order::find($order_detail->order_id);
+                $userDevice = UserDevice::where('user_id', $order->user_id)->get();
+                if(count($userDevice) > 0){
+                    //Notif message "Thank you for using Boxin Apps"
+            		$response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+                }
             }
 
             return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');

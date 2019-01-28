@@ -10,6 +10,7 @@ use DB;
 use Carbon\Carbon;
 use App\Repositories\PickupOrderRepository;
 use Requests;
+use App\Model\UserDevice;
 
 class PickupController extends Controller
 {
@@ -109,12 +110,16 @@ class PickupController extends Controller
 
         if($pickup){
             $params['status_id'] =  $status;
-            if($status == 2){
-                //Notif message "Your items is on the way back to you"
-        		$response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
-            } else if($status == 12){
-                //Notif message "Congratulation! Your items has been stored"
-        		$response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+            $params['status_id'] =  $status;
+            $userDevice = UserDevice::where('user_id', $order->user_id)->get();
+            if(count($userDevice) > 0){
+                if($status == 2){
+                    //Notif message "Your items is on the way back to you"
+            		$response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
+                } else if($status == 12){
+                    //Notif message "Congratulation! Your items has been stored"
+            		$response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+                }
             }
             return redirect()->route('pickup.index')->with('success', 'Edit Data Pickup Order success.');
         } else {

@@ -7,6 +7,7 @@ use App\Model\Payment;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\PickupOrder;
+use App\Model\UserDevice;
 use App\Repositories\PaymentRepository;
 use Requests;
 
@@ -85,7 +86,10 @@ class PaymentController extends Controller
 
             if($request->status_id == 7 || $request->status_id == 8){
         		$params['status_id'] =  $request->status_id;
-        		$response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+                $userDevice = UserDevice::where('user_id', $order->user_id)->get();
+                if(count($userDevice) > 0){
+                    $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+                }
             }
 
             return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
