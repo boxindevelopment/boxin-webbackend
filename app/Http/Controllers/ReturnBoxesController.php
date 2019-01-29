@@ -88,6 +88,7 @@ class ReturnBoxesController extends Controller
             }
 
             $params['status_id'] =  $request->status_id;
+            $params['order_detail_id'] =  $order_detail->id;
             if($request->status_id == 12){
 
                 $order = Order::find($order_detail->order_id);

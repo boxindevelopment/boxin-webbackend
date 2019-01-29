@@ -110,7 +110,7 @@ class PickupController extends Controller
 
         if($pickup){
             $params['status_id'] =  $status;
-            $params['status_id'] =  $status;
+            $params['order_detail_id'] =  $order_detail->id;
             $userDevice = UserDevice::where('user_id', $order->user_id)->get();
             if(count($userDevice) > 0){
                 if($status == 2){
