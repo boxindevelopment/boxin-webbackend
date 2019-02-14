@@ -29,43 +29,36 @@
                       <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
-
-                @if(Auth::user()->roles_id == 3)
-                <li class="{{ Route::currentRouteNamed('city.index')||Route::currentRouteNamed('city.create')||Route::currentRouteNamed('city.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('city.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-checkbox-blank-circle"></i>
-                    <span class="hide-menu">Cities</span>
+                
+                <li class="{{ Route::currentRouteNamed('city.index')||Route::currentRouteNamed('city.create')||Route::currentRouteNamed('city.edit')||
+                Route::currentRouteNamed('area.index')||Route::currentRouteNamed('area.create')||Route::currentRouteNamed('area.edit')||
+                Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.create')||Route::currentRouteNamed('space.edit')||
+                Route::currentRouteNamed('shelves.index')||Route::currentRouteNamed('shelves.create')||Route::currentRouteNamed('shelves.edit')||
+                Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.create')||Route::currentRouteNamed('box.edit') ? 'active' : null }}">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('city.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-bullseye"></i>
+                    <span class="hide-menu">Data Master</span>
                   </a>
+                  <ul aria-expanded="false" class="collapse">
+                    @if(Auth::user()->roles_id == 3)
+                    <li class="{{ Route::currentRouteNamed('city.index') ? 'active' : null }}">
+                      <a href="{{ route('city.index') }}"><i class="mdi mdi-checkbox-blank-circle"></i> &nbsp;Cities</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('area.index') ? 'active' : null }}">
+                      <a href="{{ route('area.index') }}"><i class="mdi mdi-home-map-marker"></i> &nbsp;Areas </a>
+                    </li>
+                    @endif
+                    <li class="{{ Route::currentRouteNamed('space.index') ? 'active' : null }}">
+                      <a href="{{ route('space.index') }}"><i class="mdi mdi-home-outline"></i> &nbsp;Spaces </a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('shelves.index') ? 'active' : null }}">
+                      <a href="{{ route('shelves.index') }}"><i class="mdi mdi-grid"></i> &nbsp;Shelves </a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('box.index') ? 'active' : null }}">
+                      <a href="{{ route('box.index') }}"><i class="mdi mdi-dropbox"></i> &nbsp;Boxes </a>
+                    </li>
+                  </ul>
                 </li>
-
-                <li class="{{ Route::currentRouteNamed('area.index')||Route::currentRouteNamed('area.create')||Route::currentRouteNamed('area.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('area.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-home-map-marker"></i>
-                    <span class="hide-menu">Areas</span>
-                  </a>
-                </li>
-                @endif
-
-                <li class="{{ Route::currentRouteNamed('space.index')||Route::currentRouteNamed('space.create')||Route::currentRouteNamed('space.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('space.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-home-outline"></i>
-                    <span class="hide-menu">Spaces</span>
-                  </a>
-                </li>
-
-                <li class="{{ Route::currentRouteNamed('shelves.index')||Route::currentRouteNamed('shelves.create')||Route::currentRouteNamed('shelves.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('shelves.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-grid"></i>
-                    <span class="hide-menu">Shelves</span>
-                  </a>
-                </li>
-
-                <li class="{{ Route::currentRouteNamed('box.index')||Route::currentRouteNamed('box.create')||Route::currentRouteNamed('box.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('box.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-dropbox"></i>
-                    <span class="hide-menu">Boxes</span>
-                  </a>
-                </li>      
 
                 <li class="{{ Route::currentRouteNamed('category.index')||Route::currentRouteNamed('category.create')||Route::currentRouteNamed('category.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('category.index')}}" aria-expanded="false">
@@ -73,6 +66,24 @@
                     <span class="hide-menu">Categories</span>
                   </a>
                 </li>        
+
+                @if(Auth::user()->roles_id == 3)
+                <li class="{{ Route::currentRouteNamed('voucher.index')||Route::currentRouteNamed('voucher.create')||Route::currentRouteNamed('voucher.edit')||
+                Route::currentRouteNamed('banner.index')||Route::currentRouteNamed('banner.create')||Route::currentRouteNamed('banner.edit') ? 'active' : null }}">
+                  <a class="has-arrow waves-effect waves-dark" href="{{ route('banner.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-star-circle"></i>
+                    <span class="hide-menu">Promotions</span>
+                  </a>
+                  <ul aria-expanded="false" class="collapse">
+                    <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
+                      <a href="{{ route('banner.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('voucher.index') ? 'active' : null }}">
+                      <a href="{{ route('voucher.index') }}"><i class="mdi mdi-tag-multiple"></i> &nbsp;Voucher </a>
+                    </li>
+                  </ul>
+                </li>
+                @endif
 
                 <li class="{{ Route::currentRouteNamed('order.index')||Route::currentRouteNamed('order.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('order.index')}}" aria-expanded="false">
@@ -97,8 +108,11 @@
                     <li class="{{ Route::currentRouteNamed('payment.index') ? 'active' : null }}">
                       <a href="{{ route('payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Order Payments</a>
                     </li>
-                    <li class="{{ Route::currentRouteNamed('changeboxpayment.index') ? 'active' : null }}">
-                      <a href="{{ route('changeboxpayment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Change Item Box Payments</a>
+                    <li class="{{ Route::currentRouteNamed('change-box-payment.index') ? 'active' : null }}">
+                      <a href="{{ route('change-box-payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Change Item Box </a>
+                    </li>
+                    <li class="{{ Route::currentRouteNamed('return-box-payment.index') ? 'active' : null }}">
+                      <a href="{{ route('return-box-payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Return Box </a>
                     </li>
                   </ul>
                 </li>
@@ -110,17 +124,17 @@
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create')||Route::currentRouteNamed('return.edit') ? 'active' : null }}">
-                  <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
-                    <i class="mdi mdi-keyboard-return"></i>
-                    <span class="hide-menu">Return Boxes</span>
-                  </a>
-                </li>
-
                 <li class="{{ Route::currentRouteNamed('change-box.index')||Route::currentRouteNamed('change-box.create')||Route::currentRouteNamed('change-box.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('change-box.index')}}" aria-expanded="false">
                     <i class="mdi mdi-box"></i>
                     <span class="hide-menu">Change Item Boxes</span>
+                  </a>
+                </li>
+
+                <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create')||Route::currentRouteNamed('return.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-keyboard-return"></i>
+                    <span class="hide-menu">Return Boxes</span>
                   </a>
                 </li>
                 

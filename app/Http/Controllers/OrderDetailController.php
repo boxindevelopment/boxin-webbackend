@@ -46,7 +46,7 @@ class OrderDetailController extends Controller
 
     public function orderDetailBox($id)
     {
-        $detail             = $this->repository->getOrderDetail($id);
+        $detail             = $this->repository->getOrderDetail($id);        
         $detail_order_box   = $this->repository->getDetailBox($id);
         return view('storage.box-detail', compact('detail_order_box', 'id', 'detail'));
     }

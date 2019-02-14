@@ -8,6 +8,8 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('/', 'DashboardController@index')->name('dashboard');
   Route::get('/graphicOrder','DashboardController@graphicOrder')->name('dashboard.graphicOrder');
 
+  Route::get('/profile', 'UserController@myProfile')->name('profile');
+
   Route::resource('city', 'CityController')->except(['show']);
   Route::prefix('city')->group(function () {
     Route::get('/dataSelect','CityController@getDataSelect')->name('city.getDataSelect');
@@ -40,6 +42,10 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('category', 'CategoryController')->except(['show']);
 
+  Route::resource('banner', 'BannerController')->except(['show']);
+
+  Route::resource('voucher', 'VoucherController')->except(['show']);
+
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
     Route::get('','OrderController@index')->name('order.index');
@@ -52,26 +58,32 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('payment', 'PaymentController')->except(['show']);  
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');    
-    Route::get('/returnbox','ReturnBoxPaymentController@index')->name('returnboxpayment.index');    
-    Route::get('/changebox','ChangeBoxPaymentController@index')->name('changeboxpayment.index');
   });
 
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
+
+  Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
   
   Route::resource('storage', 'OrderDetailController')->except(['show']);  
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
   });
   
-  Route::resource('return', 'ReturnBoxesController')->except(['show']);
-
   Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
   Route::prefix('change-box')->group(function () {
     Route::get('','ChangeBoxesController@index')->name('change-box.index');    
   });
 
+  Route::resource('return', 'ReturnBoxesController')->except(['show']);
+  Route::prefix('return')->group(function () {
+    Route::get('','ReturnBoxesController@index')->name('return.index');    
+  });  
+
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
+    Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
+    Route::put('change-password/{id}','UserController@changePassword')->name('user.changePassword');
+
     Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);
     Route::get('getDataSelectForSuperadmin', ['uses' => 'UserController@getDataSelectForSuperadmin', 'as' => 'user.getDataSelectForSuperadmin']);
     Route::get('getDataSelectForFinance', ['uses' => 'UserController@getDataSelectForFinance', 'as' => 'user.getDataSelectForFinance']);

@@ -31,7 +31,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>Delivery Box</h4>
+              <h4 class="card-title"><span class="lstick"></span>Return Box</h4>
 
               @include('error-template')
 
@@ -60,9 +60,9 @@
                               $name    = 'User pickup';
                             }
                             
-                            if($value->status_id == 16){
+                            if($value->status_id == 16 || $value->status_id == 2){
                               $label = 'label-warning';
-                            }else if($value->status_id == 17){
+                            }else if($value->status_id == 7 || $value->status_id == 12){
                               $label = 'label-success';
                             }else{
                               $label = 'label-danger';
