@@ -52,23 +52,31 @@
                         @foreach ($pickup as $key => $value)
                           @php
                             if($value->types_of_pickup_id == 1){
-                              $label1  = 'label-warning';
-                              $name1   = 'Deliver to user';
+                                $label1  = 'label-warning';
+                                $name1   = 'Deliver to user';
                             }else if($value->types_of_pickup_id == 2){
-                              $label1  = 'label-primary';
-                              $name1   = 'User pickup';
+                                $label1  = 'label-primary';
+                                $name1   = 'User pickup';
+                            }else if($value->types_of_pickup_id == 24){
+                                $label1  = 'label-warning';
+                                $name1   = 'User Cancelled';
+                            } else {
+                                $label1  = 'label-warning';
+                                $name1   = '';
                             }
-                            
+
                             if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8){
                               $label = 'label-danger';
                             } else if($value->status_id == 12 || $value->status_id == 7){
                               $label = 'label-success';
                             } else if($value->status_id == 2){
                               $label = 'label-warning';
-                            } 
+                          } else {
+                              $label = 'label-warning';
+                          }
                           @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>                            
+                            <td align="center">{{ $key+1 }}</td>
                             <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}}</td>
                             <td class="text-center">
