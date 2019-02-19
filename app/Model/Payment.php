@@ -10,7 +10,15 @@ class Payment extends Model
     protected $table = 'payments';
 
     protected $fillable = [
-        'order_id', 'user_id', 'payment_type', 'bank', 'amount', 'status_payment', 'status_id'
+        'order_id', 
+        'user_id', 
+        'payment_type', 
+        'bank', 
+        'amount', 
+        'status_payment', 
+        'status_id',
+        'image_transfer',
+        'id_name'
     ];
 
     public function order()
@@ -26,6 +34,19 @@ class Payment extends Model
     public function status()
     {
         return $this->belongsTo('App\Model\Status', 'status_id', 'id');
+    }
+
+    public function getImageAttribute()
+    {
+      $image = $this->image_transfer;
+      $image_source = asset('images/no-image.jpg');
+      // $image_source = null;
+      if (strlen($image) > 0) {
+          if (file_exists(storage_path('app/public/images/payment/order/'.$image))) {
+              $image_source = asset('images/payment/order') . '/' . $image;
+          }
+      }
+      return $image_source;
     }
 
 }

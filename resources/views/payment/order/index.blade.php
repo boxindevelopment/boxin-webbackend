@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('plugin_css')
-
+  <link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
 
 @section('script_css')
@@ -42,7 +42,8 @@
                           <th width="5%">No</th>                          
                           <th width="10%">ID</th>
                           <th width="">Customer Name</th>
-                          <th width="25%" class="text-center">Status</th>
+                          <th width="10%" class="text-center">Image</th>
+                          <th width="15%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
@@ -62,6 +63,14 @@
                             <td align="center">{{ $key+1 }}</td>  
                             <td align="center">{{ $value->id_name }}</td>              
                             <td>{{ $value->first_name}} {{ $value->last_name}} </td>
+                            <td class="text-center">
+                              <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->image }}">
+                                <i class="fa fa-file-image-o"></i>
+                                <div style="display: none;">
+                                    <img width="50%" src="{{ $value->image }}" alt="image" />
+                                </div>
+                              </a>
+                            </td>
                             <td class="text-center">
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
@@ -91,7 +100,8 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
-
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js')}}"></script>
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js')}}"></script>
 
 <!--END PLUGIN JS -->
 
