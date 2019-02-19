@@ -31,18 +31,12 @@ class ShelvesController extends Controller
 
     public function store(Request $request)
     {
-      $split        = explode('##', $request->space_id);
-      $space_id     = $split[0];
 
       $shelves = Shelves::create([
-        'name'      => $request->name,
-        'space_id'  => $space_id,
-        'id_name'   => $request->id_name_shelf,
+        'name'           => $request->name,
+        'area_id'        => $request->area_id,
+        'code_shelves'   => $request->code_shelves,
       ]);
-
-      $space = Space::find($space_id);
-      $space->status_id = 9;
-      $space->save();
 
       if($shelves){
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] added.');
@@ -150,12 +144,12 @@ class ShelvesController extends Controller
 
     public function getNumber(Request $request)
     {
-        $sql          = Shelves::where('space_id', '=', $request->input('space_id'))
+        $sql          = Shelves::where('area_id', '=', $request->input('area_id'))
                         ->where('deleted_at', NULL)
-                        ->orderBy('id_name', 'desc')
+                        ->orderBy('code_shelves', 'desc')
                         ->first();
-        $id_number    = isset($sql->id_name) ? substr($sql->id_name, 6) : 0;
-        $code         = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+        $code_shelves    = isset($sql->code_shelves) ? substr($sql->code_shelves, 4) : 0;
+        $code         = str_pad($code_shelves + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;
     }

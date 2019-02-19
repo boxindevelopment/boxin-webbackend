@@ -38,7 +38,6 @@ class BoxController extends Controller
             'shelves_id'  => 'required',
             'type_size_id' => 'required',
             'code_box' => 'required',
-            'count_box' => 'required',
         ]);
 
         $box = Box::where('code_box', $request->input('code_box'))
@@ -57,28 +56,16 @@ class BoxController extends Controller
 
         $split        = explode('##', $request->shelves_id);
         $shelves_id   = $split[0];
-        $id_name      = $split[1];
+        $box = Box::create([
+                    'types_of_size_id'  => $request->type_size_id,
+                    'shelves_id'        => $shelves_id,
+                    'name'              => $request->name,
+                    'location'          => $request->location,
+                    'barcode'           => $request->code_box,
+                    'code_box'          => $request->code_box,
+                    'status_id'         => 10,
+                ]);
 
-        for($i=0; $i<$request->count_box;$i++){
-            $no = $i+1;
-            if($request->count_box == 1){
-                $name_box = $name;
-            }else{
-                $name_box = $name.' '.$no;
-            }
-
-            $box = Box::create([
-                        'types_of_size_id'  => $request->type_size_id,
-                        'shelves_id'        => $shelves_id,
-                        'name'              => $name_box,
-                        'location'          => $request->location,
-                        'id_name'           => $request->code_box,
-                        'barcode'           => $request->code_box,
-                        'code_box'          => $request->code_box,
-                        'status_id'         => 10,
-                    ]);
-            $box->save();
-        }
         if($box){
             return redirect()->route('box.index')->with('success', 'Add : [' . $name . '] success.');
         } else {

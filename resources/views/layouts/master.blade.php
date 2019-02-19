@@ -339,15 +339,16 @@
 
         }
 
-        function get_id_number_shelves(space_id, space_number){
-
+        function get_id_number_shelves(area_id, area_number){
+            console.log('shelves in');
+            console.log('area:' + area_number);
             var data = $.ajax({
                 url: "{{ url('/shelves/getNumber') }}",
                 type: "GET",
-                data: { space_id : space_id }
+                data: { area_id : area_id }
             })
             .done(function(data) {
-                $('input[name="id_name_shelf"]').val(space_number + data);
+                $('input[name="code_shelves"]').val(area_number + data);
             });
         }
 

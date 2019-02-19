@@ -26,9 +26,8 @@ class ShelvesRepository implements ShelvesRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('shelves.id', 'shelves.name', 'shelves.space_id', 'shelves.id_name');
-        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        $data = $data->select('shelves.*');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'shelves.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
@@ -45,21 +44,14 @@ class ShelvesRepository implements ShelvesRepositoryInterface
     }
     public function getData($args = [])
     {
-        $space = $this->model->select()
+        $shelves = $this->model->select()
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('name', 'like', '%'.$args['searchValue'].'%')
                 ->skip($args['start'])
                 ->take($args['length'])
                 ->get();
 
-        return $space->toArray();
-    }
-
-    public function getSelectBySpace($space_id)
-    {
-        $shelves = $this->model->select()->where('space_id', $space_id)->where('deleted_at', NULL)->orderBy('name')->get();
-
-        return $shelves;
+        return $shelves->toArray();
     }
 
     public function getSelectByArea($area_id)
@@ -80,10 +72,8 @@ class ShelvesRepository implements ShelvesRepositoryInterface
     {
         $data = $this->model->select(array('shelves.*',
             DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),
-            DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name'),
-            DB::raw('(spaces.id) as space_id'), DB::raw('(spaces.id_name) as space_id_name')))
-                ->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id')
-                ->leftJoin('areas', 'areas.id', '=' ,'spaces.area_id')
+            DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name')))
+                ->leftJoin('areas', 'areas.id', '=' ,'shelves.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('shelves.id', $id)
                 ->first();

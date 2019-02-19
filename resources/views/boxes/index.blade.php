@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-body">
 
-            <h4 class="card-title"><span class="lstick"></span>List Boxes 
+            <h4 class="card-title"><span class="lstick"></span>List Boxes
               <a href="{{ route('box.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right"
                 title="Add" style="margin-right: 10px;">
                 <i class="fa fa-plus"></i>&nbsp;
@@ -51,7 +51,7 @@
                           <th width="">Name</th>
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
-                          <th width="15%">Shelf (Space)</th>
+                          <th width="15%">Shelf</th>
                           <th width="20%">Location</th>
                           <th width="10%">Status</th>
                           <th width="13%" class="text-center no-sort">Action</th>
@@ -62,11 +62,11 @@
                         @foreach ($box as $key => $value)
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
-                            <td align="center">{{ $value->id_name }}</td>
+                            <td align="center">{{ $value->code_box }}</td>
                             <td>{{ $value->name }}</td>
                             <td>{{ $value->type_size->name }}</td>
                             <td>{{ $value->type_size->size }}</td>
-                            <td>{{ $value->shelves->name }} ({{ $value->shelves->space->name }})</td>
+                            <td>{{ $value->shelves->name }}</td>
                             <td>{{ $value->location }}</td>
                             <td class="text-center">
                               <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>
@@ -86,7 +86,7 @@
                     </tbody>
                 </table>
               </div>
-  
+
               <!-- sample modal content -->
               <div class="modal fade bs-example-modal-lg" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" style="display: none;">
                   <div class="modal-dialog modal-dialog-centered">
@@ -108,7 +108,7 @@
                   </div>
                   <!-- /.modal-dialog -->
               </div>
-              <!-- /.modal -->   
+              <!-- /.modal -->
 
             </div>
         </div>
