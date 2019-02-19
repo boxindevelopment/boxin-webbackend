@@ -50,11 +50,6 @@
                         <input type="text" class="form-control" id="area_id" name="area_id" value="{{ $box->area_id }}##{{ $box->area_id_name }}" required>
                       </div>
 
-                      <!-- <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
-                      </div> -->
-
                       <div class="form-group">
                         <label for="">Shelf <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->code_shelves }}" required>

@@ -59,14 +59,15 @@ class ShelvesController extends Controller
 
     public function update(Request $request, $id)
     {
-      $split          = explode('##', $request->space_id);
-      $space_id       = $split[0];
+        
+      $split          = explode('##', $request->area_id);
+      $area_id       = $split[0];
 
       $shelves            = $this->repository->find($id);
       $shelves->name      = $request->name;
-      if($shelves->space_id != $space_id){
-        $shelves->space_id  = $space_id;
-        $shelves->id_name   = $request->id_name_shelf;
+      if($shelves->area_id != $area_id){
+        $shelves->area_id  = $area_id;
+        $shelves->code_shelves   = $request->code_shelves;
       }
       $shelves->save();
 

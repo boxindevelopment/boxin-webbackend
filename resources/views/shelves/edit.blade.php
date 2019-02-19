@@ -39,11 +39,6 @@
                     <div class="col-md-6">
 
                       <div class="form-group">
-                        <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_shelf" id="id_name_shelf" value="{{ $shelves->id_name }}" required readonly>
-                      </div>
-                      
-                      <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $shelves->city_id }}##{{ $shelves->id_name }}" required>
                       </div>
@@ -54,13 +49,13 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $shelves->space_id }}##{{ $shelves->space_id_name }}" required>
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $shelves->name }}" required>
                       </div>
 
                       <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" placeholder="Enter Name" value="{{ $shelves->name }}" required>
+                        <label for="">Code Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="code_shelves" id="code_shelves" value="{{ $shelves->code_shelves }}" required readonly>
                       </div>
 
                       <a href="{{ route('shelves.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
