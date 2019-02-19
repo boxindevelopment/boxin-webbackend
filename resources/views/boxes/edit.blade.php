@@ -57,7 +57,7 @@
 
                       <div class="form-group">
                         <label for="">Shelf <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->shelves_id_name }}" required>
+                        <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->code_shelves }}" required>
                       </div>
                       @php
                         if($box->code_box){

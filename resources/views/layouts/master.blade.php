@@ -264,10 +264,10 @@
                 @if(isset($shelves->space_id_name))
                     $("#area_id").val(values).trigger("change");
                     space_Selectdata(split_area[0], '{{ $shelves->space_id }}##{{ $shelves->space_id_name }}');
-                @elseif(isset($box->space_id_name))
+                @elseif(isset($box->code_shelves))
                     $("#area_id").val(values).trigger("change");
                     // space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
-                    shelves_Selectdata(split_area[0], '{{ $box->shelves_id }}##{{ $box->shelves->id_name }}');
+                    shelves_Selectdata(split_area[0], '{{ $box->shelves_id }}##{{ $box->shelves->code_shelves }}');
                 @elseif(isset($space->shelves->code_shelves))
                     $("#area_id").val(values).trigger("change");
                     shelves_Selectdata(split_area[0], '{{ $space->shelves_id }}##{{ $space->shelves->code_shelves }}');
