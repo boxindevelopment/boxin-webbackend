@@ -85,8 +85,7 @@ class DashboardRepository implements DashboardRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->shelves->query();
-        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'shelves.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
@@ -116,8 +115,7 @@ class DashboardRepository implements DashboardRepositoryInterface
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->box->query();
         $data = $data->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id');
-        $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'shelves.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
