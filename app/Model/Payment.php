@@ -42,8 +42,8 @@ class Payment extends Model
       $image_source = asset('images/no-image.jpg');
       // $image_source = null;
       if (strlen($image) > 0) {
-          if (file_exists(storage_path('app/public/images/payment/order/'.$image))) {
-              $image_source = asset('images/payment/order') . '/' . $image;
+          if (file_exists(public_path('images/payment/order') . '/' . $image)) {
+              $image_source =public_path('images/payment/order') . '/' . $image;
           }
       }
       return $image_source;
