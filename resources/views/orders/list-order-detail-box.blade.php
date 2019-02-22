@@ -37,6 +37,118 @@
 <!-- ============================================================== -->
 
 
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <b>Detail Data</b>
+            <div class="card-actions" style="float: right;">
+                <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+            </div>
+        </div>
+        <div class="card-body collapse show">
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Customer</b></h5>
+          <form class="form-material row">
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">First Name</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->order->user->first_name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Last Name</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->order->user->last_name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Email</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->order->user->email }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">No. Telp</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->order->user->phone }}" readonly> </div>
+          </form>
+
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Order</b></h5>
+          <form class="form-material row">
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Order ID</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->id_name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Name {{ $detail->type_size->name }}</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Duration</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->duration }} {{ $detail->type_duration->alias }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Amount</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="Rp. {{ number_format($detail->amount, 2, '.', ',') }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Start Date</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->start_date }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">End Date</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->end_date }}" readonly> </div>
+          </form>
+
+          <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
+          <form class="form-material row">
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->code_box) ? $detail->box->code_box : '') : (isset($detail->space->code_space_small) ? $detail->space->code_space_small : '') }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->name) ? $detail->box->name : '') : (isset($detail->space->name) ? $detail->space->name : '') }}" readonly> </div>
+          </form>
+
+
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
+          <form class="form-material row">
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($detail->date))}} ({{ $detail->time_pickup }})" readonly> </div>
+              @if($detail->address != '' || $detail->address != null)
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
+              <div class="form-group col-md-10">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->address }}" readonly> </div>
+              @endif
+              @if($detail->note != '' || $detail->note != null)
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
+              <div class="form-group col-md-10">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->note }}" readonly> </div>
+              @endif
+              @if($detail->types_of_pickup_id == 1)
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Driver Name</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->driver_name }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Driver Phone</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->driver_phone }}" readonly> </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Deliver Fee</label></div>
+              <div class="form-group col-md-4">
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->pickup_fee }}" readonly> </div>
+              @endif
+          </form>
+        </div>
+    </div>
+</div>
+
 <div class="row el-element-overlay">
     @foreach ($detail_order_box as $key => $value)
     @php
@@ -55,14 +167,14 @@
                 </div>
                 <div class="el-card-content">
                   <h3 class="box-title">{{ $value->item_name }}</h3> <small>{{ $value->note }}</small>
-                    <br/> 
+                    <br/>
                 </div>
             </div>
         </div>
     </div>
-    
+
     @endforeach
-    
+
 </div>
 <!-- ============================================================== -->
 <!-- End Page Content -->
