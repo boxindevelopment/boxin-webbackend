@@ -59,7 +59,7 @@ class BoxController extends Controller
         $box = Box::create([
                     'types_of_size_id'  => $request->type_size_id,
                     'shelves_id'        => $shelves_id,
-                    'name'              => $request->name,
+                    'name'              => $name,
                     'location'          => $request->location,
                     'barcode'           => $request->code_box,
                     'code_box'          => $request->code_box,
@@ -134,13 +134,48 @@ class BoxController extends Controller
       return $pdf->stream();
     }
 
+    public function get_code_box($code_shelves, $codes){
+
+        $code_box_array = ['B1010101', 'B1010102', 'B1010103', 'B1010201', 'B1010202', 'B1010203', 'B1010301', 'B1010302', 'B1010303',
+                           'B1020101', 'B1020102', 'B1020103', 'B1020201', 'B1020202', 'B1020203', 'B1020301', 'B1020302', 'B1020303',
+                           'B2010101', 'B2010102', 'B2010103', 'B2010201', 'B2010202', 'B2010203', 'B2010301', 'B2010302', 'B2010303',
+                           'B2020101', 'B2020102', 'B2020103', 'B2020201', 'B2020202', 'B2020203', 'B2020301', 'B2020302', 'B2020303'];
+        $code_boxes = [];
+        foreach ($code_box_array as $box) {
+            $a=array("a"=>"red","b"=>"green","c"=>"blue");
+            if(!in_array($box, $codes)){
+                $code_boxes[] = $code_shelves . $box;
+            }
+        }
+        return $code_boxes;
+
+    }
+
+    public function getCodeUsed(Request $request)
+    {
+
+        $get_ccode     = Box::select('code_box')
+                            ->where('shelves_id', '=', $request->input('shelves_id'))
+                            ->where('deleted_at', NULL)
+                            ->orderBy('code_box', 'asc')
+                            ->get();
+        $codes = [];
+        foreach ($get_ccode as $key => $value) {
+            $codes[] = substr($value->code_box, 6);
+        }
+        $code_boxes = $this->get_code_box($request->code_shelves, $codes);
+
+        echo(json_encode($code_boxes));
+    }
+
     public function getNumber(Request $request)
     {
+
         $sql     = Box::where('shelves_id', '=', $request->input('shelves_id'))
                   ->where('deleted_at', NULL)
-                  ->orderBy('id_name', 'desc')
+                  ->orderBy('code_box', 'desc')
                   ->first();
-        $id_number = isset($sql->id_name) ? substr($sql->id_name, 9) : 0;
+        $id_number = isset($sql->code_box) ? substr($sql->code_box, 9) : 0;
         $code      = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
 
         return $code;

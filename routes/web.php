@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::prefix('box')->group(function () {
     Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
     Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
+    Route::get('/getCodeUsed', ['uses' => 'BoxController@getCodeUsed', 'as' => 'box.getCodeUsed']);
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
     Route::get('/resetNumber', ['uses' => 'BoxController@resetNumber', 'as' => 'box.resetNumber']);
   });

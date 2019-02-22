@@ -392,22 +392,19 @@
         function get_id_number_box(){
             var area_id = $('#area_id').val().split('##');
             var shelves_id = $('#shelves_id').val().split('##');
-            var row_box = $('#row_box').val();
-            var column_box = $('#column_box').val();
-            var height_box = $('#height_box').val();
-            var shelves_box = $('#shelves_box').val();
             if(shelves_id[1]) {
-                var code_box = shelves_id[1] + shelves_box + row_box + column_box + height_box;
                 var data = $.ajax({
-                    url: "{{ url('/box/checkCode') }}",
+                    url: "{{ url('/box/getCodeUsed') }}",
                     type: "GET",
-                    data: { code_box : code_box }
+                    data: { shelves_id : shelves_id[0], code_shelves: shelves_id[1] }
                 })
                 .done(function(data) {
-                    if(data == 'used'){
-                        $('input[name="code_box"]').val('');
-                    } else {
-                        $('input[name="code_box"]').val(code_box);
+                    var obj = jQuery.parseJSON(data);
+                    var $code_boxes = $('#code_box');
+                    $code_boxes.html('');
+                    $code_boxes.append('<option  value=""></option>');
+                    for (var i = 0; i < obj.length; i++) {
+                        $code_boxes.append("<option  value='" + obj[i] + "'>" + obj[i] + "</option>");
                     }
                 });
             }

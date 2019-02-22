@@ -52,7 +52,7 @@
                       <input type="text" class="form-control" id="shelves_id" name="shelves_id" required>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="">Box <span class="text-danger">*</span></label>
@@ -85,11 +85,13 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <label for="">Code Number <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" name="code_box" id="code_box" required readonly>
+                      <select class="form-control" name="code_box" id="code_box" required>
+                          <option value=""></option>
+                      </select>
                     </div>
 
                     <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
