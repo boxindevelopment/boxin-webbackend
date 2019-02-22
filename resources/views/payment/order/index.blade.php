@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Order Payments 
+          Order Payments
         </h3>
     </div>
 </div>
@@ -39,7 +39,7 @@
                   <table id="table-pay" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>                          
+                          <th width="5%">No</th>
                           <th width="10%">ID</th>
                           <th width="">Customer Name</th>
                           <th width="10%" class="text-center">Image</th>
@@ -50,7 +50,7 @@
                     <tbody>
                       @if(count($data) > 0)
                         @foreach ($data as $key => $value)
-                          @php                            
+                          @php
                             if($value->status_id == 15){
                               $label = 'label-warning';
                             }else if($value->status_id == 7){
@@ -60,8 +60,8 @@
                             }
                           @endphp
                           <tr>
-                            <td align="center">{{ $key+1 }}</td>  
-                            <td align="center">{{ $value->id_name }}</td>              
+                            <td align="center">{{ $key+1 }}</td>
+                            <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}} </td>
                             <td class="text-center">
                               <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->image }}">
@@ -74,7 +74,7 @@
                             <td class="text-center">
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
-                            <td class="text-center">                              
+                            <td class="text-center">
                               <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
                               <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>

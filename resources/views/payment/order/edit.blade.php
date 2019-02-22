@@ -43,13 +43,13 @@
                   @php
                     $url = 'https://boxin-dev-order.azurewebsites.net/images/payment/order/';
                   @endphp
-                    <div class="col-md-6">                      
+                    <div class="col-md-6">
                         <div class="card">
                             <div class="el-card-item">
-                                <div class="el-card-avatar el-overlay-1"> <img src="{{$url}}{{ $value->image_transfer }}" alt="user" />
+                                <div class="el-card-avatar el-overlay-1"> <img src="{{ $value->image }}" alt="user" />
                                     <div class="el-overlay">
                                         <ul class="el-info">
-                                            <li><a class="btn default btn-outline image-popup-vertical-fit" href="{{$url}}{{ $value->image_transfer }}"><i class="icon-magnifier"></i></a></li>
+                                            <li><a class="btn default btn-outline image-popup-vertical-fit" href="{{ $value->image }}"><i class="icon-magnifier"></i></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -93,8 +93,8 @@
                         <p>{{ $value->status->name }}</p>
                       </div>
                       @endif
-                      <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>                
-                      
+                      <input type="hidden" name="order_id" class="form-control" value="{{ $value->order_id }}" required>
+
                       <a href="{{ route('payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
