@@ -155,6 +155,7 @@ class BoxController extends Controller
 
         $get_ccode     = Box::select('code_box')
                             ->where('shelves_id', '=', $request->input('shelves_id'))
+                            ->whereRaw("code_box <> '".$request->input('code')."'")
                             ->where('deleted_at', NULL)
                             ->orderBy('code_box', 'asc')
                             ->get();
