@@ -21,7 +21,7 @@ class OrderRepository implements OrderRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
@@ -30,6 +30,7 @@ class OrderRepository implements OrderRepositoryInterface
             $data = $data->where('orders.area_id', $admin->area_id);
         }
         $data = $data->where('orders.deleted_at', NULL);
+        $data = $data->whereRaw("orders.id IN (select order_id from order_details)");
         $data = $data->orderBy('id','DESC');
         $data = $data->get();
         return $data;
@@ -52,12 +53,12 @@ class OrderRepository implements OrderRepositoryInterface
         return $data->toArray();
 
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(Order $order, $data)
     {
         return $order->update($data);
