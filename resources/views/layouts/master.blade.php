@@ -268,6 +268,7 @@
                     $("#area_id").val(values).trigger("change");
                     // space_Selectdata(split_area[0], '{{ $box->space_id }}##{{ $box->space_id_name }}');
                     shelves_Selectdata(split_area[0], '{{ $box->shelves_id }}##{{ $box->shelves->code_shelves }}');
+                    get_id_number_box('{{ $box->shelves_id }}', '{{ $box->shelves->code_shelves }}');
                 @elseif(isset($space->shelves->code_shelves))
                     $("#area_id").val(values).trigger("change");
                     shelves_Selectdata(split_area[0], '{{ $space->shelves_id }}##{{ $space->shelves->code_shelves }}');
@@ -382,7 +383,7 @@
                 }).on('change', function (e) {
                     var shelves_ext = $(this).val().split('##');
                     var space_id = shelves_ext[0];
-                    get_id_number_box();
+                    get_id_number_box(shelves_ext[0], shelves_ext[1]);
                     get_id_number_space(shelves_ext[0], shelves_ext[1]);
                 });
             });
@@ -392,17 +393,21 @@
         }
 
         $('#shelves_box, #row_box, #column_box, #height_box').on('change', function(){
-            get_id_number_box();
+            var shelves_id = $('#shelves_id').val().split('##');
+            get_id_number_box(shelves_id[0], shelves_id[1]);
         });
 
-        function get_id_number_box(){
-            var area_id = $('#area_id').val().split('##');
-            var shelves_id = $('#shelves_id').val().split('##');
-            if(shelves_id[1] && $('#code_box').length > 0) {
+        function get_id_number_box(shelves_id, code_shelves){
+            if($('#code_box_hide').length){
+                var code = $('#code_box_hide').val();
+            } else {
+                var code = '';
+            }
+            if(shelves_id && $('#code_box').length > 0) {
                 var data = $.ajax({
                     url: "{{ url('/box/getCodeUsed') }}",
                     type: "GET",
-                    data: { shelves_id : shelves_id[0], code_shelves: shelves_id[1] }
+                    data: { shelves_id : shelves_id, code_shelves: code_shelves, code: code }
                 })
                 .done(function(data) {
                     var obj = jQuery.parseJSON(data);
@@ -410,7 +415,11 @@
                     $code_boxes.html('');
                     $code_boxes.append('<option  value=""></option>');
                     for (var i = 0; i < obj.length; i++) {
-                        $code_boxes.append("<option  value='" + obj[i] + "'>" + obj[i] + "</option>");
+                        if(obj[i] == code) {
+                            $code_boxes.append("<option  value='" + obj[i] + "' selected>" + obj[i] + "</option>");
+                        } else {
+                            $code_boxes.append("<option  value='" + obj[i] + "'>" + obj[i] + "</option>");
+                        }
                     }
                 });
             }
