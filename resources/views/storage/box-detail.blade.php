@@ -173,11 +173,11 @@
                             </div>
                             <div class="el-card-content">
                               <h3 class="box-title">{{ $value->item_name }}</h3> <small>{{ $value->note }}</small>
-                                <br/> 
+                                <br/>
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
                 @endforeach
               @else
               <div class="col-lg-12" style="color: grey">Data Not Found</div>
