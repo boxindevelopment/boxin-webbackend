@@ -278,19 +278,25 @@
             }
         }
 
-        function get_id_number_space(shelve_id, shelve_number){
+        function get_id_number_space(shelve_id, shelve_code){
+            if(shelve_id){
 
-            // var data = $.ajax({
-            //     url: "{{ url('/space/getNumber') }}",
-            //     type: "GET",
-            //     data: { shelve_id : shelve_id }
-            // })
-            // .done(function(data) {
-            //     $('input[name="code_space_small"]').val(shelve_number + data);
-            // });
-            var shelves_id = $('#shelves_id').val().split('##');
-            if(shelves_id[1]) {
-                $('input[name="code_space_small"]').val(shelves_id[1] + 'S1');
+                var data = $.ajax({
+                    url: "{{ url('/space/getNumber') }}",
+                    type: "GET",
+                    data: { shelve_id : shelve_id, shelve_code: shelve_code }
+                })
+                .done(function(data) {
+                    if(data == 0){
+                        $('#code_space_small').val(shelve_code + 'S1');
+                        $('.message-error_code').hide();
+                        $('.message-error_code .alert').html('');
+                    } else {
+                        $('#code_space_small').val('');
+                        $('.message-error_code .alert').html('code space is used');
+                        $('.message-error_code').show();
+                    }
+                });
             }
         }
 
@@ -392,7 +398,7 @@
         function get_id_number_box(){
             var area_id = $('#area_id').val().split('##');
             var shelves_id = $('#shelves_id').val().split('##');
-            if(shelves_id[1]) {
+            if(shelves_id[1] && $('#code_box').length > 0) {
                 var data = $.ajax({
                     url: "{{ url('/box/getCodeUsed') }}",
                     type: "GET",

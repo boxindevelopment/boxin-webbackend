@@ -38,11 +38,6 @@
                   <div class="col-md-6">
 
                     <div class="form-group">
-                      <label for="">Code Number <span class="text-danger">*</span></label>
-                      <input type="text" class="form-control" name="code_space_small" id="code_space_small" required readonly>
-                    </div>
-
-                    <div class="form-group">
                       <label for="">City <span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="city_id" name="city_id" required>
                     </div>
@@ -56,6 +51,16 @@
                       <label for="">Shelf <span class="text-danger">*</span></label>
                       <input type="text" class="form-control" id="shelves_id" name="shelves_id" required>
                     </div>
+
+                    <div class="form-group">
+                        <div class="m-b-20 m-t-10 message-error_code" style="display: none;">
+                            <div class="alert alert-danger">
+                            </div>
+                        </div>
+                      <label for="">Code Number <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" name="code_space_small" id="code_space_small" required readonly>
+                    </div>
+
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
@@ -80,10 +85,10 @@
                       <input type="text" name="location" class="form-control" placeholder="Enter Location" value="" >
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label>Total Space <span class="text-danger">*</span></label>
                       <input type="number" name="count_space" class="form-control" placeholder="How many spaces do you want to create?" min=1 required >
-                    </div>
+                    </div> -->
 
                   </div>
 

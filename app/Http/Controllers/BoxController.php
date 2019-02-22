@@ -142,7 +142,6 @@ class BoxController extends Controller
                            'B2020101', 'B2020102', 'B2020103', 'B2020201', 'B2020202', 'B2020203', 'B2020301', 'B2020302', 'B2020303'];
         $code_boxes = [];
         foreach ($code_box_array as $box) {
-            $a=array("a"=>"red","b"=>"green","c"=>"blue");
             if(!in_array($box, $codes)){
                 $code_boxes[] = $code_shelves . $box;
             }
