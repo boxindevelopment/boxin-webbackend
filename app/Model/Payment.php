@@ -44,7 +44,11 @@ class Payment extends Model
       $url = (env('DB_DATABASE') == 'coredatabase') ? $DEV_URL : $PROD_URL;
 
       $image = $this->image_transfer;
+<<<<<<< HEAD
       $image_source = $url . $image;
+=======
+      $image_source = asset('images/payment/order') . '/' . $image;
+>>>>>>> 5932553c52173cfcda2f9216fda98cc055e3cf56
       return $image_source;
     }
 
