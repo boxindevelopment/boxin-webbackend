@@ -64,7 +64,7 @@
                             <td>{{ $value->name }}</td>
                             <td>
                               @if ($value->box)
-                                {{ $value->box->name }}
+                                {{ $value->box->code_box }}
                               @else
                                  - 
                               @endif

@@ -36,10 +36,9 @@ class SpaceSmallController extends Controller
     {
 
         $this->validate($request, [
-            'shelves_id'     => 'required',
-            'type_size_id'  => 'required',
-            'count_space'     => 'required',
-            'code_space_small'     => 'required',
+            'shelves_id'        => 'required',
+            'type_size_id'      => 'required',
+            'code_space_small'  => 'required',
         ]);
 
         $type_size = TypeSize::where('id', $request->type_size_id)->first();
@@ -47,33 +46,20 @@ class SpaceSmallController extends Controller
         if($name == ''){
             $name = $type_size->name;
         }
-        $split              = explode('##', $request->shelves_id);
-        $shelves_id         = $split[0];
-        $code_shelves       = $split[1];
+        $split                  = explode('##', $request->shelves_id);
+        $shelves_id             = $split[0];
+        $code_shelves           = $split[1];
 
-        for($i=0; $i<$request->count_space;$i++){
-            $no = $i+1;
-            if($request->count_space == 1){
-                $name_space = $name;
-            }else{
-                $name_space = $name.' '.$no;
-            }
+        $spaceSmall = SpaceSmall::create([
+            'types_of_size_id'  => $request->type_size_id,
+            'shelves_id'        => $shelves_id,
+            'name'              => $name,
+            'location'          => $request->location,
+            'code_space_small'  => $request->code_space_small,
+            'barcode'           => $request->code_space_small,
+            'status_id'         => 10,
+        ]);
 
-            // $sql        = SpaceSmall::where('shelves_id', '=', $shelves_id)->where('deleted_at', NULL)->orderBy('code_space_small', 'desc')->first();
-            // $id_number  = isset($sql->code_space_small) ? substr($sql->code_space_small, 9) : 0;
-            // $code       = str_pad($id_number + 1, 3, "0", STR_PAD_LEFT);
-
-            $spaceSmall = SpaceSmall::create([
-                'types_of_size_id'  => $request->type_size_id,
-                'shelves_id'        => $shelves_id,
-                'name'              => $name_space,
-                'location'          => $request->location,
-                'code_space_small'  => $request->code_space_small,
-                'barcode'           => $request->code_space_small,
-                'status_id'         => 10,
-            ]);
-            $spaceSmall->save();
-        }
         if($spaceSmall){
             return redirect()->route('space.index')->with('success', 'Add : [' . $name . '] success.');
         } else {
@@ -162,14 +148,12 @@ class SpaceSmallController extends Controller
 
     public function getNumber(Request $request)
     {
-        $sql     = SpaceSmall::where('shelves_id', '=', $request->input('shelves_id'))
-                  ->where('deleted_at', NULL)
-                  ->orderBy('code_space_small', 'desc')
-                  ->first();
-        $id_number = isset($sql->code_space_small) ? substr($sql->code_space_small, 4) : 0;
-        $code      = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+        $data_spaces = SpaceSmall::where('shelves_id', '=', $request->input('shelve_id'))
+                        ->where('deleted_at', NULL)
+                        ->orderBy('code_space_small', 'desc')
+                        ->get();
 
-        return $code;
+        echo count($data_spaces);
     }
 
     public  function printBarcode($id)
