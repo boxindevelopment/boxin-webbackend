@@ -52,4 +52,9 @@ class OrderDetail extends Model
         return $this->hasMany('App\Model\OrderDetailBox', 'order_detail_id', 'id');
     }
 
+    public function change_box_payment()
+    {
+       return $this->hasOne('App\Model\ChangeBoxPayment', 'order_detail_id', 'id');
+    }
+
 }
