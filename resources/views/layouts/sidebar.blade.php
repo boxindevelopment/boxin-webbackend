@@ -114,6 +114,9 @@
                     <li class="{{ Route::currentRouteNamed('return-box-payment.index') ? 'active' : null }}">
                       <a href="{{ route('return-box-payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Return Box </a>
                     </li>
+                    <li class="{{ Route::currentRouteNamed('payment.extend') ? 'active' : null }}">
+                      <a href="{{ route('payment.extend') }}"><i class="mdi mdi-cash"></i> &nbsp;Extend Order </a>
+                    </li>
                   </ul>
                 </li>
 
