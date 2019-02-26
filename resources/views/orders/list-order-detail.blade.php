@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-          <button onclick="window.location.href='{{route('order.index')}}'" class="btn waves-effect waves-light m-r-10" style="background-color: white;"><i class="mdi mdi-arrow-left-bold-circle"></i> Back</button>
+          <button onclick="window.location.href='{{ $url }}'" class="btn waves-effect waves-light m-r-10" style="background-color: white;"><i class="mdi mdi-arrow-left-bold-circle"></i> Back</button>
         </ol>
     </div>
 </div>

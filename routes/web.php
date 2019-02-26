@@ -61,8 +61,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
   });
 
+  Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
+  
   Route::resource('pickup', 'PickupController')->except(['show']);
-
+  
+  Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');
+  Route::get('payment/order-details/{id}','PaymentController@payment_extend_edit')->name('payment.extend.edit');
+  Route::put('payment/order-details/{id}','PaymentController@payment_extend_update')->name('payment.extend.update');
+  
   Route::resource('payment', 'PaymentController')->except(['show']);
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');
