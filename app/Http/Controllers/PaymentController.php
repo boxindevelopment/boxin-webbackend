@@ -9,22 +9,27 @@ use App\Model\OrderDetail;
 use App\Model\PickupOrder;
 use App\Model\UserDevice;
 use App\Repositories\PaymentRepository;
+use App\Repositories\ExtendPaymentRepository;
+use App\Model\ExtendOrderDetail;
+use App\Model\ExtendOrderPayment;
 use Requests;
 
 class PaymentController extends Controller
 {
 
     protected $repository;
+    protected $repository2;
 
 	private $url;
 	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
 	CONST LOC_URL = 'http://localhost:5252/';
 	CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
 
-    public function __construct(PaymentRepository $repository)
+    public function __construct(PaymentRepository $repository, ExtendPaymentRepository $repository2)
     {
 		$this->url        = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
         $this->repository = $repository;
+        $this->repository2 = $repository2;
     }
 
     public function index()
@@ -103,4 +108,62 @@ class PaymentController extends Controller
     {
 
     }
+    
+    public function payment_extend()
+    {
+      $data = $this->repository2->all();
+      return view('payment.extend.index', compact('data'));
+    }
+
+    public function payment_extend_edit($id)
+    {
+      $data = $this->repository2->getById($id);
+      return view('payment.extend.edit', compact('data', 'id'));
+    }
+
+    public function payment_extend_update(Request $request, $id)
+    {
+      // dd($request);
+      $this->validate($request, [
+        'status_id'  => 'required',
+      ]);
+
+      $extend_id = $request->extend_id;
+      $status    = $request->status_id;
+
+      $payment            = $this->repository2->find($id);
+      $payment->status_id = intval($status);
+      $payment->save();
+
+      if($payment){
+          $ex_order_details = ExtendOrderDetail::find($extend_id);
+          if ($ex_order_details) {
+              $ex_order_details = intval($status);
+              $ex_order_details->save();
+
+              if ($request->status_id == 7) {
+                  $orderDetails           = OrderDetail::findOrFail($ex_order_details->order_detail_id);
+                  $orderDetails->amount   = $ex_order_details->total_amount;                              // total amount dari durasi baru dan lama
+                  $orderDetails->end_date = $ex_order_details->new_end_date;                              // durasi tanggal berakhir yang baru
+                  $orderDetails->duration = $ex_order_details->new_duration;                              // total durasi
+                  $orderDetails->save();
+              }
+
+              if ($request->status_id == 7 || $request->status_id == 8){
+                $params['status_id'] =  $request->status_id;
+                $params['order_detail_id'] = $ex_order_details->order_detail_id;
+                $user_id = $ex_order_details->user_id;
+                $userDevice = UserDevice::where('user_id', $user_id)->get();
+                if(count($userDevice) > 0){
+                    $response = Requests::post($this->url . 'api/confirm-payment/' . $user_id, [], $params, []);
+                }
+              }
+          }
+
+          return redirect()->route('payment.extend')->with('success', 'Edit status extend order payment success.');
+      } else {
+          return redirect()->route('payment.extend')->with('error', 'Edit status extend order payment failed.');
+      }
+    }
+
 }

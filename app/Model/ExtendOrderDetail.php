@@ -18,7 +18,10 @@ class ExtendOrderDetail extends Model
         'payment_expired', 
         'payment_status_expired', 
         'status_id',
-        'user_id'
+        'user_id',
+        'new_end_date',
+        'new_duration',
+        'total_amount'
     ];
 
     public function user()
