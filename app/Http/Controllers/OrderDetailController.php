@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Repositories\OrderDetailRepository;
+use App\Model\OrderDetail;
 
 class OrderDetailController extends Controller
 {
@@ -49,6 +50,13 @@ class OrderDetailController extends Controller
         $detail             = $this->repository->getOrderDetail($id);        
         $detail_order_box   = $this->repository->getDetailBox($id);
         return view('storage.box-detail', compact('detail_order_box', 'id', 'detail'));
+    }
+
+    public function orderDetail($id)
+    {
+      $detail_order  = OrderDetail::where('id',$id)->orderBy('id')->get();
+      $url = route('payment.extend');
+      return view('orders.list-order-detail', compact('detail_order', 'id', 'url'));
     }
 
 }

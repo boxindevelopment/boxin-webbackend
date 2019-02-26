@@ -45,7 +45,8 @@ class OrderController extends Controller
     public function orderDetail($id)
     {
       $detail_order     = OrderDetail::where('order_id',$id)->orderBy('id')->get();
-      return view('orders.list-order-detail', compact('detail_order', 'id'));
+      $url = route('order.index');
+      return view('orders.list-order-detail', compact('detail_order', 'id', 'url'));
     }
 
     public function orderDetailBox($id)
