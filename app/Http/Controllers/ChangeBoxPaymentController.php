@@ -21,7 +21,7 @@ class ChangeBoxPaymentController extends Controller
     }
 
     public function index()
-    {      
+    {
       $data = $this->repository->all();
       return view('payment.change_box.index', compact('data'));
     }
@@ -33,7 +33,7 @@ class ChangeBoxPaymentController extends Controller
 
     public function store(Request $request)
     {
-      abort('404');   
+      abort('404');
     }
 
     public function show($id)
@@ -53,13 +53,13 @@ class ChangeBoxPaymentController extends Controller
             'status_id'  => 'required',
         ]);
 
-        $order_detail_id        = $request->order_detail_id; 
+        $order_detail_id        = $request->order_detail_id;
         $status                 = $request->status_id;
-        
+
         $orderdetail            = OrderDetail::find($order_detail_id);
         $orderdetail->status_id = $status;
         $orderdetail->save();
-        
+
         $payment                 = $this->repository->find($id);
         $payment->status_id      = $status;
         $payment->save();
@@ -81,6 +81,6 @@ class ChangeBoxPaymentController extends Controller
 
     public function destroy($id)
     {
-      
+
     }
 }

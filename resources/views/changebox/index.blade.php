@@ -39,7 +39,7 @@
                   <table id="table-data1" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>                          
+                          <th width="5%">No</th>
                           <th width="15%" class="text-center">Request Date</th>
                           <th width="20%" class="text-center">Returning Date</th>
                           <th width="">Customer Name</th>
@@ -59,7 +59,7 @@
                               $label1  = 'label-primary';
                               $name    = 'User pickup';
                             }
-                            
+
                             if($value->status_id == 19){
                               $label = 'label-warning';
                             }else if($value->status_id == 22 || $value->status_id == 7){
