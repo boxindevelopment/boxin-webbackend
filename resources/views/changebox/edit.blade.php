@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('plugin_css')
-
+<link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
 
 @section('script_css')
@@ -124,9 +124,31 @@
                                               <div class="form-group col-md-4">
                                                   <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail_box->order_detail->box->code_box) ? $value->order_detail_box->order_detail->box->code_box : '') : (isset($value->order_detail_box->order_detail->space->code_space_small) ? $value->order_detail_box->order_detail->space->code_space_small : '') }}" readonly> </div>
                                               <div class="form-group col-md-2">
-                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label>
+                                              </div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail_box->order_detail->box->name) ? $value->order_detail_box->order_detail->box->name : '') : (isset($value->order_detail_box->order_detail->space->name) ? $value->order_detail_box->order_detail->space->name : '') }}" readonly> </div>
+                                                <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail_box->order_detail->box->name) ? $value->order_detail_box->order_detail->box->name : '') : (isset($value->order_detail_box->order_detail->space->name) ? $value->order_detail_box->order_detail->space->name : '') }}" readonly>
+                                              </div>
+
+                                              <div class="form-group col-md-2">
+                                                <label class="text-right control-label col-form-label">Item </label>
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->item_name ? $value->order_detail_box->item_name : '' }}" readonly>
+                                              </div>
+
+                                              <div class="form-group col-md-2">
+                                                <label class="text-right control-label col-form-label">Image </label>
+                                              </div>
+                                              <div class="form-group col-md-4">
+                                                <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->order_detail_box->images }}">
+                                                  <i class="fa fa-file-image-o"></i>
+                                                  <div style="display: none;">
+                                                      <img width="50%" src="{{ $value->order_detail_box->images }}" alt="image" />
+                                                  </div>
+                                                </a>
+                                              </div>
+
                                           </div>
 
 
@@ -267,6 +289,8 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js')}}"></script>
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js')}}"></script>
 
 
 <script>

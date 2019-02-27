@@ -29,7 +29,7 @@ class ChangeBoxesController extends Controller
 
     public function store(Request $request)
     {
-      abort('404');   
+      abort('404');
     }
 
     public function show($id)
@@ -68,6 +68,6 @@ class ChangeBoxesController extends Controller
 
     public function destroy($id)
     {
-      
+
     }
 }
