@@ -3,7 +3,7 @@
 namespace App\Repositories;
 use App\Model\City;
 use App\Model\Box;
-use App\Model\Space;
+use App\Model\SpaceSmall;
 use App\Model\Area;
 use App\Model\Shelves;
 use App\Model\OrderDetail;
@@ -21,7 +21,7 @@ class DashboardRepository implements DashboardRepositoryInterface
     protected $box;
     protected $order;
 
-    public function __construct(City $city, Area $area, Space $space, Shelves $shelves, Box $box, OrderDetail $order_detail)
+    public function __construct(City $city, Area $area, SpaceSmall $space, Shelves $shelves, Box $box, OrderDetail $order_detail)
     {
         $this->city      = $city;
         $this->area      = $area;
@@ -56,11 +56,12 @@ class DashboardRepository implements DashboardRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->space->query();
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        $data = $data->leftJoin('shelves', 'shelves.id', '=', 'spaces.shelves_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'shelves.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
-        $data = $data->where('spaces.deleted_at', NULL);
+        $data = $data->where('space_smalls.deleted_at', NULL);
         $data = $data->where('areas.deleted_at', NULL);
         $data = $data->count();
         return $data;
@@ -70,12 +71,13 @@ class DashboardRepository implements DashboardRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->space->query();
-        $data = $data->leftJoin('areas', 'areas.id', '=', 'spaces.area_id');
+        $data = $data->leftJoin('shelves', 'shelves.id', '=', 'spaces.shelves_id');
+        $data = $data->leftJoin('areas', 'areas.id', '=', 'shelves.area_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
-        $data = $data->where('spaces.status_id', 10);
-        $data = $data->where('spaces.deleted_at', NULL);
+        $data = $data->where('space_smalls.status_id', 10);
+        $data = $data->where('space_smalls.deleted_at', NULL);
         $data = $data->where('areas.deleted_at', NULL);
         $data = $data->count();
         return $data;
