@@ -70,7 +70,11 @@
                                               <label>Datetime </label>
                                           </div>
                                           <div class="form-group col-md-4">
-                                              <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time_pickup)); ?></p>
+                                              <p>
+                                                @php
+                                                 echo date("d M Y", strtotime($value->date)) . ' ' . date("h:i a", strtotime($value->time_pickup));   
+                                                @endphp
+                                              </p>
                                           </div>
                                           <div class="form-group col-md-2">
                                               <label>Address </label>
@@ -162,7 +166,7 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{  }}date('d M Y', strtotime($value->date))}} {{ $value->time_pickup ? '('.$value->time_pickup.')' : '' }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ date('d M Y', strtotime($value->date))}} {{ $value->time_pickup ? '('.$value->time_pickup.')' : '' }}" readonly> </div>
                                               @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
