@@ -47,7 +47,8 @@ class AddItemBoxController extends Controller
 
         $additem = AddItemBox::find($id);
         if (empty($change)) {
-          return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
+          throw new Exception("Edit Data Add Item Boxes failed.");
+          // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
         }
 
         $additem->status_id    = $status;
@@ -73,7 +74,7 @@ class AddItemBoxController extends Controller
         DB::commit();
       } catch (\Exception $th) {
         DB::rollback();
-        return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
+        return redirect()->route('add-item.index')->with('error', $th->getMessage());
       }
       
       return redirect()->route('add-item.index')->with('success', 'Edit Data Add Item Boxes success.');
