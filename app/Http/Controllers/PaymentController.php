@@ -108,7 +108,7 @@ class PaymentController extends Controller
 
           if ($request->status_id == 7 || $request->status_id == 8){
             $params['status_id'] =  $request->status_id;
-            $params['order_detail_id'] =  $order_detail->id;
+            $params['order_detail_id'] =  $order_details->id;
             $userDevice = UserDevice::where('user_id', $order->user_id)->get();
             if(count($userDevice) > 0){
                 $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
