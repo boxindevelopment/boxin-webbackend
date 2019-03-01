@@ -64,6 +64,8 @@ class PaymentController extends Controller
 
     public function update(Request $request, $id)
     {
+
+      // dd($request);
         $this->validate($request, [
             'status_id'  => 'required',
         ]);
@@ -74,8 +76,9 @@ class PaymentController extends Controller
         DB::beginTransaction();
         try {
           $payment = $this->repository->find($id);
+          // dd($payment);
           if (empty($payment)) {
-            return redirect()->route('payment.index')->with('error', 'Edit status order payment failed.');
+            throw new Exception("Edit status order payment failed.");
           }
 
           $payment->status_id = intval($status);
@@ -106,15 +109,17 @@ class PaymentController extends Controller
             }
           }
 
-          if ($request->status_id == 7 || $request->status_id == 8){
-            $params['status_id'] =  $request->status_id;
-            $params['order_detail_id'] =  $order_details->id;
-            $userDevice = UserDevice::where('user_id', $order->user_id)->get();
-            if(count($userDevice) > 0){
-                $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+          foreach ($order_details as $key => $value) {
+            if ($request->status_id == 7 || $request->status_id == 8){
+              $params['status_id']       = $status;
+              $params['order_detail_id'] = $value->id;
+              $userDevice = UserDevice::where('user_id', $order->user_id)->get();
+              if(count($userDevice) > 0){
+                  $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+              }
             }
           }
-  
+
           DB::commit();
           return redirect()->route('payment.index')->with('success', 'Edit status order payment success.');
         } catch (Exception $th) {
@@ -128,12 +133,22 @@ class PaymentController extends Controller
     {
       if ($types_of_box_room_id == 1 || $types_of_box_room_id == "1") {
         // order box
-        Box::where('id', $id)->update(['status_id' => 10]);
+        $box = Box::find($id);
+        if ($box) {
+          $box->status_id = 10;
+          $box->save();
+        }
+        // Box::where('id', $id)->update(['status_id' => 10]);
       }
       else if ($types_of_box_room_id == 2 || $types_of_box_room_id == "2") {
         // order room
         // change status room to empty
-        SpaceSmall::where('id', $id)->update(['status_id' => 10]);
+        $box = SpaceSmall::find($id);
+        if ($box) {
+          $box->status_id = 10;
+          $box->save();
+        }
+        // SpaceSmall::where('id', $id)->update(['status_id' => 10]);
       }
     }
 
