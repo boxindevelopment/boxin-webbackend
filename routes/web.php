@@ -76,6 +76,9 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
 
+  Route::resource('add-item', 'AddItemBoxController')->only(['index', 'update', 'edit']); // add-item.index
+  Route::resource('add-item-payment', 'AddItemBoxPaymentController')->only(['index', 'update', 'edit']); // add-item-payment.index
+
   Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
 
   Route::resource('storage', 'OrderDetailController')->except(['show']);
