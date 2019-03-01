@@ -65,7 +65,7 @@
                       </div>
                       <div class="form-group">
                         <label>Created At </label>
-                        <p><?php echo date("d M Y H:i:s", strtotime($value->created_at)); ?> </p>
+                        <p>{{ date("d M Y H:i:s", strtotime($value->created_at)) }}</p>
                       </div>
                       <div class="form-group">
                         <label>Bank </label>
