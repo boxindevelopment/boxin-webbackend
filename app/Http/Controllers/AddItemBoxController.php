@@ -14,6 +14,7 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\OrderDetailBox;
 use DB;
+use Exception;
 
 class AddItemBoxController extends Controller
 {
@@ -39,14 +40,12 @@ class AddItemBoxController extends Controller
     public function update(Request $request, $id)
     {
       $this->validate($request, ['status_id'  => 'required']);
-
       $status = $request->status_id;
-
       DB::beginTransaction();
       try {
 
         $additem = AddItemBox::find($id);
-        if (empty($change)) {
+        if (empty($additem)) {
           throw new Exception("Edit Data Add Item Boxes failed.");
           // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
         }
