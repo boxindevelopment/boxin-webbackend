@@ -157,36 +157,36 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->order->type_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($value->order_detail_box->order_detail->date))}} {{ $value->order_detail_box->order_detail->time_pickup ? '('.$value->order_detail_box->order_detail->time_pickup.')' : '' }}" readonly> </div>
-                                              @if($value->order_detail_box->order_detail->address != '' || $value->order_detail_box->order_detail->address != null)
+                                                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($value->date))}} {{ $value->time_pickup ? '('.$value->time_pickup.')' : '' }}" readonly> </div>
+                                              @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->address }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->address }}" readonly> </div>
                                               @endif
-                                              @if($value->order_detail_box->order_detail->note != '' || $value->order_detail_box->order_detail->note != null)
+                                              @if($value->note != '' || $value->note != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->note }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->note }}" readonly> </div>
                                               @endif
-                                              @if($value->order_detail_box->order_detail->order->type_of_pickup_id == 1)
+                                              @if($value->types_of_pickup_id == 1)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Driver Name</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->driver_name }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_name }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Driver Phone</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->driver_phone }}" readonly> </div>
-                                              <div class="form-group col-md-2">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_phone }}" readonly> </div>
+                                              {{-- <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Deliver Fee</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->pickup_fee }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->deliver_fee }}" readonly> </div> --}}
                                               @endif
                                           </div>
                                       @endif

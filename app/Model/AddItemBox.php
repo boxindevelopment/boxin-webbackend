@@ -18,7 +18,8 @@ class AddItemBox extends Model
       'status_id', 
       'deliver_fee', 
       'driver_name', 
-      'driver_phone'
+      'driver_phone',
+      'note'
   ];
 
   public function order_detail()
