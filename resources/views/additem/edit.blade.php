@@ -136,8 +136,15 @@
                                                   <tbody>
                                                     @foreach ($value->items as $k => $v)
                                                     <tr>
-                                                      <td>{{ $v->name }}</td>
-                                                      <td>{{ $v->image }}</td>
+                                                      <td>{{ $v->item_name }}</td>
+                                                      <td>
+                                                        <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->image }}">
+                                                          <i class="fa fa-file-image-o"></i>
+                                                          <div style="display: none;">
+                                                              <img width="50%" src="{{ $value->image }}" alt="image" />
+                                                          </div>
+                                                        </a>
+                                                      </td>
                                                     </tr>
                                                     @endforeach
                                                   </tbody>
