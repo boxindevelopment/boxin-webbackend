@@ -138,10 +138,10 @@
                                                     <tr>
                                                       <td>{{ $v->item_name }}</td>
                                                       <td>
-                                                        <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->image }}">
+                                                        <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $v->image }}">
                                                           <i class="fa fa-file-image-o"></i>
                                                           <div style="display: none;">
-                                                              <img width="50%" src="{{ $value->image }}" alt="image" />
+                                                              <img width="50%" src="{{ $v->image }}" alt="image" />
                                                           </div>
                                                         </a>
                                                       </td>
