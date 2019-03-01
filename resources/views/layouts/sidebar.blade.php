@@ -117,6 +117,9 @@
                     <li class="{{ Route::currentRouteNamed('payment.extend') ? 'active' : null }}">
                       <a href="{{ route('payment.extend') }}"><i class="mdi mdi-cash"></i> &nbsp;Extend Order </a>
                     </li>
+                    <li class="{{ Route::currentRouteNamed('add-item-payment.index') ? 'active' : null }}">
+                      <a href="{{ route('add-item-payment.index') }}"><i class="mdi mdi-cash"></i> &nbsp;Add Item </a>
+                    </li>
                   </ul>
                 </li>
 
@@ -134,6 +137,13 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('add-item.index')||Route::currentRouteNamed('add-item.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('add-item.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-box"></i>
+                    <span class="hide-menu">Add Item Boxes</span>
+                  </a>
+                </li>
+                
                 <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create')||Route::currentRouteNamed('return.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
