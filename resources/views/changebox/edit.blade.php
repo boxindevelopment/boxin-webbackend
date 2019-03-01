@@ -157,7 +157,7 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
