@@ -32,7 +32,8 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $order = $this->model->query();
-        $order = $order->select('change_boxes.id', 'change_boxes.order_detail_box_id', 'change_boxes.types_of_pickup_id', 'change_boxes.status_id', 'change_boxes.created_at', 'change_boxes.date', 'change_boxes.time_pickup');
+        // $order = $order->select('change_boxes.id', 'change_boxes.order_detail_box_id', 'change_boxes.types_of_pickup_id', 'change_boxes.status_id', 'change_boxes.created_at', 'change_boxes.date', 'change_boxes.time_pickup', 'change_boxes.order_detail_id');
+        $order = $order->select('change_boxes.*');
         $order = $order->leftJoin('order_detail_boxes','order_detail_boxes.id','=','change_boxes.order_detail_box_id');
         $order = $order->leftJoin('order_details','order_details.id','=','order_detail_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
