@@ -22,7 +22,7 @@ class ChangeBoxesController extends Controller
 
     public function index()
     {
-      $data   = $this->repository->all();
+      $data = $this->repository->all();
       return view('changebox.index', compact('data'));
     }
 

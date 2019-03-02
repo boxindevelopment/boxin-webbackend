@@ -73,10 +73,12 @@
                             <td align="center">{{ $value->created_at->format('d-m-Y') }}</td>
                             <td>{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
                             <td>
-                              {{ $value->order_detail_box->order_detail->order->user->first_name}} {{ $value->order_detail_box->order_detail->order->user->last_name}}
+                              @if ($value->order_detail)
+                              {{ $value->order_detail->order->user->first_name}} {{ $value->order_detail->order->user->last_name}} 
+                              @endif
                               <br>
-                              @if ($value->order_detail_box->order_detail->change_box_payment)
-                              ({{ $value->order_detail_box->order_detail->change_box_payment->id_name }})
+                              @if ($value->order_detail->change_box_payment)
+                              ({{ $value->order_detail->change_box_payment->id_name }})
                               @endif
                             </td>
                             <td class="text-center">

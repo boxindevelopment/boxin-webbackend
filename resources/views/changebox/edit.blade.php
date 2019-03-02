@@ -233,7 +233,7 @@
 
                     <div class="col-md-4">
 
-                      <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_box->order_detail_id }}" required>
+                      {{-- <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_box->order_detail_id }}" required> --}}
 
 
                       <!-- return delivery box  -->
