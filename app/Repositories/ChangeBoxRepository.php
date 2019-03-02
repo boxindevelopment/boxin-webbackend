@@ -40,8 +40,10 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
         if(Auth::user()->roles_id == 2){
             $order = $order->where('orders.area_id', $admin->area_id);
         }
-        $order = $order->orderBy('status_id','DESC');
-        $order = $order->orderBy('id','DESC')->get();
+        
+        $order = $order->orderBy('change_boxes.date','DESC')->get();
+        // $order = $order->orderBy('status_id','DESC');
+        // $order = $order->orderBy('id','DESC')->get();
 
         return $order;
     }

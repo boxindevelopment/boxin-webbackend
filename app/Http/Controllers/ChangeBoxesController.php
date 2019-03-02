@@ -53,6 +53,8 @@ class ChangeBoxesController extends Controller
             'status_id'  => 'required',
         ]);
 
+        $change = ChangeBox::find($id);
+
         DB::beginTransaction();
         try {
           //code...
@@ -64,17 +66,18 @@ class ChangeBoxesController extends Controller
           $change->save();
 
           if ($status == 12) {
-            $cbd = ChangeBoxDetail::where('change_box_id', $id)->pluck('order_detail_box')->toArray();
+            $cbd = ChangeBoxDetail::where('change_box_id', $id)->pluck('order_detail_box_id')->toArray();
             if (count($cbd) > 0) {
-              OrderDetailBox::whereIn('id', $cbd)->update(['status' => 20]);
+              OrderDetailBox::whereIn('id', $cbd)->update(['status_id' => 20]);
             }
           }
           
           DB::commit();
           return redirect()->route('change-box.index')->with('success', 'Edit Data Return Boxes success.');
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
           //throw $th;
           DB::rollback();
+          // return redirect()->route('change-box.index')->with('error', $th->getMessage());
           return redirect()->route('change-box.index')->with('error', 'Edit Data Return Boxes failed.');
         }
         
