@@ -28,8 +28,8 @@ class AddItem extends Model
 
     public function getImageAttribute()
     {
-      $DEV_URL = 'https://boxin-dev-order.azurewebsites.net/images/detail_item_box/additem/';
-      $PROD_URL = 'https://boxin-prod-order.azurewebsites.net/images/detail_item_box/additem/';
+      $DEV_URL = 'https://boxin-dev-order.azurewebsites.net/images/detail_item_box/';
+      $PROD_URL = 'https://boxin-prod-order.azurewebsites.net/images/detail_item_box/';
       $url = (env('DB_DATABASE') == 'coredatabase') ? $DEV_URL : $PROD_URL;
       $image = $this->item_image;
       return $url . $image;
