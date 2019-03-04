@@ -68,7 +68,7 @@ class ReturnBoxesController extends Controller
 
           $return = ReturnBoxes::find($id);
           if (empty($return)) {
-            throw new Exception('Edit Data Return Boxes failed.');
+            throw new Exception('Edit Data Return Boxes failed.[ER-01]');
           }
 
           $return->status_id    = $request->status_id;
@@ -76,23 +76,30 @@ class ReturnBoxesController extends Controller
           $return->driver_phone = $request->driver_phone;
           $return->save();
 
-          $order_detail            = OrderDetail::find($request->order_detail_id);
-          $order_detail->status_id = $request->status_id == '12' ? '18' : $request->status_id;
+          $order_detail = OrderDetail::find($request->order_detail_id);
+          if (empty($order_detail)) {
+            throw new Exception('Edit Data Return Boxes failed.[ER-02]');
+          }
+          $order_detail->status_id = $request->status_id == 12 ? '18' : $request->status_id;
           $order_detail->save();
-
+          
           //change status box/room to 10 (empty)
-          if ($request->status_id == '12'){
+          if ($request->status_id == 12){
             //box
             if($order_detail->types_of_box_room_id == 1) {
                 $box = Box::find($order_detail->room_or_box_id);
-                $box->status_id = 10;
-                $box->save();
+                if ($box) {
+                  $box->status_id = 10;
+                  $box->save();
+                }
             }
             //room
             else if ($order_detail->types_of_box_room_id == 2) {
                 $room = Room::find($order_detail->room_or_box_id);
-                $room->status_id = 10;
-                $room->save();
+                if ($room) {
+                  $room->status_id = 10;
+                  $room->save();
+                }
             }
           }
 
@@ -101,9 +108,9 @@ class ReturnBoxesController extends Controller
           if ($request->status_id == 12){
               $order = Order::find($order_detail->order_id);
               $userDevice = UserDevice::where('user_id', $order->user_id)->get();
-              if(count($userDevice) > 0){
-                  //Notif message "Thank you for using Boxin Apps"
-              $response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+              if (count($userDevice) > 0){
+                //Notif message "Thank you for using Boxin Apps"
+                $response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
               }
           }
 
@@ -111,6 +118,7 @@ class ReturnBoxesController extends Controller
           return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');
         } catch (Exception $th) {
           DB::rollback();
+          return redirect()->route('return.index')->with('error', $th->getMessage());
           return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
         }
 
