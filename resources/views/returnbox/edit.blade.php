@@ -70,7 +70,11 @@
                                               <label>Datetime </label>
                                           </div>
                                           <div class="form-group col-md-4">
-                                              <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                                              <p>
+                                                @php
+                                                  echo date("d M Y", strtotime($value->date)) . ' - ' . date("h:i a", strtotime($value->time))
+                                                @endphp
+                                              </p>
                                           </div>
                                           <div class="form-group col-md-2">
                                               <label>Address </label>
@@ -138,18 +142,18 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($value->order_detail->date))}} ({{ $value->order_detail->time_pickup }})" readonly> </div>
-                                              @if($value->order_detail->address != '' || $value->order_detail->address != null)
+                                                  <input type="text" class="form-control form-control-line" value="{{  date("d M Y", strtotime($value->date)) . ' - ' . date("h:i a", strtotime($value->time)) }}" readonly> </div>
+                                              @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->address }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->address }}" readonly> </div>
                                               @endif
-                                              @if($value->order_detail->note != '' || $value->order_detail->note != null)
+                                              @if($value->note != '' || $value->note != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->note }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->note }}" readonly> </div>
                                               @endif
                                               @if($value->order_detail->order->type_of_pickup_id == 1)
                                               <div class="form-group col-md-2">
