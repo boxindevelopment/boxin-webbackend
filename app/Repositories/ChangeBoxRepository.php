@@ -41,7 +41,7 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
             $order = $order->where('orders.area_id', $admin->area_id);
         }
         
-        $order = $order->orderBy('change_boxes.date','DESC')->get();
+        $order = $order->orderBy('change_boxes.created_at','DESC')->get();
         // $order = $order->orderBy('status_id','DESC');
         // $order = $order->orderBy('id','DESC')->get();
 
