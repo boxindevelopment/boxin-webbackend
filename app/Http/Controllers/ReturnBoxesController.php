@@ -9,6 +9,7 @@ use App\Model\Order;
 use App\Model\Box;
 use App\Model\Room;
 use App\Model\Space;
+use App\Model\SpaceSmall;
 use App\Model\UserDevice;
 use App\Repositories\ReturnBoxesRepository;
 use Requests;
@@ -88,18 +89,25 @@ class ReturnBoxesController extends Controller
             //box
             if($order_detail->types_of_box_room_id == 1) {
                 $box = Box::find($order_detail->room_or_box_id);
-                if ($box) {
-                  $box->status_id = 10;
-                  $box->save();
+                if (empty($box)) {
+                  throw new Exception('Edit Data Return Boxes failed.[Box not Found]');
                 }
+                $box->status_id = 10;
+                $box->save();
             }
             //room
             else if ($order_detail->types_of_box_room_id == 2) {
-                $room = Room::find($order_detail->room_or_box_id);
-                if ($room) {
-                  $room->status_id = 10;
-                  $room->save();
+                $room = SpaceSmall::find($order_detail->room_or_box_id);
+                if (empty($room)) {
+                  throw new Exception('Edit Data Return Boxes failed.[Room not Found]');
                 }
+                $room->status_id = 10;
+                $room->save();
+                // $room = Room::find($order_detail->room_or_box_id);
+                // if ($room) {
+                //   $room->status_id = 10;
+                //   $room->save();
+                // }
             }
           }
 
