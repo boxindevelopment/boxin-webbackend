@@ -68,7 +68,7 @@ class ChangeBoxesController extends Controller
           if ($status == 12) {
             $cbd = ChangeBoxDetail::where('change_box_id', $id)->pluck('order_detail_box_id')->toArray();
             if (count($cbd) > 0) {
-              OrderDetailBox::whereIn('id', $cbd)->update(['status_id' => 20]);
+              OrderDetailBox::whereIn('id', $cbd)->update(['status_id' => 21]);
             }
           }
           
