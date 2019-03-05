@@ -61,9 +61,13 @@ class ChangeBoxesController extends Controller
           $status               = $request->status_id;
           $change               = ChangeBox::find($id);
           $change->status_id    = $status;
-          $change->driver_name  = $request->driver_name;
-          $change->driver_phone = $request->driver_phone;
-          $change->save();
+          if ($status == 2) {
+            $change->driver_name  = $request->driver_name;
+            $change->driver_phone = $request->driver_phone;
+            $change->save();
+          } else {
+            $change->save();
+          }
 
           if ($status == 12) {
             $cbd = ChangeBoxDetail::where('change_box_id', $id)->pluck('order_detail_box_id')->toArray();

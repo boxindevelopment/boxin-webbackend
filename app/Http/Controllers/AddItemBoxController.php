@@ -51,9 +51,13 @@ class AddItemBoxController extends Controller
         }
 
         $additem->status_id    = $status;
-        $additem->driver_name  = $request->driver_name;
-        $additem->driver_phone = $request->driver_phone;
-        $additem->save();
+        if ($status == 2) {
+          $additem->driver_name  = $request->driver_name;
+          $additem->driver_phone = $request->driver_phone;
+          $additem->save();
+        } else {
+          $additem->save();
+        }
 
         // insert to order detail boxes table 
         if ($status == 12 || $status == '12') {

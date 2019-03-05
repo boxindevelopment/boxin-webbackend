@@ -189,7 +189,7 @@
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                             <select class="form-control" id="select2" name="status_id" required>
-                                <option value="15" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                                 <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                                 <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                               </select>
