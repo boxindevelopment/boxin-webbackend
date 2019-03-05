@@ -73,9 +73,13 @@ class ReturnBoxesController extends Controller
           }
 
           $return->status_id    = $request->status_id;
-          $return->driver_name  = $request->driver_name;
-          $return->driver_phone = $request->driver_phone;
-          $return->save();
+          if ($request->status_id == 2) {
+            $return->driver_name  = $request->driver_name;
+            $return->driver_phone = $request->driver_phone;
+            $return->save();
+          } else {
+            $return->save();
+          }
 
           $order_detail = OrderDetail::find($request->order_detail_id);
           if (empty($order_detail)) {
