@@ -68,13 +68,15 @@
 
                             if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8){
                               $label = 'label-danger';
-                            } else if($value->status_id == 12 || $value->status_id == 7){
+                            } else if($value->status_id == 12){
+                              $label = 'label-inverse';
+                            } else if($value->status_id == 7){
                               $label = 'label-success';
                             } else if($value->status_id == 2){
                               $label = 'label-warning';
-                          } else {
-                              $label = 'label-warning';
-                          }
+                            } else {
+                                $label = 'label-warning';
+                            }
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
