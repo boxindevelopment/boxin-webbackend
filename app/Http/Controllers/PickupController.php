@@ -52,6 +52,7 @@ class PickupController extends Controller
     public function edit($id)
     {
       $pickup     = PickupOrder::select('pickup_orders.*')->where('id',$id)->get();
+      // dd($pickup);
       return view('pickup.edit', compact('pickup', 'id'));
     }
 
@@ -63,17 +64,29 @@ class PickupController extends Controller
 
         $order_id = $request->order_id;
         $status   = $request->status_id;
+
+        $stored_status = $status;
+        if ($status == 12) {
+          $stored_status = 4;
+        }
+
+        $now_date = Carbon::now()->toDateString();
         
         DB::beginTransaction();
         try {
 
           $order            = Order::find($order_id);
-          $order->status_id = $status == '12' ? '4' : $status;
+          $order->status_id = $stored_status;
           $order->save();
 
           $users_id = $order->user_id;
 
-          $pickup      = PickupOrder::find($id);
+          $pickup = PickupOrder::find($id);
+          $execution_date = Carbon::parse($pickup->date)->toDateString();
+          if ($now_date->lt($execution_date)) {
+            throw new Exception('Tanggal pickup belum sesuai, eksekusi hanya bisa dilakukan pada tanggal yang tertera.');
+          }
+
           $starts_date = null;
           if ($pickup) {
             $starts_date = $pickup->date;
@@ -83,11 +96,9 @@ class PickupController extends Controller
 
           $order_details = OrderDetail::where('order_id', '=', $order_id)->get();
           foreach ($order_details as $key => $order_detail) {
-            $order_detail->status_id  = $status == '12' ? '4' : $status;
-            
+            $order_detail->status_id = $stored_status;
             // jika sudah finished (12) atau ondeliver (2)
-            if ($order_detail->status_id == 12 || $order_detail->status_id == 2) {
-
+            if ($status == 12 || $status == 2) {
                 $order_detail->start_date = $starts_date;
                 // daily
                 if ($order_detail->types_of_duration_id == 1 || $order_detail->types_of_duration_id == '1') {
@@ -117,7 +128,7 @@ class PickupController extends Controller
             $order_detail->save();
           }
 
-          if ($order_detail->status_id == 12 || $order_detail->status_id == 2) {
+          if ($status == 12 || $status == 2) {
             $pickup2                 = PickupOrder::find($id);
             $pickup2->status_id      = $status;
             $pickup2->driver_name    = $request->driver_name;
