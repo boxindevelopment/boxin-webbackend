@@ -58,9 +58,7 @@ class PickupController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'status_id'  => 'required',
-        ]);
+        $this->validate($request, ['status_id'  => 'required']);
 
         $order_id = $request->order_id;
         $status   = $request->status_id;
@@ -70,7 +68,19 @@ class PickupController extends Controller
           $stored_status = 4;
         }
 
-        $now_date = Carbon::now()->toDateString();
+        $now_date = Carbon::now();
+        $pickup = PickupOrder::find($id);
+        $execution_date = Carbon::parse($pickup->date);
+        if ($now_date->lt($execution_date)) {
+          return redirect()->route('pickup.index')->with('error', 'Edit Data Pickup Order failed, Tanggal tidak sesuai.');
+        }
+
+        $starts_date = null;
+        if ($pickup) {
+          $starts_date = $execution_date->toDateString();
+        } else {
+          $starts_date = Carbon::now()->toDateString();
+        }
         
         DB::beginTransaction();
         try {
@@ -78,74 +88,68 @@ class PickupController extends Controller
           $order            = Order::find($order_id);
           $order->status_id = $stored_status;
           $order->save();
-
           $users_id = $order->user_id;
-
-          $pickup = PickupOrder::find($id);
-          $execution_date = Carbon::parse($pickup->date)->toDateString();
-          if ($now_date->lt($execution_date)) {
-            throw new Exception('Tanggal pickup belum sesuai, eksekusi hanya bisa dilakukan pada tanggal yang tertera.');
-          }
-
-          $starts_date = null;
-          if ($pickup) {
-            $starts_date = $pickup->date;
-          } else {
-            $starts_date = Carbon::now();
-          }
-
+        
           $order_details = OrderDetail::where('order_id', '=', $order_id)->get();
           foreach ($order_details as $key => $order_detail) {
             $order_detail->status_id = $stored_status;
             // jika sudah finished (12) atau ondeliver (2)
             if ($status == 12 || $status == 2) {
+                $new_end_date = null;
                 $order_detail->start_date = $starts_date;
                 // daily
                 if ($order_detail->types_of_duration_id == 1 || $order_detail->types_of_duration_id == '1') {
-                    $order_detail->end_date = date('Y-m-d', strtotime('+'.$order_detail->duration.' days', strtotime($starts_date)));
-
+                    $new_end_date = date('Y-m-d', strtotime('+'.$order_detail->duration.' days', strtotime($starts_date)));
                 }
                 // weekly
                 else if ($order_detail->types_of_duration_id == 2 || $order_detail->types_of_duration_id == '2') {
                     $end_date               = $order_detail->duration * 7;
-                    $order_detail->end_date = date('Y-m-d', strtotime('+'.$end_date.' days', strtotime($starts_date)));
+                    $new_end_date = date('Y-m-d', strtotime('+'.$end_date.' days', strtotime($starts_date)));
                 }
                 // monthly
                 else if ($order_detail->types_of_duration_id == 3 || $order_detail->types_of_duration_id == '3') {
-                    $order_detail->end_date = date('Y-m-d', strtotime('+'.$order_detail->duration.' month', strtotime($starts_date)));
+                    $new_end_date = date('Y-m-d', strtotime('+'.$order_detail->duration.' month', strtotime($starts_date)));
                 }
                 // 6month
                 else if ($order_detail->types_of_duration_id == 7 || $order_detail->types_of_duration_id == '7') {
                     $end_date               = $order_detail->duration * 6;
-                    $order_detail->end_date = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($starts_date)));
+                    $new_end_date = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($starts_date)));
                 }
                 // annual
                 else if ($order_detail->types_of_duration_id == 8 || $order_detail->types_of_duration_id == '8') {
                     $end_date               = $order_detail->duration * 12;
-                    $order_detail->end_date = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($starts_date)));
+                    $new_end_date = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($starts_date)));
                 }
+                $order_detail->end_date = Carbon::parse($new_end_date);
             }  
             $order_detail->save();
           }
 
           if ($status == 12 || $status == 2) {
-            $pickup2                 = PickupOrder::find($id);
-            $pickup2->status_id      = $status;
-            $pickup2->driver_name    = $request->driver_name;
-            $pickup2->driver_phone   = $request->driver_phone;
-            $pickup2->save();
+              $pickup->status_id    = $status;
+              $pickup->driver_name  = $request->driver_name;
+              $pickup->driver_phone = $request->driver_phone;
+              $pickup->save();
           }
 
           $params['status_id']       = $status;
           $params['order_detail_id'] = $order_detail->id;
           $userDevice = UserDevice::where('user_id', $users_id)->get();
           if (count($userDevice) > 0){
-              if ($status == 2){
-                  //Notif message "Your items is on the way back to you"
-                  $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
-              } else if($status == 12) {
+              switch ($status) {
+                case 12:
                   //Notif message "Congratulation! Your items has been stored"
                   $response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+                  break;
+
+                case 2:
+                  //Notif message "Your items is on the way back to you"
+                  $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
+                  break;
+                
+                default:
+                  # code...
+                  break;
               }
           }
           
