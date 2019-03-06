@@ -35,6 +35,7 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
         }
         $data = $data->where('pickup_orders.status_id', '!=', 4);
         // $data = $data->orderBy('orders.created_at', 'DESC');
+        $data = $data->distinct('pickup_orders.order_id');
         $data = $data->orderBy('pickup_orders.date', 'DESC');
         $data = $data->get();
         return $data;
