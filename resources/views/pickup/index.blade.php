@@ -40,6 +40,7 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="15%">Date</th>
                           <th width="15%">OrderID</th>
                           <th width="">Customer Name</th>
                           <th width="15%" class="text-center">Box Pickup</th>
@@ -77,6 +78,9 @@
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
+                            <td align="center">
+                              {{  date('d M Y', strtotime($value->date)) }}
+                            </td>
                             <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}}</td>
                             <td class="text-center">
