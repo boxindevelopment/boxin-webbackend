@@ -52,14 +52,22 @@ class ChangeBoxesController extends Controller
         $this->validate($request, [
             'status_id'  => 'required',
         ]);
-
-        $change = ChangeBox::find($id);
-
+        $status               = $request->status_id;
         DB::beginTransaction();
         try {
           //code...
-          $status               = $request->status_id;
-          $change               = ChangeBox::find($id);
+          $change = ChangeBox::find($id);
+          if (empty($change)) {
+            throw new Exception("Edit Data Change Boxes failed.");
+            // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
+          }
+
+          $now_date = Carbon::now();
+          $execution_date = Carbon::parse($change->date);
+          if ($now_date->lt($execution_date)) {
+            throw new Exception("Edit Data Change Boxes failed, Tanggal tidak sesuai.");
+          }
+
           $change->status_id    = $status;
           if ($status == 2) {
             $change->driver_name  = $request->driver_name;
@@ -77,12 +85,12 @@ class ChangeBoxesController extends Controller
           }
           
           DB::commit();
-          return redirect()->route('change-box.index')->with('success', 'Edit Data Return Boxes success.');
+          return redirect()->route('change-box.index')->with('success', 'Edit Data Change Boxes success.');
         } catch (Exception $th) {
           //throw $th;
           DB::rollback();
-          // return redirect()->route('change-box.index')->with('error', $th->getMessage());
-          return redirect()->route('change-box.index')->with('error', 'Edit Data Return Boxes failed.');
+          return redirect()->route('change-box.index')->with('error', $th->getMessage());
+          // return redirect()->route('change-box.index')->with('error', 'Edit Data Return Boxes failed.');
         }
         
         // if($change){

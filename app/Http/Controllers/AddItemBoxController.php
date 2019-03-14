@@ -15,6 +15,7 @@ use App\Model\OrderDetail;
 use App\Model\OrderDetailBox;
 use DB;
 use Exception;
+use Carbon\Carbon;
 
 class AddItemBoxController extends Controller
 {
@@ -48,6 +49,13 @@ class AddItemBoxController extends Controller
         if (empty($additem)) {
           throw new Exception("Edit Data Add Item Boxes failed.");
           // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed.');
+        }
+
+        $now_date = Carbon::now();
+        $execution_date = Carbon::parse($additem->date);
+        if ($now_date->lt($execution_date)) {
+          throw new Exception("Edit Data Add Item Boxes failed, Tanggal tidak sesuai.");
+          // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed, Tanggal tidak sesuai.');
         }
 
         $additem->status_id    = $status;

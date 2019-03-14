@@ -293,7 +293,7 @@
                             @if($value->status_id == 19)
                               <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            @else
+                            @elseif($value->status_id == 7)
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                             @endif
                           </select>
