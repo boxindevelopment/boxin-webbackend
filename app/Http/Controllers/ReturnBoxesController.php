@@ -72,6 +72,12 @@ class ReturnBoxesController extends Controller
             throw new Exception('Edit Data Return Boxes failed.[ER-01]');
           }
 
+          $now_date = Carbon::now();
+          $execution_date = Carbon::parse($return->date);
+          if ($now_date->lt($execution_date)) {
+            throw new Exception("Edit Data Return Boxes failed, Tanggal tidak sesuai.");
+          }
+
           $return->status_id    = $request->status_id;
           if ($request->status_id == 2) {
             $return->driver_name  = $request->driver_name;
@@ -131,7 +137,7 @@ class ReturnBoxesController extends Controller
         } catch (Exception $th) {
           DB::rollback();
           return redirect()->route('return.index')->with('error', $th->getMessage());
-          return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
+          // return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
         }
 
         

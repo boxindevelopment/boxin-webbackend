@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Payment;
 use App\Model\Order;
+use App\Model\Box;
+use App\Model\SpaceSmall;
 use App\Model\OrderDetail;
 use App\Model\PickupOrder;
 use App\Model\UserDevice;
@@ -95,7 +97,7 @@ class PaymentController extends Controller
           $array = array();
           $order_details = OrderDetail::where('order_id', $order_id)->get();
           foreach ($order_details as $key => $value) {
-            $array = array(
+            $array[] = array(
               'room_or_box_id'       => $value->room_or_box_id,
               'types_of_box_room_id' => $value->types_of_box_room_id
             );
