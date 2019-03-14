@@ -41,7 +41,7 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="15%" class="text-center">Request Date</th>
-                          <th width="20%" class="text-center">Returning Date</th>
+                          <th width="20%" class="text-center">Coming Date</th>
                           <th width="">Customer Name</th>
                           <th width="">Items</th>
                           <th width="15%" class="text-center">Box Pickup</th>
