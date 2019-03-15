@@ -220,13 +220,6 @@
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                           </select>
                       </div>
-                      @else
-                        <div class="form-group">
-                          <label for="">Status <span class="text-danger">*</span></label>
-                            <select class="form-control" id="select2" name="status_id" required>
-                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            </select>
-                        </div>
                       @endif
 
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>

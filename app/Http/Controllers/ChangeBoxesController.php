@@ -10,6 +10,7 @@ use App\Model\OrderDetailBox;
 use App\Repositories\ChangeBoxRepository;
 use DB;
 use Exception;
+use Carbon\Carbon;
 
 class ChangeBoxesController extends Controller
 {
@@ -66,6 +67,11 @@ class ChangeBoxesController extends Controller
           $execution_date = Carbon::parse($change->date);
           if ($now_date->lt($execution_date)) {
             throw new Exception("Edit Data Change Boxes failed, Tanggal tidak sesuai.");
+          }
+
+          // sudah finished
+          if ($change->status_id == 12) {
+            throw new Exception("Edit Data Change Boxes failed, Sudah finished.");
           }
 
           $change->status_id    = $status;

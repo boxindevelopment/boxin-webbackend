@@ -15,6 +15,7 @@ use App\Repositories\ReturnBoxesRepository;
 use Requests;
 use DB;
 use Exception;
+use Carbon\Carbon;
 
 class ReturnBoxesController extends Controller
 {
@@ -76,6 +77,11 @@ class ReturnBoxesController extends Controller
           $execution_date = Carbon::parse($return->date);
           if ($now_date->lt($execution_date)) {
             throw new Exception("Edit Data Return Boxes failed, Tanggal tidak sesuai.");
+          }
+
+          // sudah finished
+          if ($return->status_id == 12) {
+            throw new Exception("Edit Data Return Boxes failed, Sudah finished.");
           }
 
           $return->status_id    = $request->status_id;

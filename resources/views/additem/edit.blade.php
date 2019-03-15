@@ -231,18 +231,20 @@
                       <!-- end return delivery box  -->
                       <!-- pickup box on warehouse -->
                       @elseif ($value->types_of_pickup_id == 2)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" required>
-                            @if($value->status_id == 25)
-                              <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            @elseif($value->status_id == 7)
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            @endif
-                          </select>
-                        </div>
-                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @if($value->status_id == 25 || $value->status_id == 7)
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              @if($value->status_id == 25)
+                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @elseif($value->status_id == 7)
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @endif
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif
                       @endif
                       <!-- end pickup box on warehouse  -->
                       @endforeach
