@@ -58,7 +58,12 @@ class AddItemBoxController extends Controller
           // return redirect()->route('add-item.index')->with('error', 'Edit Data Add Item Boxes failed, Tanggal tidak sesuai.');
         }
 
-        $additem->status_id    = $status;
+        // sudah finished
+        if ($additem->status_id == 12) {
+          throw new Exception("Edit Data Add Item Boxes failed, Sudah finished.");
+        }
+
+        $additem->status_id = $status;
         if ($status == 2) {
           $additem->driver_name  = $request->driver_name;
           $additem->driver_phone = $request->driver_phone;
