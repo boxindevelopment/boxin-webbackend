@@ -12,7 +12,13 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'user_id', 'area_id', 'total', 'qty', 'status_id' 
+      'user_id',
+      'area_id',
+      'total',
+      'qty',
+      'status_id',
+      'payment_expired',
+      'payment_status_expired' // 0 = false, 1 = true
     ];
 
     public function user()

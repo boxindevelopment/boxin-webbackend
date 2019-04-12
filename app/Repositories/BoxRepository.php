@@ -21,18 +21,17 @@ class BoxRepository implements BoxRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('boxes.*');        
+        $data = $data->select('boxes.*');
         if(Auth::user()->roles_id == 2){
             $data = $data->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id');
-            $data = $data->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id');
-            $data = $data->where('spaces.area_id', $admin->area_id);
+            $data = $data->where('shelves.area_id', $admin->area_id);
         }
-        $data = $data->where('boxes.deleted_at', NULL); 
+        $data = $data->where('boxes.deleted_at', NULL);
         $data = $data->orderBy('boxes.updated_at', 'DESC')->orderBy('boxes.id','DESC');
         $data = $data->get();
         return $data;
@@ -63,26 +62,24 @@ class BoxRepository implements BoxRepositoryInterface
 
     public function getEdit($id)
     {
-        $data = $this->model->select(array('boxes.*', 
-                DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'), 
+        $data = $this->model->select(array('boxes.*',
+                DB::raw('(cities.id) as city_id'), DB::raw('(cities.id_name) as city_id_name'),
                 DB::raw('(areas.id) as area_id'), DB::raw('(areas.id_name) as area_id_name'),
-                DB::raw('(spaces.id) as space_id'), DB::raw('(spaces.id_name) as space_id_name'),
-                DB::raw('(shelves.id) as shelves_id'), DB::raw('(shelves.id_name) as shelves_id_name')))
+                DB::raw('(shelves.id) as shelves_id'), 'shelves.code_shelves'))
                 ->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id')
-                ->leftJoin('spaces', 'spaces.id', '=', 'shelves.space_id')
-                ->leftJoin('areas', 'areas.id', '=' ,'spaces.area_id')
+                ->leftJoin('areas', 'areas.id', '=' ,'shelves.area_id')
                 ->leftJoin('cities', 'cities.id', '=', 'areas.city_id')
                 ->where('boxes.id', $id)
                 ->first();
-                
+
         return $data;
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(Box $box, $data)
     {
         return $box->update($data);

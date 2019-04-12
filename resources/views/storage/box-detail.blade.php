@@ -101,7 +101,7 @@
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label></div>
               <div class="form-group col-md-4">
-                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->id_name : $detail->space->id_name }}" readonly> </div>
+                  <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? $detail->box->code_box : $detail->space->code_space_small }}" readonly> </div>
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
               <div class="form-group col-md-4">
@@ -157,27 +157,26 @@
             <div class="row el-element-overlay">
               @if(count($detail_order_box)>0)
                 @foreach ($detail_order_box as $key => $value)
-                @php
-                  $url = 'https://boxin-prod-order.azurewebsites.net/images/detail_item_box/';
-                @endphp
+                @if ($value->status_id == 9)
                 <div class="col-lg-3 col-md-6">
                     <div class="card">
                         <div class="el-card-item">
-                            <div class="el-card-avatar el-overlay-1"> <img src="{{$url}}{{ $value->item_image }}" alt="user" />
+                            <div class="el-card-avatar el-overlay-1"> <img src="{{ $value->images }}" alt="user" />
                                 <div class="el-overlay">
                                     <ul class="el-info">
-                                        <li><a class="btn default btn-outline image-popup-vertical-fit" href="{{$url}}{{ $value->item_image }}"><i class="icon-magnifier"></i></a></li>
+                                        <li><a class="btn default btn-outline image-popup-vertical-fit" href="{{ $value->images }}"><i class="icon-magnifier"></i></a></li>
                                         <li><a class="btn default btn-outline" href="javascript:void(0);"><i class="icon-link"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="el-card-content">
                               <h3 class="box-title">{{ $value->item_name }}</h3> <small>{{ $value->note }}</small>
-                                <br/> 
+                                <br/>
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
+                @endif
                 @endforeach
               @else
               <div class="col-lg-12" style="color: grey">Data Not Found</div>

@@ -10,12 +10,12 @@ class Shelves extends Model
     protected $table = 'shelves';
 
     protected $fillable = [
-        'space_id', 'name', 'id_name'
+        'name', 'area_id', 'code_shelves'
     ];
 
-    public function space()
+    public function area()
     {
-        return $this->belongsTo('App\Model\Space', 'space_id', 'id');
+        return $this->belongsTo('App\Model\Area', 'area_id');
     }
 
     public function box()

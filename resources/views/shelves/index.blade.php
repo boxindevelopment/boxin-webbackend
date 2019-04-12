@@ -30,13 +30,13 @@
       <div class="card">
           <div class="card-body">
 
-            <h4 class="card-title"><span class="lstick"></span>List Shelves 
+            <h4 class="card-title"><span class="lstick"></span>List Shelves
               <a href="{{ route('shelves.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right"
                 title="Add" style="margin-right: 10px;">
                 <i class="fa fa-plus"></i>&nbsp;
                 Add Shelf
               </a>
-            </h4>            
+            </h4>
 
             <div class="table-responsive m-t-10">
                 <table id="table-type" class="table table-striped table-bordered">
@@ -54,9 +54,9 @@
                       @foreach ($data as $key => $value)
                         <tr>
                           <td align="center">{{ $key+1 }}</th>
-                          <td align="center">{{ $value->id_name }}</td>
+                          <td align="center">{{ $value->code_shelves }}</td>
                           <td>{{ $value->name }}</td>
-                          <td>{{ $value->space->name }}</td>
+                          <td>{{ $value->area->name }}</td>
                           <td class="text-center">
                             <form action="{{route('shelves.destroy', ['id' => $value->id])}}" method="post">
                               @csrf
@@ -93,7 +93,7 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal -->  
+            <!-- /.modal -->
 
           </div>
       </div>

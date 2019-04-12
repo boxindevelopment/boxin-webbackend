@@ -21,17 +21,17 @@ class ReturnBoxPaymentRepository implements ReturnBoxPaymentRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('return_box_payments.id', 'return_box_payments.order_detail_id', 'return_box_payments.status_id', 'return_box_payments.id_name', 'return_box_payments.created_at', 'users.first_name',  'users.last_name');
+        $data = $data->select('return_box_payments.id', 'return_box_payments.image_transfer', 'return_box_payments.order_detail_id', 'return_box_payments.status_id', 'return_box_payments.id_name', 'return_box_payments.created_at', 'users.first_name',  'users.last_name');
         $data = $data->leftJoin('return_boxes','return_boxes.id','=','return_box_payments.order_detail_id');
-        $data = $data->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');      
+        $data = $data->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');
         $data = $data->leftJoin('users','users.id','=','return_box_payments.user_id');
         if(Auth::user()->roles_id == 2){
-            $data = $data->leftJoin('orders','orders.id','=','order_details.order_id');      
+            $data = $data->leftJoin('orders','orders.id','=','order_details.order_id');
             $data = $data->where('orders.area_id', $admin->area_id);
         }
         $data = $data->orderBy('return_box_payments.status_id', 'DESC')->orderBy('id', 'ASC');
@@ -44,18 +44,18 @@ class ReturnBoxPaymentRepository implements ReturnBoxPaymentRepositoryInterface
         $data = $this->model->query();
         $data = $data->select('return_box_payments.*', 'users.first_name',  'users.last_name');
         $data = $data->leftJoin('return_boxes','return_boxes.id','=','return_box_payments.order_detail_id');
-        $data = $data->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');          
+        $data = $data->leftJoin('order_details','order_details.id','=','return_boxes.order_detail_id');
         $data = $data->leftJoin('users','users.id','=','return_box_payments.user_id');
         $data = $data->where('return_box_payments.id', $id);
         $data = $data->get();
         return $data;
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(ReturnBoxPayment $pay, $data)
     {
         return $pay->update($data);
@@ -65,4 +65,5 @@ class ReturnBoxPaymentRepository implements ReturnBoxPaymentRepositoryInterface
     {
         return $pay->delete();
     }
+
 }

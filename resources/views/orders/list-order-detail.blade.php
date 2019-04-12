@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-7 align-self-center">
         <ol class="breadcrumb">
-          <button onclick="window.location.href='{{route('order.index')}}'" class="btn waves-effect waves-light m-r-10" style="background-color: white;"><i class="mdi mdi-arrow-left-bold-circle"></i> Back</button>
+          <button onclick="window.location.href='{{ $url }}'" class="btn waves-effect waves-light m-r-10" style="background-color: white;"><i class="mdi mdi-arrow-left-bold-circle"></i> Back</button>
         </ol>
     </div>
 </div>
@@ -47,6 +47,7 @@
                           <th width="5%">No</th>
                           <th width="15%">OrderID</th>
                           <th width="">Name</th>
+                          <th width="">Box</th>
                           <th width="12%">Duration</th>
                           <th width="15%" style="text-align: right;">Amount (Rp)</th>
                           <th width="20%" class="text-center">StartDate - EndDate</th>
@@ -61,6 +62,13 @@
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->id_name }}</td>
                             <td>{{ $value->name }}</td>
+                            <td>
+                              @if ($value->box)
+                                {{ $value->box->code_box }}
+                              @else
+                                 - 
+                              @endif
+                            </td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>

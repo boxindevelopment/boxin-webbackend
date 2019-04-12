@@ -40,6 +40,7 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
+                          <th width="15%">Date</th>
                           <th width="15%">OrderID</th>
                           <th width="">Customer Name</th>
                           <th width="15%" class="text-center">Box Pickup</th>
@@ -67,16 +68,21 @@
 
                             if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8){
                               $label = 'label-danger';
-                            } else if($value->status_id == 12 || $value->status_id == 7){
+                            } else if($value->status_id == 12){
+                              $label = 'label-inverse';
+                            } else if($value->status_id == 7){
                               $label = 'label-success';
                             } else if($value->status_id == 2){
                               $label = 'label-warning';
-                          } else {
-                              $label = 'label-warning';
-                          }
+                            } else {
+                                $label = 'label-warning';
+                            }
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
+                            <td align="center">
+                              {{  date('d M Y', strtotime($value->date)) }}
+                            </td>
                             <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}}</td>
                             <td class="text-center">

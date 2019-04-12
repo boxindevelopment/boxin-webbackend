@@ -32,15 +32,18 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $order = $this->model->query();
-        $order = $order->select('change_boxes.id', 'change_boxes.order_detail_box_id', 'change_boxes.types_of_pickup_id', 'change_boxes.status_id', 'change_boxes.created_at', 'change_boxes.date', 'change_boxes.time_pickup');
+        // $order = $order->select('change_boxes.id', 'change_boxes.order_detail_box_id', 'change_boxes.types_of_pickup_id', 'change_boxes.status_id', 'change_boxes.created_at', 'change_boxes.date', 'change_boxes.time_pickup', 'change_boxes.order_detail_id');
+        $order = $order->select('change_boxes.*');
         $order = $order->leftJoin('order_detail_boxes','order_detail_boxes.id','=','change_boxes.order_detail_box_id');
         $order = $order->leftJoin('order_details','order_details.id','=','order_detail_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
         if(Auth::user()->roles_id == 2){
             $order = $order->where('orders.area_id', $admin->area_id);
         }
-        $order = $order->orderBy('status_id','DESC');
-        $order = $order->orderBy('id','DESC')->get();
+        
+        $order = $order->orderBy('change_boxes.created_at','DESC')->get();
+        // $order = $order->orderBy('status_id','DESC');
+        // $order = $order->orderBy('id','DESC')->get();
 
         return $order;
     }

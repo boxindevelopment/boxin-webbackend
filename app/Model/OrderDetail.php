@@ -24,7 +24,7 @@ class OrderDetail extends Model
 
     public function space()
     {
-        return $this->belongsTo('App\Model\Space', 'room_or_box_id', 'id');
+        return $this->belongsTo('App\Model\SpaceSmall', 'room_or_box_id', 'id');
     }
 
     public function type_box_room()
@@ -50,6 +50,11 @@ class OrderDetail extends Model
     public function order_detail_box()
     {
         return $this->hasMany('App\Model\OrderDetailBox', 'order_detail_id', 'id');
+    }
+
+    public function change_box_payment()
+    {
+       return $this->hasOne('App\Model\ChangeBoxPayment', 'order_detail_id', 'id');
     }
 
 }

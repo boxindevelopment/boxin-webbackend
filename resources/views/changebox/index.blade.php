@@ -39,9 +39,9 @@
                   <table id="table-data1" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>                          
+                          <th width="5%">No</th>
                           <th width="15%" class="text-center">Request Date</th>
-                          <th width="20%" class="text-center">Returning Date</th>
+                          <th width="20%" class="text-center">Coming Date</th>
                           <th width="">Customer Name</th>
                           <th width="15%" class="text-center">Box Pickup</th>
                           <th width="15%" class="text-center">Status</th>
@@ -59,7 +59,7 @@
                               $label1  = 'label-primary';
                               $name    = 'User pickup';
                             }
-                            
+
                             if($value->status_id == 19){
                               $label = 'label-warning';
                             }else if($value->status_id == 22 || $value->status_id == 7){
@@ -72,7 +72,15 @@
                             <td align="center">{{ $key+1 }}</td>
                             <td align="center">{{ $value->created_at->format('d-m-Y') }}</td>
                             <td>{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
-                            <td>{{ $value->order_detail_box->order_detail->order->user->first_name}} {{ $value->order_detail_box->order_detail->order->user->last_name}}</td>
+                            <td>
+                              @if ($value->order_detail)
+                              {{ $value->order_detail->order->user->first_name}} {{ $value->order_detail->order->user->last_name}} 
+                              @endif
+                              <br>
+                              @if ($value->order_detail->change_box_payment)
+                              ({{ $value->order_detail->change_box_payment->id_name }})
+                              @endif
+                            </td>
                             <td class="text-center">
                               <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
                             </td>

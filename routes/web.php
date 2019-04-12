@@ -18,26 +18,34 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('area', 'AreaController')->except(['show']);
   Route::prefix('area')->group(function () {
     Route::get('/dataSelect/{city_id}', ['uses' => 'AreaController@getDataSelectByCity', 'as' => 'area.getDataSelect']);
-    Route::get('/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);  
-    Route::get('/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);  
+    Route::get('/dataSelect', ['uses' => 'AreaController@getDataSelectAll', 'as' => 'area.getDataSelectAll']);
+    Route::get('/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);
   });
 
-  Route::resource('space', 'SpaceController')->except(['show']);
+  Route::resource('space', 'SpaceSmallController')->except(['show']);
   Route::prefix('space')->group(function () {
-    Route::get('/dataSelect/{area_id}', ['uses' => 'SpaceController@getDataSelectByArea', 'as' => 'space.getDataSelectByArea']);  
-    Route::get('/getNumber', ['uses' => 'SpaceController@getNumber', 'as' => 'space.getNumber']);  
+    Route::get('/dataSelect/{area_id}', ['uses' => 'SpaceSmallController@getDataSelectByArea', 'as' => 'space.getDataSelectByArea']);
+    Route::get('/dataSelect/{shelves_id}', ['uses' => 'SpaceSmallController@getDataSelectByShelves', 'as' => 'space.getDataSelectByShelves']);
+    Route::get('/getNumber', ['uses' => 'SpaceSmallController@getNumber', 'as' => 'space.getNumber']);
+    Route::get('/barcode/{id}', ['uses' => 'SpaceSmallController@printBarcode', 'as' => 'space.barcode']);
+    Route::get('/resetNumber', ['uses' => 'SpaceSmallController@resetNumber', 'as' => 'space.resetNumber']);
   });
 
   Route::resource('shelves', 'ShelvesController')->except(['show']);
   Route::prefix('shelves')->group(function () {
+    Route::get('/dataSelect/{area_id}', ['uses' => 'ShelvesController@getDataSelectByArea', 'as' => 'shelves.getDataSelectByArea']);
     Route::get('/dataSelect/{space_id}', ['uses' => 'ShelvesController@getDataSelectBySpace', 'as' => 'shelves.getDataSelectBySpace']);
-    Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);  
+    Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);
+    Route::get('/resetNumber', ['uses' => 'ShelvesController@resetNumber', 'as' => 'shelves.resetNumber']);
   });
 
   Route::resource('box', 'BoxController')->except(['show']);
   Route::prefix('box')->group(function () {
-    Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);  
+    Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
+    Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
+    Route::get('/getCodeUsed', ['uses' => 'BoxController@getCodeUsed', 'as' => 'box.getCodeUsed']);
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
+    Route::get('/resetNumber', ['uses' => 'BoxController@resetNumber', 'as' => 'box.resetNumber']);
   });
 
   Route::resource('category', 'CategoryController')->except(['show']);
@@ -53,31 +61,40 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
   });
 
+  Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
+
   Route::resource('pickup', 'PickupController')->except(['show']);
 
-  Route::resource('payment', 'PaymentController')->except(['show']);  
+  Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');
+  Route::get('payment/order-details/{id}','PaymentController@payment_extend_edit')->name('payment.extend.edit');
+  Route::put('payment/order-details/{id}','PaymentController@payment_extend_update')->name('payment.extend.update');
+
+  Route::resource('payment', 'PaymentController')->except(['show']);
   Route::prefix('payment')->group(function () {
-    Route::get('','PaymentController@index')->name('payment.index');    
+    Route::get('','PaymentController@index')->name('payment.index');
   });
 
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
 
+  Route::resource('add-item', 'AddItemBoxController')->only(['index', 'update', 'edit']); // add-item.index
+  Route::resource('add-item-payment', 'AddItemBoxPaymentController')->only(['index', 'update', 'edit']); // add-item-payment.index
+
   Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
-  
-  Route::resource('storage', 'OrderDetailController')->except(['show']);  
+
+  Route::resource('storage', 'OrderDetailController')->except(['show']);
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
   });
-  
+
   Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
   Route::prefix('change-box')->group(function () {
-    Route::get('','ChangeBoxesController@index')->name('change-box.index');    
+    Route::get('','ChangeBoxesController@index')->name('change-box.index');
   });
 
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
   Route::prefix('return')->group(function () {
-    Route::get('','ReturnBoxesController@index')->name('return.index');    
-  });  
+    Route::get('','ReturnBoxesController@index')->name('return.index');
+  });
 
   Route::resource('user', 'UserController')->except(['show']);
   Route::prefix('user')->group(function () {
@@ -92,11 +109,11 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('finance','UserController@list_finance')->name('user.finance.index');
     Route::post('finance/store','UserController@storeFinance')->name('user.finance.store');
-    
-    Route::get('superadmin','UserController@list_superadmin')->name('user.superadmin.index');  
+
+    Route::get('superadmin','UserController@list_superadmin')->name('user.superadmin.index');
     Route::post('superadmin/store','UserController@storeSuperadmin')->name('user.superadmin.store');
   });
-  
+
   Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
   Route::prefix('types-of-size')->group(function () {
     Route::get('createBox','TypeSizeController@createBox')->name('types-of-size.createBox');

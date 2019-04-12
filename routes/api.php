@@ -17,3 +17,4 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+// Route::get('export', 'InsertController@insert');

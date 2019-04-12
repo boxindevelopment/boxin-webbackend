@@ -21,13 +21,13 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('payments.id', 'payments.order_id', 'payments.status_id', 'payments.id_name', 'payments.created_at', 'users.first_name',  'users.last_name');
-        $data = $data->leftJoin('orders','orders.id','=','payments.order_id');      
+        $data = $data->select('payments.id', 'payments.order_id', 'payments.image_transfer', 'payments.status_id', 'payments.id_name', 'payments.created_at', 'users.first_name',  'users.last_name');
+        $data = $data->leftJoin('orders','orders.id','=','payments.order_id');
         $data = $data->leftJoin('users','users.id','=','payments.user_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('orders.area_id', $admin->area_id);
@@ -41,7 +41,7 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         $data = $this->model->query();
         $data = $data->select('payments.*', 'users.first_name',  'users.last_name');
-        $data = $data->leftJoin('orders','orders.id','=','payments.order_id');      
+        $data = $data->leftJoin('orders','orders.id','=','payments.order_id');
         $data = $data->leftJoin('users','users.id','=','payments.user_id');
         $data = $data->where('payments.id', $id);
         $data = $data->get();
@@ -60,12 +60,12 @@ class PaymentRepository implements PaymentRepositoryInterface
         return $data->toArray();
 
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(Payment $pay, $data)
     {
         return $pay->update($data);

@@ -31,24 +31,18 @@ class ShelvesController extends Controller
 
     public function store(Request $request)
     {
-      $split        = explode('##', $request->space_id);
-      $space_id     = $split[0];
 
       $shelves = Shelves::create([
-        'name'      => $request->name,
-        'space_id'  => $space_id,        
-        'id_name'   => $request->id_name_shelf,
+        'name'           => $request->name,
+        'area_id'        => $request->area_id,
+        'code_shelves'   => $request->code_shelves,
       ]);
-
-      $space = Space::find($space_id);
-      $space->status_id = 9;
-      $space->save();
 
       if($shelves){
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] added.');
       } else {
         return redirect()->route('shelves.index')->with('error', 'Add New Shelf failed.');
-      }      
+      }
     }
 
     public function show($id)
@@ -65,14 +59,15 @@ class ShelvesController extends Controller
 
     public function update(Request $request, $id)
     {
-      $split          = explode('##', $request->space_id);
-      $space_id       = $split[0];
+        
+      $split          = explode('##', $request->area_id);
+      $area_id       = $split[0];
 
       $shelves            = $this->repository->find($id);
       $shelves->name      = $request->name;
-      if($shelves->space_id != $space_id){
-        $shelves->space_id  = $space_id;    
-        $shelves->id_name   = $request->id_name_shelf;
+      if($shelves->area_id != $area_id){
+        $shelves->area_id  = $area_id;
+        $shelves->code_shelves   = $request->code_shelves;
       }
       $shelves->save();
 
@@ -80,7 +75,7 @@ class ShelvesController extends Controller
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$request->name.'] edited.');
       } else {
         return redirect()->route('shelves.index')->with('error', 'Edit Shelf failed.');
-      }      
+      }
     }
 
     public function destroy($id)
@@ -122,13 +117,26 @@ class ShelvesController extends Controller
         echo(json_encode($arrData));
     }
 
+    public function getDataSelectByArea($area_id, Request $request)
+    {
+        $data = $this->repository->getSelectByArea($area_id);
+        $arrData = array();
+        foreach ($data as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id . '##' . $arrVal->code_shelves,
+                      'text'  =>  $arrVal->name);
+            $arrData[] = $arr;
+        }
+        echo(json_encode($arrData));
+    }
+
     public function getDataSelectAll(Request $request)
     {
         $data = $this->repository->getSelectAll();
         $arrData = array();
         foreach ($data as $arrVal) {
             $arr = array(
-                      'id'    => $arrVal->id . '##' . $arrVal->id_name,
+                      'id'    => $arrVal->id . '##' . $arrVal->code_shelves,
                       'text'  =>  $arrVal->name);
             $arrData[] = $arr;
         }
@@ -137,14 +145,33 @@ class ShelvesController extends Controller
 
     public function getNumber(Request $request)
     {
-        $sql          = Shelves::where('space_id', '=', $request->input('space_id'))
+        $sql          = Shelves::where('area_id', '=', $request->input('area_id'))
                         ->where('deleted_at', NULL)
-                        ->orderBy('id_name', 'desc')
+                        ->orderBy('code_shelves', 'desc')
                         ->first();
-        $id_number    = isset($sql->id_name) ? substr($sql->id_name, 6) : 0;
-        $code         = str_pad($id_number + 1, 2, "0", STR_PAD_LEFT);
+        $code_shelves    = isset($sql->code_shelves) ? substr($sql->code_shelves, 4) : 0;
+        $code         = str_pad($code_shelves + 1, 2, "0", STR_PAD_LEFT);
 
         return $code;
+    }
+
+    public function resetNumber(Request $request)
+    {
+        $shelveses    = Shelves::whereNull('code_shelves')->get();
+        foreach ($shelveses as $k => $v) {
+            if(!is_null($v->space_id)){
+                $space = Space::with('area')->find($v->space_id);
+                if($space){
+                    $areaCode = $space->area->id_name;
+                    $lengthCode = strlen($space->id_name);
+                    $subCode = substr($v->id_name, $lengthCode);
+                    $v->code_shelves = $areaCode . $subCode;
+                    $v->save();
+                }
+            }
+        }
+
+        echo(json_encode($shelveses));
     }
 
 }

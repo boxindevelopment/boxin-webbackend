@@ -39,12 +39,7 @@
                 @method('PUT')
                 <div class="row">
                     <div class="col-6">
-                      
-                      <div class="form-group">
-                        <label for="">Code Number <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="id_name_box" id="id_name_box" value="{{ $box->id_name }}" required readonly>
-                      </div>
-                      
+
                       <div class="form-group">
                         <label for="">City <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="city_id" name="city_id" value="{{ $box->city_id }}##{{ $box->city_id_name }}" required>
@@ -56,13 +51,15 @@
                       </div>
 
                       <div class="form-group">
-                        <label for="">Space <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="space_id" name="space_id" value="{{ $box->space_id }}##{{ $box->space_id_name }}" required>
-                      </div>
-
-                      <div class="form-group">
                         <label for="">Shelf <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->shelves_id_name }}" required>
+                        <input type="text" class="form-control" id="shelves_id" name="shelves_id" value="{{ $box->shelves_id }}##{{ $box->code_shelves }}" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="">Code Number <span class="text-danger">*</span></label>
+                        <select class="form-control" name="code_box" id="code_box" required>
+                            <option value=""></option>
+                        </select>
+                        <input type="hidden" id="code_box_hide" value="{{ $box->code_box }}">
                       </div>
 
                       <a href="{{ route('box.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
@@ -93,7 +90,7 @@
                         <label>Location </label>
                         <input type="text" name="location" class="form-control" placeholder="Enter Location" value="{{ $box->location }}" >
                       </div>
-                      
+
                     </div>
                 </div>
               </form>
