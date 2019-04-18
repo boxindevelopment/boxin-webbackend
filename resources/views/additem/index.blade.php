@@ -63,7 +63,7 @@
 
                             if($value->status_id == 25){
                               $label = 'label-warning';
-                            }else if($value->status_id == 22 || $value->status_id == 7){
+                            }else if($value->status_id == 22 || $value->status_id == 5){
                               $label = 'label-success';
                             }else{
                               $label = 'label-danger';

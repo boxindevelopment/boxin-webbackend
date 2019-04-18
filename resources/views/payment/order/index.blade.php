@@ -51,11 +51,11 @@
                       @if(count($data) > 0)
                         @foreach ($data as $key => $value)
                           @php
-                            if($value->status_id == 15){
+                            if($value->status_id == 14){
                               $label = 'label-warning';
-                            }else if($value->status_id == 7){
+                            }else if($value->status_id == 5){
                               $label = 'label-success';
-                            }else if($value->status_id == 8){
+                            }else if($value->status_id == 6){
                               $label = 'label-danger';
                             }
                           @endphp
@@ -75,8 +75,8 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
-                              <a class="btn btn-info btn-sm" href="{{route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
+                              <a class="btn btn-primary btn-sm" href="{{ route('order.orderDetail', ['id' => $value->order_id])}}" title="View Order Detail"><i class="fa fa-eye"></i></a>
+                              <a class="btn btn-info btn-sm" href="{{ route('payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             </td>
                           </tr>
                         @endforeach

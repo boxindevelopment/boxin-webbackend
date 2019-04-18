@@ -192,28 +192,28 @@ class PaymentController extends Controller
         $payment->save();
         
         $ex_order_details = ExtendOrderDetail::find($extend_id);
-          if ($ex_order_details) {
-              $ex_order_details->status_id = intval($status);
-              $ex_order_details->save();
+        if ($ex_order_details) {
+            $ex_order_details->status_id = intval($status);
+            $ex_order_details->save();
 
-              if ($request->status_id == 7) {
-                  $orderDetails           = OrderDetail::findOrFail($ex_order_details->order_detail_id);
-                  $orderDetails->amount   = $ex_order_details->total_amount;                              // total amount dari durasi baru dan lama
-                  $orderDetails->end_date = $ex_order_details->new_end_date;                              // durasi tanggal berakhir yang baru
-                  $orderDetails->duration = $ex_order_details->new_duration;                              // total durasi
-                  $orderDetails->save();
-              }
+            if ($request->status_id == 7) {
+                $orderDetails           = OrderDetail::findOrFail($ex_order_details->order_detail_id);
+                $orderDetails->amount   = $ex_order_details->total_amount;                              // total amount dari durasi baru dan lama
+                $orderDetails->end_date = $ex_order_details->new_end_date;                              // durasi tanggal berakhir yang baru
+                $orderDetails->duration = $ex_order_details->new_duration;                              // total durasi
+                $orderDetails->save();
+            }
 
-              if ($request->status_id == 7 || $request->status_id == 8){
-                $params['status_id'] =  $request->status_id;
-                $params['order_detail_id'] = $ex_order_details->order_detail_id;
-                $user_id = $ex_order_details->user_id;
-                $userDevice = UserDevice::where('user_id', $user_id)->get();
-                if(count($userDevice) > 0){
-                    $response = Requests::post($this->url . 'api/confirm-payment/' . $user_id, [], $params, []);
-                }
+            if ($request->status_id == 7 || $request->status_id == 8){
+              $params['status_id'] =  $request->status_id;
+              $params['order_detail_id'] = $ex_order_details->order_detail_id;
+              $user_id = $ex_order_details->user_id;
+              $userDevice = UserDevice::where('user_id', $user_id)->get();
+              if(count($userDevice) > 0){
+                  $response = Requests::post($this->url . 'api/confirm-payment/' . $user_id, [], $params, []);
               }
-          }
+            }
+        }
 
         DB::commit();
         return redirect()->route('payment.extend')->with('success', 'Edit status extend order payment success.');

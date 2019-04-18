@@ -76,7 +76,7 @@
                               @php
                                 if($value->status_id == 11 || $value->status_id == 8){
                                   $label = 'label-danger';
-                                }else if($value->status_id == 2 || $value->status_id == 3|| $value->status_id == 15){
+                                }else if($value->status_id == 2 || $value->status_id == 3|| $value->status_id == 14){
                                   $label = 'label-warning';
                                 }else{
                                   $label = 'label-success';

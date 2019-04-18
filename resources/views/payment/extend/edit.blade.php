@@ -78,25 +78,25 @@
                         <label>Amount </label>
                         <p>Rp. {{ $value->amount }}</p>
                       </div>
-                      @if($value->status_id == 15)
-                      <div class="form-group">
+                      {{-- @if($value->status_id == 15) --}}
+                      {{-- <div class="form-group">
                         <label for="">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="select2" name="status_id" >
                             <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Waiting for Confirmation</option>
                             <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
                             <option value="8" {{ $value->status_id == 8 ? 'selected' : '' }}>Rejected</option>
                         </select>
-                      </div>
-                      @else
+                      </div> --}}
+                      {{-- @else --}}
                       <div class="form-group">
                         <label>Status </label>
                         <p>{{ $value->status->name }}</p>
                       </div>
-                      @endif
+                      {{-- @endif --}}
                       <input type="hidden" name="extend_id" class="form-control" value="{{ $value->extend_id }}" required>
 
                       <a href="{{ route('payment.extend') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                      {{-- <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button> --}}
                     </div>
                   @endforeach
                 </div>

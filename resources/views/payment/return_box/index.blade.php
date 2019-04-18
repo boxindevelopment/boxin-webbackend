@@ -51,11 +51,11 @@
                       @if(count($data) > 0)
                         @foreach ($data as $key => $value)
                           @php
-                            if($value->status_id == 15){
+                            if($value->status_id == 14){
                               $label = 'label-warning';
-                            }else if($value->status_id == 7){
+                            }else if($value->status_id == 5){
                               $label = 'label-success';
-                            }else if($value->status_id == 8){
+                            }else if($value->status_id == 6){
                               $label = 'label-danger';
                             }
                           @endphp
