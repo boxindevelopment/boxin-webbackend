@@ -144,14 +144,14 @@
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
                                                   <input type="text" class="form-control form-control-line" value="{{ date('d M Y', strtotime($value->date))}} ({{ $value->time_pickup }})" readonly> </div>
-                                              
+
                                               @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
                                               <div class="form-group col-md-10">
                                                   <input type="text" class="form-control form-control-line" value="{{ $value->address }}" readonly> </div>
                                               @endif
-                                              
+
                                               @if($value->note != '' || $value->note != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
@@ -208,6 +208,16 @@
 
                         <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
+                        {{-- @if($value->status_id == 5)
+                            <div class="form-group">
+                              <label for="">Status <span class="text-danger">*</span></label>
+                              <select class="form-control" id="select2" name="status_id" required>
+                                  <option value=""></option>>
+                                  <option value="4">Stored</option>>
+                              </select>
+                            </div>
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif --}}
 
                       @endif
                       <!-- end pickup delivery box  -->
@@ -225,6 +235,16 @@
                         </div>
 
                         <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif
+                        @if($value->status_id == 5)
+                            <div class="form-group">
+                              <label for="">Status <span class="text-danger">*</span></label>
+                              <select class="form-control" id="select2" name="status_id" required>
+                                      <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Success</option>
+                                      <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              </select>
+                            </div>
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
 
                       @endif
