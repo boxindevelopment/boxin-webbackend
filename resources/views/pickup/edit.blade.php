@@ -236,7 +236,7 @@
 
                         <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
-                        @if($value->status_id == 5)
+                        {{-- @if($value->status_id == 5)
                             <div class="form-group">
                               <label for="">Status <span class="text-danger">*</span></label>
                               <select class="form-control" id="select2" name="status_id" required>
@@ -245,7 +245,7 @@
                               </select>
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
-                        @endif
+                        @endif --}}
 
                       @endif
                       <!-- end pickup box on warehouse  -->
