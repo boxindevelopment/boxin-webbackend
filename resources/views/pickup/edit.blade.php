@@ -186,11 +186,11 @@
                       <!-- pickup delivery box -->
                       @if ($value->types_of_pickup_id == 1)
 
-                        @if($value->status_id == 7 || $value->status_id == 2)
+                        @if($value->status_id == 5 || $value->status_id == 2)
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
-                              <option value="15" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                              {{-- <option value="15" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option> --}}
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                               <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                           </select>
@@ -208,7 +208,7 @@
 
                         <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
-                        @if($value->status_id == 5)
+                        {{-- @if($value->status_id == 5)
                             <div class="form-group">
                               <label for="">Status <span class="text-danger">*</span></label>
                               <select class="form-control" id="select2" name="status_id" required>
@@ -217,7 +217,7 @@
                               </select>
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
-                        @endif
+                        @endif --}}
 
                       @endif
                       <!-- end pickup delivery box  -->
@@ -225,15 +225,16 @@
                       <!-- pickup box on warehouse -->
                       @if ($value->types_of_pickup_id == 2)
 
-                        @if($value->status_id == 7)
-                            <div class="form-group">
-                              <label for="">Status <span class="text-danger">*</span></label>
-                              <select class="form-control" id="select2" name="status_id" required>
-                                  <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
-                                  <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                              </select>
-                            </div>
-                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @if($value->status_id == 5)
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              {{-- <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option> --}}
+                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                          </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
                         @if($value->status_id == 5)
                             <div class="form-group">

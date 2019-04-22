@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('plugin_css')
-  <link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
+  <link href="{{ asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
 
 @section('script_css')
