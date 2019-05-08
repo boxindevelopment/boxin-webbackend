@@ -10,7 +10,7 @@ class Shelves extends Model
     protected $table = 'shelves';
 
     protected $fillable = [
-        'name', 'id_name', 'code_shelves'
+        'name', 'area_id', 'code_shelves'
     ];
 
     public function area()

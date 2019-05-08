@@ -72,7 +72,9 @@
                                                 <label>Datetime </label>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                                                <p>
+                                                  {{ date("d M Y", strtotime($value->date)).' - '.date("h:i a", strtotime($value->time)) }}
+                                                </p>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>Address </label>
@@ -130,53 +132,55 @@
                                                 <div class="form-group col-md-4">
                                                     <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->name) ? $detail->box->name : '') : (isset($detail->space->name) ? $detail->space->name : '') }}" readonly> </div>
                                             </div>
-
-
-                                            <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
-                                            <div class="form-material row">
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $value->order->type_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($detail->date))}} ({{ $detail->time_pickup }})" readonly> </div>
-                                                @if($detail->address != '' || $detail->address != null)
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
-                                                <div class="form-group col-md-10">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $detail->address }}" readonly> </div>
-                                                @endif
-                                                @if($detail->note != '' || $detail->note != null)
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
-                                                <div class="form-group col-md-10">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $detail->note }}" readonly> </div>
-                                                @endif
-                                                @if($value->order->type_of_pickup_id == 1)
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Driver Name</label></div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $detail->driver_name }}" readonly> </div>
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Driver Phone</label></div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $detail->driver_phone }}" readonly> </div>
-                                                <div class="form-group col-md-2">
-                                                  <label for="inputEmail3" class="text-right control-label col-form-label">Deliver Fee</label></div>
-                                                <div class="form-group col-md-4">
-                                                    <input type="text" class="form-control form-control-line" value="{{ $detail->pickup_fee }}" readonly> </div>
-                                                @endif
-                                            </div>
                                         @endif
                                         @endforeach
+                                        <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
+                                          <div class="form-material row">
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
+                                              <div class="form-group col-md-4">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
+                                              <div class="form-group col-md-4">
+                                                  <input type="text" class="form-control form-control-line" value="{{ date('d M Y', strtotime($value->date))}} ({{ $value->time_pickup }})" readonly> </div>
+                                              
+                                              @if($value->address != '' || $value->address != null)
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
+                                              <div class="form-group col-md-10">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->address }}" readonly> </div>
+                                              @endif
+                                              
+                                              @if($value->note != '' || $value->note != null)
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
+                                              <div class="form-group col-md-10">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->note }}" readonly> </div>
+                                              @endif
+
+                                              @if($value->types_of_pickup_id == 1)
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Driver Name</label></div>
+                                              <div class="form-group col-md-4">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_name }}" readonly> </div>
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Driver Phone</label></div>
+                                              <div class="form-group col-md-4">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_phone }}" readonly> </div>
+                                              <div class="form-group col-md-2">
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Deliver Fee</label></div>
+                                              <div class="form-group col-md-4">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->pickup_fee }}" readonly> </div>
+                                              @endif
+                                          </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
-                    @endif
 
                     <div class="col-md-4">
                       <!-- pickup delivery box -->
@@ -225,9 +229,9 @@
 
                       @endif
                       <!-- end pickup box on warehouse  -->
+                    @endforeach
 
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
-                      @endforeach
 
                     </div>
                 </div>

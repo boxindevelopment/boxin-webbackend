@@ -2,18 +2,18 @@
 
 namespace App\Repositories;
 
-use App\Model\ChangeBox;
+use App\Model\AddItemBox;
 use App\Model\AdminArea;
-use App\Repositories\Contracts\ChangeBoxRepository as ChangeBoxRepositoryInterface;
+use App\Repositories\Contracts\AddItemBoxRepository as AddItemBoxRepositoryInterface;
 use DB;
 use Illuminate\Support\Facades\Auth;
-use App\Repositories\ChangeBoxRepository;
+use App\Repositories\AddItemBoxRepository;
 
-class ChangeBoxRepository implements ChangeBoxRepositoryInterface
+class AddItemBoxRepository implements AddItemBoxRepositoryInterface
 {
     protected $model;
 
-    public function __construct(ChangeBox $model)
+    public function __construct(AddItemBox $model)
     {
         $this->model = $model;
     }
@@ -32,18 +32,20 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $order = $this->model->query();
-        // $order = $order->select('change_boxes.id', 'change_boxes.order_detail_box_id', 'change_boxes.types_of_pickup_id', 'change_boxes.status_id', 'change_boxes.created_at', 'change_boxes.date', 'change_boxes.time_pickup', 'change_boxes.order_detail_id');
-        $order = $order->select('change_boxes.*');
-        $order = $order->leftJoin('order_detail_boxes','order_detail_boxes.id','=','change_boxes.order_detail_box_id');
-        $order = $order->leftJoin('order_details','order_details.id','=','order_detail_boxes.order_detail_id');
+        $order = $order->select('add_item_boxes.id', 
+                                'add_item_boxes.order_detail_id', 
+                                'add_item_boxes.types_of_pickup_id', 
+                                'add_item_boxes.status_id', 
+                                'add_item_boxes.created_at', 
+                                'add_item_boxes.date', 
+                                'add_item_boxes.time_pickup');
+        $order = $order->leftJoin('order_details','order_details.id','=','add_item_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
         if(Auth::user()->roles_id == 2){
             $order = $order->where('orders.area_id', $admin->area_id);
         }
-        
-        $order = $order->orderBy('change_boxes.created_at','DESC')->get();
-        // $order = $order->orderBy('status_id','DESC');
-        // $order = $order->orderBy('id','DESC')->get();
+        $order = $order->orderBy('status_id','DESC');
+        $order = $order->orderBy('id','DESC')->get();
 
         return $order;
     }
@@ -70,12 +72,12 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
         return $this->model->create($data);
     }
     
-    public function update(ChangeBox $box, $data)
+    public function update(AddItemBox $box, $data)
     {
         return $box->update($data);
     }
 
-    public function delete(ChangeBox $box)
+    public function delete(AddItemBox $box)
     {
         return $box->delete();
     }

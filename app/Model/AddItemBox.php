@@ -18,7 +18,8 @@ class AddItemBox extends Model
       'status_id', 
       'deliver_fee', 
       'driver_name', 
-      'driver_phone'
+      'driver_phone',
+      'note'
   ];
 
   public function order_detail()
@@ -35,4 +36,10 @@ class AddItemBox extends Model
   {
       return $this->belongsTo('App\Model\Status', 'status_id', 'id');
   }
+
+  public function items()
+  {
+     return $this->hasMany('App\Model\AddItem', 'add_item_box_id', 'id');
+  }
+  
 }

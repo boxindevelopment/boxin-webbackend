@@ -18,7 +18,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Return Box Payments</h3>
+        <h3 class="text-themecolor">Add-Item Box Payments</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -33,9 +33,9 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Return Box Payment</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Add-Item Box Payments</h4>
 
-              <form action="{{ route('return-box-payment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('add-item-payment.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row el-element-overlay">
@@ -65,7 +65,7 @@
                       </div>
                       <div class="form-group">
                         <label>Created At </label>
-                        <p><?php echo date("d M Y H:i:s", strtotime($value->created_at)); ?> </p>
+                        <p>{{ date("d M Y H:i:s", strtotime($value->created_at)) }}</p>
                       </div>
                       <div class="form-group">
                         <label>Bank </label>
@@ -91,8 +91,8 @@
                       </div>
                       @endif
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>                
-                      
-                      <a href="{{ route('return-box-payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <input type="hidden" name="add_item_box_id" class="form-control" value="{{ $value->add_item_box_id }}" required>
+                      <a href="{{ route('add-item-payment.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                     </div>
                   @endforeach

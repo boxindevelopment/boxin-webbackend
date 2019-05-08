@@ -8,7 +8,15 @@ class SpaceSmall extends Model
 {
 
     protected $fillable = [
-        'code_space_small', 'shelves_id', 'types_of_size_id', 'name', 'barcode', 'location', 'size', 'price', 'status_id'
+        'code_space_small', 
+        'shelves_id', 
+        'types_of_size_id', 
+        'name', 
+        'barcode', 
+        'location', 
+        'size', 
+        'price', 
+        'status_id'
     ];
 
     protected $hidden = ['created_at', 'updated_at'];

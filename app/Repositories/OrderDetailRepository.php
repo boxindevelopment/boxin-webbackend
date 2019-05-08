@@ -76,6 +76,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     public function getDetailBox($id)
     {
         $data = $this->detail_box->query();
+        $data = $data->select('order_detail_boxes.*');
         $data = $data->leftJoin('order_details', 'order_details.id', '=', 'order_detail_boxes.order_detail_id'); 
         $data = $data->where('order_details.order_id', $id);
         $data = $data->orderBy('order_detail_boxes.id', 'ASC');

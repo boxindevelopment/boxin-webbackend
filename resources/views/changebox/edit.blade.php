@@ -57,13 +57,13 @@
                                               <label>Name </label>
                                           </div>
                                           <div class="form-group col-md-4">
-                                              <p>{{ $value->order_detail_box->order_detail->order->user->first_name }} {{ $value->order_detail_box->order_detail->order->user->last_name }}</p>
+                                              <p>{{ $value->order_detail->order->user->first_name }} {{ $value->order_detail->order->user->last_name }}</p>
                                           </div>
                                           <div class="form-group col-md-2">
                                               <label>Phone / Email</label>
                                           </div>
                                           <div class="form-group col-md-4">
-                                              <p>{{ $value->order_detail_box->order_detail->order->user->phone }} / {{ $value->order_detail_box->order_detail->order->user->email }}</p>
+                                              <p>{{ $value->order_detail->order->user->phone }} / {{ $value->order_detail->order->user->email }}</p>
                                           </div>
                                       </div>
                                       <div class="form-material row">
@@ -71,7 +71,7 @@
                                               <label>Datetime </label>
                                           </div>
                                           <div class="form-group col-md-4">
-                                              <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time)); ?></p>
+                                              <p><?php echo date("d M Y", strtotime($value->date)); ?> - <?php echo date("h:i a", strtotime($value->time_pickup)); ?></p>
                                           </div>
                                           <div class="form-group col-md-2">
                                               <label>Address </label>
@@ -88,36 +88,71 @@
                                               <p>{{ $value->note }}</p>
                                           </div>
                                       </div>
-                                      @if(isset($value->order_detail_box->order_detail->types_of_box_room_id))
+                                      @if(isset($value->order_detail->types_of_box_room_id))
                                           <h5 class="card-title"><span class="lstick"></span><b>* Data Order</b></h5>
                                           <div class="form-material row">
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Order ID</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->id_name }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->id_name }}" readonly> </div>
                                               <div class="form-group col-md-2">
-                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name {{ $value->order_detail_box->order_detail->type_size->name }}</label></div>
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name {{ $value->order_detail->type_size->name }}</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->name }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->name }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Duration</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->duration }} {{ $value->order_detail_box->order_detail->type_duration->alias }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->duration }} {{ $value->order_detail->type_duration->alias }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Amount</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="Rp. {{ number_format($value->order_detail_box->order_detail->amount, 2, '.', ',') }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="Rp. {{ number_format($value->order_detail->amount, 2, '.', ',') }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Start Date</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->start_date }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->start_date }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">End Date</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->end_date }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->end_date }}" readonly> </div>
+                                          </div>
+                                          
+                                          <h5 class="card-title"><span class="lstick"></span><b>* Data Item(s)</b></h5>
+                                          <div class="form-material row">
+                                              <div class="form-group col-md-12">
+                                                <div class="table-responsive m-t-10">
+                                                  <table class="table table-striped table-bordered">
+                                                    <thead>
+                                                      <tr>
+                                                        <th>Box</th>
+                                                        <th>Name</th>
+                                                        <th>Item</th>
+                                                        <th>Image</th>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      @foreach ($value->change_details as $k => $v)
+                                                      <tr>
+                                                        <td>{{ $v->order_detail_box->order_detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</td>
+                                                        <td>{{ $v->order_detail_box->order_detail->types_of_box_room_id == 1 ? (isset($v->order_detail_box->order_detail->box->name) ? $v->order_detail_box->order_detail->box->name : '') : (isset($v->order_detail_box->order_detail->space->name) ? $v->order_detail_box->order_detail->space->name : '') }}</td>
+                                                        <td>{{ $v->order_detail_box->item_name ? $v->order_detail_box->item_name : '' }}</td>
+                                                        <td>
+                                                          <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $v->order_detail_box->images }}">
+                                                            <i class="fa fa-file-image-o"></i>
+                                                            <div style="display: none;">
+                                                                <img width="50%" src="{{ $v->order_detail_box->images }}" alt="image" />
+                                                            </div>
+                                                          </a>
+                                                        </td>
+                                                      </tr>
+                                                      @endforeach
+                                                    </tbody>
+                                                  </table>
+                                                </div>
+                                              </div>
                                           </div>
 
-                                          <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
+                                          {{-- <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
                                           <div class="form-material row">
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">{{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label></div>
@@ -128,9 +163,9 @@
                                               </div>
                                               <div class="form-group col-md-4">
                                                 <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail_box->order_detail->box->name) ? $value->order_detail_box->order_detail->box->name : '') : (isset($value->order_detail_box->order_detail->space->name) ? $value->order_detail_box->order_detail->space->name : '') }}" readonly>
-                                              </div>
+                                              </div> --}}
 
-                                              <div class="form-group col-md-2">
+                                              {{-- <div class="form-group col-md-2">
                                                 <label class="text-right control-label col-form-label">Item </label>
                                               </div>
                                               <div class="form-group col-md-4">
@@ -147,9 +182,8 @@
                                                       <img width="50%" src="{{ $value->order_detail_box->images }}" alt="image" />
                                                   </div>
                                                 </a>
-                                              </div>
-
-                                          </div>
+                                              </div> --}}
+                                          {{-- </div> --}}
 
 
                                           <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
@@ -157,36 +191,36 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->order->type_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->types_of_pickup_id == 1 ? 'Deliver to user' : 'User pickup' }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($value->order_detail_box->order_detail->date))}} {{ $value->order_detail_box->order_detail->time_pickup ? '('.$value->order_detail_box->order_detail->time_pickup.')' : '' }}" readonly> </div>
-                                              @if($value->order_detail_box->order_detail->address != '' || $value->order_detail_box->order_detail->address != null)
+                                                  <input type="text" class="form-control form-control-line" value="{{date('d M Y', strtotime($value->date))}} {{ $value->time_pickup ? '('.$value->time_pickup.')' : '' }}" readonly> </div>
+                                              @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->address }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->address }}" readonly> </div>
                                               @endif
-                                              @if($value->order_detail_box->order_detail->note != '' || $value->order_detail_box->order_detail->note != null)
+                                              @if($value->note != '' || $value->note != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Note</label></div>
                                               <div class="form-group col-md-10">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->note }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->note }}" readonly> </div>
                                               @endif
-                                              @if($value->order_detail_box->order_detail->order->type_of_pickup_id == 1)
+                                              @if($value->types_of_pickup_id == 1)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Driver Name</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->driver_name }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_name }}" readonly> </div>
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Driver Phone</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->driver_phone }}" readonly> </div>
-                                              <div class="form-group col-md-2">
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->driver_phone }}" readonly> </div>
+                                              {{-- <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Deliver Fee</label></div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail_box->order_detail->pickup_fee }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ $value->deliver_fee }}" readonly> </div> --}}
                                               @endif
                                           </div>
                                       @endif
@@ -199,7 +233,7 @@
 
                     <div class="col-md-4">
 
-                      <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_box->order_detail_id }}" required>
+                      {{-- <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_box->order_detail_id }}" required> --}}
 
 
                       <!-- return delivery box  -->
@@ -253,18 +287,20 @@
 
                       <!-- pickup box on warehouse -->
                       @if ($value->types_of_pickup_id == 2)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
-                        <select class="form-control" id="select2" name="status_id" required>
-                            @if($value->status_id == 19)
-                              <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            @else
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                            @endif
-                          </select>
-                        </div>
-                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @if($value->status_id == 19 || $value->status_id == 7)
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              @if($value->status_id == 19)
+                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @elseif($value->status_id == 7)
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @endif
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif
                       @endif
                       <!-- end pickup box on warehouse  -->
 

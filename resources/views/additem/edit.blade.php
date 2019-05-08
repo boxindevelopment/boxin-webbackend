@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('plugin_css')
-
+<link href="{{asset('assets/plugins/Magnific-Popup-master/dist/magnific-popup.css')}}" rel="stylesheet">
 @endsection
 
 @section('script_css')
@@ -15,7 +15,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Return Boxes</h3>
+        <h3 class="text-themecolor">Add-Item Boxes</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -30,15 +30,15 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Return Boxes</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Add-Item Boxes</h4>
 
-              <form action="{{ route('return.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('add-item.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-8" style="background-color: aliceblue;">
-                      @foreach ($data as $key => $value)
 
+                      @foreach ($data as $key => $value)
                       <div class="row">
                           <div class="col-12">
                               <div class="card">
@@ -72,7 +72,7 @@
                                           <div class="form-group col-md-4">
                                               <p>
                                                 @php
-                                                  echo date("d M Y", strtotime($value->date)) . ' - ' . date("h:i a", strtotime($value->time))
+                                                 echo date("d M Y", strtotime($value->date)) . ' ' . date("h:i a", strtotime($value->time_pickup));   
                                                 @endphp
                                               </p>
                                           </div>
@@ -81,14 +81,6 @@
                                           </div>
                                           <div class="form-group col-md-4">
                                               <p>{{ $value->address }}</p>
-                                          </div>
-                                      </div>
-                                      <div class="form-material row">
-                                          <div class="form-group col-md-2">
-                                              <label>Note </label>
-                                          </div>
-                                          <div class="form-group col-md-10">
-                                              <p>{{ $value->note }}</p>
                                           </div>
                                       </div>
                                       @if(isset($value->order_detail->types_of_box_room_id))
@@ -127,11 +119,43 @@
                                               <div class="form-group col-md-4">
                                                   <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail->box->code_box) ? $value->order_detail->box->code_box : '') : (isset($value->order_detail->space->code_space_small) ? $value->order_detail->space->code_space_small : '') }}" readonly> </div>
                                               <div class="form-group col-md-2">
-                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
+                                                <label for="inputEmail3" class="text-right control-label col-form-label">Name </label>
+                                              </div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail->box->name) ? $value->order_detail->box->name : '') : (isset($value->order_detail->space->name) ? $value->order_detail->space->name : '') }}" readonly> </div>
+                                                <input type="text" class="form-control form-control-line" value="{{ $value->order_detail->types_of_box_room_id == 1 ? (isset($value->order_detail->box->name) ? $value->order_detail->box->name : '') : (isset($value->order_detail->space->name) ? $value->order_detail->space->name : '') }}" readonly>
+                                              </div>
                                           </div>
 
+                                          <h5 class="card-title"><span class="lstick"></span><b>* Data Item(s)</b></h5>
+                                          <div class="form-material row">
+                                            <div class="form-group col-md-12">
+                                              <div class="table-responsive m-t-10">
+                                                <table class="table table-striped table-bordered">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>Name</th>
+                                                      <th>Image</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    @foreach ($value->items as $k => $v)
+                                                    <tr>
+                                                      <td>{{ $v->item_name }}</td>
+                                                      <td>
+                                                        <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $v->image }}">
+                                                          <i class="fa fa-file-image-o"></i>
+                                                          <div style="display: none;">
+                                                              <img width="50%" src="{{ $v->image }}" alt="image" />
+                                                          </div>
+                                                        </a>
+                                                      </td>
+                                                    </tr>
+                                                    @endforeach
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                            </div>
+                                          </div>
 
                                           <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
                                           <div class="form-material row">
@@ -142,7 +166,7 @@
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label"></label>Datetime</div>
                                               <div class="form-group col-md-4">
-                                                  <input type="text" class="form-control form-control-line" value="{{  date("d M Y", strtotime($value->date)) . ' - ' . date("h:i a", strtotime($value->time)) }}" readonly> </div>
+                                                  <input type="text" class="form-control form-control-line" value="{{ date('d M Y', strtotime($value->date))}} {{ $value->time_pickup ? '('.$value->time_pickup.')' : '' }}" readonly> </div>
                                               @if($value->address != '' || $value->address != null)
                                               <div class="form-group col-md-2">
                                                 <label for="inputEmail3" class="text-right control-label col-form-label">Address</label></div>
@@ -181,54 +205,53 @@
                     <div class="col-md-4">
 
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>
-
-                      <!-- return delivery box  -->
                       @if ($value->types_of_pickup_id == 1)
-
                         @if($value->status_id == 7 || $value->status_id == 2)
-                        <div class="form-group">
-                          <label for="">Status <span class="text-danger">*</span></label>
+                          <div class="form-group">
+                            <label for="">Status <span class="text-danger">*</span></label>
                             <select class="form-control" id="select2" name="status_id" required>
-                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                {{-- <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option> --}}
                                 <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                                 <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                              </select>
-                        </div>
+                            </select>
+                          </div>
 
-                        <div class="form-group">
-                          <label>Driver Name <span class="text-danger">*</span></label>
-                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
-                        </div>
+                          <div class="form-group">
+                            <label>Driver Name <span class="text-danger">*</span></label>
+                            <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
+                          </div>
 
-                        <div class="form-group">
-                          <label>Driver Phone <span class="text-danger">*</span></label>
-                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
-                        </div>
+                          <div class="form-group">
+                            <label>Driver Phone <span class="text-danger">*</span></label>
+                            <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
+                          </div>
 
-                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                          <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
                       <!-- end return delivery box  -->
-
-                      <!-- return box on warehouse -->
+                      <!-- pickup box on warehouse -->
                       @elseif ($value->types_of_pickup_id == 2)
-
-                      @if($value->status_id == 16)
-                      <div class="form-group">
-                        <label for="">Status <span class="text-danger">*</span></label>
+                        @if($value->status_id == 25 || $value->status_id == 7)
+                        <div class="form-group">
+                          <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
-                              <option value="16" {{ $value->status_id == 16 ? 'selected' : '' }}>Return Requested</option>
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                          </select>
-                      </div>
+                              @if($value->status_id == 25)
+                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @elseif($value->status_id == 7)
+                                <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @endif
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        @endif
                       @endif
-
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
-                      @endif
-                      <!-- end return box on warehouse  -->
-
+                      <!-- end pickup box on warehouse  -->
                       @endforeach
-                      <a href="{{ route('return.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      
+                      <a href="{{ route('add-item.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                     </div>
+
                 </div>
               </form>
 
@@ -246,6 +269,8 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup.min.js')}}"></script>
+<script src="{{asset('assets/plugins/Magnific-Popup-master/dist/jquery.magnific-popup-init.js')}}"></script>
 
 
 <script>
