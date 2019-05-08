@@ -18,7 +18,9 @@ class Order extends Model
       'qty',
       'status_id',
       'payment_expired',
-      'payment_status_expired' // 0 = false, 1 = true
+      'payment_status_expired', // 0 = false, 1 = true
+      'voucher_id',
+      'voucher_amount'
     ];
 
     public function user()
@@ -44,6 +46,11 @@ class Order extends Model
     public function pickup_order()
     {
         return $this->hasOne('App\Model\PickupOrder', 'order_id', 'id');
+    }
+
+    public function voucher()
+    {
+        return $this->belongsTo('App\Model\Voucher', 'voucher_id');
     }
 
 }
