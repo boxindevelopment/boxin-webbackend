@@ -45,12 +45,14 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
-                          <th width="15%">OrderID</th>
+                          <th width="12%">OrderID</th>
                           <th width="">Name</th>
                           <th width="">Box</th>
                           <th width="12%">Duration</th>
-                          <th width="15%" style="text-align: right;">Amount (Rp)</th>
-                          <th width="20%" class="text-center">StartDate - EndDate</th>
+                          <th width="12%" style="text-align: right;">Amount (Rp)</th>
+                          <th width="12%">Voucher</th>
+                          <th width="10%" style="text-align: right;">Voucher Price</th>
+                          <th width="15%" class="text-center">StartDate - EndDate</th>
                           <th width="10%" class="text-center no-sort">Status</th>
                           <th width="8%" class="text-center no-sort">Action</th>
                         </tr>
@@ -66,17 +68,19 @@
                               @if ($value->box)
                                 {{ $value->box->code_box }}
                               @else
-                                 - 
+                                 -
                               @endif
                             </td>
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
+                            <td>{{ isset($value->order->voucher->code) ? $value->order->voucher->code : ''}}</td>
+                            <td class="text-right">{{ number_format($value->order->voucher_amount, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
                             <td class="text-center">
                               @php
                                 if($value->status_id == 11 || $value->status_id == 8){
                                   $label = 'label-danger';
-                                }else if($value->status_id == 2 || $value->status_id == 3|| $value->status_id == 15){
+                                }else if($value->status_id == 2 || $value->status_id == 3|| $value->status_id == 14){
                                   $label = 'label-warning';
                                 }else{
                                   $label = 'label-success';
