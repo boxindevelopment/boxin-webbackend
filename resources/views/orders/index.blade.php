@@ -39,12 +39,14 @@
                   <table id="table-ingrd" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>
-                          <th width="15%">Order Date</th>
+                          <th width="4%">No</th>
+                          <th width="13%">Order Date</th>
                           <th width="">Customer Name</th>
-                          <th width="20%">Space</th>
-                          <th width="15%" style="text-align: right;">Total (Rp)</th>
-                          <th width="10%" class="text-center no-sort">Action</th>
+                          <th width="15%">Space</th>
+                          <th width="12%">Voucher</th>
+                          <th width="12%">Voucher Price</th>
+                          <th width="14%" style="text-align: right;">Total (Rp)</th>
+                          <th width="8%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +57,8 @@
                             <td>{{ $value->created_at->format('Y-m-d') }}</td>
                             <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
                             <td>{{ $value->area->name }}</td>
+                            <td>{{ $value->voucher->code }}</td>
+                            <td class="text-right">{{ number_format($value->voucher_amount, 0, '', '.') }}</td>
                             <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>
                             <td align="center">
                               <form action="{{route('order.destroy', ['id' => $value->id])}}" method="post">
@@ -96,7 +100,7 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal -->  
+            <!-- /.modal -->
 
             </div>
         </div>
