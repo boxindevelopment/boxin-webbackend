@@ -52,6 +52,7 @@
                           <th width="12%" style="text-align: right;">Amount (Rp)</th>
                           <th width="12%">Voucher</th>
                           <th width="10%" style="text-align: right;">Voucher Price</th>
+                          <th width="10%" style="text-align: right;">Total Order</th>
                           <th width="15%" class="text-center">StartDate - EndDate</th>
                           <th width="10%" class="text-center no-sort">Status</th>
                           <th width="8%" class="text-center no-sort">Action</th>
@@ -75,6 +76,7 @@
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ isset($value->order->voucher->code) ? $value->order->voucher->code : ''}}</td>
                             <td class="text-right">{{ number_format($value->order->voucher_amount, 0, '', '.') }}</td>
+                            <td class="text-right">{{ number_format($value->order->total, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
                             <td class="text-center">
                               @php
