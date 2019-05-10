@@ -134,6 +134,7 @@ class DashboardRepository implements DashboardRepositoryInterface
         $data = $data->select(DB::raw('SUM(order_details.amount) as total'));
         $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
         $data = $data->leftJoin('areas', 'areas.id', '=', 'orders.area_id');
+        $data = $data->whereNotIn('status_id', [24, 11, 14, 24]);
         if(Auth::user()->roles_id == 2){
             $data = $data->where('areas.id', $admin->area_id);
         }
