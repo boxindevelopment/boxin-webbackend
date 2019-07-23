@@ -55,6 +55,8 @@
                               $label = 'label-warning';
                             }else if($value->status_id == 5){
                               $label = 'label-success';
+                            }else if($value->status_id == 7){
+                              $label = 'label-success';
                             }else if($value->status_id == 6){
                               $label = 'label-danger';
                             }

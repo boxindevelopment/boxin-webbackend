@@ -57,8 +57,8 @@
                             <td>{{ $value->created_at->format('Y-m-d') }}</td>
                             <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
                             <td>{{ $value->area->name }}</td>
-                            <td>{{ $value->voucher->code }}</td>
-                            <td class="text-right">{{ number_format($value->voucher_amount, 0, '', '.') }}</td>
+                            <td>{{ ($value->voucher) ? $value->voucher->code : '-' }}</td>
+                            <td class="text-right">{{ ($value->voucher) ? number_format($value->voucher_amount, 0, '', '.') : 0 }}</td>
                             <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>
                             <td align="center">
                               <form action="{{route('order.destroy', ['id' => $value->id])}}" method="post">
