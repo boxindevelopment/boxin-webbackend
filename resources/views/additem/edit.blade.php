@@ -206,11 +206,11 @@
 
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>
                       @if ($value->types_of_pickup_id == 1)
-                        @if($value->status_id == 7 || $value->status_id == 2)
+                        @if($value->status_id == 5 || $value->status_id == 2)
                           <div class="form-group">
                             <label for="">Status <span class="text-danger">*</span></label>
                             <select class="form-control" id="select2" name="status_id" required>
-                                {{-- <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option> --}}
+                                {{-- <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option> --}}
                                 <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                                 <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                             </select>
@@ -231,14 +231,14 @@
                       <!-- end return delivery box  -->
                       <!-- pickup box on warehouse -->
                       @elseif ($value->types_of_pickup_id == 2)
-                        @if($value->status_id == 25 || $value->status_id == 7)
+                        @if($value->status_id == 25 || $value->status_id == 5)
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
                               @if($value->status_id == 25)
-                                <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                                <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option>
                                 <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
-                              @elseif($value->status_id == 7)
+                              @elseif($value->status_id == 5)
                                 <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
                               @endif
                             </select>

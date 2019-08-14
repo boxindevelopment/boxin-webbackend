@@ -66,11 +66,11 @@
                                 $name1   = '';
                             }
 
-                            if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8){
+                            if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8 || $value->status_id == 6){
                               $label = 'label-danger';
                             } else if($value->status_id == 12){
                               $label = 'label-inverse';
-                            } else if($value->status_id == 7){
+                            } else if($value->status_id == 7 || $value->status_id == 5){
                               $label = 'label-success';
                             } else if($value->status_id == 2){
                               $label = 'label-warning';
