@@ -59,7 +59,9 @@
                               $label = 'label-success';
                             }else if($value->status_id == 6){
                               $label = 'label-danger';
-                            }
+                          } else {
+                              $label = 'label-warning';
+                          }
                           @endphp
                           <tr>
                             <td align="center">{{ $key+1 }}</td>
