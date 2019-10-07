@@ -52,7 +52,7 @@ class UserController extends Controller
         return redirect()->route('user.admin.index')->with('success', 'Success add admin area ['.$user->first_name.'].');
       } else {
         return redirect()->route('user.admin.index')->with('error', 'Add admin area failed.');
-      }   
+      }
     }
     //*================================================== END ADMIN AREA ==================================================*\\
 
@@ -73,7 +73,7 @@ class UserController extends Controller
           'user_id'      => $user_id,
           'area_id'      => $area_id,
       ]);
-      
+
       $user           = $this->user->find($user_id);
       $user->roles_id = $request->roles_id;
       $user->status   = 1;
@@ -83,7 +83,7 @@ class UserController extends Controller
         return redirect()->route('user.finance.index')->with('success', 'Success add admin finance ['.$user->first_name.'].');
       } else {
         return redirect()->route('user.finance.index')->with('error', 'Add admin finance failed.');
-      }   
+      }
     }
     //*================================================== END ADMIN FINANCE ==================================================*\\
 
@@ -95,7 +95,7 @@ class UserController extends Controller
     }
 
     public function storeSuperadmin(Request $request)
-    {      
+    {
       $user           = $this->user->find($request->superadmin_id);
       $user->roles_id = $request->roles_id;
       $user->status   = 1;
@@ -105,7 +105,7 @@ class UserController extends Controller
         return redirect()->route('user.superadmin.index')->with('success', 'Success add super admin ['.$user->first_name.'].');
       } else {
         return redirect()->route('user.superadmin.index')->with('error', 'Add super admin failed.');
-      }   
+      }
     }
     //*==================================================== END SUPERADMIN ====================================================*\\
 
@@ -116,7 +116,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user      = $this->user->getEdit($id); 
+        $user      = $this->user->getEdit($id);
         $edit_user = true;
         if($user->roles_id == '2'){
           return view('users.admin.edit', compact('user', 'id', 'edit_user'));
@@ -130,11 +130,11 @@ class UserController extends Controller
         $split    = explode('##', $request->area_id);
         $area_id  = $split[0];
         $user_id  = $request->admin_id != null ? $request->admin_id : $request->finance_id ;
-        
+
         $user           = $this->user->findAdmin($id);
         $cek_user       = $this->user->find($user_id);
         if($cek_user){
-          $cek_user->status   = '1';          
+          $cek_user->status   = '1';
           $cek_user->roles_id = $request->roles_id;
           $cek_user->save();
         }
@@ -154,21 +154,20 @@ class UserController extends Controller
           }else{
             return redirect()->route('user.finance.index')->with('error', 'Edit admin finance failed.');
           }
-        }     
+        }
     }
 
     public function destroy(Request $request, $id)
     {
         if($request->roles_id == '3' || $request->roles_id == '1'){
-            $user  = $this->user->find($id);
+            $user  = $this->user->find($id);            
+            $user->roles_id = 1;
+            $user->save();
         } else if ($request->roles_id == '2' || $request->roles_id == '4'){
             $cek   = $this->user->findAdmin($id);
             $user  = $this->user->find($cek->user_id);
             $cek->delete();
-        } 
-           
-        $user->roles_id = 1;
-        $user->save();
+        }
 
         if($user){
             if($request->roles_id == '2'){
@@ -179,7 +178,7 @@ class UserController extends Controller
                 return redirect()->route('user.finance.index')->with('success', 'Succes delete admin finance ['.$user->first_name.'].');
             } else if($request->roles_id == '1'){
                 return redirect()->route('user.all.index')->with('success', 'Succes delete costumer ['.$user->first_name.'].');
-            } 
+            }
         } else {
             if($request->roles_id == '2'){
                 return redirect()->route('user.admin.index')->with('error', 'Delete admin area failed.');
@@ -189,8 +188,8 @@ class UserController extends Controller
                 return redirect()->route('user.finance.index')->with('error', 'Delete admin finance failed.');
             } else if($request->roles_id == '1'){
                 return redirect()->route('user.all.index')->with('error', 'Delete customer failed.');
-            } 
-        }   
+            }
+        }
     }
 
     public function getDataSelectForAdmin($args = [])
@@ -235,7 +234,7 @@ class UserController extends Controller
         echo(json_encode($arrUser));
     }
 
-    public function myProfile(Request $request) 
+    public function myProfile(Request $request)
     {
       $user      = $request->user();
       return view('profile', compact('user'));
@@ -267,7 +266,7 @@ class UserController extends Controller
           return redirect()->route('profile')->with('success', 'Succes edit profile.');
         } else {
           return redirect()->route('profile')->with('error', 'Edit profile failed.');
-        }     
+        }
     }
 
     public function changePassword(Request $request, $id)
@@ -286,7 +285,7 @@ class UserController extends Controller
         $check  = Hash::check($request->input('old_password'), $user->password, []);
         //check old pass with new pass
         $check2 = Hash::check($request->input('new_password'), $user->password, []);
-        
+
         $user   = $this->user->find(Auth::id());
 
         if($check){
@@ -299,9 +298,9 @@ class UserController extends Controller
               }
           }else{
               return redirect()->route('profile')->with('error', 'Cannot save, because new password same with current password.');
-          }            
+          }
         }else{
           return redirect()->route('profile')->with('error', 'Your old password wrong.');
-        }     
+        }
     }
 }
