@@ -160,7 +160,7 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         if($request->roles_id == '3' || $request->roles_id == '1'){
-            $user  = $this->user->find($id);            
+            $user  = $this->user->find($id);
             $user->roles_id = 1;
             $user->save();
         } else if ($request->roles_id == '2' || $request->roles_id == '4'){
@@ -169,27 +169,16 @@ class UserController extends Controller
             $cek->delete();
         }
 
-        if($user){
-            if($request->roles_id == '2'){
-                return redirect()->route('user.admin.index')->with('success', 'Succes delete admin area ['.$user->first_name.'].');
-            } else if($request->roles_id == '3'){
-                return redirect()->route('user.superadmin.index')->with('success', 'Succes delete super admin ['.$user->first_name.'].');
-            } else if($request->roles_id == '4'){
-                return redirect()->route('user.finance.index')->with('success', 'Succes delete admin finance ['.$user->first_name.'].');
-            } else if($request->roles_id == '1'){
-                return redirect()->route('user.all.index')->with('success', 'Succes delete costumer ['.$user->first_name.'].');
-            }
-        } else {
-            if($request->roles_id == '2'){
-                return redirect()->route('user.admin.index')->with('error', 'Delete admin area failed.');
-            } else if($request->roles_id == '3'){
-                return redirect()->route('user.superadmin.index')->with('error', 'Delete super admin failed.');
-            } else if($request->roles_id == '4'){
-                return redirect()->route('user.finance.index')->with('error', 'Delete admin finance failed.');
-            } else if($request->roles_id == '1'){
-                return redirect()->route('user.all.index')->with('error', 'Delete customer failed.');
-            }
+        if($request->roles_id == '2'){
+            return redirect()->route('user.admin.index')->with('error', 'Delete admin area failed.');
+        } else if($request->roles_id == '3'){
+            return redirect()->route('user.superadmin.index')->with('error', 'Delete super admin failed.');
+        } else if($request->roles_id == '4'){
+            return redirect()->route('user.finance.index')->with('error', 'Delete admin finance failed.');
+        } else if($request->roles_id == '1'){
+            return redirect()->route('user.all.index')->with('error', 'Delete customer failed.');
         }
+        
     }
 
     public function getDataSelectForAdmin($args = [])
