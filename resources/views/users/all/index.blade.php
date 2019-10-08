@@ -58,24 +58,22 @@
                             <td>{{ $value->email }}</td>
                             <td>{{ $value->roles->name }}</td>
                             <td class="text-center"><span class="label {{ $value->status == 1 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status == 1 ? 'Verified' : 'Not Verified'  }}</span></td>
-                                          
+
                             <td class="text-center">
                               <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf
                                 {{-- <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a> --}}
-                                @if($value->status != 1)
                                 @method('DELETE')
                                 <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
-                                @endif
                               </form>
-                            </td> 
+                            </td>
                           </tr>
                         @endforeach
                       @endif
                     </tbody>
                 </table>
               </div>
-  
+
               <!-- sample modal content -->
               <div class="modal fade bs-example-modal-lg" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" style="display: none;">
                   <div class="modal-dialog modal-dialog-centered">
@@ -97,7 +95,7 @@
                   </div>
                   <!-- /.modal-dialog -->
               </div>
-              <!-- /.modal -->   
+              <!-- /.modal -->
 
             </div>
         </div>
