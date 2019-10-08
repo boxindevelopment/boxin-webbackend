@@ -160,6 +160,8 @@ class UserController extends Controller
     public function destroy(Request $request, $id)
     {
         $user  = $this->user->find($id);
+        $user->status = 2;
+        $user->save();
         $user->delete();
         if($user){
             if($user->roles_id == '2'){
