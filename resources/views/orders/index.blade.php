@@ -55,7 +55,7 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->created_at->format('Y-m-d') }}</td>
-                            <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
+                            <td>{{ ($value->user) ? $value->user->first_name : '' }} {{ ($value->user) ? $value->user->last_name : '' }}</td>
                             <td>{{ $value->area->name }}</td>
                             <td>{{ ($value->voucher) ? $value->voucher->code : '-' }}</td>
                             <td class="text-right">{{ ($value->voucher) ? number_format($value->voucher_amount, 0, '', '.') : 0 }}</td>
