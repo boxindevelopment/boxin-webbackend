@@ -76,18 +76,85 @@
                     </div>
                 @endif
             </form>
-            <h5 class="card-title"><span class="lstick"></span><b>* Address</b></h5>
-            <form class="form-material row">
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">First Name</label>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="text" class="form-control form-control-line" value="{{ $user->first_name }}" readonly>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">Last Name</label>
-                </div>
-            </form>
+            @if(count($user->addresses))
+                <h5 class="card-title"><span class="lstick"></span><b>* Address</b></h5>
+                <form class="form-material row">
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Address</label>
+                    </div>
+                    <div class="form-group col-md-10">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->address }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Kel./Desa</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->village->name }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Kecamatan</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->village->district->name }}" readonly>
+                    </div>
+                    @if($user->addresses[0]->apartment_name != '')
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail3" class="text-right control-label col-form-label">Nama Apartemen</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->apartment_name }}" readonly>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail3" class="text-right control-label col-form-label">Tower Apartemen</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->apartment_tower }}" readonly>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail3" class="text-right control-label col-form-label">Lantai Apartemen</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->apartment_floor }}" readonly>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail3" class="text-right control-label col-form-label">Nomor Apartemen</label>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->apartment_number }}" readonly>
+                        </div>
+                    @endif
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">RT</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->rt }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">RW</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->village->rw }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">KAB/Kota</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->village->district->regency->name }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Propinsi</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->village->district->regency->province->name }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Kode Pos</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $user->addresses[0]->postal_code }}" readonly>
+                    </div>
+                </form>
+            @endif
         </div>
     </div>
 </div>

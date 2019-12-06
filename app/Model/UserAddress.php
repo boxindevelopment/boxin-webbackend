@@ -5,7 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Village extends Model
+class UserAddress extends Model
 {
     use SoftDeletes;
 
@@ -17,14 +17,14 @@ class Village extends Model
      * [user Relationship to User]
      * @return [type] [description]
      */
-    public function address()
+    public function user()
     {
-        return $this->hasMany('App\Model\UserAddress');
+        return $this->belongsTo('App\Model\User');
     }
 
-    public function district()
+    public function village()
     {
-        return $this->belongsTo('App\Model\District');
+        return $this->belongsTo('App\Model\Village');
     }
 
 }

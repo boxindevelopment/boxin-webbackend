@@ -111,7 +111,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user       = User::find($id);
+        $user       = User::with('addresses')->find($id);
         $url = route('user.index');
         return view('users.all.detail', compact('user', 'url'));
     }

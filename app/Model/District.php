@@ -19,12 +19,12 @@ class District extends Model
      */
     public function villages()
     {
-        return $this->hasMany('App\Models\Village');
+        return $this->hasMany('App\Model\Village');
     }
 
     public function regency()
     {
-        return $this->belongsTo('App\Models\Regency');
+        return $this->belongsTo('App\Model\Regency');
     }
 
 }

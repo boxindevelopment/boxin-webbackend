@@ -43,4 +43,9 @@ class User extends Authenticatable
       return $this->hasMany('App\Model\Payment', 'user_id', 'id');
   }
 
+ public function addresses()
+ {
+     return $this->hasMany('App\Model\UserAddress');
+ }
+
 }
