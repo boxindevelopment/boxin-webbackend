@@ -26,7 +26,7 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
-        $data = $data->select('pickup_orders.id', 'pickup_orders.order_id', 'pickup_orders.date', 'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',  'users.last_name', 'order_details.id_name');
+        $data = $data->select('pickup_orders.id', 'pickup_orders.order_id', 'pickup_orders.date', 'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',  'users.last_name', 'order_details.id_name', 'order_details.place');
         $data = $data->leftJoin('orders','orders.id','=','pickup_orders.order_id');
         $data = $data->leftJoin('order_details','order_details.order_id','=','orders.id');
         $data = $data->leftJoin('users','users.id','=','orders.user_id');

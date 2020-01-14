@@ -52,7 +52,6 @@ class PickupController extends Controller
     public function edit($id)
     {
       $pickup     = PickupOrder::select('pickup_orders.*')->where('id',$id)->get();
-      // dd($pickup);
       return view('pickup.edit', compact('pickup', 'id'));
     }
 
@@ -81,7 +80,7 @@ class PickupController extends Controller
         } else {
           $starts_date = Carbon::now()->toDateString();
         }
-        
+
         DB::beginTransaction();
         try {
 
@@ -89,7 +88,7 @@ class PickupController extends Controller
           $order->status_id = $stored_status;
           $order->save();
           $users_id = $order->user_id;
-        
+
           $order_details = OrderDetail::where('order_id', '=', $order_id)->get();
           foreach ($order_details as $key => $order_detail) {
             $order_detail->status_id = $stored_status;
@@ -121,7 +120,7 @@ class PickupController extends Controller
                     $new_end_date = date('Y-m-d', strtotime('+'.$end_date.' month', strtotime($starts_date)));
                 }
                 $order_detail->end_date = Carbon::parse($new_end_date);
-            }  
+            }
             $order_detail->save();
           }
 
@@ -146,13 +145,13 @@ class PickupController extends Controller
                   //Notif message "Your items is on the way back to you"
                   $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
                   break;
-                
+
                 default:
                   # code...
                   break;
               }
           }
-          
+
           DB::commit();
           return redirect()->route('pickup.index')->with('success', 'Edit Data Pickup Order success.');
         } catch (Exception $th) {

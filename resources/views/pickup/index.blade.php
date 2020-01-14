@@ -40,9 +40,10 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
-                          <th width="15%">Date</th>
+                          <th width="10%">Date</th>
                           <th width="15%">OrderID</th>
                           <th width="">Customer Name</th>
+                          <th width="10%" class="text-center">Place</th>
                           <th width="15%" class="text-center">Box Pickup</th>
                           <th width="15%" class="text-center">Status</th>
                           <th width="5%" class="text-center no-sort">Action</th>
@@ -85,6 +86,9 @@
                             </td>
                             <td align="center">{{ $value->id_name }}</td>
                             <td>{{ $value->first_name}} {{ $value->last_name}}</td>
+                            <td class="text-center">
+                              <span class="label {{ ($value->place != 'warehouse') ? 'label-custom' : 'label-info' }} label-rounded">{{ ($value->place != 'warehouse') ? 'user' : $value->place }}</span>
+                            </td>
                             <td class="text-center">
                               <span class="label {{ $label1 }} label-rounded">{{ $name1 }}</span>
                             </td>

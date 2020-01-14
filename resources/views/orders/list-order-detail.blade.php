@@ -64,7 +64,7 @@
                           <tr>
                             <td align="center">{{ $key+1 }}</th>
                             <td>{{ $value->id_name }}</td>
-                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->name }}<br>({{ ($value->place != 'warehouse') ? 'user' : $value->place }})</td>
                             <td>
                               @if ($value->box)
                                 {{ $value->box->code_box }}

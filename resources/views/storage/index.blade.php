@@ -42,9 +42,10 @@
                           <th width="5%">No</th>
                           <th width="10%" class="text-center">OrderID</th>
                           <th width="">Customer Name</th>
-                          <th width="12%">Duration</th>
-                          <th width="15%" style="text-align: right;">Amount (Rp)</th>
+                          <th width="8%">Duration</th>
+                          <th width="12%" style="text-align: right;">Amount (Rp)</th>
                           <th width="20%" class="text-center">StartDate - EndDate</th>
+                          <th width="8%" class="text-center">Place</th>
                           <th width="10%" class="text-center no-sort">Status</th>
                           <th width="10%" class="text-center no-sort">Action</th>
                         </tr>
@@ -59,6 +60,7 @@
                             <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
+                            <td>{{ ($value->place != 'warehouse') ? 'user' : $value->place }}</td>
                             <td class="text-center">
                               @php
                                 if($value->status_id == 4){

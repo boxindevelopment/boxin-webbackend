@@ -84,6 +84,7 @@
                         <select class="form-control" id="select2" name="status_id" >
                             <option value="15" {{ $value->status_id == 15 ? 'selected' : '' }}>Waiting for Confirmation</option>
                             <option value="7" {{ $value->status_id == 7 ? 'selected' : '' }}>Approved</option>
+                            <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Success</option>
                             <option value="8" {{ $value->status_id == 8 ? 'selected' : '' }}>Rejected</option>
                         </select>
                       </div> --}}
