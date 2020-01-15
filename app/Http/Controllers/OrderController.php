@@ -57,6 +57,14 @@ class OrderController extends Controller
       return view('orders.list-order-detail-box', compact('detail_order_box', 'id', 'detail'));
     }
 
+    public function updatePlace(Request $request, $id)
+    {
+        $orderDetail       = OrderDetail::find($id);
+        $orderDetail->place = $request->place;
+        $orderDetail->save();
+        return redirect()->route('order.orderDetailBox', ['id' => $id])->with('success', 'Data Place successfully updated!');
+    }
+
     public function update(Request $request, $id)
     {
     }

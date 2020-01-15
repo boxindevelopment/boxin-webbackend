@@ -105,14 +105,26 @@
                 <label for="inputEmail3" class="text-right control-label col-form-label">Name </label></div>
               <div class="form-group col-md-4">
                   <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->name) ? $detail->box->name : '') : (isset($detail->space->name) ? $detail->space->name : '') }}" readonly> </div>
-              <div class="form-group col-md-2">
-                <label for="inputEmail3" class="text-right control-label col-form-label">Place </label></div>
-              <div class="form-group col-md-4">
-                  <input type="text" class="form-control form-control-line" value="{{ ($detail->place != 'warehouse') ? 'user' : $detail->place }}" readonly> </div>
-          </form>
+        </form>
+        <form class="form-material row" action="{{ route('order.orderDetailBox.updatePlace', ['id' => $id]) }}" method="POST">
+          @csrf
+          @method('PUT')
+            <div class="form-group col-md-2">
+                <label for="inputEmail3" class="text-right control-label col-form-label">Place </label>
+            </div>
+            <div class="form-group col-md-4">
+                <select name="place" type="text" class="form-control form-control-line">
+                    <option value="warehouse" {{ ($detail->place != 'warehouse') ? '' : 'selected' }}>Warehouse</option>
+                    <option value="house" {{ ($detail->place != 'warehouse') ? 'selected' : '' }}>User</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
 
 
-          <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order</b></h5>
+          <h5 class="card-title"><span class="lstick"></span><b>* Data Pickup Order Test</b></h5>
           <form class="form-material row">
               <div class="form-group col-md-2">
                 <label for="inputEmail3" class="text-right control-label col-form-label">Box Pickup</label></div>
