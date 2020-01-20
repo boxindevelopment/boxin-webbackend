@@ -60,6 +60,37 @@ class BoxRepository implements BoxRepositoryInterface
 
     }
 
+    public function getDatas($args = [])
+    {
+        $query = $this->model->query();
+        $query->select('boxes.*');
+        $query->leftJoin('shelves', 'shelves.id', '=', 'boxes.shelves_id');
+
+        if(isset($args['orderColumns']) && isset($args['orderDir'])){
+            $query->orderBy($args['orderColumns'], $args['orderDir']);
+        }
+        if(isset($args['status_id'])){
+            $query->where('boxes.status_id', $args['status_id']);
+        }
+        if(isset($args['area_id'])){
+            $query->where('shelves.area_id', $args['area_id']);
+        }
+        if(isset($args['types_of_size_id'])){
+            $query->where('boxes.types_of_size_id', $args['types_of_size_id']);
+        }
+        if(isset($args['start'])){
+            $query->skip($args['start']);
+        }
+        if(isset($args['length'])){
+            $query->take($args['length']);
+        }
+        $query->where('boxes.deleted_at', NULL);
+        $box = $query->get();
+
+        return $box;
+
+    }
+
     public function getEdit($id)
     {
         $data = $this->model->select(array('boxes.*',

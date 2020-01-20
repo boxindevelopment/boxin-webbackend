@@ -31,7 +31,13 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>List Orders</h4>
+              <h4 class="card-title"><span class="lstick"></span>List Orders
+                  <a href="{{ route('order.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right"
+                    title="Add" style="margin-right: 10px;">
+                    <i class="fa fa-plus"></i>&nbsp;
+                    Add Order
+                  </a>
+              </h4>
 
               @include('error-template')
 

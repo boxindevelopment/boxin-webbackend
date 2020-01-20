@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\User;
+use App\Model\UserAddress;
 use App\Model\AdminArea;
 use App\Repositories\UserRepository;
 use Auth;
@@ -192,6 +193,20 @@ class UserController extends Controller
         }
     }
 
+    public function getDataSelect($args = [])
+    {
+
+        $user       = $this->user->getSelectAll();
+        $arrUser    = array();
+        foreach ($user as $arrVal) {
+            $arr = array(
+                      'id'    => $arrVal->id,
+                      'text'  =>  $arrVal->first_name .' '. $arrVal->last_name .' ('. $arrVal->email .')');
+            $arrUser[] = $arr;
+        }
+        echo(json_encode($arrUser));
+    }
+
     public function getDataSelectForAdmin($args = [])
     {
 
@@ -302,5 +317,68 @@ class UserController extends Controller
         }else{
           return redirect()->route('profile')->with('error', 'Your old password wrong.');
         }
+    }
+
+
+    public function store(Request $request)
+    {
+
+        $validator = \Validator::make($request->all(), [
+            'first_name' => 'required',
+            'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+            'phone' => 'required|numeric|unique:users,phone,NULL,id,deleted_at,NULL',
+            'password' => 'required',
+            'confirmation_password' => 'required|same:password',
+            'address' => 'required',
+            'postal_code'   => 'required',
+            'village_id'    => 'required|exists:villages,id',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $check = User::where('email', $request->input('email'))
+                     ->whereOr('phone', $request->input('phone'))
+                     ->first();
+        if($check){
+            $check->deleted_at  = null;
+            $check->email       = $request->input('email');
+            $check->last_name   = $request->input('last_name');
+            $check->phone       = '+62' . $request->input('phone');
+            $check->status      = 2;
+
+            $check->save();
+            $user               = $check;
+        } else {
+            $input              = $request->all();
+            $input['password']  = bcrypt($request->input('password'));
+            $input['email'] = $request->input('email');
+            $input['last_name'] = $request->input('last_name');
+            $input['phone']     = '+62' . $request->input('phone');
+            $input['status']    = 2;
+            $user               = User::create($input);
+        }
+
+        // $token              = $user->createToken('Boxin')->accessToken;
+        // $data['remember_token'] = $token;
+        // $remember_token     = User::whereId($user->id)->update($data);
+
+        if($user){
+            $userAddress = UserAddress::create(['user_id'   => $user->id,
+                                          'name'            => $request->input('first_name'),
+                                          'address'         => $request->input('address'),
+                                          'postal_code'     => $request->input('postal_code'),
+                                          'village_id'      => $request->input('village_id'),
+                                          'default'         => true]);
+
+
+            return $user->id;
+            // return response()->json(['message' => 'Register success.']);
+        } else {
+            return 0;
+            // return response()->json(['message' => 'Register failed.'], 404);
+        }
+
     }
 }

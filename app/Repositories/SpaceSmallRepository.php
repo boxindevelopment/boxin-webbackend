@@ -27,6 +27,37 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
         return $this->model->where('deleted_at', NULL)->where('id', $id)->get();
     }
 
+    public function getDatas($args = [])
+    {
+        $query = $this->model->query();
+        $query->select('space_smalls.*');
+        $query->leftJoin('shelves', 'shelves.id', '=', 'space_smalls.shelves_id');
+
+        if(isset($args['orderColumns']) && isset($args['orderDir'])){
+            $query->orderBy($args['orderColumns'], $args['orderDir']);
+        }
+        if(isset($args['status_id'])){
+            $query->where('space_smalls.status_id', $args['status_id']);
+        }
+        if(isset($args['area_id'])){
+            $query->where('shelves.area_id', $args['area_id']);
+        }
+        if(isset($args['types_of_size_id'])){
+            $query->where('space_smalls.types_of_size_id', $args['types_of_size_id']);
+        }
+        if(isset($args['start'])){
+            $query->skip($args['start']);
+        }
+        if(isset($args['length'])){
+            $query->take($args['length']);
+        }
+        $query->where('space_smalls.deleted_at', NULL);
+        $spaceSmall = $query->first();
+
+        return $spaceSmall;
+
+    }
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();

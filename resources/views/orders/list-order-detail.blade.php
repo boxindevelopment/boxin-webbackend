@@ -91,7 +91,8 @@
                               <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
                             </td>
                             <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Detail</a>
+                              <a class="btn btn-secondary btn-sm" href="{{route('order.orderDetailBox', ['id' => $value->id])}}"><i class="fa fa-dropbox"></i> Detail</a>
+                              <a class="btn btn-primary btn-sm" href="{{route('order.detail.edit', ['id' => $value->id])}}" style="margin-top:5px;"><i class="fa fa-dropbox"></i> Edit</a>
                             </td>
                           </tr>
                         @endforeach
