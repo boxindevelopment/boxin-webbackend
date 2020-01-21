@@ -14,6 +14,12 @@ Route::group(['middleware' => 'auth'], function() {
   Route::prefix('city')->group(function () {
     Route::get('/dataSelect','CityController@getDataSelect')->name('city.getDataSelect');
   });
+  Route::prefix('country')->group(function () {
+    Route::get('/province/dataSelect/all','CountryController@getDataProvinceSelect')->name('country.province.getDataSelect');
+    Route::get('/regency/dataSelect/all','CountryController@getDataRegencySelect')->name('country.regency.getDataSelect');
+    Route::get('/district/dataSelect/all','CountryController@getDataDistrictSelect')->name('country.district.getDataSelect');
+    Route::get('/village/dataSelect/all','CountryController@getDataVillageSelect')->name('country.village.getDataSelect');
+  });
 
   Route::resource('area', 'AreaController')->except(['show']);
   Route::prefix('area')->group(function () {
@@ -59,6 +65,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','OrderController@index')->name('order.index');
     Route::get('/order-detail/{id}','OrderController@orderDetail')->name('order.orderDetail');
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
+    Route::get('/order-detail/{id}/edit','OrderController@orderDetailBox')->name('order.detail.edit');
+    Route::put('/order-detail-box/{id}/update-place','OrderController@updatePlace')->name('order.orderDetailBox.updatePlace');
   });
 
   Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
@@ -96,11 +104,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','ReturnBoxesController@index')->name('return.index');
   });
 
-  Route::resource('user', 'UserController')->except(['show']);
+  Route::resource('user', 'UserController');
   Route::prefix('user')->group(function () {
+    Route::post('store','UserController@store')->name('user.store');
     Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
     Route::put('change-password/{id}','UserController@changePassword')->name('user.changePassword');
 
+    Route::get('dataSelect/all','UserController@getDataSelect')->name('user.getDataSelect');
     Route::get('getDataSelectForAdmin', ['uses' => 'UserController@getDataSelectForAdmin', 'as' => 'user.getDataSelectForAdmin']);
     Route::get('getDataSelectForSuperadmin', ['uses' => 'UserController@getDataSelectForSuperadmin', 'as' => 'user.getDataSelectForSuperadmin']);
     Route::get('getDataSelectForFinance', ['uses' => 'UserController@getDataSelectForFinance', 'as' => 'user.getDataSelectForFinance']);

@@ -61,6 +61,7 @@
 
                             <td class="text-center">
                               <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
+                                 <a class="btn btn-primary btn-sm" href="{{route('user.show', ['id' => $value->id])}}" title="View Detail"><i class="fa fa-eye"></i></a>
                                 @csrf
                                 {{-- <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a> --}}
                                 @method('DELETE')
