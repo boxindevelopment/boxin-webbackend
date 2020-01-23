@@ -104,7 +104,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','ReturnBoxesController@index')->name('return.index');
   });
 
-  Route::resource('user', 'UserController');
   Route::prefix('user')->group(function () {
     Route::post('store','UserController@store')->name('user.store');
     Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
@@ -123,6 +122,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('superadmin','UserController@list_superadmin')->name('user.superadmin.index');
     Route::post('superadmin/store','UserController@storeSuperadmin')->name('user.superadmin.store');
   });
+  Route::resource('user', 'UserController');
 
   Route::resource('types-of-size', 'TypeSizeController')->except(['show']);
   Route::prefix('types-of-size')->group(function () {

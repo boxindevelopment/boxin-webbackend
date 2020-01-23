@@ -53,9 +53,9 @@ class AreaController extends Controller
         return redirect()->route('area.index')->with('success', 'Area ['.$request->name.'] added.');
       } else {
         return redirect()->route('area.index')->with('error', 'Add New Area failed.');
-      }      
+      }
     }
-  
+
     public function show($id)
     {
       abort('404');
@@ -79,7 +79,7 @@ class AreaController extends Controller
       if($area->city_id != $city_id){
         $area->city_id = $city_id;
         $area->id_name = $request->id_name_area;
-      } 
+      }
       $area->save();
 
       if($area){
@@ -87,7 +87,7 @@ class AreaController extends Controller
       } else {
         return redirect()->route('area.index')->with('error', 'Edit Area failed.');
       }
-      
+
     }
 
     public function destroy($id)
@@ -99,39 +99,27 @@ class AreaController extends Controller
       $area->deleted_at = Carbon\Carbon::now();
       $area->save();
 
-      $space_          = Space::where('area_id', $id)->get();
-      $count_space     = count($space_);
-      //delete space
-      for ($i = 0; $i < $count_space; $i++) {
-        $space = Space::find($space_[$i]->id);
-        $space->deleted_at = Carbon\Carbon::now();
-        $space->save();
-        //delete shelves
-        $shelves_        = Shelves::where('space_id', $space_[$i]->id)->get();
-        $count_shelves   = count($shelves_);
-        for ($a = 0; $a < $count_shelves; $a++) {
-          $shelves = Shelves::find($shelves_[$a]->id);
-          $shelves->deleted_at = Carbon\Carbon::now();
-          $shelves->save();
+      $shelves          = Shelves::where('area_id', $id)->get();
+      foreach ($shelves as $k => $v) {
+
           //delete box
-          $box_        = Box::where('shelves_id', $shelves_[$a]->id)->get();
-          $count_box   = count($box_);
-          for ($b = 0; $b < $count_box; $b++) {
-            $box = Box::find($box_[$b]->id);
+          $boxes       = Box::where('shelves_id', $v->id)->get();
+          foreach ($boxes as $key => $val) {
+            $box = Box::find($val->id);
             $box->deleted_at = Carbon\Carbon::now();
             $box->save();
           }
-        }
+
+          //delete shelves
+          $shelves = Shelves::find($v->id);
+          $shelves->deleted_at = Carbon\Carbon::now();
+          $shelves->save();
       }
 
       //delete price
-      $price_          = Price::where('area_id', $id)->get();
-      $count_price     = count($price_);
-      for ($c = 0; $c < $count_space; $c++) {
-        $price = Price::find($price_[$c]->id);
-        $price->deleted_at = Carbon\Carbon::now();
-        $price->save();
-      }
+      $now = Carbon\Carbon::now();
+      Price::where('area_id', $id)->update(['deleted_at' => $now]);
+      
       //delete delivery-fee
       $deliveryfee_       = DeliveryFee::where('area_id', $id)->get();
       $count_deliveryfee  = count($deliveryfee_);
@@ -146,7 +134,7 @@ class AreaController extends Controller
       } else {
         return redirect()->route('area.index')->with('error', 'Delete Area failed.');
       }
-      
+
     }
 
     public function getDataSelectByCity($city_id, Request $request)
