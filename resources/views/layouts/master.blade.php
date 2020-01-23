@@ -427,103 +427,109 @@
         }
 
         function userForAdmin_Selectdata(values) {
-            var data = $.ajax({
-                url: "{{ url('/user/getDataSelectForAdmin') }}",
-                type: "GET",
-                data: { }
-            })
-            .done(function(data) {
-                var obj = jQuery.parseJSON(data);
-                arrs = [];
-                for (var i = 0; i<obj.length; i++) {
-                    arrs.push( {
-                        id : obj[i].id,
-                        text : obj[i].text
-                    } );
-                }
-                $("#admin_id").select2({
-                    multiple: false,
-                    placeholder: 'Choose User',
-                    tags: true,
-                    data : arrs
-                }).on('change', function (e) {
-                    var user_id = $(this).val();
+            if($("#admin_id")[0]){
+                var data = $.ajax({
+                    url: "{{ url('/user/getDataSelectForAdmin') }}",
+                    type: "GET",
+                    data: { }
+                })
+                .done(function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    arrs = [];
+                    for (var i = 0; i<obj.length; i++) {
+                        arrs.push( {
+                            id : obj[i].id,
+                            text : obj[i].text
+                        } );
+                    }
+                    $("#admin_id").select2({
+                        multiple: false,
+                        placeholder: 'Choose User',
+                        tags: true,
+                        data : arrs
+                    }).on('change', function (e) {
+                        var user_id = $(this).val();
+                    });
+                    if(values != ''){
+                        $("#admin_id").val(values).trigger('change');
+                    }
                 });
+
                 if(values != ''){
                     $("#admin_id").val(values).trigger('change');
                 }
-            });
-
-            if(values != ''){
-                $("#admin_id").val(values).trigger('change');
             }
         }
         userForAdmin_Selectdata('');
 
         function userForSuperadmin_Selectdata(values) {
-            var data = $.ajax({
-                url: "{{ url('/user/getDataSelectForSuperadmin') }}",
-                type: "GET",
-                data: { }
-            })
-            .done(function(data) {
-                var obj = jQuery.parseJSON(data);
-                arrs = [];
-                for (var i = 0; i<obj.length; i++) {
-                    arrs.push( {
-                        id : obj[i].id,
-                        text : obj[i].text
-                    } );
-                }
-                $("#superadmin_id").select2({
-                    multiple: false,
-                    placeholder: 'Choose User',
-                    tags: true,
-                    data : arrs
-                }).on('change', function (e) {
-                    var user = $(this).val();
+            if($("#superadmin_id")[0]){
+                var data = $.ajax({
+                    url: "{{ url('/user/getDataSelectForSuperadmin') }}",
+                    type: "GET",
+                    data: { }
+                })
+                .done(function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    arrs = [];
+                    for (var i = 0; i<obj.length; i++) {
+                        arrs.push( {
+                            id : obj[i].id,
+                            text : obj[i].text
+                        } );
+                    }
+                    $("#superadmin_id").select2({
+                        multiple: false,
+                        placeholder: 'Choose User',
+                        tags: true,
+                        data : arrs
+                    }).on('change', function (e) {
+                        var user = $(this).val();
+                    });
+                    if(values != ''){
+                        $("#superadmin_id").val(values).trigger('change');
+                    }
                 });
+
                 if(values != ''){
                     $("#superadmin_id").val(values).trigger('change');
                 }
-            });
-
-            if(values != ''){
-                $("#superadmin_id").val(values).trigger('change');
             }
         }
         userForSuperadmin_Selectdata('');
 
         function userForFinance_Selectdata(values) {
-            var data = $.ajax({
-                url: "{{ url('/user/getDataSelectForFinance') }}",
-                type: "GET",
-                data: { }
-            })
-            .done(function(data) {
-                var obj = jQuery.parseJSON(data);
-                arrs = [];
-                for (var i = 0; i<obj.length; i++) {
-                    arrs.push( {
-                        id : obj[i].id,
-                        text : obj[i].text
-                    } );
-                }
-                $("#finance_id").select2({
-                    multiple: false,
-                    placeholder: 'Choose User',
-                    tags: true,
-                    data : arrs
-                }).on('change', function (e) {
-                    var user = $(this).val();
+            if($("#finance_id")[0]){
+                var data = $.ajax({
+                    url: "{{ url('/user/getDataSelectForFinance') }}",
+                    type: "GET",
+                    data: { }
+                })
+                .done(function(data) {
+                    var obj = jQuery.parseJSON(data);
+                    arrs = [];
+                    for (var i = 0; i<obj.length; i++) {
+                        arrs.push( {
+                            id : obj[i].id,
+                            text : obj[i].text
+                        } );
+                    }
+                    $("#finance_id").select2({
+                        multiple: false,
+                        placeholder: 'Choose User',
+                        tags: true,
+                        data : arrs
+                    }).on('change', function (e) {
+                        var user = $(this).val();
+                    });
+                    if(values != ''){
+                        $("#finance_id").val(values).trigger('change');
+                    }
                 });
+
                 if(values != ''){
                     $("#finance_id").val(values).trigger('change');
                 }
-            });
-
-            if(values != ''){
-                $("#finance_id").val(values).trigger('change');
             }
         }
         userForFinance_Selectdata('');
