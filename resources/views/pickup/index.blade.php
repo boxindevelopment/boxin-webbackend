@@ -50,61 +50,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($pickup) > 0)
-                        @foreach ($pickup as $key => $value)
-                          @php
-                            if($value->types_of_pickup_id == 1){
-                                $label1  = 'label-warning';
-                                $name1   = 'Deliver to user';
-                            }else if($value->types_of_pickup_id == 2){
-                                $label1  = 'label-primary';
-                                $name1   = 'User pickup';
-                            }else if($value->types_of_pickup_id == 24){
-                                $label1  = 'label-warning';
-                                $name1   = 'User Cancelled';
-                            } else {
-                                $label1  = 'label-warning';
-                                $name1   = '';
-                            }
-
-                            if($value->status_id == 11 || $value->status_id == 14 || $value->status_id == 15 || $value->status_id == 8 || $value->status_id == 6){
-                              $label = 'label-danger';
-                            } else if($value->status_id == 12){
-                              $label = 'label-inverse';
-                            } else if($value->status_id == 7 || $value->status_id == 5){
-                              $label = 'label-success';
-                            } else if($value->status_id == 2){
-                              $label = 'label-warning';
-                            } else {
-                                $label = 'label-warning';
-                            }
-                          @endphp
-                          <tr>
-                            <td align="center">{{ $key+1 }}</td>
-                            <td align="center">
-                              {{  date('d M Y', strtotime($value->date)) }}
-                            </td>
-                            <td align="center">{{ $value->id_name }}</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}}</td>
-                            <td class="text-center">
-                              <span class="label {{ ($value->place != 'warehouse') ? 'label-custom' : 'label-info' }} label-rounded">{{ ($value->place != 'warehouse') ? 'user' : $value->place }}</span>
-                            </td>
-                            <td class="text-center">
-                              <span class="label {{ $label1 }} label-rounded">{{ $name1 }}</span>
-                            </td>
-                            <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <a class="btn btn-info btn-sm" href="{{route('pickup.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @else
-                        <tr>
-                          <td colspan="6" class="text-center">There are no results yet</td>
-                        </tr>
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -128,14 +73,54 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-pickup1').DataTable({
-    "aaSorting": []
-  });
-  $('#table-pickup2').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('pickup.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        return $action;
+    }
 
+    var $table = $('#table-pickup1').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "id", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "date", "targets": 1 },
+            { "name": "id_name",  "targets": 2 },
+            { "name": "first_name", "targets": 3 },
+            { "name": "place", "targets": 4 },
+            { "name": "types_of_pickup_name", "sClass": "right", "targets": 5 },
+            { "name": "status_name", "sClass": "right",  "targets": 6 },
+        ],
+        "ajax": {
+            "url": "{{ route('pickup.ajax') }}",
+            "type": "GET",
+            "data": function ( d ) {
+                d.csrfToken = $('meta[name="csrf-token"]').attr('content');
+                d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "id", "bSortable": false },
+            { "data": "date", "bSortable": true },
+            { "data": "id_name", "bSortable": true },
+            { "data": "user_fullname", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { var labelPlace =  (row.place != 'warehouse') ? 'label-custom' : 'label-info'; var place_name = (row.place != 'warehouse') ? 'user' : row.place; return '<span class="label ' + labelPlace + ' label-rounded">' + place_name + '</span>'; }, "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label1 + ' label-rounded">' + row.name1 + '</span>'; }, "bSortable": true, "sClass": "right" },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "right" },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

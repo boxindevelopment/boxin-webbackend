@@ -22,8 +22,53 @@ class SpaceSmallController extends Controller
 
     public function index()
     {
-      $data = $this->repository->all();
-      return view('space_smalls.index', compact('data'));
+      return view('space_smalls.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $smallSpace = $this->repository->getData($args);
+
+        $recordsTotal = count($smallSpace);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($smallSpace as $arrVal) {
+            $no++;
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'code_space_small' => $arrVal['code_space_small'],
+                      'name' => $arrVal['name'],
+                      'type_size_name' => $arrVal['type_size_name'],
+                      'type_size_size' => $arrVal['size'], //
+                      'shelves_name' => $arrVal['shelves_name'], //
+                      'location' => $arrVal['location'], //
+                      'status_name' => $arrVal['status_name']);
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     public function create()

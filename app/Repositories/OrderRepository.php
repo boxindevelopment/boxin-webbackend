@@ -38,17 +38,29 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        return $this->model
+                    ->join("users", "users.id", "orders.user_id")
+                    ->join("areas", "areas.id", "orders.area_id")
+                    ->join("status", "status.id", "orders.status_id")
+                    ->where('users.first_name', 'like', $args['searchValue'].'%')
+                    ->orWhere('users.last_name', 'like', $args['searchValue'].'%')
+                    ->count();
     }
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $data = $this->model
+                    ->select('orders.*', 'users.first_name', 'users.last_name', 'areas.name as area_name', 'vouchers.code as voucher_code')
+                    ->join("users", "users.id", "orders.user_id")
+                    ->join("areas", "areas.id", "orders.area_id")
+                    ->join("status", "status.id", "orders.status_id")
+                    ->leftJoin("vouchers", "vouchers.id", "orders.voucher_id")
+                    ->orderBy($args['orderColumns'], $args['orderDir'])
+                    ->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                    ->orWhere('users.last_name', 'like', $args['searchValue'].'%')
+                    ->skip($args['start'])
+                    ->take($args['length'])
+                    ->get();
 
         return $data->toArray();
 

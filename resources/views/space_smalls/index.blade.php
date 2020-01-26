@@ -58,31 +58,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if (count($data) > 0)
-                        @foreach ($data as $key => $value)
-                          <tr>
-                            <td align="center">{{ $key+1 }}</th>
-                            <td align="center">{{ $value->code_space_small }}</td>
-                            <td>{{ $value->name }}</td>
-                            <td>{{ $value->type_size->name }}</td>
-                            <td>{{ $value->type_size->size }}</td>
-                            <td>{{ $value->shelves->name }}</td>
-                            <td>{{ $value->location }}</td>
-                            <td class="text-center">
-                              <span class="label {{ $value->status->name == 'Empty' ? 'label-warning' : 'label-success' }} label-rounded">{{ $value->status->name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <form action="{{route('space.destroy', ['id' => $value->id])}}" method="post">
-                                @csrf
-                                <a class="btn btn-secondary btn-sm" href="{{route('space.barcode', ['id' => $value->id])}}" target="_blank" title="Print Barcode"><i class="mdi mdi-barcode"></i></a>
-                                <a class="btn btn-info btn-sm" href="{{route('space.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                                @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
-                              </form>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -130,11 +105,62 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-ingrd').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<form action="{{route('box.index')}}' + id + '" method="post" style="margin-top:5px;">';
+                $action += '@csrf';
+                $action += '@method('DELETE')';
+                $action += '<a class="btn btn-secondary btn-sm" href="{{route('box.index')}}/barcode/' + id + '" target="_blank" title="Print Barcode" style="margin-right:5px;"><i class="mdi mdi-barcode"></i></a>';
+                $action += '<a class="btn btn-info btn-sm" href="{{route('box.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+                $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
+            $action += '</form>';
+        return $action;
+    }
 
+    var $table = $('#table-ingrd').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "no", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "code_space_small", "targets": 1 },
+            { "name": "space_smalls.name",  "targets": 2 },
+            { "name": "type_size_name", "targets": 3 },
+            { "name": "type_size_size", "targets": 4 },
+            { "name": "shelves_name", "sClass": "center", "targets": 5 },
+            { "name": "location", "sClass": "right",  "targets": 6 },
+            { "name": "status_name", "sClass": "right",  "targets": 7 },
+        ],
+        "ajax": {
+            "url": "{{ route('space.ajax') }}",
+            "type": "GET",
+            "data": function ( d ) {
+                d.csrfToken = $('meta[name="csrf-token"]').attr('content');
+                d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "no", "bSortable": false },
+            { "data": "code_space_small", "bSortable": true },
+            { "data": "name", "bSortable": true },
+            { "data": "type_size_name", "bSortable": false },
+            { "data": "type_size_size", "bSortable": true },
+            { "data": "shelves_name", "bSortable": true, "sClass": "right" },
+            { "data": "location", "bSortable": true, "sClass": "right" },
+            { "data": function ( row, type, val, meta ) { var labelStatus = (row.status_name == 'Empty') ? 'label-warning' : 'label-success'; return '<span class="label ' + labelStatus + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

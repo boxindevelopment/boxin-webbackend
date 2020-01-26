@@ -76,17 +76,27 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        return $this->model
+                    ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
+                    ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                    ->join("status", "status.id", "space_smalls.status_id")
+                    ->where('space_smalls.name', 'like', $args['searchValue'].'%')
+                    ->count();
     }
     public function getData($args = [])
     {
 
-        $warehouse = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $warehouse = $this->model->select("space_smalls.*", "types_of_size.name as type_size_name",
+                                     "types_of_size.size", "shelves.name as shelves_name",
+                                     "status.name as status_name")
+                                ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
+                                ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                                ->join("status", "status.id", "space_smalls.status_id")
+                                ->orderBy($args['orderColumns'], $args['orderDir'])
+                                ->where('space_smalls.name', 'like', '%'.$args['searchValue'].'%')
+                                ->skip($args['start'])
+                                ->take($args['length'])
+                                ->get();
 
         return $warehouse->toArray();
 

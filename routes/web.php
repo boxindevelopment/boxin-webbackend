@@ -28,31 +28,35 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/getNumber', ['uses' => 'AreaController@getNumber', 'as' => 'area.getNumber']);
   });
 
-  Route::resource('space', 'SpaceSmallController')->except(['show']);
   Route::prefix('space')->group(function () {
+    Route::get('/ajax', ['uses' => 'SpaceSmallController@getAjax', 'as' => 'space.ajax']);
     Route::get('/dataSelect/{area_id}', ['uses' => 'SpaceSmallController@getDataSelectByArea', 'as' => 'space.getDataSelectByArea']);
     Route::get('/dataSelect/{shelves_id}', ['uses' => 'SpaceSmallController@getDataSelectByShelves', 'as' => 'space.getDataSelectByShelves']);
     Route::get('/getNumber', ['uses' => 'SpaceSmallController@getNumber', 'as' => 'space.getNumber']);
     Route::get('/barcode/{id}', ['uses' => 'SpaceSmallController@printBarcode', 'as' => 'space.barcode']);
     Route::get('/resetNumber', ['uses' => 'SpaceSmallController@resetNumber', 'as' => 'space.resetNumber']);
   });
+  Route::resource('space', 'SpaceSmallController')->except(['show']);
 
-  Route::resource('shelves', 'ShelvesController')->except(['show']);
   Route::prefix('shelves')->group(function () {
+    Route::get('/ajax', ['uses' => 'ShelvesController@getAjax', 'as' => 'shelves.ajax']);
     Route::get('/dataSelect/{area_id}', ['uses' => 'ShelvesController@getDataSelectByArea', 'as' => 'shelves.getDataSelectByArea']);
     Route::get('/dataSelect/{space_id}', ['uses' => 'ShelvesController@getDataSelectBySpace', 'as' => 'shelves.getDataSelectBySpace']);
     Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);
+    Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);
     Route::get('/resetNumber', ['uses' => 'ShelvesController@resetNumber', 'as' => 'shelves.resetNumber']);
   });
+  Route::resource('shelves', 'ShelvesController')->except(['show']);
 
-  Route::resource('box', 'BoxController')->except(['show']);
   Route::prefix('box')->group(function () {
+    Route::get('/ajax', ['uses' => 'BoxController@getAjax', 'as' => 'box.ajax']);
     Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
     Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
     Route::get('/getCodeUsed', ['uses' => 'BoxController@getCodeUsed', 'as' => 'box.getCodeUsed']);
     Route::get('/barcode/{id}', ['uses' => 'BoxController@printBarcode', 'as' => 'box.barcode']);
     Route::get('/resetNumber', ['uses' => 'BoxController@resetNumber', 'as' => 'box.resetNumber']);
   });
+  Route::resource('box', 'BoxController')->except(['show']);
 
   Route::resource('category', 'CategoryController')->except(['show']);
 
@@ -60,17 +64,19 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::resource('voucher', 'VoucherController')->except(['show']);
 
-  Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order')->group(function () {
+    Route::get('/ajax', ['uses' => 'OrderController@getAjax', 'as' => 'order.ajax']);
     Route::get('','OrderController@index')->name('order.index');
     Route::get('/order-detail/{id}','OrderController@orderDetail')->name('order.orderDetail');
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
     Route::get('/order-detail/{id}/edit','OrderController@orderDetailBox')->name('order.detail.edit');
     Route::put('/order-detail-box/{id}/update-place','OrderController@updatePlace')->name('order.orderDetailBox.updatePlace');
   });
+  Route::resource('order', 'OrderController')->except(['show']);
 
   Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
 
+  Route::get('pickup/ajax', ['uses' => 'PickupController@getAjax', 'as' => 'pickup.ajax']);
   Route::resource('pickup', 'PickupController')->except(['show']);
 
   Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');

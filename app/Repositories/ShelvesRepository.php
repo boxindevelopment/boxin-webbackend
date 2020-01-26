@@ -40,13 +40,17 @@ class ShelvesRepository implements ShelvesRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        return $this->model
+                    ->join("areas", "areas.id", "shelves.area_id")
+                    ->where('shelves.name', 'like', $args['searchValue'].'%')
+                    ->count();
     }
     public function getData($args = [])
     {
-        $shelves = $this->model->select()
+        $shelves = $this->model->select('shelves.*', 'areas.name as area_name')
+                ->join("areas", "areas.id", "shelves.area_id")
                 ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
+                ->where('shelves.name', 'like', '%'.$args['searchValue'].'%')
                 ->skip($args['start'])
                 ->take($args['length'])
                 ->get();
