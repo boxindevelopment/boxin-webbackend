@@ -4524,7 +4524,7 @@ File: scss
   -ms-touch-action: auto;
   touch-action: auto;
   overflow: hidden !important;
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
   height: 100%; }
 
 @supports (-ms-overflow-style: none) {
@@ -5615,6 +5615,8 @@ File: scss
 
 .hidden-xs-up {
   display: none !important; }
+
+.right { text-align: right;}
 
 @media (max-width: 575px) {
   .hidden-xs-down {

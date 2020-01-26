@@ -56,31 +56,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if (count($order) > 0)
-                        @foreach ($order as $key => $value)
-                          <tr>
-                            <td align="center">{{ $key+1 }}</th>
-                            <td>{{ $value->created_at->format('Y-m-d') }}</td>
-                            <td>{{ $value->user->first_name }} {{ $value->user->last_name }}</td>
-                            <td>{{ $value->area->name }}</td>
-                            <td>{{ ($value->voucher) ? $value->voucher->code : '-' }}</td>
-                            <td class="text-right">{{ ($value->voucher) ? number_format($value->voucher_amount, 0, '', '.') : 0 }}</td>
-                            <td class="text-right">{{ number_format($value->total, 0, '', '.') }}</td>
-                            <td align="center">
-                              <form action="{{route('order.destroy', ['id' => $value->id])}}" method="post">
-                                @csrf
-                                <a class="btn btn-primary btn-sm" href="{{route('order.orderDetail', ['id' => $value->id])}}" title="View Detail"><i class="fa fa-eye"></i></a>
-                                @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
-                              </form>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @else
-                        <tr>
-                          <td colspan="6" class="text-center">There are no results yet</td>
-                        </tr>
-                      @endif
                     </tbody>
                   </table>
               </div>
@@ -128,11 +103,59 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-ingrd').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<form action="{{route('order.index')}}' + id + '" method="post" style="margin-top:5px;">';
+                $action += '@csrf';
+                $action += '@method('DELETE')';
+                $action += '<a class="btn btn-info btn-sm" href="{{route('order.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+                $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
+            $action += '</form>';
+        return $action;
+    }
 
+    var $table = $('#table-ingrd').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "no", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "created_at", "targets": 1 },
+            { "name": "first_name",  "targets": 2 },
+            { "name": "area_name", "targets": 3 },
+            { "name": "voucher_code", "targets": 4 },
+            { "name": "voucher_amount", "sClass": "right", "targets": 5 },
+            { "name": "total", "sClass": "right",  "targets": 6 },
+        ],
+        "ajax": {
+            "url": "{{ route('order.ajax') }}",
+            "type": "GET",
+            "data": function ( d ) {
+                d.csrfToken = $('meta[name="csrf-token"]').attr('content');
+                d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "no", "bSortable": false },
+            { "data": "created_at", "bSortable": true },
+            { "data": "user_fullname", "bSortable": true },
+            { "data": "area_name", "bSortable": false },
+            { "data": "voucher_code", "bSortable": true },
+            { "data": "voucher_amount", "bSortable": true, "sClass": "right" },
+            { "data": "total", "bSortable": true, "sClass": "right" },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Model\Area;
 use App\Model\Shelves;
 use App\Model\Space;
 use App\Model\Box;
@@ -20,8 +21,49 @@ class ShelvesController extends Controller
 
     public function index()
     {
-      $data      = $this->repository->all();
-      return view('shelves.index', compact('data'));
+      return view('shelves.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $shelves = $this->repository->getData($args);
+
+        $recordsTotal = count($shelves);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($shelves as $arrVal) {
+            $no++;
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'code_shelves' => $arrVal['code_shelves'],
+                      'name' => $arrVal['name'],
+                      'area_name' => $arrVal['area_name']);
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     public function create()
@@ -31,10 +73,10 @@ class ShelvesController extends Controller
 
     public function store(Request $request)
     {
-
+      $area_id =  explode('##', $request->area_id)[0];
       $shelves = Shelves::create([
         'name'           => $request->name,
-        'area_id'        => $request->area_id,
+        'area_id'        => $area_id,
         'code_shelves'   => $request->code_shelves,
       ]);
 
@@ -59,7 +101,7 @@ class ShelvesController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
       $split          = explode('##', $request->area_id);
       $area_id       = $split[0];
 
@@ -143,18 +185,6 @@ class ShelvesController extends Controller
         echo(json_encode($arrData));
     }
 
-    public function getNumber(Request $request)
-    {
-        $sql          = Shelves::where('area_id', '=', $request->input('area_id'))
-                        ->where('deleted_at', NULL)
-                        ->orderBy('code_shelves', 'desc')
-                        ->first();
-        $code_shelves    = isset($sql->code_shelves) ? substr($sql->code_shelves, 4) : 0;
-        $code         = str_pad($code_shelves + 1, 2, "0", STR_PAD_LEFT);
-
-        return $code;
-    }
-
     public function resetNumber(Request $request)
     {
         $shelveses    = Shelves::whereNull('code_shelves')->get();
@@ -172,6 +202,51 @@ class ShelvesController extends Controller
         }
 
         echo(json_encode($shelveses));
+    }
+
+    public function getNumber(Request $request)
+    {
+        $rArea        = Area::find($request->input('area_id'));
+        $sql          = Shelves::where('area_id', '=', $request->input('area_id'))
+                        ->where('deleted_at', NULL)
+                        ->orderBy('id', 'desc')
+                        ->first();
+        $code_shelves    = isset($sql->code_shelves) ? substr($sql->code_shelves, 4) : 'A';
+        $code_number     =  ($code_shelves != 'A' ) ? $this->getColNo($code_shelves)+1 : $this->getColNo($code_shelves);
+        $code            =  $this->getNameFromNumber($code_number);
+
+        return $code;
+    }
+
+    private function getNameFromNumber($num) {
+        $numeric = $num % 26;
+        $letter = chr(65 + $numeric);
+        $num2 = intval($num / 26);
+        if ($num2 > 0) {
+            return $this->getNameFromNumber($num2 - 1) . $letter;
+        } else {
+            return $letter;
+        }
+    }
+
+    private function getColNo($colLetters){
+
+        $limit = 5; //apply max no. of characters
+        $colLetters = strtoupper($colLetters); //change to uppercase for easy char to integer conversion
+        $strlen = strlen($colLetters); //get length of col string
+
+        if($strlen > $limit)return "Column too long!"; //may catch out multibyte chars in first pass
+        preg_match("/^[A-Z]+$/",$colLetters,$matches); //check valid chars
+
+        if(!$matches)return "Invalid characters!"; //should catch any remaining multibyte chars or empty string, numbers, symbols
+
+        $it = 0; $vals = 0; //just start off the vars
+        for($i=$strlen-1;$i>-1;$i--){ //countdown - add values from righthand side
+            $vals += (ord($colLetters[$i]) - 64 ) * pow(26,$it); //cumulate letter value
+            $it++; //simple counter
+        }
+        return $vals - 1; //this is the answer
+
     }
 
 }

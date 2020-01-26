@@ -50,24 +50,6 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @if (count($data) > 0)
-                      @foreach ($data as $key => $value)
-                        <tr>
-                          <td align="center">{{ $key+1 }}</th>
-                          <td align="center">{{ $value->code_shelves }}</td>
-                          <td>{{ $value->name }}</td>
-                          <td>{{ $value->area->name }}</td>
-                          <td class="text-center">
-                            <form action="{{route('shelves.destroy', ['id' => $value->id])}}" method="post">
-                              @csrf
-                              <a class="btn btn-info btn-sm" href="{{route('shelves.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
-                              @method('DELETE')
-                              <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                            </form>
-                          </td>
-                        </tr>
-                      @endforeach
-                    @endif
                   </tbody>
               </table>
             </div>
@@ -112,10 +94,54 @@
 
 
 <script>
+
 $(function() {
-  $('#table-type').DataTable({
-    "aaSorting": []
-  });
+    function action(id){
+            var $action = '<form action="{{route('shelves.index')}}/' + id + '" method="post" style="margin-top:5px; width: 70px;">';
+                $action += '@csrf';
+                $action += '@method('DELETE')';
+                $action += '<a class="btn btn-info btn-sm" href="{{route('shelves.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+                $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
+            $action += '</form>';
+        return $action;
+    }
+
+    var $table = $('#table-type').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "no", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "code_shelves", "targets": 1 },
+            { "name": "shelves.name",  "targets": 2 },
+            { "name": "area_name", "targets": 3 }
+        ],
+        "ajax": {
+            "url": "{{ route('shelves.ajax') }}",
+            "type": "GET",
+            "data": function ( d ) {
+                d.csrfToken = $('meta[name="csrf-token"]').attr('content');
+                d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "no", "bSortable": false },
+            { "data": "code_shelves", "bSortable": true },
+            { "data": "name", "bSortable": true },
+            { "data": "area_name", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.kd)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

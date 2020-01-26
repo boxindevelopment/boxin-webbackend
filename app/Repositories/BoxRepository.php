@@ -44,14 +44,25 @@ class BoxRepository implements BoxRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        return $this->model
+                    ->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id")
+                    ->join("shelves", "shelves.id", "boxes.shelves_id")
+                    ->join("status", "status.id", "boxes.status_id")
+                    ->where('boxes.name', 'like', $args['searchValue'].'%')
+                    ->count();
     }
+    
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
+        $data = $this->model->select("boxes.*", "types_of_size.name as type_size_name",
+                                     "types_of_size.size", "shelves.name as shelves_name",
+                                     "status.name as status_name")
+                ->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id")
+                ->join("shelves", "shelves.id", "boxes.shelves_id")
+                ->join("status", "status.id", "boxes.status_id")
                 ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
+                ->where('boxes.name', 'like', '%'.$args['searchValue'].'%')
                 ->skip($args['start'])
                 ->take($args['length'])
                 ->get();

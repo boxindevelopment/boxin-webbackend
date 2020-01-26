@@ -43,8 +43,52 @@ class OrderController extends Controller
 
     public function index()
     {
-      $order   = $this->repository->all();
-      return view('orders.index', compact('order'));
+      return view('orders.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $order = $this->repository->getData($args);
+
+        $recordsTotal = count($order);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($order as $arrVal) {
+            $no++;
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
+                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'area_name' => $arrVal['area_name'],
+                      'voucher_code' => $arrVal['voucher_code'], //
+                      'voucher_amount' => ($arrVal['voucher_amount']) ? number_format($arrVal['voucher_amount'], 0, '', '.') : 0, //
+                      'total' => number_format($arrVal['total'], 0, '', '.'));
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     public function create()
