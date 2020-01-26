@@ -46,6 +46,7 @@ class OrderRepository implements OrderRepositoryInterface
                     ->orWhere('users.last_name', 'like', $args['searchValue'].'%')
                     ->count();
     }
+    
     public function getData($args = [])
     {
 

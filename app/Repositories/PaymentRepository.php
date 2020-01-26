@@ -47,15 +47,36 @@ class PaymentRepository implements PaymentRepositoryInterface
         $data = $data->get();
         return $data;
     }
+
+    public function getCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->leftJoin('orders','orders.id','=','payments.order_id');
+        $query->leftJoin('users','users.id','=','payments.user_id');
+        $query->leftJoin('status','status.id','=','payments.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('id_name', 'like', '%'.$args['searchValue'].'%');
+        return $query->count();
+    }
+
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $query = $this->model->query();
+        $query->select('payments.*', 'users.first_name',  'users.last_name', 'status.name as status_name');
+        $query->leftJoin('orders','orders.id','=','payments.order_id');
+        $query->leftJoin('users','users.id','=','payments.user_id');
+        $query->leftJoin('status','status.id','=','payments.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('id_name', 'like', '%'.$args['searchValue'].'%');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
 

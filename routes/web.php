@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::get('pickup/ajax', ['uses' => 'PickupController@getAjax', 'as' => 'pickup.ajax']);
   Route::resource('pickup', 'PickupController')->except(['show']);
 
+  Route::get('payment/ajax', ['uses' => 'PaymentController@getAjax', 'as' => 'payment.ajax']);
   Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');
   Route::get('payment/order-details/{id}','PaymentController@payment_extend_edit')->name('payment.extend.edit');
   Route::put('payment/order-details/{id}','PaymentController@payment_extend_update')->name('payment.extend.update');
