@@ -43,17 +43,42 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        $query = $this->model->query();
+        $query->leftJoin('orders','orders.id','=','pickup_orders.order_id');
+        $query->leftJoin('order_details','order_details.order_id','=','orders.id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('types_of_pickup','types_of_pickup.id','=','pickup_orders.types_of_pickup_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('pickup_orders.status_id', '!=', 4);
+        $query->where('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+
+        return $query->count();
     }
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $query = $this->model->query();
+        $query->select('pickup_orders.id', 'pickup_orders.order_id', 'pickup_orders.date',
+                        'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',
+                        'users.last_name', 'order_details.id_name', 'order_details.place',
+                        'status.name as status_name', 'types_of_pickup.name as types_of_pickup_name');
+        $query->leftJoin('orders','orders.id','=','pickup_orders.order_id');
+        $query->leftJoin('order_details','order_details.order_id','=','orders.id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('status','status.id','=','orders.status_id');
+        $query->leftJoin('types_of_pickup','types_of_pickup.id','=','pickup_orders.types_of_pickup_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('pickup_orders.status_id', '!=', 4);
+        $query->where('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+        $query->distinct('pickup_orders.order_id');
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
 

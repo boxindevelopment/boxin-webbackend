@@ -76,6 +76,7 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
 
+  Route::get('pickup/ajax', ['uses' => 'PickupController@getAjax', 'as' => 'pickup.ajax']);
   Route::resource('pickup', 'PickupController')->except(['show']);
 
   Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');

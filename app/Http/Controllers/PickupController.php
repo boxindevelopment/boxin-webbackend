@@ -30,8 +30,82 @@ class PickupController extends Controller
 
     public function index()
     {
-      $pickup = $this->repository->all();
-      return view('pickup.index', compact('pickup'));
+      return view('pickup.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $pickup = $this->repository->getData($args);
+
+        $recordsTotal = count($pickup);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($pickup as $arrVal) {
+            $no++;
+            if($arrVal['types_of_pickup_id'] == 1){
+                $label1  = 'label-warning';
+                $name1   = 'Deliver to user';
+            }else if($arrVal['types_of_pickup_id'] == 2){
+                $label1  = 'label-primary';
+                $name1   = 'User pickup';
+            }else if($arrVal['types_of_pickup_id'] == 24){
+                $label1  = 'label-warning';
+                $name1   = 'User Cancelled';
+            } else {
+                $label1  = 'label-warning';
+                $name1   = '';
+            }
+
+            if($arrVal['status_id'] == 11 || $arrVal['status_id'] == 14 || $arrVal['status_id'] == 15 || $arrVal['status_id'] == 8 || $arrVal['status_id'] == 6){
+              $label = 'label-danger';
+            } else if($arrVal['status_id'] == 12){
+              $label = 'label-inverse';
+            } else if($arrVal['status_id'] == 7 || $arrVal['status_id'] == 5){
+              $label = 'label-success';
+          } else if($arrVal['status_id'] == 2){
+              $label = 'label-warning';
+            } else {
+                $label = 'label-warning';
+            }
+
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'date' => date("d-m-Y", strtotime($arrVal['date'])),
+                      'id_name' => $arrVal['id_name'],
+                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'place' => $arrVal['place'],
+                      'status_id' => $arrVal['status_id'],
+                      'status_name' => $arrVal['status_name'],
+                      'types_of_pickup_name' => $arrVal['types_of_pickup_name'],
+                      'label1' => $label1,
+                      'name1' => $name1,
+                      'label' => $label);
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     public function create()

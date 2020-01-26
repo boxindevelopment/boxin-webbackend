@@ -63,16 +63,16 @@ class OrderController extends Controller
         $columns = $request->input("columns");
         $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
 
-        $order = $this->repository->getData($args);
+        $orderData = $this->repository->getData($args);
 
-        $recordsTotal = count($order);
+        $recordsTotal = count($orderData);
 
         $recordsFiltered = $this->repository->getCount($args);
 
         $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
         $arr_data = array();
         $no = 0;
-        foreach ($order as $arrVal) {
+        foreach ($orderData as $arrVal) {
             $no++;
             $arr = array(
                       'no' => $no,
