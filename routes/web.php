@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::prefix('space')->group(function () {
-    Route::get('/ajax', ['uses' => 'SpaceSmallController@getAjax', 'as' => 'space.ajax']);
+    Route::post('/ajax', ['uses' => 'SpaceSmallController@getAjax', 'as' => 'space.ajax']);
     Route::get('/dataSelect/{area_id}', ['uses' => 'SpaceSmallController@getDataSelectByArea', 'as' => 'space.getDataSelectByArea']);
     Route::get('/dataSelect/{shelves_id}', ['uses' => 'SpaceSmallController@getDataSelectByShelves', 'as' => 'space.getDataSelectByShelves']);
     Route::get('/getNumber', ['uses' => 'SpaceSmallController@getNumber', 'as' => 'space.getNumber']);
@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('space', 'SpaceSmallController')->except(['show']);
 
   Route::prefix('shelves')->group(function () {
-    Route::get('/ajax', ['uses' => 'ShelvesController@getAjax', 'as' => 'shelves.ajax']);
+    Route::post('/ajax', ['uses' => 'ShelvesController@getAjax', 'as' => 'shelves.ajax']);
     Route::get('/dataSelect/{area_id}', ['uses' => 'ShelvesController@getDataSelectByArea', 'as' => 'shelves.getDataSelectByArea']);
     Route::get('/dataSelect/{space_id}', ['uses' => 'ShelvesController@getDataSelectBySpace', 'as' => 'shelves.getDataSelectBySpace']);
     Route::get('/getNumber', ['uses' => 'ShelvesController@getNumber', 'as' => 'shelves.getNumber']);
@@ -49,7 +49,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('shelves', 'ShelvesController')->except(['show']);
 
   Route::prefix('box')->group(function () {
-    Route::get('/ajax', ['uses' => 'BoxController@getAjax', 'as' => 'box.ajax']);
+    Route::post('/ajax', ['uses' => 'BoxController@getAjax', 'as' => 'box.ajax']);
     Route::get('/getNumber', ['uses' => 'BoxController@getNumber', 'as' => 'box.getNumber']);
     Route::get('/checkCode', ['uses' => 'BoxController@checkCode', 'as' => 'box.checkCode']);
     Route::get('/getCodeUsed', ['uses' => 'BoxController@getCodeUsed', 'as' => 'box.getCodeUsed']);
