@@ -66,7 +66,7 @@
                       <a href="{{ route('price.priceRoom') }}" class="btn waves-effect waves-light btn-sm btn-primary" title="Add" style="margin-right: 10px;"><i class="fa fa-plus"></i>&nbsp;Add Price Room
                       </a>
                       <div class="table-responsive m-t-10">
-                        <table id="table-room" class="table table-striped table-bordered">
+                        <table id="table-room" class="table table-striped table-bordered" style="width: 100%;">
                           <thead>
                               <tr>
                                 <th width="3%">No</th>
@@ -78,24 +78,6 @@
                               </tr>
                           </thead>
                           <tbody>
-                            @if (count($rooms) > 0)
-                              @foreach ($rooms as $key => $value)
-                                <tr>
-                                  <td align="center">{{ $key+1 }}</td>
-                                  <td>{{ $value->area->name }}</td>
-                                  <td>{{ $value->type_size->name }}</td>
-                                  <td>{{ $value->type_duration->name }}</td>
-                                  <td class="text-right">{{ number_format($value->price, 0, '', '.') }}</td>
-                                  <td class="text-center">
-                                    <a class="btn btn-info btn-sm" href="{{route('price.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
-                                  </td>
-                                </tr>
-                              @endforeach
-                            @else
-                              <tr>
-                                <td colspan="6" class="text-center">There are no results yet</td>
-                              </tr>
-                            @endif
                           </tbody>
                         </table>
                       </div>
@@ -166,9 +148,49 @@ $(function() {
         }
     });
 
-  $('#table-room').DataTable({
-    "aaSorting": []
-  });
+    function actionRoom(id){
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('price.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        return $action;
+    }
+
+    var $table2 = $('#table-room').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [
+            { "name": "prices.id", "sClass": "center", "targets": 0 },
+            { "name": "area_name", "targets": 1 },
+            { "name": "types_of_size_name",  "targets": 2 },
+            { "name": "duration", "targets": 3 },
+            { "name": "price", "sClass": "center", "targets": 4 },
+        ],
+        "ajax": {
+            "url": "{{ route('price.ajax') }}",
+            "type": "POST",
+            "data": function ( d ) {
+                d._token            = $('meta[name="_token"]').attr('content');
+                d.box_or_room_id    = 2;
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "id", "bSortable": false },
+            { "data": "area_name", "bSortable": true },
+            { "data": "types_of_size_name", "bSortable": true },
+            { "data": "duration", "bSortable": true },
+            { "data": "price", "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return "" + actionRoom(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection
