@@ -113,12 +113,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','ChangeBoxesController@index')->name('change-box.index');
   });
 
+  Route::post('return/ajax', ['uses' => 'ReturnBoxesController@getAjax', 'as' => 'return.ajax']);
   Route::resource('return', 'ReturnBoxesController')->except(['show']);
   Route::prefix('return')->group(function () {
     Route::get('','ReturnBoxesController@index')->name('return.index');
   });
 
   Route::prefix('user')->group(function () {
+    Route::post('ajax', ['uses' => 'UserController@getAjax', 'as' => 'user.ajax']);
     Route::post('store','UserController@store')->name('user.store');
     Route::put('change-profile/{id}','UserController@changeProfile')->name('user.changeProfile');
     Route::put('change-password/{id}','UserController@changePassword')->name('user.changePassword');
@@ -145,6 +147,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('store','TypeSizeController@store')->name('types-of-size.store');
   });
 
+  Route::post('price/ajax', ['uses' => 'PriceController@getAjax', 'as' => 'price.ajax']);
   Route::resource('price', 'PriceController')->except(['show']);
   Route::prefix('price')->group(function () {
     Route::get('box','PriceController@priceBox')->name('price.priceBox');

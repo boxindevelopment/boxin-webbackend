@@ -39,7 +39,7 @@
                   <table id="table-data1" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>                          
+                          <th width="5%">No</th>
                           <th width="15%" class="text-center">Request Date</th>
                           <th width="20%" class="text-center">Returning Date</th>
                           <th width="">Customer Name</th>
@@ -49,46 +49,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($data) > 0)
-                        @foreach ($data as $key => $value)
-                          @php
-                            if($value->types_of_pickup_id == 1){
-                              $label1  = 'label-warning';
-                              $name    = 'Deliver to user';
-                            }else if($value->types_of_pickup_id == 2){
-                              $label1  = 'label-primary';
-                              $name    = 'User pickup';
-                            }
-                            
-                            if($value->status_id == 16 || $value->status_id == 2){
-                              $label = 'label-warning';
-                            }else if($value->status_id == 7 || $value->status_id == 12){
-                              $label = 'label-success';
-                            }else{
-                              $label = 'label-danger';
-                            }
-                          @endphp
-                          <tr>
-                            <td align="center">{{ $key+1 }}</td>
-                            <td align="center">{{ $value->created_at->format('d-m-Y') }}</td>
-                            <td>{{ $value->date->format('d-m-Y') }} ({{ $value->time_pickup }})</td>
-                            <td>{{ $value->order_detail->order->user->first_name}} {{ $value->order_detail->order->user->last_name}}</td>
-                            <td class="text-center">
-                              <span class="label {{ $label1 }} label-rounded">{{ $name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <a class="btn btn-primary btn-sm" href="{{route('return.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @else
-                        <tr>
-                          <td colspan="7" class="text-center">There are no results yet</td>
-                        </tr>
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -114,14 +74,52 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-data1').DataTable({
-    "aaSorting": []
-  });
-  $('#table-data2').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('return.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        return $action;
+    }
 
+    var $table = $('#table-data1').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "id", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "created_at", "targets": 1 },
+            { "name": "date",  "targets": 2 },
+            { "name": "first_name", "targets": 3 },
+            { "name": "types_of_pickup_id", "sClass": "center", "targets": 4 },
+            { "name": "status_name", "sClass": "center",  "targets": 5 },
+        ],
+        "ajax": {
+            "url": "{{ route('return.ajax') }}",
+            "type": "POST",
+            "data": function ( d ) {
+                d._token = $('meta[name="_token"]').attr('content');
+                // d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "id", "bSortable": false },
+            { "data": "created_at", "bSortable": true },
+            { "data": "coming_date", "bSortable": true },
+            { "data": "user_fullname", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label1 + ' label-rounded">' + row.name + '</span>'; }, "bSortable": true, "sClass": "center" },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "center" },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

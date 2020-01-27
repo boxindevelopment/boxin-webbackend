@@ -34,8 +34,70 @@ class ReturnBoxesController extends Controller
 
     public function index()
     {
-      $data   = $this->repository->all();
-      return view('returnbox.index', compact('data'));
+      return view('returnbox.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $returnBoxes = $this->repository->getData($args);
+
+        $recordsTotal = count($returnBoxes);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($returnBoxes as $arrVal) {
+            $no++;
+            if($arrVal->types_of_pickup_id == 1){
+                $label1  = 'label-warning';
+                $name    = 'Deliver to user';
+            }else if($arrVal->types_of_pickup_id == 2){
+                $label1  = 'label-primary';
+                $name    = 'User pickup';
+            }
+
+            if($arrVal->status_id == 16 || $arrVal->status_id == 2){
+              $label = 'label-warning';
+            }else if($arrVal->status_id == 7 || $arrVal->status_id == 12){
+              $label = 'label-success';
+            }else{
+              $label = 'label-danger';
+            }
+
+            $arr = array(
+                      'no'                      => $no,
+                      'id'                      => $arrVal->id,
+                      'types_of_pickup_id'      => $arrVal->types_of_pickup_id,
+                      'created_at'              => date("d-m-Y", strtotime($arrVal->created_at)),
+                      'coming_date'             => date("d-m-Y", strtotime($arrVal->date)) . '( ' . $arrVal->time_pickup . ' )',
+                      'user_fullname'           => $arrVal->first_name . ' ' . $arrVal->last_name,
+                      'name'                    => $name,
+                      'label1'                  => $label1,
+                      'label'                   => $label,
+                      'status_name'             => $arrVal->status_name);
+                $arr_data['data'][] = $arr;
+
+        }
+
+        $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     public function create()
@@ -99,7 +161,7 @@ class ReturnBoxesController extends Controller
           }
           $order_detail->status_id = $request->status_id == 12 ? '18' : $request->status_id;
           $order_detail->save();
-          
+
           //change status box/room to 10 (empty)
           if ($request->status_id == 12){
             //box
@@ -146,7 +208,7 @@ class ReturnBoxesController extends Controller
           // return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
         }
 
-        
+
 
         // if($return){
         //     $order_detail            = OrderDetail::find($request->order_detail_id);

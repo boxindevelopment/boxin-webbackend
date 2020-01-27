@@ -28,8 +28,7 @@ class AddItemBoxController extends Controller
 
     public function index()
     {
-      $data = $this->repository->all();
-      return view('additem.index', compact('data'));
+      return view('additem.index');
     }
 
     public function getAjax(Request $request)
