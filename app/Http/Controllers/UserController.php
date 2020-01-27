@@ -22,8 +22,53 @@ class UserController extends Controller
 
     public function index()
     {
-      $user = $this->user->getAll();
-      return view('users.all.index', compact('user'));
+      return view('users.all.index');
+    }
+
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $returnBoxes = $this->user->getData($args);
+
+        $recordsTotal = count($returnBoxes);
+
+        $recordsFiltered = $this->user->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($returnBoxes as $arrVal) {
+            $no++;
+
+            $arr = array(
+                      'no'                      => $no,
+                      'id'                      => $arrVal->id,
+                      'phone'                   => $arrVal->phone,
+                      'email'                   => $arrVal->email,
+                      'status_value'            => ($arrVal->status == 1) ? 'Verified' : 'Not Verified',
+                      'status_label'            => ($arrVal->status == 1) ? 'label-success' : 'label-danger', //
+                      'user_fullname'           => $arrVal->first_name . ' ' . $arrVal->last_name,
+                      'role_name'               => $arrVal->role_name);
+                $arr_data['data'][] = $arr;
+
+        }
+
+        $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 
     //*================================================== ADMIN AREA ==================================================*\\

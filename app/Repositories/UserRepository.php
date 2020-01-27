@@ -33,6 +33,29 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
+    public function getCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->where('first_name', 'like', '%'.$args['searchValue'].'%');
+        return $query->count();
+    }
+
+    public function getData($args = [])
+    {
+
+        $query = $this->model->query();
+        $query->select('users.*', 'roles.name as role_name');
+        $query->join('roles', 'roles.id', 'users.roles_id');
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('first_name', 'like', '%'.$args['searchValue'].'%');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data;
+
+    }
+
     public function getAdminByRoles($roles_id)
     {
         return $this->admin->select('admins.*')->leftJoin('users', 'users.id', '=' ,'admins.user_id')->where('users.roles_id', $roles_id)->where('users.deleted_at', NULL)->orderBy('first_name', 'asc')->get();

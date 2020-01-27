@@ -36,10 +36,10 @@
               @include('error-template')
 
               <div class="table-responsive m-t-10">
-                  <table id="table-ingrd" class="table table-striped table-bordered">
+                  <table id="table-users" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                          <th width="5%">No</th>
+                          <th width="5%">ID</th>
                           <th width="">Name</th>
                           <th width="15%">Phone</th>
                           <th width="20%">Email</th>
@@ -49,28 +49,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if (count($user) > 0)
-                        @foreach ($user as $key => $value)
-                          <tr>
-                            <td align="center">{{ $key+1 }}</th>
-                            <td>{{ $value->first_name }} {{ $value->last_name }}</td>
-                            <td>{{ $value->phone }}</td>
-                            <td>{{ $value->email }}</td>
-                            <td>{{ $value->roles->name }}</td>
-                            <td class="text-center"><span class="label {{ $value->status == 1 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status == 1 ? 'Verified' : 'Not Verified'  }}</span></td>
-
-                            <td class="text-center">
-                              <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
-                                 <a class="btn btn-primary btn-sm" href="{{route('user.show', ['id' => $value->id])}}" title="View Detail"><i class="fa fa-eye"></i></a>
-                                @csrf
-                                {{-- <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i> Edit</a> --}}
-                                @method('DELETE')
-                                <button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>
-                              </form>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -118,11 +96,52 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-ingrd').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('user.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        return $action;
+    }
 
+    var $table = $('#table-users').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 0, "desc" ]],
+        "columnDefs": [
+            { "name": "users.id", "sClass": "center", "targets": 0 },
+            { "name": "first_name", "targets": 1 },
+            { "name": "phone",  "targets": 2 },
+            { "name": "email", "targets": 3 },
+            { "name": "role_name", "sClass": "center", "targets": 4 },
+            { "name": "status_name", "sClass": "center",  "targets": 5 },
+        ],
+        "ajax": {
+            "url": "{{ route('user.ajax') }}",
+            "type": "POST",
+            "data": function ( d ) {
+                d._token = $('meta[name="_token"]').attr('content');
+                // d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "id", "bSortable": false },
+            { "data": "user_fullname", "bSortable": true },
+            { "data": "phone", "bSortable": true },
+            { "data": "email", "bSortable": true },
+            { "data": "role_name", "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.status_label + ' label-rounded">' + row.status_value + '</span>'; }, "bSortable": true, "sClass": "center" },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

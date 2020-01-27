@@ -27,7 +27,7 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
     {
         return $this->model->where('id', $id)->get();
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
@@ -40,7 +40,7 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
         if(Auth::user()->roles_id == 2){
             $order = $order->where('orders.area_id', $admin->area_id);
         }
-        
+
         $order = $order->orderBy('change_boxes.created_at','DESC')->get();
         // $order = $order->orderBy('status_id','DESC');
         // $order = $order->orderBy('id','DESC')->get();
@@ -50,26 +50,48 @@ class ChangeBoxRepository implements ChangeBoxRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        $query = $this->model->query();
+        $query->leftJoin('order_details','order_details.id','=','change_boxes.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('status','status.id','=','orders.status_id');
+        $query->leftJoin('change_box_payments','change_box_payments.order_detail_id','=','order_details.id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('users.first_name', 'like', '%'.$args['searchValue'].'%');
+
+        return $query->count();
     }
-    
+
     public function getData($args = [])
     {
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+
+        $query = $this->model->query();
+        $query->select('change_boxes.*', 'change_box_payments.id_name', 'users.first_name', 'users.last_name', 'status.name as status_name');
+        $query->leftJoin('order_details','order_details.id','=','change_boxes.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('change_box_payments','change_box_payments.order_detail_id','=','order_details.id');
+        $query->leftJoin('status','status.id','=','change_boxes.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('users.first_name', 'like', '%'.$args['searchValue'].'%');
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
+
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(ChangeBox $box, $data)
     {
         return $box->update($data);

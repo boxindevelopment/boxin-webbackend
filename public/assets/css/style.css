@@ -5616,6 +5616,7 @@ File: scss
 .hidden-xs-up {
   display: none !important; }
 
+.center { text-align: center;}
 .right { text-align: right;}
 
 @media (max-width: 575px) {

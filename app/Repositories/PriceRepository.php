@@ -53,25 +53,51 @@ class PriceRepository implements PriceRepositoryInterface
         return $data;
     }
 
+    public function getCount($args = [])
+    {
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $query = $this->model->query();
+        $query->join('types_of_box_room', 'types_of_box_room.id', 'prices.types_of_box_room_id');
+        $query->join('types_of_duration', 'types_of_duration.id', 'prices.types_of_duration_id');
+        $query->join('types_of_size', 'types_of_size.id', 'prices.types_of_size_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('prices.area_id', $admin->area_id);
+        }
+        $query->where('prices.types_of_box_room_id', $args['box_or_room_id']);
+        $query->where('types_of_size.name', 'like', '%'.$args['searchValue'].'%');
+        $query->where('prices.deleted_at', NULL);
+        return $query->count();
+    }
+
+    public function getData($args = [])
+    {
+
+        $admin = AdminArea::where('user_id', Auth::user()->id)->first();
+        $query = $this->model->query();
+        $query->select('prices.*', 'types_of_box_room.name as types_of_size_name', 'types_of_duration.name as duration',
+                        'types_of_duration.alias', 'types_of_size.name', 'areas.name as area_name');
+        $query->join('types_of_box_room', 'types_of_box_room.id', 'prices.types_of_box_room_id');
+        $query->join('types_of_duration', 'types_of_duration.id', 'prices.types_of_duration_id');
+        $query->join('types_of_size', 'types_of_size.id', 'prices.types_of_size_id');
+        $query->join('areas', 'areas.id', 'prices.area_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('prices.area_id', $admin->area_id);
+        }
+        $query->where('prices.types_of_box_room_id', $args['box_or_room_id']);
+        $query->where('prices.deleted_at', NULL);
+        $query->where('types_of_size.name', 'like', '%'.$args['searchValue'].'%');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data;
+
+    }
+
     public function checkPrice($type, $type_size, $area_id)
     {
         $data = $this->model->where('types_of_size_id', $type_size)->where('types_of_box_room_id', $type)->where('area_id', $area_id)->first();
         return $data;
-    }
-    public function getCount($args = [])
-    {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
-    }
-    public function getData($args = [])
-    {
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
-
-        return $data->toArray();
     }
 
     public function getEdit($id)
