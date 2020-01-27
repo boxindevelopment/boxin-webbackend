@@ -49,6 +49,42 @@ class ChangeBoxPaymentRepository implements ChangeBoxPaymentRepositoryInterface
         return $data;
     }
 
+    public function getCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->leftJoin('order_details','order_details.id','=','change_box_payments.order_detail_id');
+        $query->leftJoin('users','users.id','=','change_box_payments.user_id');
+        $query->leftJoin('status','status.id','=','change_box_payments.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->leftJoin('orders','orders.id','=','order_details.order_id');
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('change_box_payments.id_name', 'like', '%'.$args['searchValue'].'%');
+        return $query->count();
+    }
+
+    public function getData($args = [])
+    {
+
+        $query = $this->model->query();
+        $query->select('change_box_payments.*', 'users.first_name',  'users.last_name', 'status.name as status_name');
+        $query->leftJoin('order_details','order_details.id','=','change_box_payments.order_detail_id');
+        $query->leftJoin('users','users.id','=','change_box_payments.user_id');
+        $query->leftJoin('status','status.id','=','change_box_payments.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->leftJoin('orders','orders.id','=','order_details.order_id');
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('change_box_payments.id_name', 'like', '%'.$args['searchValue'].'%');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data->toArray();
+
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
