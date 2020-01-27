@@ -27,17 +27,17 @@ class AddItemBoxRepository implements AddItemBoxRepositoryInterface
     {
         return $this->model->where('id', $id)->get();
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $order = $this->model->query();
-        $order = $order->select('add_item_boxes.id', 
-                                'add_item_boxes.order_detail_id', 
-                                'add_item_boxes.types_of_pickup_id', 
-                                'add_item_boxes.status_id', 
-                                'add_item_boxes.created_at', 
-                                'add_item_boxes.date', 
+        $order = $order->select('add_item_boxes.id',
+                                'add_item_boxes.order_detail_id',
+                                'add_item_boxes.types_of_pickup_id',
+                                'add_item_boxes.status_id',
+                                'add_item_boxes.created_at',
+                                'add_item_boxes.date',
                                 'add_item_boxes.time_pickup');
         $order = $order->leftJoin('order_details','order_details.id','=','add_item_boxes.order_detail_id');
         $order = $order->leftJoin('orders','orders.id','=','order_details.order_id');
@@ -52,26 +52,46 @@ class AddItemBoxRepository implements AddItemBoxRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        $query = $this->model->query();
+        $query->leftJoin('order_details','order_details.id','=','add_item_boxes.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('status','status.id','=','orders.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('users.first_name', 'like', '%'.$args['searchValue'].'%');
+
+        return $query->count();
     }
-    
+
     public function getData($args = [])
     {
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
 
-        return $data->toArray();
+        $query = $this->model->query();
+        $query->select('add_item_boxes.*', 'users.first_name', 'users.last_name', 'status.name as status_name');
+        $query->leftJoin('order_details','order_details.id','=','add_item_boxes.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','orders.user_id');
+        $query->leftJoin('status','status.id','=','add_item_boxes.status_id');
+        if(Auth::user()->roles_id == 2){
+            $query->where('orders.area_id', $admin->area_id);
+        }
+        $query->where('users.first_name', 'like', '%'.$args['searchValue'].'%');
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data;
+
     }
-    
+
     public function create(array $data)
     {
         return $this->model->create($data);
     }
-    
+
     public function update(AddItemBox $box, $data)
     {
         return $box->update($data);

@@ -32,6 +32,70 @@ class AddItemBoxController extends Controller
       return view('additem.index', compact('data'));
     }
 
+    public function getAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+
+        $addItemBox = $this->repository->getData($args);
+
+        $recordsTotal = count($addItemBox);
+
+        $recordsFiltered = $this->repository->getCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($addItemBox as $arrVal) {
+            $no++;
+            if($arrVal->types_of_pickup_id == 1){
+              $label1  = 'label-warning';
+              $name    = 'Deliver to user';
+          }else if($arrVal->types_of_pickup_id == 2){
+              $label1  = 'label-primary';
+              $name    = 'User pickup';
+            }
+
+            if($arrVal->status_id == 19){
+              $label = 'label-warning';
+          }else if($arrVal->status_id == 22 || $arrVal->status_id == 5){
+              $label = 'label-success';
+            }else{
+              $label = 'label-danger';
+            }
+
+            $arr = array(
+                      'no'                      => $no,
+                      'id'                      => $arrVal->id,
+                      'types_of_pickup_id'      => $arrVal->types_of_pickup_id,
+                      'created_at'              => date("d-m-Y", strtotime($arrVal->created_at)),
+                      'coming_date'             => date("d-m-Y", strtotime($arrVal->date)) . '( ' . $arrVal->time_pickup . ' )',
+                      'user_fullname'           => $arrVal->first_name . ' ' . $arrVal->last_name,
+                      'items'                   => count($arrVal->items),
+                      'name'                    => $name,
+                      'label1'                  => $label1,
+                      'label'                   => $label,
+                      'status_name'             => $arrVal->status_name);
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
+    }
+
     public function edit($id)
     {
       $data = $this->repository->getById($id);
@@ -72,7 +136,7 @@ class AddItemBoxController extends Controller
           $additem->save();
         }
 
-        // insert to order detail boxes table 
+        // insert to order detail boxes table
         if ($status == 12 || $status == '12') {
           $order_detail_id = $additem->order_detail_id;
           foreach ($additem->items as $key => $value) {
@@ -86,13 +150,13 @@ class AddItemBoxController extends Controller
             ]);
           }
         }
-        
+
         DB::commit();
       } catch (\Exception $th) {
         DB::rollback();
         return redirect()->route('add-item.index')->with('error', $th->getMessage());
       }
-      
+
       return redirect()->route('add-item.index')->with('success', 'Edit Data Add Item Boxes success.');
     }
 

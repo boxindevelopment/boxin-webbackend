@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::post('change-box-payment/ajax', ['uses' => 'ChangeBoxPaymentController@getAjax', 'as' => 'change-box-payment.ajax']);
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
 
+  Route::post('add-item/ajax', ['uses' => 'AddItemBoxController@getAjax', 'as' => 'add-item.ajax']);
   Route::resource('add-item', 'AddItemBoxController')->only(['index', 'update', 'edit']); // add-item.index
   Route::post('add-item-payment/ajax', ['uses' => 'AddItemBoxPaymentController@getAjax', 'as' => 'add-item-payment.ajax']);
   Route::resource('add-item-payment', 'AddItemBoxPaymentController')->only(['index', 'update', 'edit']); // add-item-payment.index
