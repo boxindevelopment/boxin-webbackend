@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('voucher', 'VoucherController')->except(['show']);
 
   Route::prefix('order')->group(function () {
-    Route::get('/ajax', ['uses' => 'OrderController@getAjax', 'as' => 'order.ajax']);
+    Route::post('/ajax', ['uses' => 'OrderController@getAjax', 'as' => 'order.ajax']);
     Route::get('','OrderController@index')->name('order.index');
     Route::get('/order-detail/{id}','OrderController@orderDetail')->name('order.orderDetail');
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
@@ -76,27 +76,27 @@ Route::group(['middleware' => 'auth'], function() {
 
   Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
 
-  Route::get('pickup/ajax', ['uses' => 'PickupController@getAjax', 'as' => 'pickup.ajax']);
+  Route::post('pickup/ajax', ['uses' => 'PickupController@getAjax', 'as' => 'pickup.ajax']);
   Route::resource('pickup', 'PickupController')->except(['show']);
 
-  Route::get('payment/order-details/ajax','PaymentController@getExtendAjax')->name('payment.extend.ajax');
+  Route::post('payment/order-details/ajax','PaymentController@getExtendAjax')->name('payment.extend.ajax');
   Route::get('payment/order-details','PaymentController@payment_extend')->name('payment.extend');
   Route::get('payment/order-details/{id}','PaymentController@payment_extend_edit')->name('payment.extend.edit');
   Route::put('payment/order-details/{id}','PaymentController@payment_extend_update')->name('payment.extend.update');
 
-  Route::get('payment/ajax', ['uses' => 'PaymentController@getAjax', 'as' => 'payment.ajax']);
+  Route::post('payment/ajax', ['uses' => 'PaymentController@getAjax', 'as' => 'payment.ajax']);
   Route::resource('payment', 'PaymentController')->except(['show']);
   Route::prefix('payment')->group(function () {
     Route::get('','PaymentController@index')->name('payment.index');
   });
 
-  Route::get('change-box-payment/ajax', ['uses' => 'ChangeBoxPaymentController@getAjax', 'as' => 'change-box-payment.ajax']);
+  Route::post('change-box-payment/ajax', ['uses' => 'ChangeBoxPaymentController@getAjax', 'as' => 'change-box-payment.ajax']);
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
 
   Route::resource('add-item', 'AddItemBoxController')->only(['index', 'update', 'edit']); // add-item.index
   Route::resource('add-item-payment', 'AddItemBoxPaymentController')->only(['index', 'update', 'edit']); // add-item-payment.index
 
-  Route::get('return-box-payment/ajax', ['uses' => 'ReturnBoxPaymentController@getAjax', 'as' => 'return-box-payment.ajax']);
+  Route::post('return-box-payment/ajax', ['uses' => 'ReturnBoxPaymentController@getAjax', 'as' => 'return-box-payment.ajax']);
   Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
 
   Route::resource('storage', 'OrderDetailController')->except(['show']);

@@ -96,10 +96,10 @@ $(function() {
         ],
         "ajax": {
             "url": "{{ route('pickup.ajax') }}",
-            "type": "GET",
+            "type": "POST",
             "data": function ( d ) {
-                d.csrfToken = $('meta[name="csrf-token"]').attr('content');
-                d.category = $('#category_serch').val();
+                d._token = $('meta[name="_token"]').attr('content');
+                // d.category = $('#category_serch').val();
                 // etc
             }
         },
