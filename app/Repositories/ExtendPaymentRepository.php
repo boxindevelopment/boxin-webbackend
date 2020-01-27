@@ -51,15 +51,31 @@ class ExtendPaymentRepository implements ExtendPaymentRepositoryInterface
         return $data;
     }
 
+    public function getCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->leftJoin('order_details','order_details.id','=','extend_order_payments.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','extend_order_payments.user_id');
+        $query->leftJoin('status','status.id','=','extend_order_payments.status_id');
+        $query->where('extend_order_payments.id_name', 'like', '%'.$args['searchValue'].'%');
+        return $query->count();
+    }
+
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $query = $this->model->query();
+        $query->select('extend_order_payments.*', 'users.first_name',  'users.last_name', 'status.name as status_name');
+        $query->leftJoin('order_details','order_details.id','=','extend_order_payments.order_detail_id');
+        $query->leftJoin('orders','orders.id','=','order_details.order_id');
+        $query->leftJoin('users','users.id','=','extend_order_payments.user_id');
+        $query->leftJoin('status','status.id','=','extend_order_payments.status_id');
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('extend_order_payments.id_name', 'like', '%'.$args['searchValue'].'%');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
 

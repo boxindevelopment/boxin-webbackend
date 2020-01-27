@@ -94,11 +94,13 @@ Route::group(['middleware' => 'auth'], function() {
   Route::resource('change-box-payment', 'ChangeBoxPaymentController')->except(['show']);
 
   Route::resource('add-item', 'AddItemBoxController')->only(['index', 'update', 'edit']); // add-item.index
+  Route::post('add-item-payment/ajax', ['uses' => 'AddItemBoxPaymentController@getAjax', 'as' => 'add-item-payment.ajax']);
   Route::resource('add-item-payment', 'AddItemBoxPaymentController')->only(['index', 'update', 'edit']); // add-item-payment.index
 
   Route::post('return-box-payment/ajax', ['uses' => 'ReturnBoxPaymentController@getAjax', 'as' => 'return-box-payment.ajax']);
   Route::resource('return-box-payment', 'ReturnBoxPaymentController')->except(['show']);
 
+  Route::post('storage/ajax', ['uses' => 'OrderDetailController@getAjax', 'as' => 'storage.ajax']);
   Route::resource('storage', 'OrderDetailController')->except(['show']);
   Route::prefix('storage')->group(function () {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');

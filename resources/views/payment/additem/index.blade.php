@@ -44,42 +44,11 @@
                           <th width="">Customer Name</th>
                           <th width="10%" class="text-center">Image</th>
                           <th width="15%" class="text-center">Status</th>
+                          <th width="15%" class="text-center">Amount</th>
                           <th width="5%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($data) > 0)
-                        @foreach ($data as $key => $value)
-                          @php
-                            if($value->status_id == 14){
-                              $label = 'label-warning';
-                            }else if($value->status_id == 5){
-                              $label = 'label-success';
-                            }else if($value->status_id == 6){
-                              $label = 'label-danger';
-                            }
-                          @endphp
-                          <tr>
-                            <td align="center">{{ $key+1 }}</td>
-                            <td align="center">{{ $value->id_name }}</td>
-                            <td>{{ $value->first_name}} {{ $value->last_name}} </td>
-                            <td class="text-center">
-                              <a class="btn default btn-info btn-sm image-popup-vertical-fit" href="{{ $value->image }}">
-                                <i class="fa fa-file-image-o"></i>
-                                <div style="display: none;">
-                                    <img width="50%" src="{{ $value->image }}" alt="image" />
-                                </div>
-                              </a>
-                            </td>
-                            <td class="text-center">
-                              <span class="label {{ $label }} label-rounded">{{ $value->status->name }}</span>
-                            </td>
-                            <td class="text-center">
-                              <a class="btn btn-info btn-sm" href="{{ route('add-item-payment.edit', ['id' => $value->id])}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -104,9 +73,51 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-pay').DataTable({
-    "aaSorting": []
-  });
+
+    function action(id){
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('add-item-payment.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        return $action;
+    }
+
+    var $table = $('#table-pay').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "no", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "change_box_payments.id_name", "targets": 1 },
+            { "name": "created_at",  "targets": 2 },
+            { "name": "image_transfer", "targets": 3 },
+            { "name": "status_id", "targets": 4 },
+            { "name": "amount", "sClass": "right",  "targets": 5 },
+        ],
+        "ajax": {
+            "url": "{{ route('add-item-payment.ajax') }}",
+            "type": "POST",
+            "data": function ( d ) {
+                d._token = $('meta[name="_token"]').attr('content');
+                // d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+        "columns": [
+            { "data": "no", "bSortable": false },
+            { "data": "id_name", "bSortable": true },
+            { "data": "created_at", "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return '<a class="btn default btn-info btn-sm image-popup-vertical-fit" href="' + row.image_transfer + '"><i class="fa fa-file-image-o"></i><div style="display: none;"><img width="50%" src="' + row.image_transfer + '" alt="image" /> </div></a>' }, "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "right" },
+            { "data": "amount", "bSortable": true, "sClass": "right" },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection

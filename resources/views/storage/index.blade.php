@@ -51,35 +51,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @if(count($order) > 0)
-                        @foreach ($order as $key => $value)
-                          <tr>
-                            <td align="center">{{ $key+1 }}</tD>
-                            <td>{{ $value->id_name }}</td>
-                            <td>{{ $value->first_name }} {{ $value->last_name }} </td>
-                            <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
-                            <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
-                            <td>{{ $value->start_date }} - {{ $value->end_date }}</td>
-                            <td>{{ ($value->place != 'warehouse') ? 'user' : $value->place }}</td>
-                            <td class="text-center">
-                              @php
-                                if($value->status_id == 4){
-                                  $label = 'label-success';
-                                  $name  = 'Stored';
-                                }
-                              @endphp
-                              <span class="label {{ $label }} label-rounded">{{ $name }}</span>
-                            </td>
-                            <td>
-                              <a class="btn btn-primary btn-sm" href="{{route('storage.orderDetailBox', ['id' => $value->order_id])}}"><i class="fa fa-eye"></i></a>
-                            </td>
-                          </tr>
-                        @endforeach
-                      @else
-                        <tr>
-                          <td colspan="8" class="text-center">There are no results yet</td>
-                        </tr>
-                      @endif
                     </tbody>
                 </table>
               </div>
@@ -103,14 +74,56 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
-  $('#table-pickup1').DataTable({
-    "aaSorting": []
-  });
-  $('#table-pickup2').DataTable({
-    "aaSorting": []
-  });
 
+    function action(id){
+        var $action = '<a class="btn btn-primary btn-sm" href="{{url('storage/box-detail')}}/' + id + '"><i class="fa fa-eye"></i></a>';
+        return $action;
+    }
 
+    var $table = $('#table-pickup1').dataTable( {
+        "autoWidth": true,
+        "processing": true,
+        "serverSide": true,
+        "bFilter": true,
+        "order": [[ 2, "desc" ]],
+        "columnDefs": [
+            { "name": "no", "sClass": "center", "targets": 0, "visible": false },
+            { "name": "id_name", "targets": 1 },
+            { "name": "first_name",  "targets": 2 },
+            { "name": "duration", "targets": 3 },
+            { "name": "amount", "sClass": "right", "targets": 4 },
+            { "name": "start_date", "targets": 5 },
+            { "name": "place", "targets": 6 },
+            { "name": "status_name",  "targets": 7 },
+        ],
+        "ajax": {
+            "url": "{{ route('storage.ajax') }}",
+            "type": "POST",
+            "data": function ( d ) {
+                d._token = $('meta[name="_token"]').attr('content');
+                // d.category = $('#category_serch').val();
+                // etc
+            }
+        },
+        "oLanguage": {
+            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+        },
+
+        "columns": [
+            { "data": "no", "bSortable": false },
+            { "data": "id_name", "bSortable": true },
+            { "data": "user_fullname", "bSortable": true },
+            { "data": "duration", "bSortable": false },
+            { "data": "amount", "bSortable": true, "sClass": "right" },
+            { "data": "date", "bSortable": false },
+            { "data": "place", "bSortable": true },
+            { "data": function (row, type, val, meta ) { return ' <span class="label label-success label-rounded">Stored</span>'}, "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+        ],
+        "initComplete": function( settings, json ) {
+            //  $('.count_act').html($count_active);
+        }
+    });
 });
 </script>
 @endsection
