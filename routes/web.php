@@ -106,6 +106,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/box-detail/{id}','OrderDetailController@orderDetailBox')->name('storage.orderDetailBox');
   });
 
+  Route::post('change-box/ajax', ['uses' => 'ChangeBoxesController@getAjax', 'as' => 'change-box.ajax']);
   Route::resource('change-box', 'ChangeBoxesController')->except(['show']);
   Route::prefix('change-box')->group(function () {
     Route::get('','ChangeBoxesController@index')->name('change-box.index');
