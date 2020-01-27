@@ -25,13 +25,13 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     {
         return $this->model->findOrFail($id);
     }
-    
+
     public function all()
     {
         $admin = AdminArea::where('user_id', Auth::user()->id)->first();
         $data = $this->model->query();
         $data = $data->select('order_details.*', 'users.*');
-        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');               
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
         $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
         if(Auth::user()->roles_id == 2){
             $data = $data->where('orders.area_id', $admin->area_id);
@@ -42,20 +42,44 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         return $data;
     }
 
+
+
     public function getCount($args = [])
     {
-        return $this->model->where('name', 'like', $args['searchValue'].'%')->count();
+        $query = $this->model->query();
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->where('order_details.status_id', 4);
+
+        return $query->count();
     }
 
     public function getData($args = [])
     {
 
-        $data = $this->model->select()
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+        $query = $this->model->query();
+        $query->select('order_details.*', 'users.first_name', 'users.last_name', 'status.name as status_name', 'types_of_duration.alias as duration_alias');
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('order_details.status_id', 4);
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
 
@@ -65,8 +89,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     {
         $data = $this->model->query();
         $data = $data->select('order_details.*', 'users.*', 'pickup_orders.*', 'orders.*');
-        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');             
-        $data = $data->leftJoin('pickup_orders', 'pickup_orders.order_id', '=', 'orders.id');        
+        $data = $data->leftJoin('orders', 'orders.id', '=', 'order_details.order_id');
+        $data = $data->leftJoin('pickup_orders', 'pickup_orders.order_id', '=', 'orders.id');
         $data = $data->leftJoin('users', 'users.id', '=', 'orders.user_id');
         $data = $data->where('order_details.order_id', $id);
         $data = $data->first();
@@ -77,7 +101,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     {
         $data = $this->detail_box->query();
         $data = $data->select('order_detail_boxes.*');
-        $data = $data->leftJoin('order_details', 'order_details.id', '=', 'order_detail_boxes.order_detail_id'); 
+        $data = $data->leftJoin('order_details', 'order_details.id', '=', 'order_detail_boxes.order_detail_id');
         $data = $data->where('order_details.order_id', $id);
         $data = $data->orderBy('order_detail_boxes.id', 'ASC');
         $data = $data->get();
@@ -88,7 +112,7 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
     {
         return $this->model->create($data);
     }
-    
+
     public function update(OrderDetail $order, $data)
     {
         return $order->update($data);
