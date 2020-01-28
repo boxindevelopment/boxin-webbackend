@@ -84,16 +84,17 @@ class PaymentController extends Controller
             }
 
             $arr = array(
-                      'no' => $no,
-                      'id' => $arrVal['id'],
-                      'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
-                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
-                      'id_name' => $arrVal['id_name'],
-                      'label' => $label, //
-                      'status_id' => $arrVal['status_id'], //
-                      'status_name' => $arrVal['status_name'], //
-                      'image_transfer' => $arrVal['image_transfer'], //
-                      'amount' => number_format($arrVal['amount'], 0, '', '.'));
+                      'no'              => $no,
+                      'id'              => $arrVal['id'],
+                      'created_at'      => date("d-m-Y", strtotime($arrVal['created_at'])),
+                      'user_fullname'   => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'order_id'         => $arrVal['order_id'],
+                      'id_name'         => $arrVal['id_name'],
+                      'label'           => $label, //
+                      'status_id'       => $arrVal['status_id'], //
+                      'status_name'     => $arrVal['status_name'], //
+                      'image_transfer'  => $arrVal['image_transfer'], //
+                      'amount'          => number_format($arrVal['amount'], 0, '', '.'));
                 $arr_data['data'][] = $arr;
 
             }

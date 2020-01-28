@@ -128,7 +128,7 @@ $(function() {
             }
         },
         "oLanguage": {
-            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+            "sProcessing": "<div style='top:15%; position: fixed; left: 20%;'><img src='{{asset('assets/images/preloader.gif')}}'></div>"
         },
 
         "columns": [
@@ -136,7 +136,7 @@ $(function() {
             { "data": "code_shelves", "bSortable": true },
             { "data": "name", "bSortable": true },
             { "data": "area_name", "bSortable": false },
-            { "data": function ( row, type, val, meta ) { return "" + action(row.kd)  ; }, "sClass": "center", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {
             //  $('.count_act').html($count_active);

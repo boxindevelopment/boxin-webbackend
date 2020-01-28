@@ -33,7 +33,7 @@
             <h4 class="card-title"><span class="lstick"></span>List Vouchers
               <a href="{{ route('voucher.create') }}" class="btn waves-effect waves-light btn-sm btn-primary pull-right" title="Add" style="margin-right: 10px;"><i class="fa fa-plus"></i>&nbsp;Add Voucher</a>
             </h4>
-            
+
             @include('error-template')
 
             <div class="table-responsive m-t-10">
@@ -43,7 +43,7 @@
                         <th width="5%">No</th>
                         <th width="25%" class="text-center">Name (Code) </th>
                         <th width="10%">Value</th>
-                        <th width="15%">Percen/Nominal</th>
+                        <th width="15%">Percent/Nominal</th>
                         <th width="">Valid Voucher</th>
                         <th width="5%">Status</th>
                         <th width="10%" class="text-center no-sort">Action</th>
@@ -56,7 +56,7 @@
                           <td align="center">{{ $key+1 }}</th>
                           <td>{{ $value->name }} ({{ $value->code }})</td>
                           <td>{{ $value->type_voucher == 1 ? $value->value : number_format($value->value, 0, '', '.') }}</td>
-                          <td>{{ $value->type_voucher == 1 ? 'Percen' : 'Nominal' }}</td>
+                          <td>{{ $value->type_voucher == 1 ? 'Percent' : 'Nominal' }}</td>
                           <td>{{ $value->start_date->format('d-m-Y') }} - {{ $value->end_date->format('d-m-Y') }}</td>
                           <td class="text-center">
                             <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status->name  }}</span>
@@ -97,7 +97,7 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal -->  
+            <!-- /.modal -->
 
           </div>
       </div>

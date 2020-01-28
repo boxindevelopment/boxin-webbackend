@@ -74,13 +74,9 @@
 <script>
 $(function() {
 
-    function action(id){
-        var $action = '<form action="{{route('payment.index')}}' + id + '" method="post" style="margin-top:5px;">';
-                $action += '@csrf';
-                $action += '@method('DELETE')';
-                $action += '<a class="btn btn-info btn-sm" href="{{route('payment.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
-                $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
-            $action += '</form>';
+    function action(id, order_detail_id){
+        var $action = '<div style="width: 70px;"><a class="btn btn-primary btn-sm" href="{{route('order.index')}}/order-detail/' + order_detail_id + '" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+            $action += '<a class="btn btn-info btn-sm" href="{{route('payment.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a></div>';
         return $action;
     }
 
@@ -108,7 +104,7 @@ $(function() {
             }
         },
         "oLanguage": {
-            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+            "sProcessing": "<div style='top:15%; position: fixed; left: 20%;'><img src='{{asset('assets/images/preloader.gif')}}'></div>"
         },
         "columns": [
             { "data": "no", "bSortable": false },
@@ -117,7 +113,7 @@ $(function() {
             { "data": function ( row, type, val, meta ) { return '<a class="btn default btn-info btn-sm image-popup-vertical-fit" href="' + row.image_transfer + '"><i class="fa fa-file-image-o"></i><div style="display: none;"><img width="50%" src="' + row.image_transfer + '" alt="image" /> </div></a>' }, "bSortable": false },
             { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "right" },
             { "data": "amount", "bSortable": true, "sClass": "right" },
-            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id, row.order_id)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {
             //  $('.count_act').html($count_active);

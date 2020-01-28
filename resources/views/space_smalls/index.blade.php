@@ -110,8 +110,8 @@ $(function() {
         var $action = '<form action="{{route('box.index')}}' + id + '" method="post" style="margin-top:5px;">';
                 $action += '@csrf';
                 $action += '@method('DELETE')';
-                $action += '<a class="btn btn-secondary btn-sm" href="{{route('box.index')}}/barcode/' + id + '" target="_blank" title="Print Barcode" style="margin-right:5px;"><i class="mdi mdi-barcode"></i></a>';
-                $action += '<a class="btn btn-info btn-sm" href="{{route('box.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+                $action += '<a class="btn btn-secondary btn-sm" href="{{route('space.index')}}/barcode/' + id + '" target="_blank" title="Print Barcode" style="margin-right:5px;"><i class="mdi mdi-barcode"></i></a>';
+                $action += '<a class="btn btn-info btn-sm" href="{{route('space.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
                 $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
             $action += '</form>';
         return $action;
@@ -143,7 +143,7 @@ $(function() {
             }
         },
         "oLanguage": {
-            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+            "sProcessing": "<div style='top:15%; position: fixed; left: 20%;'><img src='{{asset('assets/images/preloader.gif')}}'></div>"
         },
 
         "columns": [

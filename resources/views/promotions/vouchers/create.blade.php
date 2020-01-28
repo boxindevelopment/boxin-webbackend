@@ -59,7 +59,7 @@
                         <label>Type Voucher <span class="text-danger">*</span></label>
                         <div class="demo-radio-button">
                           <input name="type_voucher" type="radio" class="with-gap" id="type_voucher_percen" value="1" checked />
-                          <label for="type_voucher_percen">Percen</label>
+                          <label for="type_voucher_percen">Percent</label>
                           <input name="type_voucher" type="radio" class="with-gap" id="type_voucher_nominal" value="2"/>
                           <label for="type_voucher_nominal">Nominal</label>
                         </div>
@@ -161,7 +161,7 @@ $(document).ready( function() {
         $('#myForm .form-group .input-group .value_discount').show();
         $('#myForm .form-group .input-group .value_nominal').hide();
         // $('#value2').hide();
-        $('#value').attr('placeholder', 'Enter Percen');
+        $('#value').attr('placeholder', 'Enter Percent');
         $('#value').attr('max', 100);
         var value = $('.form-group .input-group #value').val();
         if(value > 100){

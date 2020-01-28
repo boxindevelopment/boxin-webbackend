@@ -110,7 +110,7 @@ $(function() {
             }
         },
         "oLanguage": {
-            "sProcessing": "<div style='top:40%; position: fixed; left: 40%;'><h2>Loadiing...</h2></div>"
+            "sProcessing": "<div style='top:15%; position: fixed; left: 20%;'><img src='{{asset('assets/images/preloader.gif')}}'></div>"
         },
         "columns": [
             { "data": "no", "bSortable": false },
