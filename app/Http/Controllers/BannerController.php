@@ -32,7 +32,7 @@ class BannerController extends Controller
     public function store(Request $r)
     {
       $this->validate($r, [
-          'image' => 'image|mimes:jpeg,png,jpg',
+          'image' => 'image|mimes:jpeg,png,jpg|max:2000',
       ]);
 
       if ($r->hasFile('image')) {
@@ -45,13 +45,13 @@ class BannerController extends Controller
               ]);
               $data->save();
           }
-      }        
-      if($data){        
+      }
+      if($data){
         return redirect()->route('banner.index')->with('success', 'Banner : [' . $r->name . '] inserted.');
       } else {
         return redirect()->route('banner.index')->with('error', 'Add New Banner failed.');
       }
-      
+
     }
 
     public function show($id)
@@ -61,12 +61,20 @@ class BannerController extends Controller
 
     public function edit($id)
     {
+
       $data = $this->repository->find($id);
       return view('promotions.banners.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
     {
+
+      if ($request->hasFile('image')) {
+          $this->validate($request, [
+              'image' => 'image|mimes:jpeg,png,jpg|max:2000',
+          ]);
+      }
+
       $data                 = $this->repository->find($id);
       $data->name           = $request->name;
       $data->status_id      = $request->status_id;
@@ -87,12 +95,12 @@ class BannerController extends Controller
     }
 
     public function destroy($id)
-    {      
+    {
       $data     = Banner::find($id);
       $data->deleted_at = Carbon\Carbon::now();
       $data->status_id  = 21;
       $data->save();
-      
+
       if($data){
         return redirect()->route('banner.index')->with('success', 'Banner successfully deleted.');
       } else {

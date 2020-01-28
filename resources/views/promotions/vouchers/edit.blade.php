@@ -32,6 +32,8 @@
 
               <h4 class="card-title"><span class="lstick"></span>Edit Voucher</h4>
 
+              @include('error-template')
+
               <form action="{{ route('voucher.update', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="myForm">
                 @csrf
                 @method('PUT')

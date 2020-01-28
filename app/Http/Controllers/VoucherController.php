@@ -32,7 +32,7 @@ class VoucherController extends Controller
     public function store(Request $r)
     {
       $this->validate($r, [
-          'image' => 'image|mimes:jpeg,png,jpg',
+          'image' => 'image|mimes:jpeg,png,jpg|max:2000',
       ]);
       $data = false;
       if ($r->hasFile('image')) {
@@ -77,6 +77,13 @@ class VoucherController extends Controller
 
     public function update(Request $request, $id)
     {
+
+      if ($request->hasFile('image')) {
+          $this->validate($request, [
+              'image' => 'image|mimes:jpeg,png,jpg|max:2000',
+          ]);
+      }
+
       $data                 = $this->repository->find($id);
       $data->name           = $request->name;
       $data->code           = $request->code;

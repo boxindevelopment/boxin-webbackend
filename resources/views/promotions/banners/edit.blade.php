@@ -32,12 +32,14 @@
 
               <h4 class="card-title"><span class="lstick"></span>Edit Banners</h4>
 
+               @include('error-template')
+
               <form action="{{ route('banner.update', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" id="myForm">
                 @csrf
                 @method('PUT')
                 <div class="row">
                     <div class="col-md-6">
-                      
+
                       <div class="form-group">
                         <label>Name <span class="text-danger">*</span></label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name" value="{{ $data->name }}" required>
@@ -54,7 +56,7 @@
                             <option value="20" {{ $data->status_id == 20 ? 'selected' : '' }}>Actived</option>
                             <option value="21" {{ $data->status_id == 21 ? 'selected' : '' }}>Non Actived</option>
                         </select>
-                      </div> 
+                      </div>
 
                     </div>
 
@@ -80,11 +82,11 @@
 
 @section('close_html')
 <!--PLUGIN JS -->
-<script type="text/javascript">  
+<script type="text/javascript">
 
 $(document).ready( function() {
   $('#myForm input').on('change', function() {
-     var val = $('input[name=type_voucher]:checked', '#myForm').val(); 
+     var val = $('input[name=type_voucher]:checked', '#myForm').val();
      if(val == '1'){
       $('#myForm .form-group .input-group').show();$('#value2').hide();
      }else if(val == '2'){
