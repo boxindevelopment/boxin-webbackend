@@ -119,10 +119,10 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "bFilter": true,
-        "order": [[ 2, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "columnDefs": [
             { "name": "no", "sClass": "center", "targets": 0, "visible": false },
-            { "name": "created_at", "targets": 1 },
+            { "name": "orders.created_at", "targets": 1 },
             { "name": "first_name",  "targets": 2 },
             { "name": "area_name", "targets": 3 },
             { "name": "voucher_code", "targets": 4 },
