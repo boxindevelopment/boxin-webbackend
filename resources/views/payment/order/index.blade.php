@@ -41,8 +41,8 @@
                         <tr>
                           <th width="5%">No</th>
                           <th width="10%">ID</th>
+                          <th width="15%">Tanggal</th>
                           <th width="">Customer Name</th>
-                          <th width="10%" class="text-center">Image</th>
                           <th width="15%" class="text-center">Status</th>
                           <th width="15%" class="text-center">Amount</th>
                           <th width="5%" class="text-center no-sort">Action</th>
@@ -85,12 +85,12 @@ $(function() {
         "processing": true,
         "serverSide": true,
         "bFilter": true,
-        "order": [[ 2, "desc" ]],
+        "order": [[ 1, "desc" ]],
         "columnDefs": [
             { "name": "no", "sClass": "center", "targets": 0, "visible": false },
             { "name": "id_name", "targets": 1 },
             { "name": "created_at",  "targets": 2 },
-            { "name": "image_transfer", "targets": 3 },
+            { "name": "created_at",  "targets": 3 },
             { "name": "status_id", "targets": 4 },
             { "name": "amount", "sClass": "right",  "targets": 5 },
         ],
@@ -110,7 +110,7 @@ $(function() {
             { "data": "no", "bSortable": false },
             { "data": "id_name", "bSortable": true },
             { "data": "created_at", "bSortable": true },
-            { "data": function ( row, type, val, meta ) { return '<a class="btn default btn-info btn-sm image-popup-vertical-fit" href="' + row.image_transfer + '"><i class="fa fa-file-image-o"></i><div style="display: none;"><img width="50%" src="' + row.image_transfer + '" alt="image" /> </div></a>' }, "bSortable": false },
+            { "data": "user_fullname", "bSortable": true },
             { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "right" },
             { "data": "amount", "bSortable": true, "sClass": "right" },
             { "data": function ( row, type, val, meta ) { return "" + action(row.id, row.order_id)  ; }, "sClass": "center", "bSortable": false },

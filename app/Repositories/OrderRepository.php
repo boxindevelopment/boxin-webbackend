@@ -49,7 +49,7 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getData($args = [])
     {
-
+        $args['orderColumns'] = ($args['orderColumns'] == 'created_at') ? 'orders.created_at' : $args['orderColumns'];
         $data = $this->model
                     ->select('orders.*', 'users.first_name', 'users.last_name', 'areas.name as area_name', 'vouchers.code as voucher_code')
                     ->join("users", "users.id", "orders.user_id")

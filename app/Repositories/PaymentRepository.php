@@ -64,6 +64,7 @@ class PaymentRepository implements PaymentRepositoryInterface
     public function getData($args = [])
     {
 
+        $args['orderColumns'] = ($args['orderColumns'] == 'created_at') ? 'payments.created_at' : $args['orderColumns'];
         $query = $this->model->query();
         $query->select('payments.*', 'users.first_name',  'users.last_name', 'status.name as status_name');
         $query->leftJoin('orders','orders.id','=','payments.order_id');
