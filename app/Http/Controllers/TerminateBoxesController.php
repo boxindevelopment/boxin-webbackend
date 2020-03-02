@@ -17,7 +17,7 @@ use DB;
 use Exception;
 use Carbon\Carbon;
 
-class ReturnBoxesController extends Controller
+class TerminateBoxesController extends Controller
 {
     protected $repository;
 
@@ -34,7 +34,7 @@ class ReturnBoxesController extends Controller
 
     public function index()
     {
-      return view('returnbox.index');
+      return view('terminate.index');
     }
 
     public function getAjax(Request $request)
@@ -118,7 +118,7 @@ class ReturnBoxesController extends Controller
     public function edit($id)
     {
       $data     = $this->repository->getById($id);
-      return view('returnbox.edit', compact('data', 'id'));
+      return view('terminate.edit', compact('data', 'id'));
     }
 
     public function update(Request $request, $id)
@@ -142,8 +142,8 @@ class ReturnBoxesController extends Controller
           }
 
           // sudah finished
-          if ($return->status_id == 12) {
-            throw new Exception("Edit Data Return Boxes failed, Sudah finished.");
+          if ($return->status_id == 18) {
+            throw new Exception("Edit Data Return Boxes failed, Sudah Terminated.");
           }
 
           $return->status_id    = $request->status_id;
@@ -160,10 +160,13 @@ class ReturnBoxesController extends Controller
             throw new Exception('Edit Data Return Boxes failed.[ER-02]');
           }
           $order_detail->status_id = $request->status_id == 12 ? '18' : $request->status_id;
+          if($request->status_id == 4 || $request->status_id == 18){
+              $order_detail->place = 'warehouse';
+          }
           $order_detail->save();
 
           //change status box/room to 10 (empty)
-          if ($request->status_id == 12){
+          if ($request->status_id == 18){
             //box
             if($order_detail->types_of_box_room_id == 1) {
                 $box = Box::find($order_detail->room_or_box_id);
@@ -181,72 +184,31 @@ class ReturnBoxesController extends Controller
                 }
                 $room->status_id = 10;
                 $room->save();
-                // $room = Room::find($order_detail->room_or_box_id);
-                // if ($room) {
-                //   $room->status_id = 10;
-                //   $room->save();
-                // }
             }
           }
 
           $params['status_id']       = $request->status_id;
           $params['order_detail_id'] = $order_detail->id;
-          if ($request->status_id == 12){
+          if ($request->status_id == 18){
               $order = Order::find($order_detail->order_id);
               $userDevice = UserDevice::where('user_id', $order->user_id)->get();
               if (count($userDevice) > 0){
                 //Notif message "Thank you for using Boxin Apps"
-                $response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+                // $response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
+                $client = new \GuzzleHttp\Client();
+                $response = $client->request('POST', env('APP_NOTIF') . 'api/returned/' . $order->user_id, ['form_params' => [
+                  'status_id'       => $request->status_id,
+                  'order_detail_id' => $order_detail->id
+                ]]);
               }
           }
 
           DB::commit();
-          return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');
+          return redirect()->route('terminate.index')->with('success', 'Edit Data Return Boxes success.');
         } catch (Exception $th) {
           DB::rollback();
-          return redirect()->route('return.index')->with('error', $th->getMessage());
-          // return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
+          return redirect()->route('terminate.index')->with('error', $th->getMessage());
         }
-
-
-
-        // if($return){
-        //     $order_detail            = OrderDetail::find($request->order_detail_id);
-        //     $order_detail->status_id = $request->status_id == '12' ? '18' : $request->status_id;
-        //     $order_detail->save();
-
-        //     //change status box/room to 10 (empty)
-        //     if($request->status_id == '12'){
-        //         //box
-        //         if($order_detail->types_of_box_room_id == 1) {
-        //             $box = Box::find($order_detail->room_or_box_id);
-        //             $box->status_id = 10;
-        //             $box->save();
-        //         }
-        //         //room
-        //         else if ($order_detail->types_of_box_room_id == 2) {
-        //             $room = Room::find($order_detail->room_or_box_id);
-        //             $room->status_id = 10;
-        //             $room->save();
-        //         }
-        //     }
-
-        //     $params['status_id'] =  $request->status_id;
-        //     $params['order_detail_id'] =  $order_detail->id;
-        //     if($request->status_id == 12){
-
-        //         $order = Order::find($order_detail->order_id);
-        //         $userDevice = UserDevice::where('user_id', $order->user_id)->get();
-        //         if(count($userDevice) > 0){
-        //             //Notif message "Thank you for using Boxin Apps"
-        //     		$response = Requests::post($this->url . 'api/returned/' . $order->user_id, [], $params, []);
-        //         }
-        //     }
-
-        //     return redirect()->route('return.index')->with('success', 'Edit Data Return Boxes success.');
-        // } else {
-        //     return redirect()->route('return.index')->with('error', 'Edit Data Return Boxes failed.');
-        // }
     }
 
     public function destroy($id)

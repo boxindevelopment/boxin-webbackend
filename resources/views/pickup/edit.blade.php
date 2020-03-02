@@ -194,9 +194,10 @@
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
-                              {{-- <option value="15" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option> --}}
+                              @if($value->status_id == 5)
                               <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              @endif
+                              <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Finished (Stored)</option>
                           </select>
                         </div>
 
@@ -233,8 +234,7 @@
                         <div class="form-group">
                           <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
-                              {{-- <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Approved</option> --}}
-                              <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                              <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Finished (Stored)</option>
                           </select>
                         </div>
 
@@ -245,7 +245,7 @@
                               <label for="">Status <span class="text-danger">*</span></label>
                               <select class="form-control" id="select2" name="status_id" required>
                                       <option value="5" {{ $value->status_id == 5 ? 'selected' : '' }}>Success</option>
-                                      <option value="12" {{ $value->status_id == 12 ? 'selected' : '' }}>Finished</option>
+                                      <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Finished (Stored)</option>
                               </select>
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>

@@ -277,6 +277,8 @@ class OrderController extends Controller
 
             // MessageInvoice::dispatch($order, $user)->onQueue('processing');
             // $response = Requests::post($this->url . 'api/payment-email/' . $order->id, [], $params, []);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('POST', env('APP_NOTIF') . 'api/payment-email/' . $order->id);
             DB::commit();
         } catch (Exception $e) {
             // delete order when order_detail failed to create

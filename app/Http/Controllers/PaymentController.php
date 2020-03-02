@@ -177,7 +177,11 @@ class PaymentController extends Controller
               $params['order_detail_id'] = $value->id;
               $userDevice = UserDevice::where('user_id', $order->user_id)->get();
               if(count($userDevice) > 0){
-                  $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+                  // $response = Requests::post($this->url . 'api/confirm-payment/' . $order->user_id, [], $params, []);
+                  $client = new \GuzzleHttp\Client();
+                  $response = $client->request('POST', env('APP_NOTIF') . 'api/confirm-payment/' . $order->user_id, ['form_params' => [
+                    'status_id'       => $order->status_id
+                  ]]);
               }
             }
           }
@@ -329,7 +333,11 @@ class PaymentController extends Controller
               $user_id = $ex_order_details->user_id;
               $userDevice = UserDevice::where('user_id', $user_id)->get();
               if(count($userDevice) > 0){
-                  $response = Requests::post($this->url . 'api/confirm-payment/' . $user_id, [], $params, []);
+                  // $response = Requests::post($this->url . 'api/confirm-payment/' . $user_id, [], $params, []);
+                  $client = new \GuzzleHttp\Client();
+                  $response = $client->request('POST', env('APP_NOTIF') . 'api/confirm-payment/' . $user_id, ['form_params' => [
+                    'status_id'       => $request->status_id
+                  ]]);
               }
             }
         }

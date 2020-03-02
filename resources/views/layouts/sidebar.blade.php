@@ -130,7 +130,7 @@
                   </a>
                 </li>
 
-                <li class="{{ Route::currentRouteNamed('change-box.index')||Route::currentRouteNamed('change-box.create')||Route::currentRouteNamed('change-box.edit') ? 'active' : null }}">
+                <!-- <li class="{{ Route::currentRouteNamed('change-box.index')||Route::currentRouteNamed('change-box.create')||Route::currentRouteNamed('change-box.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('change-box.index')}}" aria-expanded="false">
                     <i class="mdi mdi-box"></i>
                     <span class="hide-menu">Change Item Boxes</span>
@@ -142,12 +142,26 @@
                     <i class="mdi mdi-box"></i>
                     <span class="hide-menu">Add Item Boxes</span>
                   </a>
+                </li> -->
+
+                <li class="{{ Route::currentRouteNamed('take.index')||Route::currentRouteNamed('take.create')||Route::currentRouteNamed('take.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('take.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-keyboard-return"></i>
+                    <span class="hide-menu">Take Boxes</span>
+                  </a>
                 </li>
-                
+
                 <li class="{{ Route::currentRouteNamed('return.index')||Route::currentRouteNamed('return.create')||Route::currentRouteNamed('return.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('return.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
                     <span class="hide-menu">Return Boxes</span>
+                  </a>
+                </li>
+
+                <li class="{{ Route::currentRouteNamed('terminate.index')||Route::currentRouteNamed('terminate.create')||Route::currentRouteNamed('terminate.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('terminate.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-keyboard-return"></i>
+                    <span class="hide-menu">Terminate Boxes</span>
                   </a>
                 </li>
 

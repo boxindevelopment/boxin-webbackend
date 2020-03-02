@@ -15,7 +15,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Return boxes to Warehouse</h3>
+        <h3 class="text-themecolor">Return Boxes</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -32,7 +32,7 @@
 
               <h4 class="card-title"><span class="lstick"></span>Edit Return Boxes</h4>
 
-              <form action="{{ route('return.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
+              <form action="{{ route('take.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -179,36 +179,37 @@
                     </div>
 
                     <div class="col-md-4">
+
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>
 
                       <!-- return delivery box  -->
                       @if ($value->types_of_pickup_id == 1)
 
-                        @if($value->status_id == 5 || $value->status_id == 14)
-                            <div class="form-group">
-                              <label for="">Status <span class="text-danger">*</span></label>
-                                <select class="form-control" id="select2" name="status_id" required>
-                                    <option value="26" {{ $value->status_id == 26 ? 'selected' : '' }}>Return Request</option>
-                                    <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
-                                  </select>
-                            </div>
+                      @if($value->status_id == 5 || $value->status_id == 14)
+                          <div class="form-group">
+                            <label for="">Status <span class="text-danger">*</span></label>
+                              <select class="form-control" id="select2" name="status_id" required>
+                                  <option value="27" {{ $value->status_id == 27 ? 'selected' : '' }}>Return Requested</option>
+                                  <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                                </select>
+                          </div>
 
-                            <div class="form-group">
-                              <label>Driver Name <span class="text-danger">*</span></label>
-                              <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
-                            </div>
+                        <div class="form-group">
+                          <label>Driver Name <span class="text-danger">*</span></label>
+                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
+                        </div>
 
-                            <div class="form-group">
-                              <label>Driver Phone <span class="text-danger">*</span></label>
-                              <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
-                            </div>
+                        <div class="form-group">
+                          <label>Driver Phone <span class="text-danger">*</span></label>
+                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
+                        </div>
 
-                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @elseif($value->status_id == 2)
                             <div class="form-group">
                               <label for="">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" id="select2" name="status_id" required>
-                                    <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
+                                    <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Finished (Stored)</option>
                                   </select>
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
@@ -218,13 +219,13 @@
                       <!-- return box on warehouse -->
                       @elseif ($value->types_of_pickup_id == 2)
 
-                      @if($value->status_id == 26)
-                          <div class="form-group">
-                            <label for="">Status <span class="text-danger">*</span></label>
-                              <select class="form-control" id="select2" name="status_id" required>
-                                  <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Stored</option>
-                              </select>
-                          </div>
+                      @if($value->status_id == 27)
+                      <div class="form-group">
+                        <label for="">Status <span class="text-danger">*</span></label>
+                          <select class="form-control" id="select2" name="status_id" required>
+                              <option value="4" {{ $value->status_id == 4 ? 'selected' : '' }}>Finished (Stored)</option>
+                          </select>
+                      </div>
                       @endif
 
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
@@ -232,7 +233,7 @@
                       <!-- end return box on warehouse  -->
 
                       @endforeach
-                      <a href="{{ route('return.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <a href="{{ route('take.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                     </div>
                 </div>
               </form>

@@ -195,13 +195,18 @@ class PickupController extends Controller
                 }
                 $order_detail->end_date = Carbon::parse($new_end_date);
             }
+            if($status == 4){
+                $order_detail->place    = 'house';
+            }
             $order_detail->save();
           }
 
-          if ($status == 12 || $status == 2) {
+          if ($status == 4 || $status == 2 || $status == 12) {
               $pickup->status_id    = $status;
-              $pickup->driver_name  = $request->driver_name;
-              $pickup->driver_phone = $request->driver_phone;
+              if($status == 2) {
+                  $pickup->driver_name  = $request->driver_name;
+                  $pickup->driver_phone = $request->driver_phone;
+              }
               $pickup->save();
           }
 
@@ -212,12 +217,20 @@ class PickupController extends Controller
               switch ($status) {
                 case 12:
                   //Notif message "Congratulation! Your items has been stored"
-                  $response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+                  // $response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+                  $client = new \GuzzleHttp\Client();
+                  $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
+                    'status_id'       => $status
+                  ]]);
                   break;
 
                 case 2:
                   //Notif message "Your items is on the way back to you"
-                  $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
+                  // $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
+                  $client = new \GuzzleHttp\Client();
+                  $response = $client->request('POST', env('APP_NOTIF') . 'api/delivery/stored/' . $order->user_id, ['form_params' => [
+                    'status_id'       => $status
+                  ]]);
                   break;
 
                 default:

@@ -113,10 +113,22 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','ChangeBoxesController@index')->name('change-box.index');
   });
 
-  Route::post('return/ajax', ['uses' => 'ReturnBoxesController@getAjax', 'as' => 'return.ajax']);
-  Route::resource('return', 'ReturnBoxesController')->except(['show']);
+  Route::post('return/ajax', ['uses' => 'OrderBackWarehouseController@getAjax', 'as' => 'return.ajax']);
+  Route::resource('return', 'OrderBackWarehouseController')->except(['show']);
   Route::prefix('return')->group(function () {
-    Route::get('','ReturnBoxesController@index')->name('return.index');
+    Route::get('','OrderBackWarehouseController@index')->name('return.index');
+  });
+
+  Route::post('take/ajax', ['uses' => 'OrderTakeController@getAjax', 'as' => 'take.ajax']);
+  Route::resource('take', 'OrderTakeController')->except(['show']);
+  Route::prefix('take')->group(function () {
+    Route::get('','OrderTakeController@index')->name('take.index');
+  });
+
+  Route::post('terminate/ajax', ['uses' => 'TerminateBoxesController@getAjax', 'as' => 'terminate.ajax']);
+  Route::resource('terminate', 'TerminateBoxesController')->except(['show']);
+  Route::prefix('terminate')->group(function () {
+    Route::get('','TerminateBoxesController@index')->name('terminate.index');
   });
 
   Route::prefix('user')->group(function () {
