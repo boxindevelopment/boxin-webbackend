@@ -42,16 +42,16 @@ class UserController extends Controller
         $columns = $request->input("columns");
         $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
 
-        $returnBoxes = $this->user->getData($args);
+        $users = $this->user->getData($args);
 
-        $recordsTotal = count($returnBoxes);
+        $recordsTotal = count($users);
 
         $recordsFiltered = $this->user->getCount($args);
 
         $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
         $arr_data = array();
         $no = 0;
-        foreach ($returnBoxes as $arrVal) {
+        foreach ($users as $arrVal) {
             $no++;
 
             $arr = array(

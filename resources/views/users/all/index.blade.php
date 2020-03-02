@@ -98,7 +98,7 @@
 $(function() {
 
     function action(id){
-        var $action = '<a class="btn btn-info btn-sm" href="{{route('user.index')}}/' + id + '/edit" title="Edit" style="margin-right:5px;"><i class="fa fa-pencil"></i></a>';
+        var $action = '<a class="btn btn-info btn-sm" href="{{route('user.index')}}/' + id + '" title="Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
         return $action;
     }
 

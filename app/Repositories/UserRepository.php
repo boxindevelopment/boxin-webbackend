@@ -86,6 +86,16 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->select()->where('roles_id', '!=', 2)->where('roles_id', '!=', 3)->where('status', 1)->where('deleted_at', NULL)->orderBy('first_name', 'asc')->get();
     }
 
+    public function getUserEdit($id)
+    {
+        $data = $this->model->select(array('users.*',
+                    DB::raw('(users.roles_id) as roles_id')
+                ))
+                ->where('users.id', $id)
+                ->first();
+        return $data;
+    }
+
     public function getEdit($id)
     {
         $data = $this->admin->select(array('admins.*',
