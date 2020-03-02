@@ -108,15 +108,11 @@ class OrderController extends Controller
             'time'                      => 'required',
             'pickup_fee'                => 'required',
             "types_of_box_room_id"      => "required|array|min:1",
-            "types_of_box_room_id.*"    => "required|distinct|min:1",
             "duration"                  => "required|array|min:1",
-            "duration.*"                => "required|distinct|min:1",
             "types_of_duration_id"      => "required|array|min:1",
-            "types_of_duration_id.*"    => "required|distinct|min:1"
         ]);
-
         if($validator->fails()) {
-          return redirect()->route('sale.create')->with('error', $validator->errors());
+          return redirect()->route('order.create')->with('error', $validator->errors());
         }
         $data = $request->all();
         $user = User::find($request->user_id);
@@ -277,14 +273,13 @@ class OrderController extends Controller
 
             // MessageInvoice::dispatch($order, $user)->onQueue('processing');
             // $response = Requests::post($this->url . 'api/payment-email/' . $order->id, [], $params, []);
-            $client = new \GuzzleHttp\Client();
-            $response = $client->request('POST', env('APP_NOTIF') . 'api/payment-email/' . $order->id);
+            // $client = new \GuzzleHttp\Client();
+            // $response = $client->request('POST', env('APP_NOTIF') . 'api/payment-email/' . $order->id);
             DB::commit();
         } catch (Exception $e) {
             // delete order when order_detail failed to create
             // Order::where('id', $order->id)->delete();
             DB::rollback();
-            dd($e);
             return redirect()->route('order.create')->with('error', $e->getMessage());
         }
 
