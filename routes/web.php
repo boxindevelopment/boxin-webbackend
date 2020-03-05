@@ -73,6 +73,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::put('/order-detail-box/{id}/update-place','OrderController@updatePlace')->name('order.orderDetailBox.updatePlace');
   });
   Route::resource('order', 'OrderController')->except(['show']);
+  Route::prefix('order-cancel')->group(function () {
+      Route::post('/ajax', ['uses' => 'OrderCancelController@getAjax', 'as' => 'order.cancel.ajax']);
+      Route::get('','OrderCancelController@index')->name('order.cancel.index');
+      Route::get('/order-detail/{id}','OrderCancelController@orderDetail')->name('order.cancel.orderDetail');
+      Route::get('/order-detail-box/{id}','OrderCancelController@orderDetailBox')->name('order.cancel.orderDetailBox');
+  });
 
   Route::get('order-details/{id}','OrderDetailController@orderDetail')->name('orderDetail.detail');
 

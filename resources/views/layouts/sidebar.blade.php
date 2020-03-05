@@ -92,6 +92,13 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('order.cancel.index') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('order.cancel.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-cart-outline"></i>
+                    <span class="hide-menu">Orders Cancel</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('pickup.index')||Route::currentRouteNamed('pickup.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('pickup.index')}}" aria-expanded="false">
                     <i class="mdi mdi-truck"></i>

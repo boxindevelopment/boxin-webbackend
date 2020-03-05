@@ -67,6 +67,43 @@ class OrderRepository implements OrderRepositoryInterface
 
     }
 
+    public function getCountCancel($args = [])
+    {
+        return $this->model
+                    ->join("users", "users.id", "orders.user_id")
+                    ->join("areas", "areas.id", "orders.area_id")
+                    ->join("status", "status.id", "orders.status_id")
+                    ->where(function($query) use ($args){
+                         $query->where('users.first_name', 'like',  '%'.$args['searchValue'].'%');
+                         $query->orWhere('users.last_name', 'like',  '%'.$args['searchValue'].'%');
+                     })
+                     ->where('orders.status_id', 24)
+                    ->count();
+    }
+
+    public function getDataCancel($args = [])
+    {
+        $args['orderColumns'] = ($args['orderColumns'] == 'created_at') ? 'orders.created_at' : $args['orderColumns'];
+        $data = $this->model
+                    ->select('orders.*', 'users.first_name', 'users.last_name', 'areas.name as area_name', 'vouchers.code as voucher_code')
+                    ->join("users", "users.id", "orders.user_id")
+                    ->join("areas", "areas.id", "orders.area_id")
+                    ->join("status", "status.id", "orders.status_id")
+                    ->leftJoin("vouchers", "vouchers.id", "orders.voucher_id")
+                    ->where(function($query) use ($args){
+                         $query->where('users.first_name', 'like',  '%'.$args['searchValue'].'%');
+                         $query->orWhere('users.last_name', 'like',  '%'.$args['searchValue'].'%');
+                     })
+                     ->where('orders.status_id', 24)
+                    ->orderBy($args['orderColumns'], $args['orderDir'])
+                    ->skip($args['start'])
+                    ->take($args['length'])
+                    ->get();
+
+        return $data->toArray();
+
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
