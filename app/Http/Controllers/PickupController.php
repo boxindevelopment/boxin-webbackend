@@ -93,7 +93,7 @@ class PickupController extends Controller
                       'date' => date("d-m-Y", strtotime($arrVal['date'])),
                       'id_name' => $arrVal['id_name'],
                       'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
-                      'place' => $arrVal['place'],
+                      'place' => 'warehouse',
                       'status_id' => $arrVal['status_id'],
                       'status_name' => $arrVal['status_name'],
                       'types_of_pickup_name' => $arrVal['types_of_pickup_name'],
