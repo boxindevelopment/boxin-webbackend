@@ -72,7 +72,7 @@
                                  -
                               @endif
                             </td>
-                            <td>{{ $value->duration }} {{ $value->type_duration->alias }}</td>
+                            <td>{{ $value->duration }}x{{ $value->type_duration->alias }}</td>
                             <td class="text-right">{{ number_format($value->amount, 0, '', '.') }}</td>
                             <td>{{ isset($value->order->voucher->code) ? $value->order->voucher->code : ''}}</td>
                             <td class="text-right">{{ number_format($value->order->voucher_amount, 0, '', '.') }}</td>
