@@ -49,13 +49,14 @@ class OrderDetailController extends Controller
         $no = 0;
         foreach ($storage as $arrVal) {
             $no++;
+            $added = ($arrVal['duration_alias'] == '6month') ? 'x' : ' ';
             $arr = array(
                       'no' => $no,
                       'id' => $arrVal['id'],
                       'date' => date("d-m-Y", strtotime($arrVal['start_date'])) . ' - ' . date("d-m-Y", strtotime($arrVal['end_date'])),
                       'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
                       'id_name' => $arrVal['id_name'],
-                      'duration' => $arrVal['duration'] . ' ' . $arrVal['duration_alias'],
+                      'duration' => $arrVal['duration'] . $added . $arrVal['duration_alias'],
                       'place' => ($arrVal['place'] != 'warehouse') ? 'user' : $arrVal['place'], //
                       'status_name' => $arrVal['status_name'], //
                       'amount' => number_format($arrVal['amount'], 0, '', '.'));
