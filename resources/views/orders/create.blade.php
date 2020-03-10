@@ -88,8 +88,8 @@
                             <label>Pickup fee <span class="text-danger">*</span></label>
                             <select class="form-control" name="types_of_pickup_id" id="types_of_pickup_id" required>
                                 <option value=""></option>
-                                <option value="1" '+userSelected+'>Delivery box</option>
-                                <option value="2" '+warehouseSelected+'>Box on warehouse</option>
+                                <option value="1">PIckup by Boxin Team</option>
+                                <option value="2">Pickup by customer</option>
                             </select>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                                 <div class="input-group-append">
                                     <span class="input-group-text">Rp.</span>
                                 </div>
-                                <input type="text" class="form-control" name="pickup_fee" id="pickup_fee" placeholder="Enter Pickup fee" value="50000" required>
+                                <input type="text" class="form-control" name="pickup_fee" id="pickup_fee" placeholder="Enter Pickup fee" value="0" required readonly>
                             </div>
                         </div>
                     </div>
@@ -272,6 +272,16 @@
 <script type="text/javascript">
 
 $('#date').datepicker();
+
+$('#types_of_pickup_id').on('change',function(){
+    var value = $(this).val();
+    if(value == 1){
+        $('#pickup_fee').val(50000);
+    } else {
+        $('#pickup_fee').val(0);
+    }
+    console.log(`val:${value}`);
+});
 
 function user_Selectdata(values) {
     var data = $.ajax({
