@@ -8,14 +8,14 @@ class SpaceSmall extends Model
 {
 
     protected $fillable = [
-        'code_space_small', 
-        'shelves_id', 
-        'types_of_size_id', 
-        'name', 
-        'barcode', 
-        'location', 
-        'size', 
-        'price', 
+        'code_space_small',
+        'shelves_id',
+        'types_of_size_id',
+        'name',
+        'barcode',
+        'location',
+        'size',
+        'price',
         'status_id'
     ];
 
@@ -34,6 +34,11 @@ class SpaceSmall extends Model
     public function order_detail()
     {
         return $this->hasMany('App\Model\OrderDetail', 'room_or_box_id', 'id');
+    }
+
+    public function transaction()
+    {
+        return $this->hasOne('App\Model\OrderDetail', 'room_or_box_id', 'id');
     }
 
     public function status()

@@ -99,6 +99,20 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('order.boxes') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('order.boxes')}}" aria-expanded="false">
+                    <i class="mdi mdi-truck"></i>
+                    <span class="hide-menu">Order Boxes</span>
+                  </a>
+                </li>
+
+                <li class="{{ Route::currentRouteNamed('order.spaces') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('order.spaces')}}" aria-expanded="false">
+                    <i class="mdi mdi-truck"></i>
+                    <span class="hide-menu">Order Spaces</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('pickup.index')||Route::currentRouteNamed('pickup.create') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('pickup.index')}}" aria-expanded="false">
                     <i class="mdi mdi-truck"></i>

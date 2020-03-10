@@ -6,6 +6,10 @@ Route::get('/privacyPolicy', 'HomeController@index')->name('privacyPolicy');
 Route::group(['middleware' => 'auth'], function() {
 
   Route::get('/', 'DashboardController@index')->name('dashboard');
+  Route::get('/dashboard/space', 'DashboardController@space')->name('dashboard.space');
+  Route::post('/dashboard/ajax-space', 'DashboardController@getAjaxSpace')->name('dashboard.space.ajax');
+  Route::get('/dashboard/box', 'DashboardController@box')->name('dashboard.box');
+  Route::post('/dashboard/ajax-box', 'DashboardController@getAjaxBox')->name('dashboard.box.ajax');
   Route::get('/graphicOrder','DashboardController@graphicOrder')->name('dashboard.graphicOrder');
 
   Route::get('/profile', 'UserController@myProfile')->name('profile');
@@ -71,6 +75,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/order-detail-box/{id}','OrderController@orderDetailBox')->name('order.orderDetailBox');
     Route::get('/order-detail/{id}/edit','OrderController@orderDetailBox')->name('order.detail.edit');
     Route::put('/order-detail-box/{id}/update-place','OrderController@updatePlace')->name('order.orderDetailBox.updatePlace');
+    Route::get('/boxes', ['uses' => 'OrderController@getBoxes', 'as' => 'order.boxes']);
+    Route::post('/box/ajax', ['uses' => 'OrderController@getBoxAjax', 'as' => 'order.box.ajax']);
+    Route::get('/spaces', ['uses' => 'OrderController@getSpaces', 'as' => 'order.spaces']);
+    Route::post('/space/ajax', ['uses' => 'OrderController@getSpaceAjax', 'as' => 'order.space.ajax']);
   });
   Route::resource('order', 'OrderController')->except(['show']);
   Route::prefix('order-cancel')->group(function () {

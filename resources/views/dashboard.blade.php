@@ -81,20 +81,6 @@
             </div>
         </div>
         <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
-            <div class="card bg-success">
-                <a href="{{ route('space.index') }}">
-                <div class="card-body">
-                    <div class="d-flex no-block">
-                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
-                        <div class="align-self-center">
-                            <h6 class="text-white m-t-10 m-b-0">Available Spaces</h6>
-                            <h4 class="m-t-0 text-white">{{ $available_space }} of {{ $space }}</h4></div>
-                    </div>
-                </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
             <div class="card bg-info">
                 <a href="{{ route('shelves.index') }}">
                 <div class="card-body">
@@ -109,8 +95,22 @@
             </div>
         </div>
         <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
+            <div class="card bg-success">
+                <a href="{{ route('order.spaces') }}">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-home-outline"></i></div>
+                        <div class="align-self-center">
+                            <h6 class="text-white m-t-10 m-b-0">Available Spaces</h6>
+                            <h4 class="m-t-0 text-white">{{ $available_space }} of {{ $space }}</h4></div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-1-5 col-lg-2-5">
             <div class="card bg-primary">
-                <a href="{{ route('box.index') }}">
+                <a href="{{ route('order.boxes') }}">
                 <div class="card-body">
                     <div class="d-flex no-block">
                         <div class="m-r-20 align-self-center" style="color: white;"><i class="mdi mdi-48px mdi-dropbox"></i></div>
@@ -121,7 +121,7 @@
                 </div>
                 </a>
             </div>
-        </div>        
+        </div>
     </div>
 
     <div class="row">
@@ -200,7 +200,7 @@ $(document).ready(function() {
     });
 
 });
-    
+
 function visitorData (detail,data,tgl) {
     Highcharts.chart(detail.container, {
         chart: {

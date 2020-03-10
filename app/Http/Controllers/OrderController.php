@@ -351,4 +351,147 @@ class OrderController extends Controller
         }
 
     }
+
+
+    public function getBoxes()
+    {
+      $url = route('order.index');
+      return view('orders.list-boxes', compact('url'));
+    }
+
+
+    public function getBoxAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'id_name';
+
+        $orderData = $this->orderDetails->getBoxData($args);
+
+        $recordsTotal = count($orderData);
+
+        $recordsFiltered = $this->orderDetails->getBoxCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($orderData as $arrVal) {
+            $no++;
+
+            if($arrVal['status_id'] == 11 || $arrVal['status_id'] == 14 || $arrVal['status_id'] == 15 || $arrVal['status_id'] == 8 || $arrVal['status_id'] == 6){
+                $label = 'label-danger';
+            } else if($arrVal['status_id'] == 12){
+                $label = 'label-inverse';
+            } else if($arrVal['status_id'] == 7 || $arrVal['status_id'] == 5){
+                $label = 'label-success';
+            } else if($arrVal['status_id'] == 2){
+                $label = 'label-warning';
+            } else {
+                $label = 'label-warning';
+            }
+
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'id_name' => $arrVal['id_name'],
+                      'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
+                      'box_name' => $arrVal['box_name'],
+                      'duration' => $arrVal['duration'],
+                      'duration_alias' => $arrVal['duration_alias'],
+                      'status_id' => $arrVal['status_id'],
+                      'status_name' => $arrVal['status_name'],
+                      'label' => $label,
+                      'range_date' => $arrVal['start_date'] . '-'. $arrVal['end_date'], //
+                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'amount' => number_format($arrVal['amount'], 0, '', '.'));
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
+    }
+
+    public function getSpaces()
+    {
+      $url = route('order.index');
+      return view('orders.list-spaces', compact('url'));
+    }
+
+
+    public function getSpaceAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'id_name';
+
+        $orderData = $this->orderDetails->getSpaceData($args);
+
+        $recordsTotal = count($orderData);
+
+        $recordsFiltered = $this->orderDetails->getSpaceCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($orderData as $arrVal) {
+            $no++;
+
+            if($arrVal['status_id'] == 11 || $arrVal['status_id'] == 14 || $arrVal['status_id'] == 15 || $arrVal['status_id'] == 8 || $arrVal['status_id'] == 6){
+                $label = 'label-danger';
+            } else if($arrVal['status_id'] == 12){
+                $label = 'label-inverse';
+            } else if($arrVal['status_id'] == 7 || $arrVal['status_id'] == 5){
+                $label = 'label-success';
+            } else if($arrVal['status_id'] == 2){
+                $label = 'label-warning';
+            } else {
+                $label = 'label-warning';
+            }
+
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'id_name' => $arrVal['id_name'],
+                      'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
+                      'space_name' => $arrVal['space_name'],
+                      'duration' => $arrVal['duration'],
+                      'duration_alias' => $arrVal['duration_alias'],
+                      'status_id' => $arrVal['status_id'],
+                      'status_name' => $arrVal['status_name'],
+                      'label' => $label,
+                      'range_date' => $arrVal['start_date'] . '-'. $arrVal['end_date'], //
+                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'amount' => number_format($arrVal['amount'], 0, '', '.'));
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
+    }
+
+
 }

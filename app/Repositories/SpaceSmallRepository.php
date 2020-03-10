@@ -102,6 +102,36 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
 
     }
 
+    public function getCountSpace($args = [])
+    {
+        return $this->model
+                    ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
+                    ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                    ->join("status", "status.id", "space_smalls.status_id")
+                    ->where('space_smalls.name', 'like', $args['searchValue'].'%')
+                    ->where('status_id', 9)
+                    ->count();
+    }
+    public function getDataSpace($args = [])
+    {
+
+        $warehouse = $this->model->with('transaction')->select("space_smalls.*", "types_of_size.name as type_size_name",
+                                     "types_of_size.size", "shelves.name as shelves_name",
+                                     "status.name as status_name")
+                                ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
+                                ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                                ->join("status", "status.id", "space_smalls.status_id")
+                                ->orderBy($args['orderColumns'], $args['orderDir'])
+                                ->where('space_smalls.name', 'like', '%'.$args['searchValue'].'%')
+                                ->where('status_id', 9)
+                                ->skip($args['start'])
+                                ->take($args['length'])
+                                ->get();
+
+        return $warehouse->toArray();
+
+    }
+
     public function getSelectByArea($area_id)
     {
 

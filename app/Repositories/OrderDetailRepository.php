@@ -108,6 +108,94 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         return $data;
     }
 
+
+    public function getBoxCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->join("boxes", "boxes.id", "order_details.room_or_box_id");
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->where('order_details.types_of_box_room_id', 1);
+
+        return $query->count();
+    }
+
+    public function getBoxData($args = [])
+    {
+
+        $query = $this->model->query();
+        $query->select('order_details.*', 'boxes.name as box_name', 'users.first_name', 'users.last_name', 'status.name as status_name', 'types_of_duration.alias as duration_alias');
+        $query->join("boxes", "boxes.id", "order_details.room_or_box_id");
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('order_details.types_of_box_room_id', 1);
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data->toArray();
+
+    }
+
+
+    public function getSpaceCount($args = [])
+    {
+        $query = $this->model->query();
+        $query->join("space_smalls", "space_smalls.id", "order_details.room_or_box_id");
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->where('order_details.types_of_box_room_id', 2);
+
+        return $query->count();
+    }
+
+    public function getSpaceData($args = [])
+    {
+
+        $query = $this->model->query();
+        $query->select('order_details.*', 'space_smalls.name as space_name', 'users.first_name', 'users.last_name', 'status.name as status_name', 'types_of_duration.alias as duration_alias');
+        $query->join("space_smalls", "space_smalls.id", "order_details.room_or_box_id");
+        $query->join("orders", "orders.id", "order_details.order_id");
+        $query->join("users", "users.id", "orders.user_id");
+        $query->join("status", "status.id", "orders.status_id");
+        $query->join("types_of_duration", "types_of_duration.id", "order_details.types_of_duration_id");
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('order_details.types_of_box_room_id', 2);
+        $query->where(function ($q) use ($args) {
+                $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+            });
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
+
+        return $data->toArray();
+
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
