@@ -120,7 +120,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         $query->where(function ($q) use ($args) {
                 $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
                       ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
-                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('boxes.name', 'like', '%'.$args['searchValue'].'%');
             });
         $query->where('order_details.types_of_box_room_id', 1);
 
@@ -142,7 +143,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         $query->where(function ($q) use ($args) {
                 $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
                       ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
-                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('boxes.name', 'like', '%'.$args['searchValue'].'%');
             });
         $query->skip($args['start']);
         $query->take($args['length']);
@@ -164,7 +166,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         $query->where(function ($q) use ($args) {
                 $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
                       ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
-                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('space_smalls.name', 'like', '%'.$args['searchValue'].'%');
             });
         $query->where('order_details.types_of_box_room_id', 2);
 
@@ -186,7 +189,8 @@ class OrderDetailRepository implements OrderDetailRepositoryInterface
         $query->where(function ($q) use ($args) {
                 $q->where('users.first_name', 'like', '%'.$args['searchValue'].'%')
                       ->orWhere('users.last_name', 'like', '%'.$args['searchValue'].'%')
-                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%');
+                      ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%')
+                      ->orWhere('space_smalls.name', 'like', '%'.$args['searchValue'].'%');
             });
         $query->skip($args['start']);
         $query->take($args['length']);
