@@ -22,15 +22,18 @@ namespace Symfony\Component\Routing\Annotation;
 class Route
 {
     private $path;
-    private $localizedPaths = array();
+    private $localizedPaths = [];
     private $name;
-    private $requirements = array();
-    private $options = array();
-    private $defaults = array();
+    private $requirements = [];
+    private $options = [];
+    private $defaults = [];
     private $host;
-    private $methods = array();
-    private $schemes = array();
+    private $methods = [];
+    private $schemes = [];
     private $condition;
+    private $locale;
+    private $format;
+    private $utf8;
 
     /**
      * @param array $data An array of key/value parameters
@@ -40,7 +43,7 @@ class Route
     public function __construct(array $data)
     {
         if (isset($data['localized_paths'])) {
-            throw new \BadMethodCallException(sprintf('Unknown property "localized_paths" on annotation "%s".', \get_class($this)));
+            throw new \BadMethodCallException(sprintf('Unknown property "localized_paths" on annotation "%s".', static::class));
         }
 
         if (isset($data['value'])) {
@@ -53,10 +56,25 @@ class Route
             unset($data['path']);
         }
 
+        if (isset($data['locale'])) {
+            $data['defaults']['_locale'] = $data['locale'];
+            unset($data['locale']);
+        }
+
+        if (isset($data['format'])) {
+            $data['defaults']['_format'] = $data['format'];
+            unset($data['format']);
+        }
+
+        if (isset($data['utf8'])) {
+            $data['options']['utf8'] = filter_var($data['utf8'], FILTER_VALIDATE_BOOLEAN) ?: false;
+            unset($data['utf8']);
+        }
+
         foreach ($data as $key => $value) {
             $method = 'set'.str_replace('_', '', $key);
             if (!method_exists($this, $method)) {
-                throw new \BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, \get_class($this)));
+                throw new \BadMethodCallException(sprintf('Unknown property "%s" on annotation "%s".', $key, static::class));
             }
             $this->$method($value);
         }
@@ -134,7 +152,7 @@ class Route
 
     public function setSchemes($schemes)
     {
-        $this->schemes = \is_array($schemes) ? $schemes : array($schemes);
+        $this->schemes = \is_array($schemes) ? $schemes : [$schemes];
     }
 
     public function getSchemes()
@@ -144,7 +162,7 @@ class Route
 
     public function setMethods($methods)
     {
-        $this->methods = \is_array($methods) ? $methods : array($methods);
+        $this->methods = \is_array($methods) ? $methods : [$methods];
     }
 
     public function getMethods()
