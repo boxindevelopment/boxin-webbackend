@@ -142,7 +142,7 @@ class TerminateBoxesController extends Controller
           }
 
           // sudah finished
-          if ($return->status_id == 18) {
+          if ($return->status_id == 28) {
             throw new Exception("Edit Data Return Boxes failed, Sudah Terminated.");
           }
 
@@ -159,14 +159,14 @@ class TerminateBoxesController extends Controller
           if (empty($order_detail)) {
             throw new Exception('Edit Data Return Boxes failed.[ER-02]');
           }
-          $order_detail->status_id = $request->status_id == 12 ? '18' : $request->status_id;
-          if($request->status_id == 4 || $request->status_id == 18){
+          $order_detail->status_id = $request->status_id == 12 ? '28' : $request->status_id;
+          if($request->status_id == 4 || $request->status_id == 28){
               $order_detail->place = 'warehouse';
           }
           $order_detail->save();
 
           //change status box/room to 10 (empty)
-          if ($request->status_id == 18){
+          if ($request->status_id == 28){
             //box
             if($order_detail->types_of_box_room_id == 1) {
                 $box = Box::find($order_detail->room_or_box_id);
@@ -189,7 +189,7 @@ class TerminateBoxesController extends Controller
 
           $params['status_id']       = $request->status_id;
           $params['order_detail_id'] = $order_detail->id;
-          if ($request->status_id == 18){
+          if ($request->status_id == 28){
               $order = Order::find($order_detail->order_id);
               $userDevice = UserDevice::where('user_id', $order->user_id)->get();
               if (count($userDevice) > 0){

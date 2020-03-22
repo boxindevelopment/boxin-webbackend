@@ -217,7 +217,7 @@
                               <label for="">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" id="select2" name="status_id" required>
                                     <option value="2" selected>On Delivery</option>
-                                    <option value="18">Finished (Terminated)</option>
+                                    <option value="28">Finished (Terminated)</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
@@ -232,7 +232,7 @@
                         <label for="">Status <span class="text-danger">*</span></label>
                           <select class="form-control" id="select2" name="status_id" required>
                               <option value="16" {{ $value->status_id == 16 ? 'selected' : '' }}>Terminate Requested</option>
-                              <option value="18" {{ $value->status_id == 18 ? 'selected' : '' }}>Finished (Terminated)</option>
+                              <option value="28" {{ $value->status_id == 28 ? 'selected' : '' }}>Finished (Terminated)</option>
                           </select>
                       </div>
                       @endif
