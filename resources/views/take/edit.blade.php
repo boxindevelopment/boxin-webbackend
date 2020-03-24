@@ -15,7 +15,7 @@
 <!-- ============================================================== -->
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h3 class="text-themecolor">Return Boxes</h3>
+        <h3 class="text-themecolor">Take Boxes</h3>
     </div>
 </div>
 <!-- ============================================================== -->
@@ -30,7 +30,7 @@
         <div class="card">
             <div class="card-body">
 
-              <h4 class="card-title"><span class="lstick"></span>Edit Return Boxes</h4>
+              <h4 class="card-title"><span class="lstick"></span>Edit Take Boxes</h4>
 
               <form action="{{ route('take.update', ['id' => $id]) }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
