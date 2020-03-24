@@ -55,11 +55,18 @@
                 /* These examples are all valid */
                 OneSignal.getUserId(function(userId) {
                     console.log("OneSignal User ID:", userId);
-                    // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
-                });
-                OneSignal.getUserId().then(function(userId) {
-                    console.log("OneSignal User ID:", userId);
-                    // (Output) OneSignal User ID: 270a35cd-4dda-4b3f-b04e-41d7463a2316    
+                    var xhttp = new XMLHttpRequest();
+                    var url = 'api/user/token';
+                    var params = 'device=web&token=' + userId;
+                    xhttp.open('POST', url, true);
+                    //Send the proper header information along with the request
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhttp.onreadystatechange = function() {//Call a function when the state changes.
+                        if(xhttp.readyState == 4 && xhttp.status == 200) {
+                            console.log("responseText", xhttp.responseText);
+                        }
+                    }
+                    xhttp.send(params);
                 });
             });
         });
