@@ -40,7 +40,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <!--script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
         var OneSignal = window.OneSignal || [];
         OneSignal.push(function() {
@@ -70,6 +70,26 @@
                 });
             });
         });
+    </script-->
+    @php
+        $hash = Auth::user()->email . Auth::user()->phone . Auth::user()->roles_id . date('H');
+        $code = password_hash($hash, PASSWORD_DEFAULT);
+
+    @endphp
+    <script type="text/javascript">
+        var xhttp = new XMLHttpRequest();
+        var params = 'device=web&token=a91f37e4-36d0-40a0-99be-476f52fecf25&code={{$code}}';
+        var url = 'usertoken/store?' + params;
+        xhttp.open('GET', url, true);
+        console.log(params);
+        //Send the proper header information along with the request
+        xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhttp.onreadystatechange = function() {//Call a function when the state changes.
+            if(xhttp.readyState == 4 && xhttp.status == 200) {
+                console.log("responseText", xhttp.responseText);
+            }
+        }
+        xhttp.send(params);
     </script>
 
     @yield('script_css')

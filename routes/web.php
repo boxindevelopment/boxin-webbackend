@@ -189,3 +189,8 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
 });
+
+
+Route::group(['namespace' => 'Api'], function () {
+  Route::get('/usertoken/store', ['uses' => 'UserTokenController@userToken', 'as' => 'api.user.token']);
+});
