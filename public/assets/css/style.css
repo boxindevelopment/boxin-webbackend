@@ -4663,7 +4663,7 @@ File: scss
   padding-top: 15px; }
 
 .mailbox .message-center {
-  height: 200px;
+  height: 450px;
   overflow: auto;
   position: relative; }
   .mailbox .message-center a {

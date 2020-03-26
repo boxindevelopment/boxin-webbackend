@@ -234,6 +234,15 @@
                   </ul>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('notification.index')||Route::currentRouteNamed('notification.create')||Route::currentRouteNamed('notification.edit') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('notification.index')}}" aria-expanded="false">
+                    <i class="mdi mdi-email"></i>
+                    <span class="hide-menu">Notification
+                      <span class="label label-rouded label-danger pull-right notif-count">25</span>
+                    </span>
+                  </a>
+                </li>
+
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
