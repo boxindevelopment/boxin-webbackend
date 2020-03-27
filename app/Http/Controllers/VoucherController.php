@@ -7,15 +7,21 @@ use App\Model\Voucher;
 use Carbon;
 use App\Repositories\VoucherRepository;
 use DB;
+use Requests;
 
 class VoucherController extends Controller
 {
 
     protected $repository;
-
+    private $url;
+    CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
+    CONST LOC_URL = 'http://localhost:3002/';
+    CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
+  
     public function __construct(VoucherRepository $repository)
     {
         $this->repository = $repository;
+        $this->url = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
     }
 
     public function index()
@@ -57,6 +63,9 @@ class VoucherController extends Controller
           }
       }
       if($data){
+        $params['name'] = $r->name;
+        $params['code'] = $r->code;
+        $response = Requests::post($this->url . 'api/create-voucher', [], $params, []);
         return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $r->name . '] inserted.');
       } else {
         return redirect()->route('voucher.index')->with('error', 'Add New Voucher failed.');
