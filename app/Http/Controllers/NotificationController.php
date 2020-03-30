@@ -33,6 +33,19 @@ class NotificationController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        $notification = $this->repository->find($id);
+        $notification->read_at = Carbon::now();
+        $notification->save();
+        if($notification->order_id != NULL){
+            return redirect()->route('order.orderDetail', ['id' => $notification->order_id]);
+        } else {
+            return redirect()->route('notification.index');
+            // dd(json_decode($notification->data)->detail);
+        }
+    }
+
     public function getAjax(Request $request)
     {
 

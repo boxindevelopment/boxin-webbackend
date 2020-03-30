@@ -149,6 +149,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('ajax', ['uses' => 'NotificationController@getAjax', 'as' => 'notification.ajax']);
     Route::get('ajax/notif', ['uses' => 'NotificationController@getAjaxNotif', 'as' => 'notification.ajax.notif']);
     Route::get('','NotificationController@index')->name('notification.index');
+    Route::get('id/{id}','NotificationController@show')->name('notification.show');
   });
 
   Route::prefix('user')->group(function () {

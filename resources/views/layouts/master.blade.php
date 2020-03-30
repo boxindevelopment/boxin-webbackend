@@ -384,7 +384,7 @@
             }
 
         }  
-        $.get("notification/ajax/notif", function(data, status){
+        $.get("{{route('dashboard')}}/notification/ajax/notif", function(data, status){
             // const dataGet = JSON.parse(data);
             $('.notif-count').html(data.count);
             $('.message-center-notification').html('');
@@ -395,8 +395,8 @@
                 if(element.read_at == null){
                     backgroundColor = '#e4e5e8';
                 }
-                messageHtml += '<a href="'+urlNotif+'" style="background-color: '+backgroundColor+';">';
-                    messageHtml += '<div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>';
+                messageHtml += '<a href="'+urlNotif+'/id/'+element.id+'" style="background-color: '+backgroundColor+';">';
+                    // messageHtml += '<div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>';
                     messageHtml += '<div class="mail-contnet">';
                         messageHtml += '<h5>'+element.type+'</h5>';
                         messageHtml += '<span class="mail-desc">'+element.title+'</span>';
