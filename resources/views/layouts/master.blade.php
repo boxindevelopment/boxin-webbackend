@@ -41,11 +41,40 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    @php
+        $hash = Auth::user()->email . Auth::user()->phone . Auth::user()->roles_id . date('H');
+        $code = password_hash($hash, PASSWORD_DEFAULT);
+    @endphp
     <script>
         var OneSignal = window.OneSignal || [];
         OneSignal.push(function() {
             OneSignal.init({
                 appId: "622c31f4-a1ac-4677-ac9d-0c07148d93d0",
+            });
+            OneSignal.on('permissionPromptDisplay', function () {
+                console.log("The prompt displayed");
+            });
+            
+            OneSignal.push(function() {
+                /* These examples are all valid */
+                OneSignal.getUserId(function(userId) {
+                    console.log("OneSignal User ID:", userId);
+                    
+                    var xhttp = new XMLHttpRequest();
+                    var params = 'device=web&code={{$code}}&token=' + userId;
+                    var url = 'usertoken/store?' + params;
+                    xhttp.open('GET', url, true);
+                    console.log(params);
+                    //Send the proper header information along with the request
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhttp.onreadystatechange = function() {//Call a function when the state changes.
+                        if(xhttp.readyState == 4 && xhttp.status == 200) {
+                            console.log("responseText", xhttp.responseText);
+                        }
+                    }
+                    xhttp.send(params);
+                    
+                });
             });
         });
     </script>
@@ -354,7 +383,31 @@
                 @endif
             }
 
-        }
+        }  
+        $.get("notification/ajax/notif", function(data, status){
+            // const dataGet = JSON.parse(data);
+            $('.notif-count').html(data.count);
+            $('.message-center-notification').html('');
+            let messageHtml = '';
+            let urlNotif = "{{route('notification.index')}}";
+            $.each(data.data, function(index, element) {
+                let backgroundColor = '#fff';
+                if(element.read_at == null){
+                    backgroundColor = '#e4e5e8';
+                }
+                messageHtml += '<a href="'+urlNotif+'" style="background-color: '+backgroundColor+';">';
+                    messageHtml += '<div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>';
+                    messageHtml += '<div class="mail-contnet">';
+                        messageHtml += '<h5>'+element.type+'</h5>';
+                        messageHtml += '<span class="mail-desc">'+element.title+'</span>';
+                        messageHtml += '<span class="time">'+element.datetime_notif+'</span>';
+                    messageHtml += '</div>';
+                messageHtml += '</a>';
+            });
+            $('.message-center-notification').html(messageHtml);
+            // console.log("Data: " + data + "\nStatus: " + status);
+        });
+
 
         function get_id_number_shelves(area_id, area_number){
             console.log('shelves in');

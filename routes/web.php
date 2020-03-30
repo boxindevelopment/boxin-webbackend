@@ -145,6 +145,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','TerminateBoxesController@index')->name('terminate.index');
   });
 
+  Route::prefix('notification')->group(function () {
+    Route::post('ajax', ['uses' => 'NotificationController@getAjax', 'as' => 'notification.ajax']);
+    Route::get('ajax/notif', ['uses' => 'NotificationController@getAjaxNotif', 'as' => 'notification.ajax.notif']);
+    Route::get('','NotificationController@index')->name('notification.index');
+  });
+
   Route::prefix('user')->group(function () {
     Route::post('ajax', ['uses' => 'UserController@getAjax', 'as' => 'user.ajax']);
     Route::post('store','UserController@store')->name('user.store');
@@ -188,4 +194,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('','SettingController@index')->name('settings.index');
   });
 
+});
+
+
+Route::group(['namespace' => 'Api'], function () {
+  Route::get('/usertoken/store', ['uses' => 'UserTokenController@userToken', 'as' => 'api.user.token']);
 });
