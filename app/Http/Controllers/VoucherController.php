@@ -65,6 +65,7 @@ class VoucherController extends Controller
       if($data){
         $params['name'] = $r->name;
         $params['code'] = $r->code;
+        $params['id'] = $data->id;
         $response = Requests::post($this->url . 'api/create-voucher', [], $params, []);
         return redirect()->route('voucher.index')->with('success', 'Voucher : [' . $r->name . '] inserted.');
       } else {
