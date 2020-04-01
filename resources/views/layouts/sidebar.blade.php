@@ -182,7 +182,7 @@
                 <li class="{{ Route::currentRouteNamed('terminate.index')||Route::currentRouteNamed('terminate.create')||Route::currentRouteNamed('terminate.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('terminate.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
-                    <span class="hide-menu">Terminate Boxes</span>
+                    <span class="hide-menu">Terminate Request</span>
                   </a>
                 </li>
 
