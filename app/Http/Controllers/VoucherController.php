@@ -17,11 +17,18 @@ class VoucherController extends Controller
     CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
     CONST LOC_URL = 'http://localhost:3002/';
     CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
+    CONST QA_URL = 'https://boxin-qa-notification.azurewebsites.net/';
   
     public function __construct(VoucherRepository $repository)
     {
         $this->repository = $repository;
-        $this->url = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
+        if(env('DB_DATABASE') == 'coredatabase'){
+            $this->url = self::DEV_URL;
+        }else if(env('DB_DATABASE') == 'coredatabase-qa'){
+            $this->url = self::QA_URL;
+        }else {
+            $this->url = self::PROD_URL;
+        }
     }
 
     public function index()
