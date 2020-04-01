@@ -54,6 +54,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         $query->orderBy($args['orderColumns'], $args['orderDir']);
         $query->where('notifications.title', 'like', '%'.$args['searchValue'].'%');
         $query->where('notifications.notifiable_type', 'admin');
+        $query->where('notifications.user_id', Auth::user()->id);
         $query->skip($args['start']);
         $query->take($args['length']);
         $data = $query->get();

@@ -38,11 +38,18 @@ class NotificationController extends Controller
         $notification = $this->repository->find($id);
         $notification->read_at = Carbon::now();
         $notification->save();
-        if($notification->order_id != NULL){
-            return redirect()->route('order.orderDetail', ['id' => $notification->order_id]);
+        if($notification->type == 'return request'){
+            return redirect()->route('return.edit', ['id' => $notification->send_user]);
+        } else if($notification->type == 'take request'){
+            return redirect()->route('take.edit', ['id' => $notification->send_user]);
+        } else if($notification->type == 'terminate request'){
+            return redirect()->route('terminate.edit', ['id' => $notification->send_user]);
         } else {
-            return redirect()->route('notification.index');
-            // dd(json_decode($notification->data)->detail);
+            if($notification->order_id != NULL){
+                return redirect()->route('order.orderDetail', ['id' => $notification->order_id]);
+            } else {
+                return redirect()->route('notification.index');;
+            }
         }
     }
 
