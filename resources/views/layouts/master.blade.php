@@ -387,6 +387,11 @@
         $.get("{{route('dashboard')}}/notification/ajax/notif", function(data, status){
             // const dataGet = JSON.parse(data);
             $('.notif-count').html(data.count);
+            if(data.count > 0){
+                $('.waves-effect .notify').show();
+            } else {
+                $('.waves-effect .notify').hide();
+            }
             $('.message-center-notification').html('');
             let messageHtml = '';
             let urlNotif = "{{route('notification.index')}}";
