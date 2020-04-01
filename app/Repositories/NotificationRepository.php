@@ -71,6 +71,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         $query->leftJoin('users','users.id','=','notifications.send_user');
         $query->where('notifications.notifiable_type', 'admin');
         $query->orderBy('notifications.id', 'desc');
+        $query->where('notifications.user_id', Auth::user()->id);
         $query->limit($limit);
         $data = $query->get();
 
