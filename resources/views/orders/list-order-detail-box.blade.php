@@ -16,6 +16,7 @@
 <!-- ============================================================== -->
 <!-- Bread crumb and right sidebar toggle -->
 <!-- ============================================================== -->
+@include('error-template')
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
@@ -101,49 +102,53 @@
                 <div class="form-group col-md-4">
                     <input type="text" class="form-control form-control-line" value="Rp. {{ number_format($detail->amount, 2, '.', ',') }}" readonly>
                 </div>
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">Start Date</label>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="text" class="form-control form-control-line" value="{{ $detail->start_date }}" readonly>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">End Date</label>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="text" class="form-control form-control-line" value="{{ $detail->end_date }}" readonly>
-                </div>
             </form>
-
-            <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
-            <form class="form-material row">
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->code_box) ? $detail->box->code_box : '') : (isset($detail->space->code_space_small) ? $detail->space->code_space_small : '') }}" readonly>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">Name </label>
-                </div>
-                <div class="form-group col-md-4">
-                    <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->name) ? $detail->box->name : '') : (isset($detail->space->name) ? $detail->space->name : '') }}" readonly>
-                </div>
-            </form>
-            <form class="form-material row" action="{{ route('order.orderDetailBox.updatePlace', ['id' => $id]) }}" method="POST">
+            <form class="form-material" action="{{ route('order.orderDetailBox.updatePlace', ['id' => $id]) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div class="form-group col-md-2">
-                    <label for="inputEmail3" class="text-right control-label col-form-label">Place </label>
+                <div class="row">
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Start Date</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="date" class="form-control form-control-line" name="start_date" value="{{ $detail->start_date }}">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">End Date</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="date" class="form-control form-control-line" name="end_date" value="{{ $detail->end_date }}">
+                    </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <select name="place" type="text" class="form-control form-control-line">
-                        <option value="warehouse" {{ ($detail->place != 'warehouse') ? '' : 'selected' }}>Warehouse</option>
-                        <option value="house" {{ ($detail->place != 'warehouse') ? 'selected' : '' }}>User</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2">
-                    <button type="submit" class="btn btn-primary">Save</button>
+
+                <h5 class="card-title"><span class="lstick"></span><b>* Data {{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }}</b></h5>
+                <div class="row">    
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">{{ $detail->types_of_box_room_id == 1 ? 'Box' : 'Space' }} ID</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->code_box) ? $detail->box->code_box : '') : (isset($detail->space->code_space_small) ? $detail->space->code_space_small : '') }}" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Name </label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control form-control-line" value="{{ $detail->types_of_box_room_id == 1 ? (isset($detail->box->name) ? $detail->box->name : '') : (isset($detail->space->name) ? $detail->space->name : '') }}" readonly>
+                    </div>
+                
+                
+                    <div class="form-group col-md-2">
+                        <label for="inputEmail3" class="text-right control-label col-form-label">Place </label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <select name="place" type="text" class="form-control form-control-line">
+                            <option value="warehouse" {{ ($detail->place != 'warehouse') ? '' : 'selected' }}>Warehouse</option>
+                            <option value="house" {{ ($detail->place != 'warehouse') ? 'selected' : '' }}>User</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                 </div>
             </form>
 
