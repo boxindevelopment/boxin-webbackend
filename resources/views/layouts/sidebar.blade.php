@@ -75,9 +75,9 @@
                     <span class="hide-menu">Promotions</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
-                    <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
+                    <!-- <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
                       <a href="{{ route('banner.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
-                    </li>
+                    </li> -->
                     <li class="{{ Route::currentRouteNamed('voucher.index') ? 'active' : null }}">
                       <a href="{{ route('voucher.index') }}"><i class="mdi mdi-tag-multiple"></i> &nbsp;Voucher </a>
                     </li>
