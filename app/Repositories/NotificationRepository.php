@@ -42,6 +42,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         $query->leftJoin('users','users.id','=','notifications.send_user');
         $query->where('notifications.title', 'like', '%'.$args['searchValue'].'%');
         $query->where('notifications.notifiable_type', 'admin');
+        $query->where('notifications.user_id', Auth::user()->id);
         return $query->count();
     }
 
