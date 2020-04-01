@@ -82,6 +82,14 @@ class NotificationController extends Controller
         foreach ($returnBoxes as $arrVal) {
             $no++;
 
+            if($arrVal->type == 'terminate request' || $arrVal->type == 'extend request' || $arrVal->type == 'return request' || $arrVal->type == 'take request'){
+                $name = substr($arrVal->title, 5);
+                $name = explode(",", $name);
+                $name = $name[0];
+            } else {
+                $name = $arrVal->first_name . ' ' . $arrVal->last_name;
+            }
+
             $arr = array(
                       'no'                      => $no,
                       'id'                      => $arrVal->id,
@@ -89,7 +97,7 @@ class NotificationController extends Controller
                       'notifiable_type'         => $arrVal->notifiable_type,
                       'created_at'              => date("d-m-Y H:s:i", strtotime($arrVal->created_at)),
                       'read_at'                 => ($arrVal->read_at) ? date("d-m-Y H:s:i", strtotime($arrVal->read_at)) : '-',
-                      'user_fullname'           => $arrVal->first_name . ' ' . $arrVal->last_name,
+                      'user_fullname'           => $name,
                       'user_id'                 => $arrVal->user_id,
                       'title'                   => $arrVal->title,
                       'user_id'                 => $arrVal->user_id,
