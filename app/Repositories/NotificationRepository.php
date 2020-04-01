@@ -32,6 +32,7 @@ class NotificationRepository implements NotificationRepositoryInterface
     {
         $query = $this->model->query();
         $query->where('notifiable_type', 'admin');
+        $query->where('notifications.user_id', Auth::user()->id);
         $query->whereNull('read_at');
         return $query->count();
     }
