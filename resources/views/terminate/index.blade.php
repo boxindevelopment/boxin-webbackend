@@ -16,7 +16,7 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
         <h3 class="text-themecolor">
-          Terminate Boxes
+          Terminate Request
         </h3>
     </div>
 </div>
@@ -31,7 +31,7 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-              <h4 class="card-title"><span class="lstick"></span>Terminate Box</h4>
+              <h4 class="card-title"><span class="lstick"></span>Terminate Request</h4>
 
               @include('error-template')
 

@@ -308,10 +308,21 @@ class OrderController extends Controller
 
     public function updatePlace(Request $request, $id)
     {
+        $this->validate($request, [
+            'end_date' => 'after:start_date',
+        ]);
+
         $orderDetail       = OrderDetail::find($id);
         $orderDetail->place = $request->place;
+        $orderDetail->start_date = $request->start_date;
+        $orderDetail->end_date = $request->end_date;
         $orderDetail->save();
-        return redirect()->route('order.orderDetailBox', ['id' => $id])->with('success', 'Data Place successfully updated!');
+
+        if($orderDetail){
+            return redirect()->route('order.orderDetailBox', ['id' => $id])->with('success', 'Data Place successfully updated!');
+        } else {
+            return redirect()->route('order.orderDetailBox', ['id' => $id])->with('error', 'end date must be greater than start date');
+        }
     }
 
     public function update(Request $request, $id)

@@ -75,9 +75,9 @@
                     <span class="hide-menu">Promotions</span>
                   </a>
                   <ul aria-expanded="false" class="collapse">
-                    <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
+                    <!-- <li class="{{ Route::currentRouteNamed('banner.index') ? 'active' : null }}">
                       <a href="{{ route('banner.index') }}"><i class="mdi mdi-image-multiple"></i> &nbsp;Banner</a>
-                    </li>
+                    </li> -->
                     <li class="{{ Route::currentRouteNamed('voucher.index') ? 'active' : null }}">
                       <a href="{{ route('voucher.index') }}"><i class="mdi mdi-tag-multiple"></i> &nbsp;Voucher </a>
                     </li>
@@ -182,7 +182,7 @@
                 <li class="{{ Route::currentRouteNamed('terminate.index')||Route::currentRouteNamed('terminate.create')||Route::currentRouteNamed('terminate.edit') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('terminate.index')}}" aria-expanded="false">
                     <i class="mdi mdi-keyboard-return"></i>
-                    <span class="hide-menu">Terminate Boxes</span>
+                    <span class="hide-menu">Terminate Request</span>
                   </a>
                 </li>
 
