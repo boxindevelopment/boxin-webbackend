@@ -5,7 +5,7 @@
 @endsection
 
 @section('script_css')
-
+    .
 @endsection
 
 @section('content')
@@ -40,11 +40,12 @@
                     <thead>
                         <tr>
                           <th width="5%">No</th>
-                          <th width="15%" class="text-center">Date</th>
-                          <th width="20%" class="text-center">User</th>
-                          <th width="20%" class="text-center">Type</th>
+                          <th width="17%" class="text-center">Date</th>
+                          <th width="16%" class="text-center">User</th>
+                          <th width="16%" class="text-center">Type</th>
                           <th width="">Title</th>
-                          <th width="15%" class="text-center">Read at</th>
+                          <th width="17%" class="text-center">Read at</th>
+                          <th width="6%" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +74,11 @@
 <!--SCRIPT JS -->
 <script>
 $(function() {
+
+function action(id){
+    var $action = '<a class="btn btn-primary btn-sm" href="{{route('notification.index')}}/id/' + id + '" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+    return $action;
+}
 
     var $table = $('#table-notif').dataTable( {
         "autoWidth": true,
@@ -105,7 +111,8 @@ $(function() {
             { "data": "user_fullname", "bSortable": false },
             { "data": "type", "bSortable": true },
             { "data": "title", "bSortable": true },
-            { "data": "read_at", "bSortable": true }
+            { "data": "read_at", "bSortable": true },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {
             //  $('.count_act').html($count_active);
