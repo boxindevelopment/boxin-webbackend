@@ -216,8 +216,13 @@ class PickupController extends Controller
           if (count($userDevice) > 0){
               switch ($status) {
                 case 12:
-                  //Notif message "Congratulation! Your items has been stored"
-                  // $response = Requests::post($this->url . 'api/item-save/' . $order->user_id, [], $params, []);
+                  $client = new \GuzzleHttp\Client();
+                  $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
+                    'status_id'       => $status
+                  ]]);
+                  break;
+
+                case 4:
                   $client = new \GuzzleHttp\Client();
                   $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
                     'status_id'       => $status
@@ -225,8 +230,6 @@ class PickupController extends Controller
                   break;
 
                 case 2:
-                  //Notif message "Your items is on the way back to you"
-                  // $response = Requests::post($this->url . 'api/delivery/stored/' . $order->user_id, [], $params, []);
                   $client = new \GuzzleHttp\Client();
                   $response = $client->request('POST', env('APP_NOTIF') . 'api/delivery/stored/' . $order->user_id, ['form_params' => [
                     'status_id'       => $status

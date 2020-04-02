@@ -170,6 +170,18 @@ class OrderTakeController extends Controller
           $order_detail->save();
 
           DB::commit();
+
+          if(($request->status_id == 2 || $request->status_id == 4) && $take){  
+            $userDevice = UserDevice::where('user_id', $take->user_id)->get();
+            if (count($userDevice) > 0){
+              $client = new \GuzzleHttp\Client();
+              $response = $client->request('POST', env('APP_NOTIF') . 'api/take/status/' . $take->id, ['form_params' => [
+                'status_id'         => $request->status_id,
+                'order_detail_id'   => $order_detail->id
+              ]]);
+            }
+          }
+          
           return redirect()->route('take.index')->with('success', 'Edit Data Return Boxes success.');
         } catch (Exception $th) {
           DB::rollback();

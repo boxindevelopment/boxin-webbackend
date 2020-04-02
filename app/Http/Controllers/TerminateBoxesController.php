@@ -189,6 +189,11 @@ class TerminateBoxesController extends Controller
 
           $params['status_id']       = $request->status_id;
           $params['order_detail_id'] = $order_detail->id;
+
+          DB::commit();
+          
+          $order = Order::find($order_detail->order_id);
+
           if ($request->status_id == 28){
               $order = Order::find($order_detail->order_id);
               $userDevice = UserDevice::where('user_id', $order->user_id)->get();
@@ -202,8 +207,18 @@ class TerminateBoxesController extends Controller
                 ]]);
               }
           }
+          
+          if(($request->status_id == 16) && $return){  
+            $userDevice = UserDevice::where('user_id', $order->user_id)->get();
+            if (count($userDevice) > 0){
+              $client = new \GuzzleHttp\Client();
+              $response = $client->request('POST', env('APP_NOTIF') . 'api/terminate/status/' . $return->id, ['form_params' => [
+                'status_id'         => $request->status_id,
+                'order_detail_id'   => $order_detail->id
+              ]]);
+            }
+          }
 
-          DB::commit();
           return redirect()->route('terminate.index')->with('success', 'Edit Data Return Boxes success.');
         } catch (Exception $th) {
           DB::rollback();
