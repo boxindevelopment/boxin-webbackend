@@ -44,7 +44,7 @@ class OrderDetailBox extends Model
       $url = (env('DB_DATABASE') == 'coredatabase') ? $DEV_URL : $PROD_URL;
 
       $image = $this->item_image;
-      return env('APP_URL')  . '/images/detail_item_box/' . $image;
+      return env('APP_ORDER')  . 'images/detail_item_box/' . $image;
     }
 
 }
