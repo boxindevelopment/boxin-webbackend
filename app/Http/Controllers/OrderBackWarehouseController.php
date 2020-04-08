@@ -34,7 +34,13 @@ class OrderBackWarehouseController extends Controller
 
     public function index()
     {
-      return view('returnbox.index');
+
+      $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+      $returnToday = OrderBackWarehouse::where('date', $today)->where('status_id', 26)->count();
+      $returnAll = OrderBackWarehouse::where('status_id', 26)->count();
+      $returnSuccess = OrderBackWarehouse::where('status_id', 4)->count();
+
+      return view('returnbox.index', compact('returnToday', 'returnAll', 'returnSuccess'));
     }
 
     public function getAjax(Request $request)

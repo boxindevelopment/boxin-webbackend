@@ -28,6 +28,45 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 <div class="row">
+    <div class="col-lg-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$terminateToday}}</h1>
+                        <h6 class="text-white">Terminate Request Today</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$terminateAll}}</h1>
+                        <h6 class="text-white">Terminate Request All</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$terminateSuccess}}</h1>
+                        <h6 class="text-white">Terminated All</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">

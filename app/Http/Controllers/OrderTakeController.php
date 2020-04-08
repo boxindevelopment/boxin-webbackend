@@ -34,7 +34,11 @@ class OrderTakeController extends Controller
 
     public function index()
     {
-      return view('take.index');
+      $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+      $takeToday = OrderTake::where('date', $today)->where('status_id', 27)->count();
+      $takeAll = OrderTake::where('status_id', 27)->count();
+      $takeSuccess = OrderTake::where('status_id', 4)->count();
+      return view('take.index', compact('takeToday', 'takeAll', 'takeSuccess'));
     }
 
     public function getAjax(Request $request)

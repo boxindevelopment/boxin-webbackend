@@ -28,6 +28,45 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 <div class="row">
+    <div class="col-lg-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$returnToday}}</h1>
+                        <h6 class="text-white">Return Request Today</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$returnAll}}</h1>
+                        <h6 class="text-white">Return Request All</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="stats">
+                        <h1 class="text-white">{{$returnSuccess}}</h1>
+                        <h6 class="text-white">Return Success All</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">

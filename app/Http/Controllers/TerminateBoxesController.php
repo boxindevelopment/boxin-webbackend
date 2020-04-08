@@ -34,7 +34,13 @@ class TerminateBoxesController extends Controller
 
     public function index()
     {
-      return view('terminate.index');
+
+      $today = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+      $terminateToday = ReturnBoxes::where('date', $today)->where('status_id', 16)->count();
+      $terminateAll = ReturnBoxes::where('status_id', 16)->count();
+      $terminateSuccess = ReturnBoxes::where('status_id', 28)->count();
+
+      return view('terminate.index', compact('terminateToday', 'terminateAll', 'terminateSuccess'));
     }
 
     public function getAjax(Request $request)
