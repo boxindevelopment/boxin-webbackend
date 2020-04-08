@@ -78,7 +78,7 @@
                         </div>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group div_max_value">
                         <label>Max value <span class="text-danger">*</span></label>
                         <div class="input-group" >
                             <div class="input-group-append max_value_addon">
@@ -156,14 +156,18 @@
 $(document).ready( function() {
   $('#value').on('keyup', function() {
       value = $(this).val();
-      console.log('base value : ' + value);
       $('#value').attr('base_value', value);
+     var val = $('input[name=type_voucher]:checked', '#myForm').val();
+     if(val == '2'){
+        $('#myForm .div_max_value #max_value').val(value);
+     }   
   });
   $('#myForm input').on('change', function() {
      var val = $('input[name=type_voucher]:checked', '#myForm').val();
      if(val == '1'){
         $('#myForm .form-group .input-group .value_discount').show();
         $('#myForm .form-group .input-group .value_nominal').hide();
+        $('#myForm .div_max_value').show();
         // $('#value2').hide();
         $('#value').attr('placeholder', 'Enter Percent');
         $('#value').attr('max', 100);
@@ -175,10 +179,12 @@ $(document).ready( function() {
         // $('#value2').show();
         $('#myForm .form-group .input-group .value_discount').hide();
         $('#myForm .form-group .input-group .value_nominal').show();
+        $('#myForm .div_max_value').hide();
         $('#value').attr('placeholder', 'Enter Nominal');
         $('#value').attr('max', 10000000000000000);
         var value = $('#value').attr('base_value');
         $('#value').val(value);
+        $('#max_value').val(value);
      }
   });
 });
