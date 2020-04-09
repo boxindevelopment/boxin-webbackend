@@ -212,37 +212,26 @@ class PickupController extends Controller
 
           $params['status_id']       = $status;
           $params['order_detail_id'] = $order_detail->id;
-          $userDevice = UserDevice::where('user_id', $users_id)->get();
-          if (count($userDevice) > 0){
-              switch ($status) {
-                case 12:
-                  $client = new \GuzzleHttp\Client();
-                  $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
-                    'status_id'       => $status
-                  ]]);
-                  break;
-
-                case 4:
-                  $client = new \GuzzleHttp\Client();
-                  $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
-                    'status_id'       => $status
-                  ]]);
-                  break;
-
-                case 2:
-                  $client = new \GuzzleHttp\Client();
-                  $response = $client->request('POST', env('APP_NOTIF') . 'api/delivery/stored/' . $order->user_id, ['form_params' => [
-                    'status_id'       => $status
-                  ]]);
-                  break;
-
-                default:
-                  # code...
-                  break;
-              }
-          }
 
           DB::commit();
+          
+          $userDevice = UserDevice::where('user_id', $users_id)->get();
+          if (count($userDevice) > 0){
+            if($status == 12 || $status == 4){
+              $client = new \GuzzleHttp\Client();
+              $response = $client->request('POST', env('APP_NOTIF') . 'api/item-save/' . $order->user_id, ['form_params' => [
+                'status_id'       => $status,
+                'order_detail_id' => $order_detail->id
+                ]]);
+              } else if($status == 2){
+              $client = new \GuzzleHttp\Client();
+              $response = $client->request('POST', env('APP_NOTIF') . 'api/delivery/stored/' . $order->user_id, ['form_params' => [
+                'status_id'       => $status,
+                'order_detail_id' => $order_detail->id
+              ]]);
+            }
+          }
+          
           return redirect()->route('pickup.index')->with('success', 'Edit Data Pickup Order success.');
         } catch (Exception $th) {
           DB::rollback();
