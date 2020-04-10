@@ -96,7 +96,7 @@ class NotificationController extends Controller
                       'id'                      => $arrVal->id,
                       'type'                    => $arrVal->type,
                       'notifiable_type'         => $arrVal->notifiable_type,
-                      'created_at'              => Carbon::parse($arrVal->created_at)->format("d-m-Y H:s:i"),
+                      'created_at'              => Carbon::parse($arrVal->created_at)->format("d-m-Y HH:mm:ss"),
                       'read_at'                 => ($arrVal->read_at) ? date("d-m-Y H:s:i", strtotime($arrVal->read_at)) : '-',
                       'user_fullname'           => $name,
                       'user_id'                 => $arrVal->user_id,
