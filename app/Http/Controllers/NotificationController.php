@@ -79,6 +79,7 @@ class NotificationController extends Controller
         $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
         $arr_data = array();
         $no = 0;
+        
         foreach ($returnBoxes as $arrVal) {
             $no++;
 
@@ -95,7 +96,7 @@ class NotificationController extends Controller
                       'id'                      => $arrVal->id,
                       'type'                    => $arrVal->type,
                       'notifiable_type'         => $arrVal->notifiable_type,
-                      'created_at'              => date("d-m-Y H:s:i", strtotime($arrVal->created_at)),
+                      'created_at'              => Carbon::parse($arrVal->created_at)->format("d-m-Y H:s:i"),
                       'read_at'                 => ($arrVal->read_at) ? date("d-m-Y H:s:i", strtotime($arrVal->read_at)) : '-',
                       'user_fullname'           => $name,
                       'user_id'                 => $arrVal->user_id,
