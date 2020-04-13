@@ -182,29 +182,34 @@
 
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>
 
-                      <!-- return delivery box  -->
-                      @if ($value->types_of_pickup_id == 1)
+                      <!-- Take delivery box  -->
+                      @if ($value->types_of_pickup_id == 2)
 
                       @if($value->status_id == 5 || $value->status_id == 14)
                           <div class="form-group">
                             <label for="">Status <span class="text-danger">*</span></label>
                               <select class="form-control" id="select2" name="status_id" required>
-                                  <option value="27" {{ $value->status_id == 27 ? 'selected' : '' }}>Return Requested</option>
-                                  <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                                  <option value="27" {{ $value->status_id == 27 ? 'selected' : '' }}>Take Requested</option>
                                 </select>
                           </div>
+                        @elseif($value->status_id == 27)
+                            <div class="form-group">
+                              <label for="">Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="select2" name="status_id" required>
+                                  <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                              <label>Driver Name <span class="text-danger">*</span></label>
+                              <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
+                            </div>
 
-                        <div class="form-group">
-                          <label>Driver Name <span class="text-danger">*</span></label>
-                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
-                        </div>
+                            <div class="form-group">
+                              <label>Driver Phone <span class="text-danger">*</span></label>
+                              <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
+                            </div>
 
-                        <div class="form-group">
-                          <label>Driver Phone <span class="text-danger">*</span></label>
-                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
-                        </div>
-
-                        <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
+                            <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @elseif($value->status_id == 2)
                             <div class="form-group">
                               <label for="">Status <span class="text-danger">*</span></label>
@@ -214,10 +219,10 @@
                             </div>
                             <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                         @endif
-                      <!-- end return delivery box  -->
+                      <!-- end Take delivery box  -->
 
-                      <!-- return box on warehouse -->
-                      @elseif ($value->types_of_pickup_id == 2)
+                      <!-- Take box on warehouse -->
+                      @elseif ($value->types_of_pickup_id == 1)
 
                       @if($value->status_id == 27)
                       <div class="form-group">
@@ -230,7 +235,7 @@
 
                       <button type="submit" class="btn btn-info waves-effect waves-light m-r-10"><i class="fa fa-pencil"></i> Save</button>
                       @endif
-                      <!-- end return box on warehouse  -->
+                      <!-- end Take box on warehouse  -->
 
                       @endforeach
                       <a href="{{ route('take.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
