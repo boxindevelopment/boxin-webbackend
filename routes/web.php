@@ -137,6 +137,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::post('take/ajax', ['uses' => 'OrderTakeController@getAjax', 'as' => 'take.ajax']);
+  Route::post('take/update-date/{id}', ['uses' => 'OrderTakeController@updateDate', 'as' => 'take.updateDate']);
   Route::resource('take', 'OrderTakeController')->except(['show']);
   Route::prefix('take')->group(function () {
     Route::get('','OrderTakeController@index')->name('take.index');

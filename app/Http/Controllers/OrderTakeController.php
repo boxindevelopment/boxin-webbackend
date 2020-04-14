@@ -192,6 +192,24 @@ class OrderTakeController extends Controller
           return redirect()->route('take.index')->with('error', $th->getMessage());
         }
     }
+    
+    public function updateDate(Request $request, $id)
+    {
+      
+        $this->validate($request, ['date'  => 'required', 'time'  => 'required']);
+
+        $now_date = Carbon::now();
+        $take = OrderTake::find($id);
+        $take->date = date("Y-m-d", strtotime(str_replace('/', '-', $request->date)));
+        $take->time = $request->time;
+        $take->save();
+          
+        return response()->json([
+          'message' => 'Edit Date time take request success.',
+          'data' => $take
+        ], 200);
+
+    }
 
     public function destroy($id)
     {
