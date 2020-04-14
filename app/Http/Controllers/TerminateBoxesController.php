@@ -231,6 +231,24 @@ class TerminateBoxesController extends Controller
           return redirect()->route('terminate.index')->with('error', $th->getMessage());
         }
     }
+    
+    public function updateDate(Request $request, $id)
+    {
+      
+        $this->validate($request, ['date'  => 'required', 'time'  => 'required']);
+
+        $now_date = Carbon::now();
+        $terminate = ReturnBoxes::find($id);
+        $terminate->date = date("Y-m-d", strtotime(str_replace('/', '-', $request->date)));
+        $terminate->time = $request->time;
+        $terminate->save();
+          
+        return response()->json([
+          'message' => 'Edit Date time terminate boxes request success.',
+          'data' => $terminate
+        ], 200);
+
+    }
 
     public function destroy($id)
     {

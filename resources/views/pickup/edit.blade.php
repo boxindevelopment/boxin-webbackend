@@ -282,7 +282,7 @@
                           <div class="form-group">
                               <label>Time <span class="text-danger">*</span></label>
                               <div class="input-group clockpicker">
-                                  <input type="text" class="form-control" name="time" id="time" placeholder="Enter Time" value="{{date('H:i')}}" required>
+                                  <input type="text" class="form-control" name="time" id="time" placeholder="Enter Time" value="{{substr($value->time, 0, 5)}}" required>
                                   <div class="input-group-append">
                                       <span class="input-group-text"><i class="ti-timer"></i></span>
                                   </div>

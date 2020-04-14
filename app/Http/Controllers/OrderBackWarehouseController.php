@@ -194,6 +194,24 @@ class OrderBackWarehouseController extends Controller
           return redirect()->route('return.index')->with('error', $th->getMessage());
         }
     }
+    
+    public function updateDate(Request $request, $id)
+    {
+      
+        $this->validate($request, ['date'  => 'required', 'time'  => 'required']);
+
+        $now_date = Carbon::now();
+        $return = OrderBackWarehouse::find($id);
+        $return->date = date("Y-m-d", strtotime(str_replace('/', '-', $request->date)));
+        $return->time = $request->time;
+        $return->save();
+          
+        return response()->json([
+          'message' => 'Edit Date time Return Boxes success.',
+          'data' => $return
+        ], 200);
+
+    }
 
     public function destroy($id)
     {

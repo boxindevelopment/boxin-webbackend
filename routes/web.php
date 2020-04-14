@@ -131,6 +131,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::post('return/ajax', ['uses' => 'OrderBackWarehouseController@getAjax', 'as' => 'return.ajax']);
+  Route::post('return/update-date/{id}', ['uses' => 'OrderBackWarehouseController@updateDate', 'as' => 'return.updateDate']);
   Route::resource('return', 'OrderBackWarehouseController')->except(['show']);
   Route::prefix('return')->group(function () {
     Route::get('','OrderBackWarehouseController@index')->name('return.index');
@@ -144,6 +145,7 @@ Route::group(['middleware' => 'auth'], function() {
   });
 
   Route::post('terminate/ajax', ['uses' => 'TerminateBoxesController@getAjax', 'as' => 'terminate.ajax']);
+  Route::post('terminate/update-date/{id}', ['uses' => 'TerminateBoxesController@updateDate', 'as' => 'terminate.updateDate']);
   Route::resource('terminate', 'TerminateBoxesController')->except(['show']);
   Route::prefix('terminate')->group(function () {
     Route::get('','TerminateBoxesController@index')->name('terminate.index');
