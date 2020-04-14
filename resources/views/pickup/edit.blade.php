@@ -256,6 +256,42 @@
                     @endforeach
 
                       <a href="{{ route('pickup.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
+                      <br />
+                      <hr />
+                      <br />
+                      <br />
+
+                      <h5 class="card-title" style="margin: 15px; width: 100%;"><span class="lstick"></span><b>* Change Date Pickup</b></h5>
+                      <br />
+
+                      <div class="row">
+
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Date<span class="text-danger">*</span></label>
+                              <div class="input-group datepicker">
+                                  <div class="input-group-append">
+                                      <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                  </div>
+                                  <input type="text" class="form-control" name="date" id="date" placeholder="Enter Date" value="{{date('d/m/Y', strtotime($value->date))}}" required>
+                              </div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6">
+                          <div class="form-group">
+                              <label>Time <span class="text-danger">*</span></label>
+                              <div class="input-group clockpicker">
+                                  <input type="text" class="form-control" name="time" id="time" placeholder="Enter Time" value="{{date('H:i')}}" required>
+                                  <div class="input-group-append">
+                                      <span class="input-group-text"><i class="ti-timer"></i></span>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <button type="button" class="btn btn-info btn-block waves-effect waves-light m-r-10" id="btn_save_date"><i class="fa fa-save"></i> Save change date order</button>
 
                     </div>
                 </div>
@@ -277,8 +313,30 @@
 <!--PLUGIN JS -->
 
 
-<script>
+<script type="text/javascript">
+
+$('#date').datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true,
+    keyboardNavigation : true ,
+    daysOfWeekDisabled : [0]
+});
+
 $(function() {
+
+  $('#btn_save_date').on('click', function(){
+
+    $.post("{{ route('pickup.updateDate', ['id' => $id]) }}",
+    {
+      _token: $('meta[name="_token"]').attr('content'),
+      date: $('#date').val(),
+      time: $('#time').val()
+    },
+    function(data, status){
+      console.log(data.data);
+      window.location.href = "{{ route('pickup.edit', ['id' => $id]) }}";
+    });
+  });
 
 });
 </script>

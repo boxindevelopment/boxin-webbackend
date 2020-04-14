@@ -144,9 +144,9 @@ class PickupController extends Controller
         $now_date = Carbon::now();
         $pickup = PickupOrder::find($id);
         $execution_date = Carbon::parse($pickup->date);
-        if ($now_date->lt($execution_date)) {
-          return redirect()->route('pickup.index')->with('error', 'Edit Data Pickup Order failed, Tanggal tidak sesuai.');
-        }
+        // if ($now_date->lt($execution_date)) {
+        //   return redirect()->route('pickup.index')->with('error', 'Edit Data Pickup Order failed, Tanggal tidak sesuai.');
+        // }
 
         $starts_date = null;
         if ($pickup) {
@@ -297,9 +297,32 @@ class PickupController extends Controller
         //     return redirect()->route('pickup.index')->with('error', 'Edit Data Pickup Order failed.');
         // }
     }
+    public function updateDate(Request $request, $id)
+    {
+      
+        $this->validate($request, ['date'  => 'required', 'time'  => 'required']);
+
+        $now_date = Carbon::now();
+        $pickup = PickupOrder::find($id);
+        $pickup->date = date("Y-m-d", strtotime(str_replace('/', '-', $request->date)));
+        $pickup->time = $request->time;
+        $pickup->save();
+          
+        return response()->json([
+          'message' => 'Edit Date time Pickup Order success.',
+          'data' => $pickup
+        ], 200);
+
+    }
 
     public function destroy($id)
     {
 
+    }
+
+    public function getAll()
+    {
+      $url = route('pickup.all');
+      return view('pickup.all', compact('url'));
     }
 }
