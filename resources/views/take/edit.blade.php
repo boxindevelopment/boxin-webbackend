@@ -183,7 +183,7 @@
                       <input type="hidden" name="order_detail_id" class="form-control" value="{{ $value->order_detail_id }}" required>
 
                       <!-- Take delivery box  -->
-                      @if ($value->types_of_pickup_id == 2)
+                      @if ($value->types_of_pickup_id == 1)
 
                       @if($value->status_id == 5 || $value->status_id == 14)
                           <div class="form-group">
@@ -222,7 +222,7 @@
                       <!-- end Take delivery box  -->
 
                       <!-- Take box on warehouse -->
-                      @elseif ($value->types_of_pickup_id == 1)
+                      @elseif ($value->types_of_pickup_id == 2)
 
                       @if($value->status_id == 27)
                       <div class="form-group">
@@ -243,6 +243,7 @@
                       <hr />
                       <br />
                       <br />
+                      
 
                       <h5 class="card-title" style="margin: 15px; width: 100%;"><span class="lstick"></span><b>* Change Date Pickup</b></h5>
                       <br />
