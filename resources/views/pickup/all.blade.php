@@ -52,7 +52,7 @@
                           <th width="18%">Date Request</th>
                           <th width="16%" style="text-align: right;">Delivery Fee</th>
                           <th width="14%" class="text-center no-sort">Status</th>
-                          <!-- <th width="8%" class="text-center no-sort">Action</th> -->
+                          <th width="8%" class="text-center no-sort">Action</th>
                         </tr>
                     </thead>
                     </tbody>
@@ -80,8 +80,16 @@
 <script>
 $(function() {
 
-    function action(id){
-        var $action = '<a class="btn btn-primary btn-sm" href="{{route('order.index')}}/order-detail-box/' + id + '" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+    function action(id, transaction_type){
+        if(transaction_type == 'start storing'){
+        var $action = '<a class="btn btn-primary btn-sm" href="{{route('pickup.index')}}/' + id + '/edit" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+        } else if(transaction_type == 'take') {
+        var $action = '<a class="btn btn-primary btn-sm" href="{{route('take.index')}}/' + id + '/edit" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+        } else if(transaction_type == 'back warehouse'){
+        var $action = '<a class="btn btn-primary btn-sm" href="{{route('return.index')}}/' + id + '/edit" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+        } else if(transaction_type == 'terminate'){
+        var $action = '<a class="btn btn-primary btn-sm" href="{{route('terminate.index')}}/' + id + '/edit" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
+        }
         return $action;
     }
 
@@ -123,7 +131,7 @@ $(function() {
             { "data": "date_request", "bSortable": false },
             { "data": "deliver_fee", "bSortable": true, "sClass": "right" },
             { "data": function ( row, type, val, meta ) { return '<span class="label ' + row.label + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": true, "sClass": "center" },
-            // { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
+            { "data": function ( row, type, val, meta ) { return "" + action(row.ids, row.transaction_type)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {
             //  $('.count_act').html($count_active);

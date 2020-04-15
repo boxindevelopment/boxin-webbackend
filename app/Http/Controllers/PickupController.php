@@ -363,15 +363,19 @@ class PickupController extends Controller
             if($arrVal['transaction_type'] == 'start storing'){
                 $order = PickupOrder::with('status')->where('order_id', $arrVal['order_id'])->first();
                 $deliverFee = $order->pickup_fee;
+                $ids = $order->id;
             } else if($arrVal['transaction_type'] == 'take') {
                 $order = OrderTake::with('status')->find($arrVal['order_id']);
                 $deliverFee = $order->deliver_fee;
+                $ids = $order->id;
             } else if($arrVal['transaction_type'] == 'back warehouse'){
                 $order = OrderBackWarehouse::with('status')->find($arrVal['order_id']);
                 $deliverFee = $order->deliver_fee;
+                $ids = $order->id;
             } else if($arrVal['transaction_type'] == 'terminate'){
                 $order = ReturnBoxes::with('status')->find($arrVal['order_id']);
                 $deliverFee = $order->deliver_fee;
+                $ids = $order->id;
             }
 
             $no++;
@@ -390,6 +394,7 @@ class PickupController extends Controller
 
             $arr = array(
                       'no' => $no,
+                      'ids' => $ids,
                       'id' => $arrVal['id'],
                       'id_name' => $arrVal['id_name'],
                       'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
