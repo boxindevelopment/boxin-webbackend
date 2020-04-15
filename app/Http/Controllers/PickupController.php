@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use App\Model\PickupOrder;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use App\Model\OrderTake;
+use App\Model\ReturnBoxes;
+use App\Model\OrderBackWarehouse;
 use DB;
 use Carbon\Carbon;
 use App\Repositories\PickupOrderRepository;
+use App\Repositories\TransactionLogRepository;
 use Requests;
 use App\Model\UserDevice;
 use Exception;
@@ -16,16 +20,18 @@ use Exception;
 class PickupController extends Controller
 {
     protected $repository;
+    protected $transactionLog;
 
 	private $url;
 	CONST DEV_URL = 'https://boxin-dev-notification.azurewebsites.net/';
 	CONST LOC_URL = 'http://localhost:5252/';
 	CONST PROD_URL = 'https://boxin-prod-notification.azurewebsites.net/';
 
-    public function __construct(PickupOrderRepository $repository)
+    public function __construct(PickupOrderRepository $repository, TransactionLogRepository $transactionLog)
     {
         $this->url        = (env('DB_DATABASE') == 'coredatabase') ? self::DEV_URL : self::PROD_URL;
         $this->repository = $repository;
+        $this->transactionLog = $transactionLog;
     }
 
     public function index()
@@ -324,5 +330,82 @@ class PickupController extends Controller
     {
       $url = route('pickup.all');
       return view('pickup.all', compact('url'));
+    }
+
+    public function getAllAjax(Request $request)
+    {
+
+        $search = $request->input("search");
+        $args = array();
+        $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
+        $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
+        $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
+        $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
+
+        $order = $request->input("order");
+        $args['orderDir'] = ($order[0]['dir']) ? $order[0]['dir'] : 'DESC';
+        $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
+        $columns = $request->input("columns");
+        $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'id_name';
+
+        $orderData = $this->transactionLog->getBoxData($args);
+
+        $recordsTotal = count($orderData);
+
+        $recordsFiltered = $this->transactionLog->getBoxCount($args);
+
+        $arrOut = array('draw' => $args['draw'], 'recordsTotal' => $recordsTotal, 'recordsFiltered' => $recordsFiltered, 'data' => '');
+        $arr_data = array();
+        $no = 0;
+        foreach ($orderData as $arrVal) {
+
+            if($arrVal['transaction_type'] == 'start storing'){
+                $order = PickupOrder::with('status')->where('order_id', $arrVal['order_id'])->first();
+                $deliverFee = $order->pickup_fee;
+            } else if($arrVal['transaction_type'] == 'take') {
+                $order = OrderTake::with('status')->find($arrVal['order_id']);
+                $deliverFee = $order->deliver_fee;
+            } else if($arrVal['transaction_type'] == 'back warehouse'){
+                $order = OrderBackWarehouse::with('status')->find($arrVal['order_id']);
+                $deliverFee = $order->deliver_fee;
+            } else if($arrVal['transaction_type'] == 'terminate'){
+                $order = ReturnBoxes::with('status')->find($arrVal['order_id']);
+                $deliverFee = $order->deliver_fee;
+            }
+
+            $no++;
+
+            if($order->order_id == 11 || $order->order_id == 14 || $order->order_id == 15 || $order->order_id == 8 || $order->order_id == 6){
+                $label = 'label-danger';
+            } else if($order->order_id == 12){
+                $label = 'label-inverse';
+            } else if($order->order_id == 7 || $order->order_id == 5){
+                $label = 'label-success';
+            } else if($order->order_id == 2){
+                $label = 'label-warning';
+            } else {
+                $label = 'label-warning';
+            }
+
+            $arr = array(
+                      'no' => $no,
+                      'id' => $arrVal['id'],
+                      'id_name' => $arrVal['id_name'],
+                      'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
+                      'box_name' => $arrVal['box_name'],
+                      'status_id' => $order->order_id,
+                      'status_name' => $order->status->name,
+                      'date_request' => date("d-m-Y", strtotime($order->date)) . ' ' . substr($order->time, 0, 5),
+                      'label' => $label,
+                      'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
+                      'deliver_fee' => number_format($deliverFee, 0, '', '.'),
+                      'amount' => number_format($arrVal['amount'], 0, '', '.'));
+                $arr_data['data'][] = $arr;
+
+            }
+
+            $arrOut = array_merge($arrOut, $arr_data);
+        echo(json_encode($arrOut));
     }
 }

@@ -99,6 +99,13 @@
                   </a>
                 </li>
 
+                <li class="{{ Route::currentRouteNamed('pickup.all') ? 'active' : null }}">
+                  <a class="waves-effect waves-dark" href="{{ route('pickup.all')}}" aria-expanded="false">
+                    <i class="mdi mdi-truck"></i>
+                    <span class="hide-menu">Deliver to User</span>
+                  </a>
+                </li>
+
                 <li class="{{ Route::currentRouteNamed('order.boxes') ? 'active' : null }}">
                   <a class="waves-effect waves-dark" href="{{ route('order.boxes')}}" aria-expanded="false">
                     <i class="mdi mdi-truck"></i>

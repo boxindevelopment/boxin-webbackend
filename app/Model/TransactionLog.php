@@ -9,7 +9,7 @@ class TransactionLog extends Model
 {
     use SoftDeletes;
 
-    protected $hidden = ['created_at', 'updated_at'];
+    // protected $hidden = ['created_at', 'updated_at'];
 
     protected $fillable = [
         'user_id',
@@ -27,7 +27,7 @@ class TransactionLog extends Model
     public function order()
     {
         if($this->transaction_type == 'start storing'){
-            return $this->belongsTo('App\Model\Order', 'order_id', 'id');
+            return $this->belongsTo('App\Model\PickupOrder', 'order_id', 'order_id');
         } else if($this->transaction_type == 'take') {
             return $this->belongsTo('App\Model\OrderTake', 'order_id', 'id');
         } else if($this->transaction_type == 'back warehouse'){
@@ -39,6 +39,12 @@ class TransactionLog extends Model
         }
         return null;
     }
+
+    public function orderDetail()
+    {
+        return $this->belongsTo('App\Model\OrderDetail', 'Order_detail_id', 'id');
+    }
+
     public function boxOrSmallSpace()
     {
         if($this->types_of_box_space_small_id == 1){
