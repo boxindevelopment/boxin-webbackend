@@ -47,6 +47,7 @@
                           <th width="5%">No</th>
                           <th width="12%">OrderID</th>
                           <th width="">Name</th>
+                          <th width="14%">Type</th>
                           <th width="14%">Box</th>
                           <th width="18%">Date Request</th>
                           <th width="16%" style="text-align: right;">Delivery Fee</th>
@@ -94,10 +95,11 @@ $(function() {
             { "name": "no", "sClass": "center", "targets": 0, "visible": false },
             { "name": "id_name", "targets": 1 },
             { "name": "first_name",  "targets": 2 },
-            { "name": "box_name", "targets": 3 },
-            { "name": "date_request", "sClass": "right", "targets": 4 },
-            { "name": "deliver_fee", "sClass": "right", "targets": 5 },
-            { "name": "status_name", "sClass": "center",  "targets": 6 },
+            { "name": "transaction_type", "targets": 3 },
+            { "name": "box_name", "targets": 4 },
+            { "name": "date_request", "sClass": "right", "targets": 5 },
+            { "name": "deliver_fee", "sClass": "right", "targets": 6 },
+            { "name": "status_name", "sClass": "center",  "targets": 7 },
         ],
         "ajax": {
             "url": "{{ route('pickup.allAjax') }}",
@@ -116,6 +118,7 @@ $(function() {
             { "data": "no", "bSortable": false },
             { "data": "id_name", "bSortable": true },
             { "data": "user_fullname", "bSortable": true },
+            { "data": "transaction_type", "bSortable": false },
             { "data": "box_name", "bSortable": false },
             { "data": "date_request", "bSortable": false },
             { "data": "deliver_fee", "bSortable": true, "sClass": "right" },

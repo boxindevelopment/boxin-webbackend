@@ -394,6 +394,7 @@ class PickupController extends Controller
                       'id_name' => $arrVal['id_name'],
                       'created_at' => date("d-m-Y", strtotime($arrVal['created_at'])),
                       'box_name' => $arrVal['box_name'],
+                      'transaction_type' => $arrVal['transaction_type'],
                       'status_id' => $order->order_id,
                       'status_name' => $order->status->name,
                       'date_request' => date("d-m-Y", strtotime($order->date)) . ' ' . substr($order->time, 0, 5),
