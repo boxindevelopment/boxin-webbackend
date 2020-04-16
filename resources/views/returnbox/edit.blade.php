@@ -189,6 +189,12 @@
                               <label for="">Status <span class="text-danger">*</span></label>
                                 <select class="form-control" id="select2" name="status_id" required>
                                     <option value="26" {{ $value->status_id == 26 ? 'selected' : '' }}>Return Request</option>
+                                  </select>
+                            </div>
+                        @elseif($value->status_id == 26)
+                            <div class="form-group">
+                              <label for="">Status <span class="text-danger">*</span></label>
+                                <select class="form-control" id="select2" name="status_id" required>
                                     <option value="2" {{ $value->status_id == 2 ? 'selected' : '' }}>On Delivery</option>
                                   </select>
                             </div>
