@@ -337,6 +337,8 @@ class PickupController extends Controller
 
         $search = $request->input("search");
         $args = array();
+        $args['from_date'] = $request->input("from_date");
+        $args['to_date'] = $request->input("to_date");
         $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
         $args['searchValue'] = ($search['value']) ? $search['value'] : '';
         $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;

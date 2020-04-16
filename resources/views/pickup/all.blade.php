@@ -41,6 +41,33 @@
               @include('error-template')
 
               <div class="table-responsive m-t-10">
+                  <div style="width:90%; position: relative;">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="140"><label>Tanggal Awal</label></th>
+                            <th width="200">
+                                <div class="input-group datepicker">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="from_date" id="from_date" value="{{date('d/m/Y')}}" required>
+                                </div>
+                            </th>
+                            <th width="140"><label>Tanggal Akhir</label></th>
+                            <th width="200">
+                                <div class="input-group datepicker">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="to_date" id="to_date" value="{{date('t/m/Y')}}" required>
+                                </div>
+                            </th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                    </table>
+                  </div>
                   <table id="table-ingrd" class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -80,6 +107,15 @@
 <script>
 $(function() {
 
+    $('#from_date, #to_date').datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        keyboardNavigation : true
+    }).on('changeDate', function (ev) {
+        $table.api().ajax.reload();
+    });
+
+
     function action(id, transaction_type){
         if(transaction_type == 'start storing'){
         var $action = '<a class="btn btn-primary btn-sm" href="{{route('pickup.index')}}/' + id + '/edit" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
@@ -114,6 +150,8 @@ $(function() {
             "type": "POST",
             "data": function ( d ) {
                 d._token = $('meta[name="_token"]').attr('content');
+                d.from_date = $('#from_date').val();
+                d.to_date = $('#to_date').val();
                 // d.category = $('#category_serch').val();
                 // etc
             }
@@ -137,6 +175,11 @@ $(function() {
             //  $('.count_act').html($count_active);
         }
     });
+
+    // $('#from_date, #to_date').on('change', function(){
+    //     $table.api().ajax.reload();
+    // });
+    
 });
 </script>
 @endsection

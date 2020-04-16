@@ -323,8 +323,7 @@
 $('#date').datepicker({
     format: 'dd/mm/yyyy',
     autoclose: true,
-    keyboardNavigation : true ,
-    daysOfWeekDisabled : [0]
+    keyboardNavigation : true
 });
 
 $(function() {

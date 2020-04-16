@@ -25,6 +25,9 @@ class TransactionLogRepository implements TransactionLogRepositoryInterface
 
     public function getBoxCount($args = [])
     {
+        
+        $fromDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['from_date'])));
+        $toDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['to_date'])));
         $query = $this->model->query();
         $query->join("order_details", "order_details.id", "transaction_logs.order_detail_id");
         $query->join("boxes", "boxes.id", "order_details.room_or_box_id");
@@ -38,6 +41,14 @@ class TransactionLogRepository implements TransactionLogRepositoryInterface
             });
         $query->where('transaction_logs.types_of_pickup_id', 1);
         $query->where('transaction_logs.types_of_box_space_small_id', 1);
+        $query->where(function ($q) use ($args) {
+            $fromDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['from_date'])));
+            $toDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['to_date'])));
+            $q->orWhereRaw("(transaction_type ='start storing' AND transaction_logs.order_id IN (SELECT order_id FROM pickup_orders WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='take' AND transaction_logs.order_id IN (SELECT id FROM order_takes WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='back warehouse' AND transaction_logs.order_id IN (SELECT id FROM order_back_warehouses WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='terminate' AND transaction_logs.order_id IN (SELECT id FROM return_boxes WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+        });
 
         return $query->count();
     }
@@ -60,6 +71,14 @@ class TransactionLogRepository implements TransactionLogRepositoryInterface
                       ->orWhere('order_details.id_name', 'like', '%'.$args['searchValue'].'%')
                       ->orWhere('boxes.name', 'like', '%'.$args['searchValue'].'%');
             });
+        $query->where(function ($q) use ($args) {
+            $fromDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['from_date'])));
+            $toDate = $newDate = date("Y-m-d", strtotime(str_replace('/', '-', $args['to_date'])));
+            $q->orWhereRaw("(transaction_type ='start storing' AND transaction_logs.order_id IN (SELECT order_id FROM pickup_orders WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='take' AND transaction_logs.order_id IN (SELECT id FROM order_takes WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='back warehouse' AND transaction_logs.order_id IN (SELECT id FROM order_back_warehouses WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+            $q->orWhereRaw("(transaction_type ='terminate' AND transaction_logs.order_id IN (SELECT id FROM return_boxes WHERE date >= '".$fromDate."' AND date <= '".$toDate."'))");
+        });
         $query->skip($args['start']);
         $query->take($args['length']);
         $data = $query->get();
