@@ -200,6 +200,24 @@
                                 <option value="2">On Delivery</option>
                               </select>
                         </div>
+                        <div class="form-group">
+                          <label>Driver Name <span class="text-danger">*</span></label>
+                          <input type="text" name="driver_name" class="form-control" placeholder="Enter Driver Name" value="{{ $value->driver_name }}" required>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Driver Phone <span class="text-danger">*</span></label>
+                          <input type="number" name="driver_phone" class="form-control" placeholder="Enter Driver Phone" value="{{ $value->driver_phone }}" required>
+                        </div>
+                        @elseif($value->status_id == 16)
+
+                          <div class="form-group">
+                            <label for="">Status <span class="text-danger">*</span></label>
+                              <select class="form-control" id="select2" name="status_id" required>
+                                <option value="16" selected>Terminate Request</option>
+                                  <option value="2">On Delivery</option>
+                                </select>
+                          </div>
 
                         <div class="form-group">
                           <label>Driver Name <span class="text-danger">*</span></label>
