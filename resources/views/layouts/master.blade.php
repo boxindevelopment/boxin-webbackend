@@ -384,34 +384,38 @@
             }
 
         }  
-        $.get("{{route('dashboard')}}/notification/ajax/notif", function(data, status){
-            // const dataGet = JSON.parse(data);
-            $('.notif-count').html(data.count);
-            if(data.count > 0){
-                $('.waves-effect .notify').show();
-            } else {
-                $('.waves-effect .notify').hide();
-            }
-            $('.message-center-notification').html('');
-            let messageHtml = '';
-            let urlNotif = "{{route('notification.index')}}";
-            $.each(data.data, function(index, element) {
-                let backgroundColor = '#fff';
-                if(element.read_at == null){
-                    backgroundColor = '#e4e5e8';
+        function getNotif(){
+            $.get("{{route('dashboard')}}/notification/ajax/notif", function(data, status){
+                // const dataGet = JSON.parse(data);
+                $('.notif-count').html(data.count);
+                if(data.count > 0){
+                    $('.waves-effect .notify').show();
+                } else {
+                    $('.waves-effect .notify').hide();
                 }
-                messageHtml += '<a href="'+urlNotif+'/id/'+element.id+'" style="background-color: '+backgroundColor+';">';
-                    // messageHtml += '<div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>';
-                    messageHtml += '<div class="mail-contnet">';
-                        messageHtml += '<h5>'+element.type+'</h5>';
-                        messageHtml += '<span class="mail-desc">'+element.title+'</span>';
-                        messageHtml += '<span class="time">'+element.datetime_notif+'</span>';
-                    messageHtml += '</div>';
-                messageHtml += '</a>';
+                $('.message-center-notification').html('');
+                let messageHtml = '';
+                let urlNotif = "{{route('notification.index')}}";
+                $.each(data.data, function(index, element) {
+                    let backgroundColor = '#fff';
+                    if(element.read_at == null){
+                        backgroundColor = '#e4e5e8';
+                    }
+                    messageHtml += '<a href="'+urlNotif+'/id/'+element.id+'" style="background-color: '+backgroundColor+';">';
+                        // messageHtml += '<div class="btn btn-info btn-circle"><i class="ti-settings"></i></div>';
+                        messageHtml += '<div class="mail-contnet">';
+                            messageHtml += '<h5>'+element.type+'</h5>';
+                            messageHtml += '<span class="mail-desc">'+element.title+'</span>';
+                            messageHtml += '<span class="time">'+element.datetime_notif+'</span>';
+                        messageHtml += '</div>';
+                    messageHtml += '</a>';
+                });
+                $('.message-center-notification').html(messageHtml);
+                // console.log("Data: " + data + "\nStatus: " + status);
             });
-            $('.message-center-notification').html(messageHtml);
-            // console.log("Data: " + data + "\nStatus: " + status);
-        });
+        }
+        getNotif();
+        // setTimeout(function(){ getNotif(); }, 4000);
 
 
         function get_id_number_shelves(area_id, area_number){
