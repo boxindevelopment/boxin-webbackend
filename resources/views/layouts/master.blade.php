@@ -167,8 +167,8 @@
 
     <script type="text/javascript">
 
-        
-        function getNotif(){
+         
+        setTimeout(function(){
             $.get("{{route('dashboard')}}/notification/ajax/notif", function(data, status){
                 // const dataGet = JSON.parse(data);
                 $('.notif-count').html(data.count);
@@ -197,9 +197,6 @@
                 $('.message-center-notification').html(messageHtml);
                 // console.log("Data: " + data + "\nStatus: " + status);
             });
-        }
-        setTimeout(function(){
-            getNotif();
         }, 4000);
 
         function city_Selectdata(values) {
