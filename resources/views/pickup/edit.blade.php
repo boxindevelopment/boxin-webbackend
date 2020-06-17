@@ -68,18 +68,18 @@
                                             </div>
                                         </div>
                                         <div class="form-material row">
-                                            <div class="form-group col-md-2">
+                                            <!-- <div class="form-group col-md-2">
                                                 <label>Datetime </label>
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <p>
                                                   {{ date("d M Y", strtotime($value->date)).' - '.date("h:i a", strtotime($value->time)) }}
                                                 </p>
-                                            </div>
+                                            </div> -->
                                             <div class="form-group col-md-2">
                                                 <label>Address </label>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group col-md-10">
                                                 <p>{{ $value->address }}</p>
                                             </div>
                                         </div>
