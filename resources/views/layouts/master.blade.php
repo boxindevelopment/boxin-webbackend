@@ -415,7 +415,7 @@
             });
         }
         getNotif();
-        // setTimeout(function(){ getNotif(); }, 4000);
+        setTimeout(function(){ getNotif(); }, 4000);
 
 
         function get_id_number_shelves(area_id, area_number){
