@@ -49,10 +49,20 @@
 
                       <div class="form-group">
                         <label>Available Date <span class="text-danger">*</span></label>
-                          <div class="col-md-6" style="display: flex">
-                              <input class="form-control" type="date" value="{{ old('start_date') }}" placeholder="Start Date" name="start_date" id="start_date">&nbsp;-&nbsp;
-                              <input class="form-control" type="date" value="{{ old('end_date') }}" placeholder="End Date" name="end_date" id="end_date">
-                          </div>
+                        <div class="col-md-12" style="display: flex">
+                            <div class="input-group datepicker">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="start_date" id="start_date" placeholder="Enter Start Date" value="{{date('d/m/Y')}}" required>
+                            </div>
+                            <div class="input-group datepicker">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="ti-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="end_date" id="end_date" placeholder="Enter End Date" value="{{date('d/m/Y')}}" required>
+                            </div>
+                        </div>
                       </div>
 
                       <div class="">
@@ -152,6 +162,24 @@
 @section('close_html')
 <!--PLUGIN JS -->
 <script type="text/javascript">
+
+
+$('#start_date').datepicker({
+    autoclose: true,
+	format: 'dd/mm/yyyy',
+	todayHighlight: true,
+	startDate: '0d'
+}).on('changeDate', function(selected){
+    startDate = new Date(selected.date.valueOf());
+    startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+    $('#end_date').datepicker('setStartDate', startDate);
+});
+$('#end_date').datepicker({
+    autoclose: true,
+	format: 'dd/mm/yyyy',
+	todayHighlight: true,
+	startDate: '0d'
+ });
 
 $(document).ready( function() {
   $('#value').on('keyup', function() {
