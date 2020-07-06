@@ -57,7 +57,7 @@
                           <td>{{ $value->name }} ({{ $value->code }})</td>
                           <td>{{ $value->type_voucher == 1 ? $value->value : number_format($value->value, 0, '', '.') }}</td>
                           <td>{{ $value->type_voucher == 1 ? 'Percent' : 'Nominal' }}</td>
-                          <td>{{ $value->start_date->format('d-m-Y') }} - {{ $value->end_date->format('d-m-Y') }}</td>
+                          <td></td>
                           <td class="text-center">
                             <span class="label {{ $value->status_id == 20 ? 'label-success' : 'label-danger' }} label-rounded">{{ $value->status->name  }}</span>
                           </td>
