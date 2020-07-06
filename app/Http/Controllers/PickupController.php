@@ -55,6 +55,9 @@ class PickupController extends Controller
         $orderNumber = ($order[0]['column']) ? $order[0]['column'] : 0;
         $columns = $request->input("columns");
         $args['orderColumns'] = ($columns[$orderNumber]['name']) ? $columns[$orderNumber]['name'] : 'name';
+        $args['orderColumns'] = ($args['orderColumns'] == 'place') ? 'order_details.place' : $args['orderColumns'];
+        $args['orderColumns'] = ($args['orderColumns'] == 'status_name') ? 'status.name' : $args['orderColumns'];
+        $args['orderColumns'] = ($args['orderColumns'] == 'types_of_pickup_name') ? 'types_of_pickup.name' : $args['orderColumns'];
 
         $pickup = $this->repository->getData($args);
 
@@ -93,13 +96,15 @@ class PickupController extends Controller
                 $label = 'label-warning';
             }
 
+            $place = ($arrVal['place'] == 'user') ? 'home' : $arrVal['place'];
+
             $arr = array(
                       'no' => $no,
                       'id' => $arrVal['id'],
                       'date' => date("d-m-Y", strtotime($arrVal['date'])),
                       'id_name' => $arrVal['id_name'],
                       'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
-                      'place' => 'warehouse',
+                      'place' => $place,
                       'status_id' => $arrVal['status_id'],
                       'status_name' => $arrVal['status_name'],
                       'types_of_pickup_name' => $arrVal['types_of_pickup_name'],

@@ -62,7 +62,7 @@ class PickupOrderRepository implements PickupOrderRepositoryInterface
         $query = $this->model->query();
         $query->select('pickup_orders.id', 'pickup_orders.order_id', 'pickup_orders.date',
                         'pickup_orders.types_of_pickup_id', 'pickup_orders.status_id', 'users.first_name',
-                        'users.last_name', 'order_details.id_name',
+                        'users.last_name', 'order_details.id_name', 'order_details.place',
                         'status.name as status_name', 'types_of_pickup.name as types_of_pickup_name');
         $query->leftJoin('orders','orders.id','=','pickup_orders.order_id');
         $query->leftJoin('order_details','order_details.order_id','=','orders.id');
