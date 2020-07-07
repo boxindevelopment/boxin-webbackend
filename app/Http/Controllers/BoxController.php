@@ -7,6 +7,7 @@ use App\Model\Box;
 use App\Model\Space;
 use App\Model\Shelves;
 use App\Model\TypeSize;
+use App\Model\OrderDetail;
 use Carbon;
 use App\Repositories\BoxRepository;
 use PDF;
