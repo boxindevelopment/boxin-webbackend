@@ -81,11 +81,11 @@
 $(function() {
 
     function action(id){
-        var $action = '<form action="{{route('order.index')}}' + id + '" method="post" style="margin-top:5px;">';
+        var $action = '<form action="{{route('order.index')}}/' + id + '" method="post" style="margin-top:5px;">';
                 $action += '@csrf';
                 $action += '@method('DELETE')';
                 $action += '<a class="btn btn-primary btn-sm" href="{{route('order.index')}}/order-detail-box/' + id + '" title="View Detail" style="margin-right:5px;"><i class="fa fa-eye"></i></a>';
-                $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
+                // $action += '<button type="submit" name="remove" class="btn btn-danger btn-sm" title="Delete"><i class="fa fa-trash"></i></button>';
             $action += '</form>';
         return $action;
     }

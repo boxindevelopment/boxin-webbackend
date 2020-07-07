@@ -7,6 +7,7 @@ use App\Model\Area;
 use App\Model\SpaceSmall;
 use App\Model\Shelves;
 use App\Model\TypeSize;
+use App\Model\OrderDetail;
 use Carbon;
 use App\Repositories\SpaceSmallRepository;
 use PDF;
@@ -152,10 +153,13 @@ class SpaceSmallController extends Controller
 
     public function destroy($id)
     {
-
-        $space  = $this->repository->find($id);
-        $name   = $space->name;
-        $space->deleted_at = Carbon\Carbon::now();
+        $orderDetail = OrderDetail::where('room_or_box_id', $id)->where('types_of_box_room_id', 2)->first();
+        if($orderDetail){
+            return redirect()->route('space.index')->with('error', "Can't delete space, the space has a relation to the order");
+        }
+        $space              = $this->repository->find($id);
+        $name               = $space->name;
+        $space->deleted_at  = Carbon\Carbon::now();
         $space->save();
 
         if($space){

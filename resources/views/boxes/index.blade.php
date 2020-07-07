@@ -107,7 +107,7 @@
 $(function() {
 
     function action(id){
-        var $action = '<form action="{{route('box.index')}}' + id + '" method="post" style="margin-top:5px;">';
+        var $action = '<form action="{{route('box.index')}}/' + id + '" method="post" style="margin-top:5px;">';
                 $action += '@csrf';
                 $action += '@method('DELETE')';
                 $action += '<a class="btn btn-secondary btn-sm" href="{{route('box.index')}}/barcode/' + id + '" target="_blank" title="Print Barcode" style="margin-right:5px;"><i class="mdi mdi-barcode"></i></a>';
