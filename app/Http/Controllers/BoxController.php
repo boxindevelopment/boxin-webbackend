@@ -158,6 +158,10 @@ class BoxController extends Controller
 
     public function destroy($id)
     {
+        $orderDetail = OrderDetail::where('room_or_box_id', $id)->where('types_of_box_room_id', 1)->first();
+        if($orderDetail){
+            return redirect()->route('box.index')->with('error', "Can't delete boxes, the boxes has a relation to the order");
+        }
       $box  = $this->repository->find($id);
       $name = $box->name;
       $box->deleted_at = Carbon\Carbon::now();
