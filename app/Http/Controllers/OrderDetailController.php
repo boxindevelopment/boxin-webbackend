@@ -52,7 +52,7 @@ class OrderDetailController extends Controller
             $added = ($arrVal['duration_alias'] == '6month') ? 'x' : ' ';
             $arr = array(
                       'no' => $no,
-                      'id' => $arrVal['id'],
+                      'id' => $arrVal['order_id'],
                       'date' => date("d-m-Y", strtotime($arrVal['start_date'])) . ' - ' . date("d-m-Y", strtotime($arrVal['end_date'])),
                       'user_fullname' => $arrVal['first_name'] . ' ' . $arrVal['last_name'],
                       'id_name' => $arrVal['id_name'],
