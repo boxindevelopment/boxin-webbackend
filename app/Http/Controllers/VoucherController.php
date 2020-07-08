@@ -29,6 +29,7 @@ class VoucherController extends Controller
         }else {
             $this->url = self::PROD_URL;
         }
+	$this->url = env('APP_NOTIF');
     }
 
     public function index()
