@@ -100,21 +100,25 @@ class AreaController extends Controller
       $area->save();
 
       $shelves          = Shelves::where('area_id', $id)->get();
-      foreach ($shelves as $k => $v) {
 
-          //delete box
-          $boxes       = Box::where('shelves_id', $v->id)->get();
-          foreach ($boxes as $key => $val) {
-            $box = Box::find($val->id);
-            $box->deleted_at = Carbon\Carbon::now();
-            $box->save();
-          }
-
-          //delete shelves
-          $shelves = Shelves::find($v->id);
-          $shelves->deleted_at = Carbon\Carbon::now();
-          $shelves->save();
+      if(count($shelves) > 0){
+          return redirect()->route('area.index')->with('error', "Can't delete area, the area has a relation to the shelves");
       }
+      // foreach ($shelves as $k => $v) {
+
+      //     //delete box
+      //     $boxes       = Box::where('shelves_id', $v->id)->get();
+      //     foreach ($boxes as $key => $val) {
+      //       $box = Box::find($val->id);
+      //       $box->deleted_at = Carbon\Carbon::now();
+      //       $box->save();
+      //     }
+
+      //     //delete shelves
+      //     $shelves = Shelves::find($v->id);
+      //     $shelves->deleted_at = Carbon\Carbon::now();
+      //     $shelves->save();
+      // }
 
       //delete price
       $now = Carbon\Carbon::now();

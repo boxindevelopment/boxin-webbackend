@@ -38,6 +38,8 @@
               </a>
             </h4>
 
+            @include('error-template')
+
             <div class="table-responsive m-t-10">
                 <table id="table-type" class="table table-striped table-bordered">
                   <thead>

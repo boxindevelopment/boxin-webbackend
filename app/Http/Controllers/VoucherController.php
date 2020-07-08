@@ -48,6 +48,8 @@ class VoucherController extends Controller
           'image' => 'image|mimes:jpeg,png,jpg|max:2000',
       ]);
       $data = false;
+      $start_date = date("Y-m-d", strtotime(str_replace('/', '-', $r->start_date)));
+      $end_date = date("Y-m-d", strtotime(str_replace('/', '-', $r->end_date)));
       if ($r->hasFile('image')) {
           if ($r->file('image')->isValid()) {
               $getimageName = time().'.'.$r->image->getClientOriginalExtension();
@@ -57,8 +59,8 @@ class VoucherController extends Controller
                   'code'            => $r->code,
                   'description'     => $r->description,
                   'term_condition'  => $r->term_condition,
-                  'start_date'      => $r->start_date,
-                  'end_date'        => $r->end_date,
+                  'start_date'      => $start_date,
+                  'end_date'        => $end_date,
                   'type_voucher'    => $r->type_voucher,
                   'value'           => $r->value,
                   'min_amount'      => $r->min_amount,
@@ -101,12 +103,15 @@ class VoucherController extends Controller
           ]);
       }
 
+      $start_date = date("Y-m-d", strtotime(str_replace('/', '-', $request->start_date)));
+      $end_date = date("Y-m-d", strtotime(str_replace('/', '-', $request->end_date)));
+
       $data                 = $this->repository->find($id);
       $data->name           = $request->name;
       $data->code           = $request->code;
       $data->description    = $request->description;
-      $data->start_date     = $request->start_date;
-      $data->end_date       = $request->end_date;
+      $data->start_date     = $start_date;
+      $data->end_date       = $end_date;
       // $data->value          = $request->type_voucher == '1' ? $request->value1 :$request->value2;
       $data->value          = $request->value;
       $data->min_amount     = $request->min_amount;
