@@ -3,9 +3,12 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OrderDetailBox extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'order_detail_boxes';
 
     protected $fillable = [

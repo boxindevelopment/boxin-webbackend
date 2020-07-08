@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Model\Area;
 use App\Model\Shelves;
 use App\Model\Space;
+use App\Model\SpaceSmall;
 use App\Model\Box;
+use App\Model\OrderDetail;
 use Carbon;
 use App\Repositories\ShelvesRepository;
 
@@ -124,10 +126,31 @@ class ShelvesController extends Controller
     {
       $box_         = Box::where('shelves_id', $id)->get();
       $count_box    = count($box_);
-      for ($a = 0; $a < $count_box ; $a++) {
-        $box = Box::find($box_[$a]->id);
-        $box->deleted_at = Carbon\Carbon::now();
-        $box->save();
+      if($count_box > 0){
+        $box_pluck = $box_->pluck('id');
+        $orderDetail = OrderDetail::whereIn('room_or_box_id', $box_pluck)->where('types_of_box_room_id', 1)->get();
+        if($orderDetail){
+            return redirect()->route('box.index')->with('error', "Can't delete shelves, the boxes has a relation to the order");
+        }
+        for ($a = 0; $a < $count_box ; $a++) {
+          $box = Box::find($box_[$a]->id);
+          $box->deleted_at = Carbon\Carbon::now();
+          $box->save();
+        }
+      }
+      $space_small_         = SpaceSmall::where('shelves_id', $id)->get();
+      $count_space_small    = count($space_small_);
+      if($count_space_small > 0){
+        $space_small_pluck = $space_small_->pluck('id');
+        $orderDetail2 = OrderDetail::whereIn('room_or_box_id', $space_small_pluck)->where('types_of_box_room_id', 2)->get();
+        if($orderDetail2){
+            return redirect()->route('box.index')->with('error', "Can't delete shelves, the space has a relation to the order");
+        }
+        for ($a = 0; $a < $count_space_small ; $a++) {
+          $space_small = SpaceSmall::find($space_small_[$a]->id);
+          $space_small->deleted_at = Carbon\Carbon::now();
+          $space_small->save();
+        }
       }
 
       $shelves  = $this->repository->find($id);
@@ -135,9 +158,9 @@ class ShelvesController extends Controller
       $shelves->deleted_at = Carbon\Carbon::now();
       $shelves->save();
 
-      $space = Space::find($shelves->space_id);
-      $space->status_id = 10;
-      $space->save();
+      // $space = Space::find($shelves->space_id);
+      // $space->status_id = 10;
+      // $space->save();
 
       if($shelves){
         return redirect()->route('shelves.index')->with('success', 'Shelf ['.$name.'] deleted.');

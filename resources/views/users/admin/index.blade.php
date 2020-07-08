@@ -96,9 +96,9 @@
                             <td>{{ $value->user->email }}</td>
                             <td>{{ $value->area->name }}</td>  
                             <td class="text-center">
-                              <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
+                              <form action="{{route('user.destroy', ['id' => $value->user->id])}}" method="post">
                                 @csrf
-                                <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-info btn-sm" href="{{route('user.edit', ['id' => $value->user->id])}}"><i class="fa fa-pencil"></i></a>
                                 @method('DELETE')
                                 <input type="hidden" class="form-control" id="roles_id" name="roles_id" value="2">
                                 <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
