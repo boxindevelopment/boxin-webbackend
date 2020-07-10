@@ -173,6 +173,11 @@ class OrderBackWarehouseController extends Controller
           if($request->status_id == 4 || $request->status_id == 12){
               $order_detail->place = 'warehouse';
           }
+          if($request->status_id = 2){
+            $order_detail->pickup = 'return';
+          } else {
+            $order_detail->pickup = null;
+          }
           $order_detail->save();
 
           DB::commit();

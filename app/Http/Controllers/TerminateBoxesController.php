@@ -169,6 +169,11 @@ class TerminateBoxesController extends Controller
           if($request->status_id == 4 || $request->status_id == 28){
               $order_detail->place = 'warehouse';
           }
+          if($request->status_id = 2){
+            $order_detail->pickup = 'terminate';
+          } else {
+            $order_detail->pickup = null;
+          }
           $order_detail->save();
 
           //change status box/room to 10 (empty)

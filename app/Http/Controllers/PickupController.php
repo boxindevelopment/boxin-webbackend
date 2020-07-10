@@ -209,6 +209,12 @@ class PickupController extends Controller
             if($status == 4){
                 $order_detail->place    = 'house';
             }
+
+            if($status = 2){
+              $order_detail->pickup = 'order';
+            } else {
+              $order_detail->pickup = null;
+            }
             $order_detail->save();
           }
 
