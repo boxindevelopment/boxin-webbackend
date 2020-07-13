@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Repositories\NotificationRepository;
 use Carbon\Carbon;
+use App\Model\PickupOrder;
 
 class NotificationController extends Controller
 {
@@ -47,6 +48,13 @@ class NotificationController extends Controller
             return redirect()->route('terminate.edit', ['id' => $notification->send_user]);
         } else if($notification->type == 'a reminder pickup order request'){
             return redirect()->route('pickup.edit', ['id' => $data->detail->data->id]);
+        } else if($notification->type == 'new order'){
+            $pickupOrder = PickupOrder::where('order_id', $notification->order_id)->first();
+            if($pickupOrder){
+                return redirect()->route('pickup.edit', ['id' => $pickupOrder->id]);
+            } else {
+                return redirect()->route('notification.index');;
+            }
         } else {
             if($notification->order_id != NULL){
                 return redirect()->route('order.orderDetail', ['id' => $notification->order_id]);
