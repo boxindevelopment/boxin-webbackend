@@ -39,4 +39,14 @@ class OrderBackWarehouse extends Model
     {
         return $this->hashOne('App\Model\OrderBackWarehousePayment', 'order_back_warehouse_id', 'id');
     }
+
+    public function user_address()
+    {
+        return $this->belongsTo('App\Model\UserAddress', 'address_id', 'id');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('App\Model\Village', 'village_id', 'id');
+    }
 }
