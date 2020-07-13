@@ -82,6 +82,32 @@
                                             <div class="form-group col-md-10">
                                                 <p>{{ $value->address }}</p>
                                             </div>
+                                            @if($value->user_address)
+                                            <div class="form-group col-md-2">
+                                                <label>Kelurahan </label>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <p>{{ $value->user_address->village->name }}</p>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label>Kecamatan </label>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <p>{{ $value->user_address->village->district->name }}</p>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label>Kota/Kab </label>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <p>{{ $value->user_address->village->district->regency->name }}</p>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <label>Provinsi</label>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <p>{{ $value->user_address->village->district->regency->province->name }}</p>
+                                            </div>
+                                            @endif
                                         </div>
                                         <div class="form-material row">
                                             <div class="form-group col-md-2">

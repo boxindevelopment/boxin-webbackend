@@ -30,4 +30,14 @@ class PickupOrder extends Model
         return $this->belongsTo('App\Model\Status', 'status_id', 'id');
     }
 
+    public function user_address()
+    {
+        return $this->belongsTo('App\Model\UserAddress', 'address_id', 'id');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo('App\Model\Village', 'village_id', 'id');
+    }
+
 }
