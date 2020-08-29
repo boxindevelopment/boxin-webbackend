@@ -12,7 +12,7 @@ class DeliveryFeeController extends Controller
     
     public function index()
     {
-        $data   = DeliveryFee::get();
+        $data   = DeliveryFee::whereHas('area')->get();
         return view('settings.delivery-fee.index', compact('data'));
     }
 
