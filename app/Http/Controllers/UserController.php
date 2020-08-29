@@ -153,6 +153,13 @@ class UserController extends Controller
         return redirect()->route('user.superadmin.index')->with('error', 'Add super admin failed.');
       }
     }
+
+    public function editSuperadmin($id)
+    {
+        $user      = $this->user->getEditSUperadmin($id);
+        $edit_user = true;
+        return view('users.superadmin.edit', compact('user', 'id', 'edit_user'));
+    }
     //*==================================================== END SUPERADMIN ====================================================*\\
 
     public function show($id)
@@ -203,6 +210,33 @@ class UserController extends Controller
             return redirect()->route('user.finance.index')->with('error', 'Edit admin finance failed.');
           }
         }
+    }
+
+    public function updateSuperadmin(Request $request, $id)
+    {
+      $validator = \Validator::make($request->all(), [
+          'first_name' => 'required',
+          'email' => 'required|email',
+          'phone' => 'required|numeric',
+          'password_confirmation' => 'same:password',
+      ], [
+        'email.unique' => 'The field is required.',
+        'password_confirmation.same' => 'The confirmation password and new password must match.',
+    ]);
+
+      if($validator->fails()) {
+        return redirect()->route('user.superadmin.edit', ['id' => $id])->with('error', $validator->errors()->first());
+      }
+      $user       = $this->user->find($id);
+      if($request->input('password')){
+        $user->password = bcrypt($request->input('password'));
+      }
+      $first_name = $user->first_name;
+      $user->first_name = $request->input('first_name');
+      $user->last_name  = $request->input('last_name');
+      $user->phone      = $request->input('phone');
+      $user->save();
+      return redirect()->route('user.superadmin.index')->with('success', 'Succes edit super admin ['.$first_name.'].');
     }
 
     public function destroy(Request $request, $id)

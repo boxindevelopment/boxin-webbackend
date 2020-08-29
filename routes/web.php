@@ -176,6 +176,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('superadmin','UserController@list_superadmin')->name('user.superadmin.index');
     Route::post('superadmin/store','UserController@storeSuperadmin')->name('user.superadmin.store');
+    Route::get('superadmin/edit/{id}','UserController@editSuperadmin')->name('user.superadmin.edit');
+    Route::put('superadmin/update/{id}','UserController@updateSuperadmin')->name('user.superadmin.update');
   });
   Route::resource('user', 'UserController');
 

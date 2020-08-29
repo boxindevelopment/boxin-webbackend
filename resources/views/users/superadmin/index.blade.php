@@ -80,13 +80,14 @@
                       @if (count($user) > 0)
                         @foreach ($user as $key => $value)
                           <tr>
-                            <td align="center">{{ $key+1 }}</th>
+                            <td align="center">{{ $key+1 }}</td>
                             <td>{{ $value->first_name }} {{ $value->last_name }}</td>
                             <td>{{ $value->phone }}</td>
                             <td>{{ $value->email }}</td>          
                             <td class="text-center">
                               <form action="{{route('user.destroy', ['id' => $value->id])}}" method="post">
                                 @csrf
+                                <a class="btn btn-info btn-sm" href="{{route('user.superadmin.edit', ['id' => $value->id])}}"><i class="fa fa-pencil"></i></a>
                                 @method('DELETE')
                                 <input type="hidden" class="form-control" id="roles_id" name="roles_id" value="3">
                                 <button type="submit" name="remove" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>

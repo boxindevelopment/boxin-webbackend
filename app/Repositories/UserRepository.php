@@ -111,6 +111,12 @@ class UserRepository implements UserRepositoryInterface
         return $data;
     }
 
+    public function getEditSUperadmin($id)
+    {
+        $data = $this->model->where('id', $id)->first();
+        return $data;
+    }
+
     public function create(array $data)
     {
         return $this->model->create($data);
