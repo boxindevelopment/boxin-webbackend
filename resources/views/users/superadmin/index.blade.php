@@ -44,11 +44,64 @@
               <form action="{{ route('user.superadmin.store') }}" method="POST" enctype="application/x-www-form-urlencoded">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
+                    <div class="col-md-10">
+                      <!-- <div class="form-group">
                         <label for="">User <span class="text-danger">*</span></label>
                         <input type="hidden" class="form-control" id="roles_id" name="roles_id" value="3">
                         <input type="text" class="form-control" id="superadmin_id" name="superadmin_id" required>
+                      </div> -->
+                      <div class="row">
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">First Name <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">Last Name <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">Email <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" id="email" name="email" required  >
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">Phone <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" id="phone" name="phone" required>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">Password</label>
+                              <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="">Password Confirmation</label>
+                              <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-3">
+                            <div class="form-group">
+                              <label for="">Status</label>
+                              <select class="form-control"  name="status" id="status">
+                                  <option value="1">Aktif</option>
+                                  <option value="2">Non Aktif</option>
+                              </select>
+                            </div>
+                          </div>
                       </div>
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save </button>
                     </div>

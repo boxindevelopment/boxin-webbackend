@@ -142,15 +142,39 @@ class UserController extends Controller
 
     public function storeSuperadmin(Request $request)
     {
-      $user           = $this->user->find($request->superadmin_id);
-      $user->roles_id = $request->roles_id;
-      $user->status   = 1;
-      $user->save();
+      // $user           = $this->user->find($request->superadmin_id);
+      // $user->roles_id = $request->roles_id;
+      // $user->status   = 1;
+      // $user->save();
+      $validator = \Validator::make($request->all(), [
+        'first_name'            => 'required',
+        'email'                 => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+        'phone'                 => 'required|numeric|unique:users,phone,NULL,id,deleted_at,NULL',
+        'password'              => 'required',
+        'password_confirmation' => 'same:password',
+        ], [
+          'email.unique'                => 'The field is required.',
+          'password_confirmation.same'  => 'The confirmation password and new password must match.',
+      ]);
+
+    if($validator->fails()) {
+      return redirect()->route('user.superadmin.edit', ['id' => $id])->with('error', $validator->errors()->first());
+    }
+      $input                = $request->all();
+      $input['password']    = bcrypt($request->input('password'));
+      $input['email']       = $request->input('email');
+      $input['first_name']  = $request->input('first_name');
+      $input['last_name']   = $request->input('last_name');
+      $input['phone']       = '+62' . $request->input('phone');
+      $input['phone']       = '+62' . $request->input('phone');
+      $input['roles_id']    = 3;
+      $user                 = User::create($input);
 
       if($user){
         return redirect()->route('user.superadmin.index')->with('success', 'Success add super admin ['.$user->first_name.'].');
-      } else {
-        return redirect()->route('user.superadmin.index')->with('error', 'Add super admin failed.');
+      } else { 
+        echo 'Add super admin failed.';
+        //return redirect()->route('user.superadmin.index')->with('error', 'Add super admin failed.');
       }
     }
 
@@ -403,14 +427,14 @@ class UserController extends Controller
     {
 
         $validator = \Validator::make($request->all(), [
-            'first_name' => 'required',
-            'email' => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
-            'phone' => 'required|numeric|unique:users,phone,NULL,id,deleted_at,NULL',
-            'password' => 'required',
+            'first_name'            => 'required',
+            'email'                 => 'required|email|unique:users,email,NULL,id,deleted_at,NULL',
+            'phone'                 => 'required|numeric|unique:users,phone,NULL,id,deleted_at,NULL',
+            'password'              => 'required',
             'confirmation_password' => 'required|same:password',
-            'address' => 'required',
-            'postal_code'   => 'required',
-            'village_id'    => 'required|exists:villages,id',
+            'address'               => 'required',
+            'postal_code'           => 'required',
+            'village_id'            => 'required|exists:villages,id',
         ]);
 
         if($validator->fails()){
