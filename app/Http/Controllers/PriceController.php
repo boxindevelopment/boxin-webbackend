@@ -110,7 +110,7 @@ class PriceController extends Controller
               'types_of_box_room_id'    => $r->type_of_box_room_id,
               'area_id'                 => $area_id,
               'types_of_size_id'        => $r->type_size_id,
-              'types_of_duration_id'    => 3,
+              'types_of_duration_id'    => 7,
               'price'                   => $r->sixmonth_price,
             ]);
             $price4->save();
@@ -119,7 +119,7 @@ class PriceController extends Controller
               'types_of_box_room_id'    => $r->type_of_box_room_id,
               'area_id'                 => $area_id,
               'types_of_size_id'        => $r->type_size_id,
-              'types_of_duration_id'    => 3,
+              'types_of_duration_id'    => 8,
               'price'                   => $r->annual_price,
             ]);
             $price5->save();
