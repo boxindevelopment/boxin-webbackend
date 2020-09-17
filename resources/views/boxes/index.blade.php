@@ -43,6 +43,19 @@
               @include('error-template')
 
               <div class="table-responsive m-t-10">
+                  <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="">Shelves</label>
+                            <select class="form-control" id="shelves_id" name="shelves_id">
+                                <option value="">All</option>
+                                @foreach($shelves as $k => $v)
+                                    <option value="{{$v->id}}">{{$v->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                  </div>
                   <table id="table-ingrd" class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -52,7 +65,7 @@
                           <th width="10%">Type</th>
                           <th width="12%">Size</th>
                           <th width="15%">Shelf</th>
-                          <th width="20%">Location</th>
+                          <th width="20%">Area</th>
                           <th width="10%">Status</th>
                           <th width="13%" class="text-center no-sort">Action</th>
                         </tr>
@@ -130,7 +143,7 @@ $(function() {
             { "name": "type_size_name", "targets": 3 },
             { "name": "type_size_size", "targets": 4 },
             { "name": "shelves_name", "sClass": "center", "targets": 5 },
-            { "name": "location", "sClass": "right",  "targets": 6 },
+            { "name": "area_name", "sClass": "right",  "targets": 6 },
             { "name": "status_name", "sClass": "right",  "targets": 7 },
         ],
         "ajax": {
@@ -138,6 +151,7 @@ $(function() {
             "type": "POST",
             "data": function ( d ) {
                 d._token = $('meta[name="_token"]').attr('content');
+                d.shelves_id = $('#shelves_id').val();
                 // d.category = $('#category_serch').val();
                 // etc
             }
@@ -153,13 +167,18 @@ $(function() {
             { "data": "type_size_name", "bSortable": false },
             { "data": "type_size_size", "bSortable": true },
             { "data": "shelves_name", "bSortable": true, "sClass": "right" },
-            { "data": "location", "bSortable": true, "sClass": "right" },
+            { "data": "area_name", "bSortable": true, "sClass": "right" },
             { "data": function ( row, type, val, meta ) { var labelStatus = (row.status_name == 'Empty') ? 'label-warning' : 'label-success'; return '<span class="label ' + labelStatus + ' label-rounded">' + row.status_name + '</span>'; }, "bSortable": false },
             { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {
             //  $('.count_act').html($count_active);
         }
+    });
+
+    $('#shelves_id').on("change", function(){
+        var shelves_id = $(this).val();
+        $table.api().ajax.reload();
     });
 });
 </script>

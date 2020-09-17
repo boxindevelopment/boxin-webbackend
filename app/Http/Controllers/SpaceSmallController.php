@@ -63,6 +63,7 @@ class SpaceSmallController extends Controller
                       'type_size_size' => $arrVal['size'], //
                       'shelves_name' => $arrVal['shelves_name'], //
                       'location' => $arrVal['location'], //
+                      'area_name' => $arrVal['area_name'], //
                       'status_name' => $arrVal['status_name']);
                 $arr_data['data'][] = $arr;
 

@@ -44,28 +44,43 @@ class BoxRepository implements BoxRepositoryInterface
 
     public function getCount($args = [])
     {
-        return $this->model
-                    ->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id")
-                    ->join("shelves", "shelves.id", "boxes.shelves_id")
-                    ->join("status", "status.id", "boxes.status_id")
-                    ->where('boxes.name', 'like', $args['searchValue'].'%')
-                    ->count();
+        $query = $this->model->query();
+        $query->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id");
+        $query->join("shelves", "shelves.id", "boxes.shelves_id");
+        $query->join('areas', 'areas.id', '=', 'shelves.area_id');
+        $query->join("status", "status.id", "boxes.status_id");
+        $query->where('boxes.name', 'like', $args['searchValue'].'%');
+        if($args['shelves_id']){
+            $query->where('boxes.shelves_id', $args['shelves_id']);
+        }
+        $query->whereNull('boxes.deleted_at');
+        $query->whereNull('shelves.deleted_at');
+        $query->whereNull('areas.deleted_at');
+        return $query->count();
     }
     
     public function getData($args = [])
     {
 
-        $data = $this->model->select("boxes.*", "types_of_size.name as type_size_name",
+        $query = $this->model->query();
+        $query->select("boxes.*", "types_of_size.name as type_size_name",
                                      "types_of_size.size", "shelves.name as shelves_name",
-                                     "status.name as status_name")
-                ->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id")
-                ->join("shelves", "shelves.id", "boxes.shelves_id")
-                ->join("status", "status.id", "boxes.status_id")
-                ->orderBy($args['orderColumns'], $args['orderDir'])
-                ->where('boxes.name', 'like', '%'.$args['searchValue'].'%')
-                ->skip($args['start'])
-                ->take($args['length'])
-                ->get();
+                                     "status.name as status_name", "areas.name as area_name");
+        $query->join("types_of_size", "types_of_size.id", "boxes.types_of_size_id");
+        $query->join("shelves", "shelves.id", "boxes.shelves_id");
+        $query->join('areas', 'areas.id', '=', 'shelves.area_id');
+        $query->join("status", "status.id", "boxes.status_id");
+        $query->orderBy($args['orderColumns'], $args['orderDir']);
+        $query->where('boxes.name', 'like', '%'.$args['searchValue'].'%');
+        if($args['shelves_id']){
+            $query->where('boxes.shelves_id', $args['shelves_id']);
+        }
+        $query->whereNull('boxes.deleted_at');
+        $query->whereNull('shelves.deleted_at');
+        $query->whereNull('areas.deleted_at');
+        $query->skip($args['start']);
+        $query->take($args['length']);
+        $data = $query->get();
 
         return $data->toArray();
 

@@ -31,7 +31,8 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
     {
         $query = $this->model->query();
         $query->select('space_smalls.*');
-        $query->leftJoin('shelves', 'shelves.id', '=', 'space_smalls.shelves_id');
+        $query->join('shelves', 'shelves.id', '=', 'space_smalls.shelves_id');
+        $query->join('areas', 'areas.id', '=', 'shelves.area_id');
 
         if(isset($args['orderColumns']) && isset($args['orderDir'])){
             $query->orderBy($args['orderColumns'], $args['orderDir']);
@@ -51,7 +52,9 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
         if(isset($args['length'])){
             $query->take($args['length']);
         }
-        $query->where('space_smalls.deleted_at', NULL);
+        $query->whereNull('space_smalls.deleted_at');
+        $query->whereNull('shelves.deleted_at');
+        $query->whereNull('areas.deleted_at');
         $spaceSmall = $query->first();
 
         return $spaceSmall;
@@ -78,9 +81,13 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
     {
         return $this->model
                     ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
-                    ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                    ->join('shelves', 'shelves.id', '=', 'space_smalls.shelves_id')
+                    ->join('areas', 'areas.id', '=', 'shelves.area_id')
                     ->join("status", "status.id", "space_smalls.status_id")
                     ->where('space_smalls.name', 'like', $args['searchValue'].'%')
+                    ->whereNull('space_smalls.deleted_at')
+                    ->whereNull('shelves.deleted_at')
+                    ->whereNull('areas.deleted_at')
                     ->count();
     }
     public function getData($args = [])
@@ -88,12 +95,16 @@ class SpaceSmallRepository implements SpaceSmallRepositoryInterface
 
         $warehouse = $this->model->select("space_smalls.*", "types_of_size.name as type_size_name",
                                      "types_of_size.size", "shelves.name as shelves_name",
-                                     "status.name as status_name")
+                                     "status.name as status_name", "areas.name as area_name")
                                 ->join("types_of_size", "types_of_size.id", "space_smalls.types_of_size_id")
                                 ->join("shelves", "shelves.id", "space_smalls.shelves_id")
+                                ->join('areas', 'areas.id', '=', 'shelves.area_id')
                                 ->join("status", "status.id", "space_smalls.status_id")
                                 ->orderBy($args['orderColumns'], $args['orderDir'])
                                 ->where('space_smalls.name', 'like', '%'.$args['searchValue'].'%')
+                                ->whereNull('space_smalls.deleted_at')
+                                ->whereNull('shelves.deleted_at')
+                                ->whereNull('areas.deleted_at')
                                 ->skip($args['start'])
                                 ->take($args['length'])
                                 ->get();

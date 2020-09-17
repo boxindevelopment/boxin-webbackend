@@ -59,6 +59,7 @@ class ShelvesController extends Controller
                       'id' => $arrVal['id'],
                       'code_shelves' => $arrVal['code_shelves'],
                       'name' => $arrVal['name'],
+                      'count_box' => $arrVal['count_box'],
                       'area_name' => $arrVal['area_name']);
                 $arr_data['data'][] = $arr;
 

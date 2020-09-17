@@ -47,7 +47,8 @@
                         <th width="5%">No</th>
                         <th width="15%" class="text-center">Code Number</th>
                         <th width="">Name</th>
-                        <th width="30%">Space</th>
+                        <th width="20%">Space</th>
+                        <th width="10%">Count Box</th>
                         <th width="5%" class="text-center no-sort">Action</th>
                       </tr>
                   </thead>
@@ -118,7 +119,7 @@ $(function() {
             { "name": "no", "sClass": "center", "targets": 0, "visible": false },
             { "name": "code_shelves", "targets": 1 },
             { "name": "shelves.name",  "targets": 2 },
-            { "name": "area_name", "targets": 3 }
+            { "name": "count_box", "targets": 3 }
         ],
         "ajax": {
             "url": "{{ route('shelves.ajax') }}",
@@ -137,7 +138,7 @@ $(function() {
             { "data": "no", "bSortable": false },
             { "data": "code_shelves", "bSortable": true },
             { "data": "name", "bSortable": true },
-            { "data": "area_name", "bSortable": false },
+            { "data": "count_box", "bSortable": false },
             { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
         ],
         "initComplete": function( settings, json ) {

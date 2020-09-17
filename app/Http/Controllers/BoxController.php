@@ -23,7 +23,8 @@ class BoxController extends Controller
 
     public function index(Request $request)
     {
-        return view('boxes.index');
+        $shelves = Shelves::all();
+        return view('boxes.index', compact('shelves'));
     }
 
     public function getAjax(Request $request)
@@ -33,6 +34,7 @@ class BoxController extends Controller
         $args = array();
         $args['searchRegex'] = ($search['regex']) ? $search['regex'] : false;
         $args['searchValue'] = ($search['value']) ? $search['value'] : '';
+        $args['shelves_id'] = ($request->input("shelves_id")) ? $request->input("shelves_id") : '';
         $args['draw'] = ($request->input('draw')) ? intval($request->input('draw')) : 0;
         $args['length'] =  ($request->input('length')) ? intval($request->input('length')) : 10;
         $args['start'] =  ($request->input('start')) ? intval($request->input('start')) : 0;
@@ -63,6 +65,7 @@ class BoxController extends Controller
                       'type_size_size' => $arrVal['size'], //
                       'shelves_name' => $arrVal['shelves_name'], //
                       'location' => $arrVal['location'], //
+                      'area_name' => $arrVal['area_name'], //
                       'status_name' => $arrVal['status_name']);
                 $arr_data['data'][] = $arr;
 
