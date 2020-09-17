@@ -47,7 +47,7 @@ class ShelvesRepository implements ShelvesRepositoryInterface
     }
     public function getData($args = [])
     {
-        $shelves = $this->model->select('shelves.*', 'areas.name as area_name', DB::raw('(SUM(*) as sm_bx FROM boxes WHERE boxes.shelves_id = shelves.id ) as count_box'))
+        $shelves = $this->model->select('shelves.*', 'areas.name as area_name', DB::raw('(SELECT COUNT(*) as sm_bx FROM boxes WHERE boxes.shelves_id = shelves.id ) as count_box'))
                 ->join("areas", "areas.id", "shelves.area_id")
                 ->orderBy($args['orderColumns'], $args['orderDir'])
                 ->where('shelves.name', 'like', '%'.$args['searchValue'].'%')

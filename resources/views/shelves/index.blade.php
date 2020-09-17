@@ -119,7 +119,8 @@ $(function() {
             { "name": "no", "sClass": "center", "targets": 0, "visible": false },
             { "name": "code_shelves", "targets": 1 },
             { "name": "shelves.name",  "targets": 2 },
-            { "name": "count_box", "targets": 3 }
+            { "name": "area_name",  "targets": 3 },
+            { "name": "count_box", "targets": 4 }
         ],
         "ajax": {
             "url": "{{ route('shelves.ajax') }}",
@@ -138,6 +139,7 @@ $(function() {
             { "data": "no", "bSortable": false },
             { "data": "code_shelves", "bSortable": true },
             { "data": "name", "bSortable": true },
+            { "data": "area_name", "bSortable": false },
             { "data": "count_box", "bSortable": false },
             { "data": function ( row, type, val, meta ) { return "" + action(row.id)  ; }, "sClass": "center", "bSortable": false },
         ],
