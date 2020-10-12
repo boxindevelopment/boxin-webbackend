@@ -208,9 +208,11 @@ class PickupController extends Controller
             }
             if($status == 4){
                 $order_detail->place    = 'house';
-            }
+            } else {
+                $order_detail->place    = 'house2';
+	    }
 
-            if($status = 2){
+            if($status == 2){
               $order_detail->pickup = 'order';
             } else {
               $order_detail->pickup = null;
