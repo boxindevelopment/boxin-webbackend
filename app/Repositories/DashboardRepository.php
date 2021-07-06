@@ -169,6 +169,7 @@ class DashboardRepository implements DashboardRepositoryInterface
             $data = $data->where('areas.id', $admin->area_id);
         }
         $data = $data->whereRaw("YEAR(order_details.created_at) = " . date('Y'));
+        $data = $data->whereNotIn('order_details.status_id', [24,11,14,6,21,10]);
         $data = $data->groupBy(DB::raw("DATEPART(Year, order_details.created_at)"));
         $data = $data->groupBy(DB::raw("DATEPART(Month, order_details.created_at)"));
         $data = $data->orderBy('Month', 'DESC');
