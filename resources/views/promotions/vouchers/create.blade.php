@@ -133,6 +133,7 @@
 
                     <div class="col-md-12">
                       <hr>
+                      <a href="{{ route('voucher.index') }}" class="btn btn-secondary waves-effect waves-light m-r-10">Back</a>
                       <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Save</button>
                     </div>
                 </div>
