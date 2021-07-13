@@ -155,6 +155,21 @@
 <script type="text/javascript">
 
 $(document).ready( function() {
+  var val_awal_edit = $('input[name=type_voucher]:checked', '#myForm').val();
+  if(val_awal_edit == '1'){
+    $('#myForm .form-group .input-group .value_discount').show();
+    $('#myForm .form-group .input-group .value_nominal').hide();
+    $('#myForm .div_max_value').show();
+  }else if(val_awal_edit == '2'){
+    // $('#value2').show();
+    $('#myForm .form-group .input-group .value_discount').hide();
+    $('#myForm .form-group .input-group .value_nominal').show();
+    $('#value').attr('placeholder', 'Enter Nominal');
+    $('#myForm .div_max_value').hide();
+    $('#value').attr('max', 10000000000000000);
+    var value = $('#value').attr('base_value');
+    $('#value').val(value);
+  }
   $('#value').on('keyup', function() {
       value = $(this).val();
       console.log('base value : ' + value);
